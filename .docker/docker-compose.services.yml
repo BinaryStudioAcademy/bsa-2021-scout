@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  ats_database:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: 'ats_database'
+    ports:
+        - 1433:1433
+    networks:
+        - backend
+    env_file:
+      - ../.env/ats_database.env
+    volumes: 
+      - ats_database-data:/var/opt/mssql
+
+volumes:
+  ats_database-data:
+
+networks:
+  backend:
+      driver: bridge
