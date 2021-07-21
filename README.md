@@ -5,7 +5,6 @@ todo: add some project description
 ### How can I run all this stuff?
 
 #### 1. Using Docker
-##### If you want to run application services (like database) and don't want to waste time installing them, 
 
 - Obviously, you have to [install Docker](https://docs.docker.com/get-docker/).
 
@@ -16,3 +15,14 @@ todo: add some project description
 - Open .docker folder in command line and run next command `docker-compose up --build`.
 
 - You should be able to access [backend API specification](http://localhost:5050/swagger) and [frontend app](http://localhost:4200/)
+
+`tips:`
+
+- If you want to run application services (like database) and don't want to waste time installing them, run this command in .docker folder
+`docker-compose -f docker-compose.services.yml up --build`.
+
+- If you want to test production environment localy, do next steps:
+
+  1 Change `ASPNETCORE_ENVIRONMENT=Development` line to `ASPNETCORE_ENVIRONMENT=Production` in .env\ats_api.env file
+
+  2 Go to backend\src\WebAPI\Extensions\CorsExtenstion.cs file, find method `AddProductionCorsPolicies` and follow described instructions.
