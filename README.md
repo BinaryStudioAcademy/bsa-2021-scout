@@ -2,6 +2,16 @@
 
 todo: add some project description
 
+### Useful links
+
+- Pay attention, that we have certain [quality criteria](https://github.com/BinaryStudioAcademy/quality-criteria/blob/production/source/dotnet.md), which we should follow during application development.
+
+- Trello board.
+
+- Staging.
+
+- Production.
+
 ### How can I run all this stuff?
 
 #### 1. Using Docker
@@ -16,6 +26,8 @@ todo: add some project description
 
 - You should be able to access [backend API specification](http://localhost:5050/swagger) and [frontend app](http://localhost:4200/)
 
+- If something went wrong, use [this](https://gumoreska.in.ua/otche-nash-ukrayinskoyu-tekst-molytvy/) link to fix your problem
+
 `tips:`
 
 - If you want to run application services (like database) and don't want to waste time installing them, run this command in .docker folder
@@ -26,3 +38,11 @@ todo: add some project description
   1 Change `ASPNETCORE_ENVIRONMENT=Development` line to `ASPNETCORE_ENVIRONMENT=Production` in .env\ats_api.env file
 
   2 Go to backend\src\WebAPI\Extensions\CorsExtenstion.cs file, find method `AddProductionCorsPolicies` and follow described instructions.
+
+#### 2. Manually
+
+- Go to backend/src/WebAPI/Properties.
+
+- Create file launchSettings.json.
+
+- Copy content of example.launchSettings.json to launchSettings.json
