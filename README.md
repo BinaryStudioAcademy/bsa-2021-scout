@@ -6,7 +6,7 @@ todo: add some project description
 
 - Pay attention, that we have certain [quality criteria](https://github.com/BinaryStudioAcademy/quality-criteria/blob/production/source/dotnet.md), which we should follow during application development.
 
-- Trello board.
+- [Trello board](https://trello.com/invite/b/5po3bvjA/a78b44b8ffafe630205f01629bf005ed/bsa-scout-backlog).
 
 - Staging.
 
