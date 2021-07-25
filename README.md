@@ -37,12 +37,12 @@ todo: add some project description
 
   1 Change `ASPNETCORE_ENVIRONMENT=Development` line to `ASPNETCORE_ENVIRONMENT=Production` in .env\ats_api.env file
 
-  2 Go to backend\src\WebAPI\Extensions\CorsExtenstion.cs file, find method `AddProductionCorsPolicies` and follow described instructions.
+  2 Go to `backend\src\WebAPI\Extensions\CorsExtenstion.cs` file, find method `AddProductionCorsPolicies` and follow described instructions.
 
 #### 2. Manually
 
-- Go to backend/src/WebAPI/Properties.
+- Go to `backend/src/WebAPI/Properties`.
 
-- Create file launchSettings.json.
+- Create file `launchSettings.json`.
 
-- Copy content of example.launchSettings.json to launchSettings.json
+- Copy content of `example.launchSettings.json` to `launchSettings.json`.
