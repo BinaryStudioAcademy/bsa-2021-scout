@@ -1,7 +1,12 @@
 ﻿using Application.Interfaces;
 using Application.Users.Dtos;
 using Domain.Entities;
+using Domain.Interfaces;
+using Infrastructure.Dapper.Interfaces;
+using Infrastructure.Dapper.Services;
 using Infrastructure.EF;
+using Infrastructure.Repositories.Abstractions;
+using Infrastructure.Repositories.Read;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,22 +17,53 @@ namespace Infrastructure
 {
     public static class InfrastructureDependencyInjection
     {
-        public static IServiceCollection AddInfrastracture(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastracture(this IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(
-                        Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING"),
-                        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+            services.AddDatabaseContext();
+            services.AddDapper();
+
+            services.AddWriteRepositories();
+            services.AddReadRepositories();
 
             services.AddScoped<IDomainEventService, DomainEventService>();
-            services.AddCrudServices();            
 
             return services;
         }
 
-        private static IServiceCollection AddCrudServices(this IServiceCollection services)
+        private static IServiceCollection AddDatabaseContext(this IServiceCollection services)
         {
-            services.AddScoped<IService<UserDto>, Service<User, UserDto>>();
+            var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
+
+            if (connectionString is null)
+                throw new Exception("Database connection string is not specified");
+
+            services.AddDbContext<ApplicationDbContext>(
+                    options => options.UseSqlServer(
+                            connectionString,
+                            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
+                        )
+                );
+
+            return services;
+        }
+
+        private static IServiceCollection AddDapper(this IServiceCollection services)
+        {
+            services.AddTransient<IConnectionFactory, ConnectionFactory>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddReadRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<IReadRepository<User>, UserReadRepository>();
 
             return services;
         }

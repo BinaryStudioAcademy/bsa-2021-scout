@@ -1,5 +1,7 @@
-﻿using Application.Interfaces;
-using Application.Users.Dtos;
+﻿using Application.Users.Dtos;
+using AutoMapper;
+using Domain.Entities;
+using Domain.Interfaces;
 using MediatR;
 using System;
 using System.Threading;
@@ -19,15 +21,19 @@ namespace Application.Users.Queries.GetUserById
 
     public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto>
     {
-        private readonly IService<UserDto> _service;
-        public GetUserByIdQueryHandler(IService<UserDto> service)
+        private readonly IReadRepository<User> _readRepository;
+        private readonly IMapper _mapper;
+
+        public GetUserByIdQueryHandler(IReadRepository<User> readRepository, IMapper mapper)
         {
-            _service = service;
+            _readRepository = readRepository;
+            _mapper = mapper;
         }
 
-        public Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken _)
+        public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken _)
         {
-            return _service.GetAsync(request.Id);
+            var user = await _readRepository.GetAsync(request.Id);
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

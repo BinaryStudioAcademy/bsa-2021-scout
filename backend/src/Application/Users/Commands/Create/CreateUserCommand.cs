@@ -1,8 +1,10 @@
 ﻿using Application.Users.Dtos;
-using Application.Interfaces;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using Domain.Interfaces;
+using Domain.Entities;
+using AutoMapper;
 
 namespace Application.Users.Commands.Create
 {
@@ -18,16 +20,19 @@ namespace Application.Users.Commands.Create
 
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserDto>
     {
-        private readonly IService<UserDto> _service;
+        private readonly IWriteRepository<User> _writeRepository;
+        private readonly IMapper _mapper;
 
-        public CreateUserCommandHandler(IService<UserDto> service)
+        public CreateUserCommandHandler(IWriteRepository<User> writeRepository, IMapper mapper)
         {
-            _service = service;
+            _writeRepository = writeRepository;
+            _mapper = mapper;
         }
 
-        public Task<UserDto> Handle(CreateUserCommand request, CancellationToken _)
+        public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken _)
         {
-            return _service.CreateAsync(request.User);
+            var user = _mapper.Map<User>(request.User);
+            return _mapper.Map<UserDto>(await _writeRepository.CreateAsync(user));
         }
     }
 }
