@@ -16,6 +16,8 @@ todo: add some project description
 
 - [Event storming](https://miro.com/app/board/o9J_l6NhsRM=/)
 
+- [Value proposition canvas](https://miro.com/app/board/o9J_l7Mm5LE=/)
+
 ### How can I run all this stuff?
 
 #### 1. Using Docker
