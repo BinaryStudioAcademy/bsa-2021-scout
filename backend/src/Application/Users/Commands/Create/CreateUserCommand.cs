@@ -6,11 +6,6 @@ using AutoMapper;
 
 namespace Application.Users.Commands.Create
 {
-    public class CreateUserCommand : CreateEntityCommand<UserDto>
-    {
-        public CreateUserCommand(UserDto user) : base(user) { }
-    }
-
     public class CreateUserCommandHandler : CreateEntityCommandHandler<User, UserDto>
     {
         public CreateUserCommandHandler(IWriteRepository<User> repository, IMapper mapper) : base(repository, mapper) { }
