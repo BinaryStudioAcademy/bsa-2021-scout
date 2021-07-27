@@ -1,13 +1,13 @@
-﻿using Domain.Common;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Bson;
+using Domain.Common;
 
 namespace Domain.Interfaces
 {
-    public interface IReadRepository<T> where T : Entity
+    public interface IMongoReadRepository<T> where T : MongoEntity
     {
-        Task<T> GetAsync(Guid id);
+        Task<T> GetAsync(ObjectId id);
         Task<IEnumerable<T>> GetEnumerableAsync();
     }
 }

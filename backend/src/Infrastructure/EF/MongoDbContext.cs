@@ -1,5 +1,6 @@
 using System;
 using MongoDB.Driver;
+using Domain.Common;
 using Domain.Entities.Mongo;
 
 namespace Infrastructure.EF
@@ -17,7 +18,13 @@ namespace Infrastructure.EF
         {
             _client = new MongoClient(_connectionUri);
             _connection = _client.GetDatabase(_database);
-            ApplicantCvs = _connection.GetCollection<ApplicantCv>("ApplicantCvs");
+            ApplicantCvs = _connection.GetCollection<ApplicantCv>(ApplicantCv.CollectionName);
+        }
+
+        public IMongoCollection<T> Collection<T>(string name)
+            where T : MongoEntity
+        {
+            return _connection.GetCollection<T>(name);
         }
     }
 }

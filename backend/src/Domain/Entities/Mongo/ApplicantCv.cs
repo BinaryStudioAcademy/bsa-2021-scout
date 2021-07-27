@@ -6,5 +6,10 @@ namespace Domain.Entities.Mongo
     {
         public string ApplicantId { get; set; }
         public string Cv { get; set; }
+
+        static ApplicantCv()
+        {
+            CollectionName = "ApplicantCvs";
+        }
     }
 }
