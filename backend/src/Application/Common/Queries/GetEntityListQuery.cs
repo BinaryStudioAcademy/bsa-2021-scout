@@ -7,7 +7,7 @@ using Domain.Common;
 using Domain.Interfaces;
 using Application.Common.Models;
 
-namespace Application.Generics.Queries
+namespace Application.Common.Queries
 {
     public class GetEntityListQuery<TDto> : IRequest<IEnumerable<TDto>>
         where TDto : Dto

@@ -6,7 +6,7 @@ using AutoMapper;
 using Domain.Common;
 using Domain.Interfaces;
 
-namespace Application.Generics.Commands
+namespace Application.Common.Commands
 {
     public class DeleteEntityCommand : IRequest
     {

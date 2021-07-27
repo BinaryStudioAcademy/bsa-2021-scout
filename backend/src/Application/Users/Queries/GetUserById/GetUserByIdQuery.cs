@@ -1,5 +1,5 @@
 ﻿using Application.Users.Dtos;
-using Application.Generics.Queries;
+using Application.Common.Queries;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;

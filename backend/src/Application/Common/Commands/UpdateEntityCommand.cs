@@ -6,7 +6,7 @@ using Domain.Common;
 using Domain.Interfaces;
 using Application.Common.Models;
 
-namespace Application.Generics.Commands
+namespace Application.Common.Commands
 {
     public class UpdateEntityCommand<TDto> : IRequest<TDto>
         where TDto : Dto

@@ -1,5 +1,5 @@
 ﻿using Application.Users.Dtos;
-using Application.Generics.Commands;
+using Application.Common.Commands;
 using Domain.Interfaces;
 using Domain.Entities;
 using AutoMapper;
