@@ -1,5 +1,4 @@
 ﻿using Application.Common.Behaviours;
-using Application.Users.Commands.Create;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
