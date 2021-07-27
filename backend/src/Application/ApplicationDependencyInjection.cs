@@ -1,4 +1,5 @@
 ﻿using Application.Common.Behaviours;
+using Application.Users.Commands.Create;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,8 +13,8 @@ namespace Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddMediatR(Assembly.GetExecutingAssembly());
 
+            services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddPipelineBehaviour();
 
             return services;

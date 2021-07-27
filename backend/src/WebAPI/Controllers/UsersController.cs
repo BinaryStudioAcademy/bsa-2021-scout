@@ -1,4 +1,5 @@
-﻿using Application.Users.Commands.Create;
+﻿using Application.Common.Commands;
+using Application.Users.Commands.Create;
 using Application.Users.Dtos;
 using Application.Users.Queries.GetUserById;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(UserDto user)
         {
-            var command = new CreateUserCommand(user);
+            var command = new CreateEntityCommand<UserDto>(user);
             return StatusCode(201, await Mediator.Send(command));
         }
     }
