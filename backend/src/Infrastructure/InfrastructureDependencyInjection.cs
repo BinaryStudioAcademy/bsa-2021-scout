@@ -1,15 +1,15 @@
 ﻿using Application.Interfaces;
-using Application.Users.Dtos;
 using Domain.Entities;
+using Domain.Entities.Mongo;
 using Domain.Interfaces;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Dapper.Services;
 using Infrastructure.EF;
 using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.Read;
+using Infrastructure.Repositories.Write;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -59,6 +59,7 @@ namespace Infrastructure
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
+            services.AddScoped<IMongoWriteRepository<ApplicantCv>, ApplicantCvWriteRepository>();
 
             return services;
         }
@@ -66,6 +67,7 @@ namespace Infrastructure
         private static IServiceCollection AddReadRepositories(this IServiceCollection services)
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
+            services.AddScoped<IMongoReadRepository<ApplicantCv>, ApplicantCvReadRepository>();
 
             return services;
         }
