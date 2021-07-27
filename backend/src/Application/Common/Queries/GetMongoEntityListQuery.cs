@@ -10,12 +10,12 @@ using Application.Common.Models;
 namespace Application.Common.Queries
 {
     public class GetMongoEntityListQuery<TDto> : IRequest<IEnumerable<TDto>>
-        where TDto : Dto
+        where TDto : MongoDto
     { }
 
     public class GetMongoEntityListQuery<TEntity, TDto> : IRequestHandler<GetMongoEntityListQuery<TDto>, IEnumerable<TDto>>
         where TEntity : MongoEntity
-        where TDto : Dto
+        where TDto : MongoDto
     {
         protected readonly IMongoReadRepository<TEntity> _repository;
         protected readonly IMapper _mapper;

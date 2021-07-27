@@ -9,7 +9,7 @@ using Application.Common.Models;
 namespace Application.Common.Commands
 {
     public class CreateMongoEntityCommand<TDto> : IRequest<TDto>
-        where TDto : Dto
+        where TDto : MongoDto
     {
         public TDto Entity { get; }
 
@@ -21,7 +21,7 @@ namespace Application.Common.Commands
 
     public class CreateMongoEntityCommandHandler<TEntity, TDto> : IRequestHandler<CreateMongoEntityCommand<TDto>, TDto>
         where TEntity : MongoEntity
-        where TDto : Dto
+        where TDto : MongoDto
     {
         protected readonly IMongoWriteRepository<TEntity> _repository;
         protected readonly IMapper _mapper;

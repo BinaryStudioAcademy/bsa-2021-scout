@@ -10,7 +10,7 @@ using Application.Common.Models;
 namespace Application.Common.Queries
 {
     public class GetMongoEntityByIdQuery<TDto> : IRequest<TDto>
-        where TDto : Dto
+        where TDto : MongoDto
     {
         public ObjectId Id { get; }
 
@@ -22,7 +22,7 @@ namespace Application.Common.Queries
 
     public class GetMongoEntityByIdQueryHandler<TEntity, TDto> : IRequestHandler<GetMongoEntityByIdQuery<TDto>, TDto>
         where TEntity : MongoEntity
-        where TDto : Dto
+        where TDto : MongoDto
     {
         protected readonly IMongoReadRepository<TEntity> _repository;
         protected readonly IMapper _mapper;
