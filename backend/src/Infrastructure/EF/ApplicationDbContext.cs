@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces;
-using Domain.Common;
 using Domain.Common.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +16,7 @@ namespace Infrastructure.EF
         public ApplicationDbContext(
                 DbContextOptions<ApplicationDbContext> options,
                 IDomainEventService domainEventService
-            ): base(options)
+            ) : base(options)
         {
             _domainEventService = domainEventService;
         }

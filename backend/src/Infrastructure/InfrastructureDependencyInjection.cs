@@ -44,6 +44,8 @@ namespace Infrastructure
                         )
                 );
 
+            services.AddSingleton<MongoDbContext>();
+
             return services;
         }
 
