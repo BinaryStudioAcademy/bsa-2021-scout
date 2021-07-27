@@ -6,11 +6,17 @@ todo: add some project description
 
 - Pay attention, that we have certain [quality criteria](https://github.com/BinaryStudioAcademy/quality-criteria/blob/production/source/dotnet.md), which we should follow during application development.
 
-- Trello board.
+- [Trello board](https://trello.com/invite/b/5po3bvjA/a78b44b8ffafe630205f01629bf005ed/bsa-scout-backlog).
+
+- [Front-end design](https://www.figma.com/file/2z79elGvcUBwPKxjkFDgOO/Project-ProjStagePreparation?node-id=0%3A1)
 
 - Staging.
 
 - Production.
+
+- [Event storming](https://miro.com/app/board/o9J_l6NhsRM=/)
+
+- [Value proposition canvas](https://miro.com/app/board/o9J_l7Mm5LE=/)
 
 ### How can I run all this stuff?
 
@@ -37,12 +43,12 @@ todo: add some project description
 
   1 Change `ASPNETCORE_ENVIRONMENT=Development` line to `ASPNETCORE_ENVIRONMENT=Production` in .env\ats_api.env file
 
-  2 Go to backend\src\WebAPI\Extensions\CorsExtenstion.cs file, find method `AddProductionCorsPolicies` and follow described instructions.
+  2 Go to `backend\src\WebAPI\Extensions\CorsExtenstion.cs` file, find method `AddProductionCorsPolicies` and follow described instructions.
 
 #### 2. Manually
 
-- Go to backend/src/WebAPI/Properties.
+- Go to `backend/src/WebAPI/Properties`.
 
-- Create file launchSettings.json.
+- Create file `launchSettings.json`.
 
-- Copy content of example.launchSettings.json to launchSettings.json
+- Copy content of `example.launchSettings.json` to `launchSettings.json`.
