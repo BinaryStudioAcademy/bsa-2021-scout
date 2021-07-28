@@ -12,9 +12,4 @@ namespace Application.Users.Commands.Create
     {
         public CreateUserCommandHandler(IWriteRepository<User> repository, IMapper mapper) : base(repository, mapper) { }
     }
-
-    public class CreateCvCmdH : CreateEntityCommandHandler<e::ApplicantCv, ApplicantCvDto>
-    {
-        public CreateCvCmdH(IWriteRepository<e::ApplicantCv> repository, IMapper mapper) : base(repository, mapper) { }
-    }
 }
