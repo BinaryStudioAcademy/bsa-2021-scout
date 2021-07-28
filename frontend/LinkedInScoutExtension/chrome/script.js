@@ -20,7 +20,7 @@ function hideNotLinkedInError() {
     notLinkedInPageError.style.display = "none";
 }
 
-function parseLinkedInPage() {
+function processLinkedInPage() {
     // window.document of LinkedIn page
 
     const leftMainInfoPanel = document.querySelector(".pv-text-details__left-panel");
@@ -65,7 +65,7 @@ function parseLinkedInPage() {
         skills.push(child.innerText);
     }
 
-    return {
+    const data = {
         firstName,
         lastName,
         currentJob,
@@ -76,10 +76,6 @@ function parseLinkedInPage() {
         skills,
         linkedInLink: window.location.href,
     };
-}
-
-function processLinkedInPage() {
-    const data = parseLinkedInPage();
 
     if (mode === "development") {
         console.log("Data:");
