@@ -33,3 +33,15 @@ html, body {
 body {
   font-family: 'Nunito';
 }
+
+.toast-success-custom.toast-success{
+  background-color: green;
+}
+
+.toast-error-custom.toast-error{
+  background-color: red;
+}
+
+.toast-info-custom.toast-info{
+  background-color: blue;
+}
