@@ -9,15 +9,15 @@ using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.Read;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Nest;
 
 namespace Infrastructure
 {
     public static class InfrastructureDependencyInjection
     {
-        public static IServiceCollection AddInfrastracture(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddDatabaseContext();
             services.AddDapper();
@@ -26,7 +26,6 @@ namespace Infrastructure
             services.AddReadRepositories();
 
             services.AddScoped<IDomainEventService, DomainEventService>();
-
             return services;
         }
 

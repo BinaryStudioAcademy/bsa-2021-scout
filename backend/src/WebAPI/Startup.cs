@@ -22,7 +22,7 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplication();
-            services.AddInfrastracture();
+            services.AddInfrastructure();
 
             services.AddSpecificCors();
             services.AddControllers();
