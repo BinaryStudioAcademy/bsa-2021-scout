@@ -22,14 +22,14 @@ namespace Infrastructure.Repositories.Abstractions
         {
             ObjectId oid = ObjectId.Parse(id);
             BsonDocument filter = new BsonDocument(new BsonElement("_id", new BsonObjectId(oid)));
-            IAsyncCursor<T> cursor = await _context.Collection<T>().FindAsync<T>(filter);
+            IAsyncCursor<T> cursor = await _context.GetMongoConnection().GetCollection<T>(typeof(T).Name).FindAsync<T>(filter);
 
             return await cursor.FirstAsync();
         }
 
         public async Task<IEnumerable<T>> GetEnumerableAsync()
         {
-            IAsyncCursor<T> cursor = await _context.Collection<T>().FindAsync<T>(new BsonDocument());
+            IAsyncCursor<T> cursor = await _context.GetMongoConnection().GetCollection<T>(typeof(T).Name).FindAsync<T>(new BsonDocument());
 
             return await cursor.ToListAsync();
         }

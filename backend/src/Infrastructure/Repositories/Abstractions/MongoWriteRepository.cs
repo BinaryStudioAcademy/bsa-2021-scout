@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories.Abstractions
         public async Task<Entity> CreateAsync(T entity)
         {
             entity.Id = Guid.NewGuid().ToString();
-            await _context.Collection<T>().InsertOneAsync(entity);
+            await _context.GetMongoConnection().GetCollection<T>(typeof(T).Name).InsertOneAsync(entity);
 
             return entity;
         }
@@ -29,7 +29,7 @@ namespace Infrastructure.Repositories.Abstractions
         {
             ObjectId oid = ObjectId.Parse(entity.Id);
             BsonDocument filter = new BsonDocument(new BsonElement("_id", new BsonObjectId(oid)));
-            await _context.Collection<T>().ReplaceOneAsync(filter, entity);
+            await _context.GetMongoConnection().GetCollection<T>(typeof(T).Name).ReplaceOneAsync(filter, entity);
 
             return entity;
         }
@@ -39,7 +39,7 @@ namespace Infrastructure.Repositories.Abstractions
             ObjectId oid = ObjectId.Parse(id);
             BsonDocument filter = new BsonDocument(new BsonElement("_id", new BsonObjectId(oid)));
 
-            await _context.Collection<T>().DeleteOneAsync(filter);
+            await _context.GetMongoConnection().GetCollection<T>(typeof(T).Name).DeleteOneAsync(filter);
         }
     }
 }

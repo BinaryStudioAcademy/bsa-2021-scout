@@ -47,8 +47,8 @@ namespace Infrastructure
 
         private static IServiceCollection AddDapper(this IServiceCollection services)
         {
-            services.AddTransient<IConnectionFactory, ConnectionFactory>();
-            services.AddSingleton<IMongoConnectionFactory, MongoConnectionFactory>();
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();
+            services.AddScoped<IMongoConnectionFactory, MongoConnectionFactory>();
 
             return services;
         }
