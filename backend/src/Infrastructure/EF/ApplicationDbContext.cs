@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces;
-using Domain.Common;
 using Domain.Common.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +11,20 @@ namespace Infrastructure.EF
 {
     public class ApplicationDbContext : DbContext
     {
+        public virtual DbSet<Action> Actions { get; set; }
+        public virtual DbSet<Applicant> Applicants { get; set; }
+        public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<CompanyToUser> CompanyToUsers { get; set; }
+        public virtual DbSet<Pool> Pools { get; set; }
+        public virtual DbSet<PoolToApplicant> PoolToApplicants { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Stage> Stages { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserToRole> UserToRoles { get; set; }
+        public virtual DbSet<Vacancy> Vacancies { get; set; }
+        public virtual DbSet<VacancyCandidate> VacancyCandidates { get; set; }
+        
         private readonly IDomainEventService _domainEventService;
 
         public ApplicationDbContext(
@@ -21,9 +34,6 @@ namespace Infrastructure.EF
         {
             _domainEventService = domainEventService;
         }
-
-        public DbSet<User> Users { get; set; }
-
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             var result = await base.SaveChangesAsync(cancellationToken);

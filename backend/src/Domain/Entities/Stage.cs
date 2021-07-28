@@ -1,0 +1,19 @@
+using Domain.Enums;
+using Domain.Common;
+using System.Collections.Generic;
+
+namespace Domain.Entities
+{
+    public class Stage : Entity
+    {
+        public string Name { get; set; }
+        public StageType Type { get; set; }
+        public int Index { get; set; }
+        public bool IsReviewable { get; set; }
+        public string VacancyId { get; set; }
+
+        public Vacancy Vacancy { get; private set; }
+        public ICollection<Action> Actions { get; private set; }
+        public ICollection<VacancyCandidate> Candidates { get; private set; }
+    }
+}

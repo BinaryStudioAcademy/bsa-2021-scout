@@ -9,6 +9,12 @@ namespace Infrastructure.EF.Configuration
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Ignore(_ => _.DomainEvents);
+            
+            builder.HasOne(u => u.Vacancy)
+                .WithOne(v => v.ResponsibleHr)
+                .HasForeignKey<Vacancy>(v => v.ResponsibleHrId)
+                .HasConstraintName("vacancy_user_FK")
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
