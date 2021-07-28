@@ -26,6 +26,20 @@ namespace Infrastructure
             services.AddReadRepositories();
 
             services.AddScoped<IDomainEventService, DomainEventService>();
+            services.AddElasticEngine();
+            return services;
+        }
+        private static IServiceCollection AddElasticEngine(this IServiceCollection services)
+        {
+            var connectionString = Environment.GetEnvironmentVariable("ELASTIC_CONNECTION_STRING");
+            if (connectionString is null)
+                throw new Exception("Elastic connection string url is not specified");
+            var settings = new ConnectionSettings(new Uri(connectionString))
+                .DefaultIndex("defaultIndex")
+                .DefaultMappingFor<User>(m => m
+                .IndexName("users")
+            );
+            services.AddSingleton<IElasticClient>(new ElasticClient(settings));
             return services;
         }
 
