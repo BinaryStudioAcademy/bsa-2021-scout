@@ -17,7 +17,7 @@ $ATS-theme: mat.define-light-theme((
 ));
 
 @include mat.all-component-themes($ATS-theme);
-
+@import './common.scss';
 // fonts
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
 
@@ -32,4 +32,16 @@ html, body {
 
 body {
   font-family: 'Nunito';
+}
+
+.toast-success-custom.toast-success{
+  background-color: green;
+}
+
+.toast-error-custom.toast-error{
+  background-color: red;
+}
+
+.toast-info-custom.toast-info{
+  background-color: blue;
 }
