@@ -12,7 +12,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Modules
 
-`modules` folder contains all application NgModules.
+`app` folder contains all application NgModules.
 
 - AppModule is basic for all other modules
 - RoutingModule is an Adapter for routing
