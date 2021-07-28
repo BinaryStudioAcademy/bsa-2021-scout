@@ -12,19 +12,16 @@ namespace Infrastructure.Mongo
         private readonly MongoClient _client;
         private readonly IMongoDatabase _connection;
 
-        public IMongoCollection<ApplicantCv> ApplicantCvs { get; set; }
-
         public MongoConnectionFactory()
         {
             _client = new MongoClient(_connectionUri);
             _connection = _client.GetDatabase(_database);
-            ApplicantCvs = _connection.GetCollection<ApplicantCv>(nameof(ApplicantCv));
         }
 
         public IMongoCollection<T> Collection<T>()
             where T : Entity
         {
-            return _connection.GetCollection<T>(nameof(T));
+            return _connection.GetCollection<T>(typeof(T).Name);
         }
     }
 }

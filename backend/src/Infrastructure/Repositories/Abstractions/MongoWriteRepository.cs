@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using Domain.Common;
@@ -18,6 +19,7 @@ namespace Infrastructure.Repositories.Abstractions
 
         public async Task<Entity> CreateAsync(T entity)
         {
+            entity.Id = Guid.NewGuid().ToString();
             await _context.Collection<T>().InsertOneAsync(entity);
 
             return entity;
