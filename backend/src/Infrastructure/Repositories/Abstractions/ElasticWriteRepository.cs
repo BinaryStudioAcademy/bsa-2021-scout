@@ -13,8 +13,8 @@ namespace Infrastructure.Repositories.Abstractions
     {
         private readonly IElasticClient _client;
         private readonly string _indexName;
-            
-        public ElasticWriteRepository( IElasticClient client, string indexName= nameof(T))
+
+        public ElasticWriteRepository(IElasticClient client, string indexName = nameof(T))
         {
             _client = client;
             _indexName = indexName;
@@ -31,12 +31,15 @@ namespace Infrastructure.Repositories.Abstractions
 
         public async Task<Entity> UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            var indexResponse = await _client.UpdateAsync<T>(
+                DocumentPath<T>.Id(entity.Id),
+                i => i.Index(_indexName).Doc(entity));
+            return entity;
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _client.DeleteAsync<T>(id);
         }
     }
 }
