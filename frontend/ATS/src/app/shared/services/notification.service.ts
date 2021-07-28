@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
 
   private _toastrTimeOutInMiliseconds: number = 5000;
-  private _toastrPosition: string = "toast-bottom-right";
-  private _successToastClass: string = "ngx-toastr toast-success toast-success-custom";
-  private _errorToastClass: string = "ngx-toastr toast-error toast-error-custom";
-  private _infoToastClass: string = "ngx-toastr toast-info toast-info-custom";
+  private _toastrPosition: string = 'toast-bottom-right';
+  private _successToastClass: string = 'ngx-toastr toast-success toast-success-custom';
+  private _errorToastClass: string = 'ngx-toastr toast-error toast-error-custom';
+  private _infoToastClass: string = 'ngx-toastr toast-info toast-info-custom';
 
   constructor(public _toastr: ToastrService) {
     _toastr.toastrConfig.timeOut = this._toastrTimeOutInMiliseconds;
