@@ -19,15 +19,6 @@ namespace Infrastructure.EF.Configuration
                 .HasForeignKey(v => v.ProjectId)
                 .HasConstraintName("vacancy_project_FK")
                 .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Property(v => v.CompanyId)
-            //    .HasColumnType("uniqueidentifier");
-
-            //builder.Property(v => v.ResponsibleHrId)
-            //    .HasColumnType("uniqueidentifier");
-
-            //builder.Property(v => v.ProjectId)
-            //    .HasColumnType("uniqueidentifier");
         }
     }
 }

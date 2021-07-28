@@ -13,9 +13,6 @@ namespace Infrastructure.EF.Configuration
                 .HasForeignKey(p => p.CompanyId)
                 .HasConstraintName("project_company_FK")
                 .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Property(p => p.CompanyId)
-            //    .HasColumnType("uniqueidentifier");
         }
     }
 }

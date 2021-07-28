@@ -19,12 +19,6 @@ namespace Infrastructure.EF.Configuration
                 .HasForeignKey(ur => ur.UserId)
                 .HasConstraintName("user_role__user_FK")
                 .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Property(ur => ur.RoleId)
-            //    .HasColumnType("uniqueidentifier");
-
-            //builder.Property(ur => ur.UserId)
-            //    .HasColumnType("uniqueidentifier");
         }
     }
 }

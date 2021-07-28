@@ -23,9 +23,6 @@ namespace Infrastructure.EF.Configuration
                 .HasConstraintName("candidate_stage_FK")
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.Property(vc => vc.StageId)
-            //    .HasColumnType("uniqueidentifier");
-
         }
     }
 }

@@ -13,9 +13,6 @@ namespace Infrastructure.EF.Configuration
                 .HasForeignKey(s => s.VacancyId)
                 .HasConstraintName("stage_vacancy_FK")
                 .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Property(s => s.VacancyId)
-            //    .HasColumnType("uniqueidentifier");
         }
     }
 }

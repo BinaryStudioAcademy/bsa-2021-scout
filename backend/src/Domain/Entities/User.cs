@@ -13,9 +13,9 @@ namespace Domain.Entities
         }
         public string Password { get; set; }
         public string PasswordSalt { get; set; }
-        public string RefreshToken { get; set; }
 
         public Vacancy Vacancy { get; private set; }
+        public RefreshToken RefreshToken { get; private set; }
         public ICollection<UserToRole> UserRoles { get; private set; }
         public ICollection<CompanyToUser> UserCompanies { get; private set; }
         

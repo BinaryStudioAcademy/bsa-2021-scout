@@ -19,12 +19,6 @@ namespace Infrastructure.EF.Configuration
                 .HasForeignKey(pa => pa.PoolId)
                 .HasConstraintName("pool_applicant__pool_FK")
                 .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Property(pa => pa.PoolId)
-            //    .HasColumnType("uniqueidentifier");
-
-            //builder.Property(pa => pa.ApplicantId)
-            //    .HasColumnType("uniqueidentifier");
         }
     }
 }

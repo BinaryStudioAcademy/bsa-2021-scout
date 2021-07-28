@@ -13,9 +13,6 @@ namespace Infrastructure.EF.Configuration
                 .HasForeignKey(a => a.StageId)
                 .HasConstraintName("action_stage_FK")
                 .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Property(a => a.StageId)
-            //    .HasColumnType("uniqueidentifier");
         }
     }
 }

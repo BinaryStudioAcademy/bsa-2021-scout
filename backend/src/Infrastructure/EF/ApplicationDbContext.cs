@@ -11,19 +11,20 @@ namespace Infrastructure.EF
 {
     public class ApplicationDbContext : DbContext
     {
-        public virtual DbSet<Action> Actions { get; set; }
-        public virtual DbSet<Applicant> Applicants { get; set; }
-        public virtual DbSet<Company> Companies { get; set; }
-        public virtual DbSet<CompanyToUser> CompanyToUsers { get; set; }
-        public virtual DbSet<Pool> Pools { get; set; }
-        public virtual DbSet<PoolToApplicant> PoolToApplicants { get; set; }
-        public virtual DbSet<Project> Projects { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<Stage> Stages { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<UserToRole> UserToRoles { get; set; }
-        public virtual DbSet<Vacancy> Vacancies { get; set; }
-        public virtual DbSet<VacancyCandidate> VacancyCandidates { get; set; }
+        public DbSet<Action> Actions { get; set; }
+        public DbSet<Applicant> Applicants { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<CompanyToUser> CompanyToUsers { get; set; }
+        public DbSet<Pool> Pools { get; set; }
+        public DbSet<PoolToApplicant> PoolToApplicants { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Stage> Stages { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserToRole> UserToRoles { get; set; }
+        public DbSet<Vacancy> Vacancies { get; set; }
+        public DbSet<VacancyCandidate> VacancyCandidates { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         
         private readonly IDomainEventService _domainEventService;
 
