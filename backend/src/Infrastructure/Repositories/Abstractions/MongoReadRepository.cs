@@ -4,16 +4,16 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Domain.Interfaces;
 using Domain.Common;
-using Infrastructure.Mongo;
+using Infrastructure.Dapper.Interfaces;
 
 namespace Infrastructure.Repositories.Abstractions
 {
     public class MongoReadRespoitory<T> : IReadRepository<T>
         where T : Entity
     {
-        private readonly MongoConnectionFactory _context;
+        private readonly IMongoConnectionFactory _context;
 
-        public MongoReadRespoitory(MongoConnectionFactory context)
+        public MongoReadRespoitory(IMongoConnectionFactory context)
         {
             _context = context;
         }

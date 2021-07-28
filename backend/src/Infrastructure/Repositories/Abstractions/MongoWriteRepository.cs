@@ -3,16 +3,16 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using Domain.Common;
 using Domain.Interfaces;
-using Infrastructure.Mongo;
+using Infrastructure.Dapper.Interfaces;
 
 namespace Infrastructure.Repositories.Abstractions
 {
     public class MongoWriteRepository<T> : IWriteRepository<T>
         where T : Entity
     {
-        private readonly MongoConnectionFactory _context;
+        private readonly IMongoConnectionFactory _context;
 
-        public MongoWriteRepository(MongoConnectionFactory context)
+        public MongoWriteRepository(IMongoConnectionFactory context)
         {
             _context = context;
         }

@@ -4,7 +4,6 @@ using Domain.Interfaces;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Dapper.Services;
 using Infrastructure.EF;
-using Infrastructure.Mongo;
 using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.Read;
 using Infrastructure.Services;
@@ -43,14 +42,13 @@ namespace Infrastructure
                 )
             );
 
-            services.AddSingleton<MongoConnectionFactory>();
-
             return services;
         }
 
         private static IServiceCollection AddDapper(this IServiceCollection services)
         {
             services.AddTransient<IConnectionFactory, ConnectionFactory>();
+            services.AddSingleton<IMongoConnectionFactory, MongoConnectionFactory>();
 
             return services;
         }
