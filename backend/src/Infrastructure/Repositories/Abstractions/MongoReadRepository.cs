@@ -4,33 +4,32 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Domain.Interfaces;
 using Domain.Common;
-using Infrastructure.EF;
+using Infrastructure.Mongo;
 
 namespace Infrastructure.Repositories.Abstractions
 {
-    public class MongoReadRespoitory<T> : IMongoReadRepository<T>
-        where T : MongoEntity
+    public class MongoReadRespoitory<T> : IReadRepository<T>
+        where T : Entity
     {
-        private readonly MongoDbContext _context;
-        private readonly string _collectionName;
+        private readonly MongoConnectionFactory _context;
 
-        public MongoReadRespoitory(string collectionName, MongoDbContext context)
+        public MongoReadRespoitory(MongoConnectionFactory context)
         {
-            _collectionName = collectionName;
             _context = context;
         }
 
-        public async Task<T> GetAsync(ObjectId id)
+        public async Task<T> GetAsync(string id)
         {
-            BsonDocument filter = new BsonDocument(new BsonElement("_id", new BsonObjectId(id)));
-            IAsyncCursor<T> cursor = await _context.Collection<T>(_collectionName).FindAsync<T>(filter);
+            ObjectId oid = ObjectId.Parse(id);
+            BsonDocument filter = new BsonDocument(new BsonElement("_id", new BsonObjectId(oid)));
+            IAsyncCursor<T> cursor = await _context.Collection<T>().FindAsync<T>(filter);
 
             return await cursor.FirstAsync();
         }
 
         public async Task<IEnumerable<T>> GetEnumerableAsync()
         {
-            IAsyncCursor<T> cursor = await _context.Collection<T>(_collectionName).FindAsync<T>(new BsonDocument());
+            IAsyncCursor<T> cursor = await _context.Collection<T>().FindAsync<T>(new BsonDocument());
 
             return await cursor.ToListAsync();
         }

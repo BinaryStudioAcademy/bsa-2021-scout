@@ -2,42 +2,42 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using Domain.Common;
 using Domain.Interfaces;
-using Infrastructure.EF;
+using Infrastructure.Mongo;
 
 namespace Infrastructure.Repositories.Abstractions
 {
-    public class MongoWriteRepository<T> : IMongoWriteRepository<T>
-        where T : MongoEntity
+    public class MongoWriteRepository<T> : IWriteRepository<T>
+        where T : Entity
     {
-        private readonly MongoDbContext _context;
-        private readonly string _collectionName;
+        private readonly MongoConnectionFactory _context;
 
-        public MongoWriteRepository(string collectionName, MongoDbContext context)
+        public MongoWriteRepository(MongoConnectionFactory context)
         {
-            _collectionName = collectionName;
             _context = context;
         }
 
-        public async Task<MongoEntity> CreateAsync(T entity)
+        public async Task<Entity> CreateAsync(T entity)
         {
-            await _context.Collection<T>(_collectionName).InsertOneAsync(entity);
+            await _context.Collection<T>().InsertOneAsync(entity);
 
             return entity;
         }
 
-        public async Task<MongoEntity> UpdateAsync(T entity)
+        public async Task<Entity> UpdateAsync(T entity)
         {
-            BsonDocument filter = new BsonDocument(new BsonElement("_id", new BsonObjectId(entity.Id)));
-            await _context.Collection<T>(_collectionName).ReplaceOneAsync(filter, entity);
+            ObjectId oid = ObjectId.Parse(entity.Id);
+            BsonDocument filter = new BsonDocument(new BsonElement("_id", new BsonObjectId(oid)));
+            await _context.Collection<T>().ReplaceOneAsync(filter, entity);
 
             return entity;
         }
 
-        public async Task DeleteAsync(ObjectId id)
+        public async Task DeleteAsync(string id)
         {
-            BsonDocument filter = new BsonDocument(new BsonElement("_id", new BsonObjectId(id)));
+            ObjectId oid = ObjectId.Parse(id);
+            BsonDocument filter = new BsonDocument(new BsonElement("_id", new BsonObjectId(oid)));
 
-            await _context.Collection<T>(_collectionName).DeleteOneAsync(filter);
+            await _context.Collection<T>().DeleteOneAsync(filter);
         }
     }
 }

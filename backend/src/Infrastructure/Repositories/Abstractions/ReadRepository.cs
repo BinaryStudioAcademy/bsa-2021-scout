@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories.Abstractions
             _connectionFactory = connectionFactory;
         }
 
-        public async Task<T> GetAsync(Guid id)
+        public async Task<T> GetAsync(string id)
         {
             using var connection = _connectionFactory.GetSqlConnection();
             string sql = $"SELECT * FROM {_tableName} WHERE Id = @id";

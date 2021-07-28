@@ -9,9 +9,9 @@ namespace Application.Common.Commands
 {
     public class DeleteEntityCommand : IRequest
     {
-        public Guid Id { get; }
+        public string Id { get; }
 
-        public DeleteEntityCommand(Guid id)
+        public DeleteEntityCommand(string id)
         {
             Id = id;
         }

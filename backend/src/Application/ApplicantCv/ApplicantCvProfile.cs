@@ -2,7 +2,7 @@ using System;
 using AutoMapper;
 using MongoDB.Bson;
 using Application.ApplicantCv.Dtos;
-using entities = Domain.Entities.Mongo;
+using entities = Domain.Entities;
 
 namespace Application.ApplicantCv
 {

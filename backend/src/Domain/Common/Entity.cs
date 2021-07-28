@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace Domain.Common
+﻿namespace Domain.Common
 {
     public abstract class Entity
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
     }
 }

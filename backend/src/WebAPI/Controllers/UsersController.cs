@@ -10,7 +10,7 @@ namespace WebAPI.Controllers
     public class UsersController : ApiController
     {
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(Guid id)
+        public async Task<IActionResult> GetUser(string id)
         {
             var query = new GetEntityByIdQuery<UserDto>(id);
             return Ok(await Mediator.Send(query));
