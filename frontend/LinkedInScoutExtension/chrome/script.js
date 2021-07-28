@@ -5,7 +5,6 @@
 const parseButton = document.getElementById("parseButton");
 const notLinkedInPageError = document.getElementById("notLinkedInPageError");
 const linkedInUrlPattern = /^https:\/\/(www\.)?linkedin.com\/in\/[^/]+\/?$/;
-const mode = "development"; // TODO: add http request and change to "production"
 
 function isLinkedInTab(tab) {
     return linkedInUrlPattern.test(tab.url);
@@ -23,6 +22,7 @@ function hideNotLinkedInError() {
 function processLinkedInPage() {
     // window.document of LinkedIn page
 
+    const mode = "development"; // TODO: add http request and change to "production"
     const leftMainInfoPanel = document.querySelector(".pv-text-details__left-panel");
     const rightMainInfoPanel = document.querySelector(".pv-text-details__right-panel");
     const experienceElements = document.querySelectorAll("#experience-section .pv-entity__summary-info--background-section");
