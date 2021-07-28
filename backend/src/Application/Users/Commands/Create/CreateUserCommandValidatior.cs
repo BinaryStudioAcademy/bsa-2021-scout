@@ -1,9 +1,10 @@
-﻿using Application.Users.Dtos;
+﻿using Application.Common.Commands;
+using Application.Users.Dtos;
 using FluentValidation;
 
 namespace Application.Users.Commands.Create
 {
-    public class CreateUserCommandValidatior : AbstractValidator<CreateUserCommand>
+    public class CreateUserCommandValidatior : AbstractValidator<CreateEntityCommand<UserDto>>
     {
         public CreateUserCommandValidatior()
         {
