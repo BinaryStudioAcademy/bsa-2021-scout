@@ -2,6 +2,7 @@
 using Domain.Interfaces;
 using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Abstractions
@@ -31,9 +32,9 @@ namespace Infrastructure.Repositories.Abstractions
             return entity;
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(Guid id)
         {
-            var entity = await _context.Set<T>().FirstOrDefaultAsync(_ => _.Id == id);
+            var entity = await _context.Set<T>().FirstOrDefaultAsync(_ => _.Id == id.ToString());
 
             if (entity != null)
                 _context.Remove(entity);

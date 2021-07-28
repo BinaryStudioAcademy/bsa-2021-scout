@@ -8,6 +8,6 @@ namespace Domain.Interfaces
     {
         Task<Entity> CreateAsync(T entity);
         Task<Entity> UpdateAsync(T entity);
-        Task DeleteAsync(string id);
+        Task DeleteAsync(Guid id);
     }
 }
