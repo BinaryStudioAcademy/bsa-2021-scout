@@ -10,6 +10,15 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
+## Modules
+
+`app` folder contains all application NgModules.
+
+- AppModule is basic for all other modules
+- RoutingModule is an Adapter for routing
+- SharedModule is for all pipes, directives, common components, etc. (isn't imported in AppModule)
+- All other modules are for specific CRUDs (projects, vacations, users, etc.)
+
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
