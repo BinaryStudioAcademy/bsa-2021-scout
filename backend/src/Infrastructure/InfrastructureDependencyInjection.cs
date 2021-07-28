@@ -70,6 +70,7 @@ namespace Infrastructure
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
+            services.AddScoped<IWriteRepository<Applicant>, ElasticWriteRepository<Applicant>>();
 
             return services;
         }
@@ -77,6 +78,7 @@ namespace Infrastructure
         private static IServiceCollection AddReadRepositories(this IServiceCollection services)
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
+            services.AddScoped<IReadRepository<Applicant>, ElasticReadRepository<Applicant>>();
 
             return services;
         }

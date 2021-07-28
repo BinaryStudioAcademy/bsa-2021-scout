@@ -14,7 +14,7 @@ namespace Infrastructure.Repositories.Abstractions
         private readonly IElasticClient _client;
         private readonly string _indexName;
             
-        public ElasticWriteRepository(string indexName, IElasticClient client)
+        public ElasticWriteRepository( IElasticClient client, string indexName= nameof(T))
         {
             _client = client;
             _indexName = indexName;
