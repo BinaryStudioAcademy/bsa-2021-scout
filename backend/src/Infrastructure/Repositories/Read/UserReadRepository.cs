@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Read
 {
-    public class UserReadRepository : IReadRepository<User>
+    public class UserReadRepository : IUserReadRepository
     {
         private readonly IConnectionFactory _connectionFactory;
 
@@ -23,6 +23,14 @@ namespace Infrastructure.Repositories.Read
             string sql = "SELECT * FROM Users WHERE Id = @id";
 
             return await connection.QueryFirstAsync<User>(sql, new { id = id });
+        }
+
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            using var connection = _connectionFactory.GetSqlConnection();
+            string sql = "SELECT * FROM Users WHERE Email = @email";
+
+            return await connection.QueryFirstAsync<User>(sql, new { email = email });
         }
 
         public Task<IEnumerable<User>> GetEnumerableAsync()
