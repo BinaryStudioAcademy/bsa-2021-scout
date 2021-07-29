@@ -1,0 +1,25 @@
+@import "../../../../common.scss";
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 60px 20px 60px;
+  box-sizing: border-box;
+
+  & > * {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .board {
+    background-color: white;
+    padding: 20px 0;
+    border-radius: 10px;
+    max-width: 100%;
+    min-height: calc(100% - 40px);
+    max-height: calc(100% - 40px);
+    display: flex;
+    overflow-x: auto;
+  }
+}

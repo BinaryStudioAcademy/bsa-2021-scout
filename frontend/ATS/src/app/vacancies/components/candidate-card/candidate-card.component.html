@@ -1,0 +1,12 @@
+<div class="card">
+  <div class="user-data">
+    <img class="avatar" [src]="card.avatar" />
+    <div class="text">
+      <div>{{ card.fullName }}</div>
+      <a routerLink="/profile/{{ card.id }}">View profile</a>
+    </div>
+  </div>
+  <div class="meta data">
+    {{ fromNow(card.appliedAt) }}
+  </div>
+</div>

@@ -1,7 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+// This line can't be shorter
+// eslint-disable-next-line max-len
+import { VacanciesStagesBoardComponent } from '../vacancies/components/vacancies-stages-board/vacancies-stages-board.component';
+
+const routes: Routes = [
+  {
+    path: 'vacancies',
+    pathMatch: 'full',
+    component: VacanciesStagesBoardComponent,
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

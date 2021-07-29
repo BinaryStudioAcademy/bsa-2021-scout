@@ -1,0 +1,20 @@
+<div class="container">
+  <div>
+    <h2>Designer</h2>
+  </div>
+  <div>
+    <mat-tab-group mat-align-tabs="start" (selectedIndexChange)="setFilter($event)">
+      <mat-tab label="Qualified"></mat-tab>
+      <mat-tab label="Disqualified"></mat-tab>
+      <mat-tab label="Sourced"></mat-tab>
+    </mat-tab-group>
+  </div>
+  <div class="board">
+    <app-candidate-column title="Applied" [data]="applied" [isDraggable]="true"></app-candidate-column>
+    <app-candidate-column title="Phone screen" [data]="phoneScreen" [isDraggable]="true"></app-candidate-column>
+    <app-candidate-column title="Interview" [data]="interview" [isDraggable]="true"></app-candidate-column>
+    <app-candidate-column title="Test" [data]="test" [isDraggable]="true"></app-candidate-column>
+    <app-candidate-column title="Offer" [data]="offer" [isDraggable]="true"></app-candidate-column>
+    <app-candidate-column title="Hired" [data]="hired" [isDraggable]="true"></app-candidate-column>
+  </div>
+</div>

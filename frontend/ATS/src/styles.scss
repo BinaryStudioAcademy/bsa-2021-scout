@@ -1,6 +1,6 @@
 // material setup
 @use '~@angular/material' as mat;
-@import './themes.scss';
+@import "./themes.scss";
 @include mat.core();
 
 $ATS-primary: mat.define-palette($md-ats-primary, 500);
@@ -8,40 +8,44 @@ $ATS-accent: mat.define-palette($md-ats-secondary, 500);
 
 $ATS-warn: mat.define-palette(mat.$red-palette);
 
-$ATS-theme: mat.define-light-theme((
-  color: (
-    primary: $ATS-primary,
-    accent: $ATS-accent,
-    warn: $ATS-warn,
+$ATS-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $ATS-primary,
+      accent: $ATS-accent,
+      warn: $ATS-warn,
+    ),
   )
-));
+);
 
 @include mat.all-component-themes($ATS-theme);
-@import './common.scss';
+@import "./common.scss";
 // fonts
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap");
 
 * {
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html,
+body {
   height: 100%;
+  background-color: $primary-color-white;
 }
 
 body {
-  font-family: 'Nunito';
+  font-family: "Nunito";
 }
 
-.toast-success-custom.toast-success{
+.toast-success-custom.toast-success {
   background-color: green;
 }
 
-.toast-error-custom.toast-error{
+.toast-error-custom.toast-error {
   background-color: red;
 }
 
-.toast-info-custom.toast-info{
+.toast-info-custom.toast-info {
   background-color: blue;
 }
