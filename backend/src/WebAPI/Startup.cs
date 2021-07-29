@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using WebAPI.Extensions;
+using WebAPI.Middleware;
 
 namespace WebAPI
 {
@@ -50,6 +51,8 @@ namespace WebAPI
             app.UserSpecificCors();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

@@ -12,9 +12,9 @@ namespace Application.Common.Queries
     public class GetEntityByIdQuery<TDto> : IRequest<TDto>
         where TDto : Dto
     {
-        public Guid Id { get; }
+        public string Id { get; }
 
-        public GetEntityByIdQuery(Guid id)
+        public GetEntityByIdQuery(string id)
         {
             Id = id;
         }
