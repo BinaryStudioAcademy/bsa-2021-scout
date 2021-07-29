@@ -35,7 +35,7 @@ namespace Infrastructure
             if (connectionString is null)
                 throw new Exception("Elastic connection string url is not specified");
             var settings = new ConnectionSettings(new Uri(connectionString))
-                .DefaultIndex("defaultIndex")
+                .DefaultIndex("default_index")
                 .DefaultMappingFor<User>(m => m
                 .IndexName("users")
             );

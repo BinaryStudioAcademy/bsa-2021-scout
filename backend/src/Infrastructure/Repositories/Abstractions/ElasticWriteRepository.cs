@@ -14,16 +14,15 @@ namespace Infrastructure.Repositories.Abstractions
         private readonly IElasticClient _client;
         private readonly string _indexName;
 
-        public ElasticWriteRepository(IElasticClient client, string indexName = nameof(T))
+        public ElasticWriteRepository(IElasticClient client)
         {
+            _indexName = typeof(T).ToString();
             _client = client;
-            _indexName = indexName;
         }
 
         public async Task<Entity> CreateAsync(T entity)
         {
-            var indexResponse = await _client
-                .IndexAsync(entity, i => i.Index(_indexName));
+            var indexResponse = await _client.IndexDocumentAsync<T>(entity);
             if (!indexResponse.IsValid)
                 throw new InvalidOperationException("Index response is invalid.");
             return entity;
@@ -33,7 +32,7 @@ namespace Infrastructure.Repositories.Abstractions
         {
             var indexResponse = await _client.UpdateAsync<T>(
                 DocumentPath<T>.Id(entity.Id),
-                i => i.Index(_indexName).Doc(entity));
+                i => i.Doc(entity));
             return entity;
         }
 
