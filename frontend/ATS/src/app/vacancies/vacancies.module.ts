@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RoutingModule } from '../routing/routing.module';
 import { CandidateCardComponent } from './components/candidate-card/candidate-card.component';
 
@@ -24,6 +25,7 @@ import { CandidateColumnComponent } from './components/candidate-column/candidat
     MatIconModule,
     MatButtonModule,
     MatTabsModule,
+    DragDropModule,
   ],
   exports: [
     CandidateCardComponent,

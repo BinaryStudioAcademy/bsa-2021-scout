@@ -1,4 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ShortCandidate } from 'src/app/shared/models/candidates/short';
@@ -75,6 +80,23 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
       default:
         this.filter = Filter.Qualified;
         break;
+    }
+  }
+
+  public onMove(event: CdkDragDrop<ShortCandidate[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
     }
   }
 

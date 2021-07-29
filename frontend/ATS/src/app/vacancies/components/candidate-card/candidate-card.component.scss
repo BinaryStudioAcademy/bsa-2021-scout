@@ -12,6 +12,10 @@
     width: 100%;
   }
 
+  &.draggable {
+    cursor: all-scroll;
+  }
+
   .user-data {
     display: flex;
     align-items: center;

@@ -1,16 +1,14 @@
-<div class="column-wrp">
-  <div class="header">
-    <h3>
-      <span>{{ title }}</span>
-      <span class="only-color meta"> ({{ data.length }})</span>
-    </h3>
-    <button mat-icon-button>
-      <mat-icon>more_vert</mat-icon>
-    </button>
-  </div>
-  <div class="content">
-    <div class="cards">
-      <app-candidate-card [isDraggable]="isDraggable" [card]="card" *ngFor="let card of data"></candidate-card>
-    </div>
+<div class="header">
+  <h3>
+    <span>{{ title }}</span>
+    <span class="only-color meta"> ({{ data.length }})</span>
+  </h3>
+  <button mat-icon-button>
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</div>
+<div class="content">
+  <div class="cards">
+    <app-candidate-card [isDraggable]="isDraggable" [card]="card" *ngFor="let card of data"></app-candidate-card>
   </div>
 </div>

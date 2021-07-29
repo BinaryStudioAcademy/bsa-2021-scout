@@ -10,11 +10,65 @@
     </mat-tab-group>
   </div>
   <div class="board">
-    <app-candidate-column title="Applied" [data]="applied" [isDraggable]="true"></app-candidate-column>
-    <app-candidate-column title="Phone screen" [data]="phoneScreen" [isDraggable]="true"></app-candidate-column>
-    <app-candidate-column title="Interview" [data]="interview" [isDraggable]="true"></app-candidate-column>
-    <app-candidate-column title="Test" [data]="test" [isDraggable]="true"></app-candidate-column>
-    <app-candidate-column title="Offer" [data]="offer" [isDraggable]="true"></app-candidate-column>
-    <app-candidate-column title="Hired" [data]="hired" [isDraggable]="true"></app-candidate-column>
+    <div
+      class="column-wrp"
+      cdkDropList
+      #appliedList="cdkDropList"
+      [cdkDropListData]="applied"
+      [cdkDropListConnectedTo]="[phoneScreenList, interviewList, testList, offerList, hiredList]"
+      (cdkDropListDropped)="onMove($event)"
+    >
+      <app-candidate-column title="Applied" [data]="applied" [isDraggable]="true"></app-candidate-column>
+    </div>
+    <div
+      class="column-wrp"
+      cdkDropList
+      #phoneScreenList="cdkDropList"
+      [cdkDropListData]="phoneScreen"
+      [cdkDropListConnectedTo]="[appliedList, interviewList, testList, offerList, hiredList]"
+      (cdkDropListDropped)="onMove($event)"
+    >
+      <app-candidate-column title="Phone screen" [data]="phoneScreen" [isDraggable]="true"></app-candidate-column>
+    </div>
+    <div
+      class="column-wrp"
+      cdkDropList
+      #interviewList="cdkDropList"
+      [cdkDropListData]="interview"
+      [cdkDropListConnectedTo]="[appliedList, phoneScreenList, testList, offerList, hiredList]"
+      (cdkDropListDropped)="onMove($event)"
+    >
+      <app-candidate-column title="Interview" [data]="interview" [isDraggable]="true"></app-candidate-column>
+    </div>
+    <div
+      class="column-wrp"
+      cdkDropList
+      #testList="cdkDropList"
+      [cdkDropListData]="test"
+      [cdkDropListConnectedTo]="[appliedList, phoneScreenList, interviewList, offerList, hiredList]"
+      (cdkDropListDropped)="onMove($event)"
+    >
+      <app-candidate-column title="Test" [data]="test" [isDraggable]="true"></app-candidate-column>
+    </div>
+    <div
+      class="column-wrp"
+      cdkDropList
+      #offerList="cdkDropList"
+      [cdkDropListData]="offer"
+      [cdkDropListConnectedTo]="[appliedList, phoneScreenList, interviewList, testList, hiredList]"
+      (cdkDropListDropped)="onMove($event)"
+    >
+      <app-candidate-column title="Offer" [data]="offer" [isDraggable]="true"></app-candidate-column>
+    </div>
+    <div
+      class="column-wrp"
+      cdkDropList
+      #hiredList="cdkDropList"
+      [cdkDropListData]="hired"
+      [cdkDropListConnectedTo]="[appliedList, phoneScreenList, interviewList, testList, offerList]"
+      (cdkDropListDropped)="onMove($event)"
+    >
+      <app-candidate-column title="Hired" [data]="hired" [isDraggable]="true"></app-candidate-column>
+    </div>
   </div>
 </div>
