@@ -1,8 +1,6 @@
 $primary-font: Nunito;
 $primary-color: #291965;
 
-
-
 :host{
     height: 100%;
     display: grid;
@@ -81,9 +79,15 @@ $primary-color: #291965;
     margin-bottom: 3px;
 }
 
+
 .mat-button{
-    width: 330px;
-    height: 40px;
+    width: 327px;
+    height: 45px;
+}
+
+.mat-form-field-wrapper.mat-form-field-wrapper{
+    width: 287px;
+    height: 45px;
 }
 
 .login-separator-text{
@@ -111,7 +115,18 @@ $primary-color: #291965;
     right: 5px;
     margin: 0 0 0 -100%;
 }
+
 .login-separator-text:after {
     left: 5px;
     margin: 0 -100% 0 0;
+}
+.login-show-password{
+    color: #C6C8CD;
+    height: 17px;
+}
+
+.mat-form-field-suffix{
+    width: 17px;
+    height: 17px;
+    align-self: center;
 }
