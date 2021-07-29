@@ -8,9 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { RoutingModule } from '../routing/routing.module';
 import { AppComponent } from './components/app/app.component';
 import { ToastrModule } from 'ngx-toastr';
+import { LoginComponent} from '../shared/components/login/login.component';
+import { LogoBlockComponent } from '../shared/components/logo-block/logo-block.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LoginComponent, LogoBlockComponent],
   imports: [
     BrowserModule,
     RoutingModule,
