@@ -18,7 +18,7 @@ namespace Infrastructure.Repositories.Abstractions
             _indexName = indexName;
         }
 
-        public async Task<T> GetAsync(Guid id)
+        public async Task<T> GetAsync(string id)
         {
             var result = await _client.GetAsync<T>(id);
             return result.Source;
