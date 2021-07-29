@@ -9,7 +9,7 @@ services:
     networks:
       - backend
     env_file:
-      - .env/ats_api.env
+      - ../.env/ats_api.env
 
   ats_database:
     image: mcr.microsoft.com/mssql/server:2017-latest
@@ -19,7 +19,7 @@ services:
     networks:
         - backend
     env_file:
-      - .env/ats_database.env
+      - ../.env/ats_database.env
     volumes: 
       - ats_database-data:/var/opt/mssql
 

@@ -71,6 +71,6 @@ jobs:
           export GITHUB_USERNAME=$GITHUB_USERNAME
           export GITHUB_TOKEN=$GITHUB_TOKEN
           echo "$GITHUB_TOKEN" | docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
-          cd app
+          cd app/.docker
           docker-compose -f docker-compose.prod.yml pull
           docker-compose -f docker-compose.prod.yml up -d --build
