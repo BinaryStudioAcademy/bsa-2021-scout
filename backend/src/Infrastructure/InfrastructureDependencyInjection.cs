@@ -20,7 +20,9 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastracture(this IServiceCollection services)
         {
             services.AddDatabaseContext();
+
             services.AddDapper();
+            services.AddMongoDb();
 
             services.AddWriteRepositories();
             services.AddReadRepositories();
