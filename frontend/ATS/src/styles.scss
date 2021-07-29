@@ -33,7 +33,10 @@ html, body {
 body {
   font-family: 'Nunito';
 }
-
+.mat-list-item.active,
+.mat-icon{
+  color: $primary-color
+}
 .toast-success-custom.toast-success{
   background-color: green;
 }

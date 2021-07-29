@@ -8,6 +8,10 @@ import { MatInputModule } from '@angular/material/input';
 import { RoutingModule } from '../routing/routing.module';
 import { AppComponent } from './components/app/app.component';
 import { ToastrModule } from 'ngx-toastr';
+import { MainPageElementsModule } from '../main-page-elements/main-page-elements.module';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import {MatIconModule} from '@angular/material/icon';
+import { HeaderModule } from '../header/header.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +24,10 @@ import { ToastrModule } from 'ngx-toastr';
     MatFormFieldModule,
     MatInputModule,
     ToastrModule.forRoot(),
+    MainPageElementsModule,
+    MatSidenavModule,
+    MatIconModule,
+    HeaderModule
   ],
   providers: [],
   bootstrap: [AppComponent],
