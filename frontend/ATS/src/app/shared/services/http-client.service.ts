@@ -31,11 +31,8 @@ export class HttpClientService {
   }
 
   public getFullRequest<T>(url: string, httpParams?: any): Observable<HttpResponse<T>> {
-    return this.http.get<T>(this.buildUrl(url), {
-      observe: 'response',
-      headers: this.getHeaders(),
-      params: httpParams,
-    });
+    return this.http.get<T>(this.buildUrl(url), 
+      { observe: 'response', headers: this.getHeaders(), params: httpParams });
   }
 
   public postClearRequest<T>(url: string, payload: object): Observable<T> {
@@ -47,10 +44,8 @@ export class HttpClientService {
   }
 
   public postFullRequest<T>(url: string, payload: object): Observable<HttpResponse<T>> {
-    return this.http.post<T>(this.buildUrl(url), payload, {
-      headers: this.getHeaders(),
-      observe: 'response',
-    });
+    return this.http.post<T>(this.buildUrl(url), payload,
+      { headers: this.getHeaders(), observe: 'response' });
   }
 
   public putRequest<T>(url: string, payload: object): Observable<T> {
@@ -58,25 +53,18 @@ export class HttpClientService {
   }
 
   public putFullRequest<T>(url: string, payload: object): Observable<HttpResponse<T>> {
-    return this.http.put<T>(this.buildUrl(url), payload, {
-      headers: this.getHeaders(),
-      observe: 'response',
-    });
+    return this.http.put<T>(this.buildUrl(url), payload, 
+      { headers: this.getHeaders(), observe: 'response' });
   }
 
   public deleteRequest<T>(url: string, httpParams?: any): Observable<T> {
-    return this.http.delete<T>(this.buildUrl(url), {
-      headers: this.getHeaders(),
-      params: httpParams,
-    });
+    return this.http.delete<T>(this.buildUrl(url), 
+      { headers: this.getHeaders(), params: httpParams });
   }
 
   public deleteFullRequest<T>(url: string, httpParams?: any): Observable<HttpResponse<T>> {
-    return this.http.delete<T>(this.buildUrl(url), {
-      headers: this.getHeaders(),
-      observe: 'response',
-      params: httpParams,
-    });
+    return this.http.delete<T>(this.buildUrl(url),
+      { headers: this.getHeaders(), observe: 'response', params: httpParams });
   }
 
   public buildUrl(url: string): string {
@@ -85,5 +73,4 @@ export class HttpClientService {
     }
     return this.baseUrl + url;
   }
-
 }
