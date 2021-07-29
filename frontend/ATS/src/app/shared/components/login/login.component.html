@@ -1,30 +1,84 @@
 <app-logo-block></app-logo-block>
 <div class="login-side-block">
     <div class="login-container">
-        <div class="login-text"><span>Log in</span></div>
-        <div class="login-no-account"><a href="#"><span>No account?</span><span>Sing Up</span></a></div>
-        <div class="login-input-email">
-            <div class="login-input-title"><span>Email</span></div>
-            <mat-form-field floatLabel="never">
-                <input matInput type="text" placeholder="Enter your name">
-            </mat-form-field>
-        </div>
-        <div class="login-input-password">
-            <div class="login-input-password-title-block">
-                <div class="login-input-title"><span>Password</span></div>
-                <div class="login-input-title"><a href="#">Forgot password</a></div>
+        <form [formGroup]="loginForm">
+            <div class="login-text"><span>Log in</span></div>
+            <div class="login-no-account"><a href="#"><span>No account?</span><span>Sing Up</span></a></div>
+            <div class="login-input-email">
+                <div class="login-input-title"><span>Email</span></div>
+                <mat-form-field floatLabel="never"
+                    [ngClass]="checkIsControlValid('userEmail') ? 'logo-invalid-input' : ''">
+                    <input matInput type="email" formControlName="userEmail" placeholder="Enter your name">
+                </mat-form-field>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userEmail') && loginForm.controls['userEmail'].errors?.pattern">
+                    Please enter a valid address.
+                </div>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userEmail') && this.loginForm.controls['userEmail'].errors?.required">
+                    Please enter your email address.
+                </div>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userEmail') && loginForm.controls['userEmail'].errors?.unallowedcharacters">
+                    Your email must contain only latin letters, digits and special characters.
+                </div>
             </div>
-            <mat-form-field floatLabel="never">
-                <input matInput [type]="isPasswordHide ? 'password' : 'text'"   [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'">
-                <mat-icon class="login-show-password" matSuffix (click)="isPasswordHide = !isPasswordHide">{{isPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </mat-form-field>
-        </div>
-        <div class="login-button">
-            <button mat-button color="primary">Log In</button>
-        </div>
-        <div class="login-separator-text"><span>or</span></div>
-        <div class="login-button">
-            <button mat-button color="accent">Log in with Google</button>
-        </div>
+            <div class="login-input-password">
+                <div class="login-input-password-title-block">
+                    <div class="login-input-title"><span>Password</span></div>
+                    <div class="login-input-title"><a href="#">Forgot password</a></div>
+                </div>
+                <mat-form-field floatLabel="never"
+                    [ngClass]="checkIsControlValid('userPassword') ? 'logo-invalid-input' : ''">
+                    <input matInput [type]="isPasswordHide ? 'password' : 'text'" formControlName="userPassword"
+                        [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'">
+                    <mat-icon class="login-show-password" matSuffix (click)="isPasswordHide = !isPasswordHide">
+                        {{isPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </mat-form-field>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userPassword') && loginForm.controls['userPassword'].errors?.required">
+                    Please enter your password.
+                </div>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userPassword') && loginForm.controls['userPassword'].errors?.lowercase">
+                    Password must have one or more lowercase latin letters.
+                </div>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userPassword') && loginForm.controls['userPassword'].errors?.uppercase">
+                    Password must have one or more uppercase latin letters.
+                </div>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userPassword') && loginForm.controls['userPassword'].errors?.specialcharacters">
+                    Password must have one or more special characters.
+                </div>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userPassword') && loginForm.controls['userPassword'].errors?.digit">
+                    Password must have one or more digits.
+                </div>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userPassword') && loginForm.controls['userPassword'].errors?.minpasswordlenght">
+                    Password must be 8 characters or more.
+                </div>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userPassword') && loginForm.controls['userPassword'].errors?.maxpasswordlenght">
+                    Your password cannot exceed a maximum of 32 characters.
+                </div>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userPassword') && loginForm.controls['userPassword'].errors?.whitespace">
+                    Your password cannot contain spaces.
+                </div>
+                <div class="logo-validation-message"
+                    *ngIf="checkIsControlValid('userPassword') && loginForm.controls['userPassword'].errors?.unallowedcharacters">
+                    Your password must contain only latin letters, digits and special characters.
+                </div>
+            </div>
+            <div class="login-button">
+                <button mat-button color="primary">Log In</button>
+            </div>
+            <div class="login-separator-text"><span>or</span></div>
+            <div class="login-button">
+                <button mat-button color="accent">Log in with Google</button>
+            </div>
+        </form>
     </div>
 </div>

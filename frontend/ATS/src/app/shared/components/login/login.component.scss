@@ -79,17 +79,6 @@ $primary-color: #291965;
     margin-bottom: 3px;
 }
 
-
-.mat-button{
-    width: 327px;
-    height: 45px;
-}
-
-.mat-form-field-wrapper.mat-form-field-wrapper{
-    width: 287px;
-    height: 45px;
-}
-
 .login-separator-text{
     position: relative;
     z-index: 1;
@@ -123,10 +112,37 @@ $primary-color: #291965;
 .login-show-password{
     color: #C6C8CD;
     height: 17px;
+    cursor: pointer;
 }
 
-.mat-form-field-suffix{
-    width: 17px;
-    height: 17px;
-    align-self: center;
+.mat-button{
+    width: 327px;
+    height: 45px;
+}
+
+.logo-validation-message{
+    font-family: $primary-font;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 19px;
+    margin-top: 5px;
+    color: red;
+}
+
+::ng-deep {
+    .mat-form-field-suffix{
+        width: 17px;
+        height: 17px;
+        align-self: center;
+    }
+    
+    .mat-form-field-wrapper.mat-form-field-wrapper{
+        width: 287px;
+        height: 45px;
+    }
+}
+
+.logo-invalid-input{
+    border: 1px solid red;
+    border-radius: 50px;
 }
