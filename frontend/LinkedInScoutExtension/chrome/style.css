@@ -1,0 +1,34 @@
+/**
+ * Temporary styles
+ */
+
+body {
+	width: max-content;
+	height: min-content;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.button {
+	background-color: #00aaff;
+	padding: 10px 20px;
+	border: none;
+}
+
+.button:hover {
+	box-shadow: 0 3px 3px 0 #aaaaaa;
+}
+
+.button:active {
+	background-color: #0077ff;
+}
+
+.error {
+	color: red;
+	display: none;
+	margin-top: 10px;
+}

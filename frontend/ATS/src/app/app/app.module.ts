@@ -2,9 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { RoutingModule } from '../routing/routing.module';
 import { AppComponent } from './components/app/app.component';
 import { ToastrModule } from 'ngx-toastr';
@@ -12,6 +9,7 @@ import { MainPageElementsModule } from '../main-page-elements/main-page-elements
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
 import { HeaderModule } from '../header/header.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,16 +18,15 @@ import { HeaderModule } from '../header/header.module';
     RoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
     ToastrModule.forRoot(),
     MainPageElementsModule,
     MatSidenavModule,
     MatIconModule,
-    HeaderModule
+    HeaderModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent],
+  exports: [],
 })
 export class AppModule {}

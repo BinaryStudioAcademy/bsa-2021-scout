@@ -1,33 +1,11 @@
-﻿using Dapper;
-using Domain.Entities;
-using Domain.Interfaces;
+﻿using Domain.Entities;
 using Infrastructure.Dapper.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Infrastructure.Repositories.Abstractions;
 
 namespace Infrastructure.Repositories.Read
 {
-    public class UserReadRepository : IReadRepository<User>
+    public class UserReadRepository : ReadRepository<User>
     {
-        private readonly IConnectionFactory _connectionFactory;
-
-        public UserReadRepository(IConnectionFactory connectionFactory)
-        {
-            _connectionFactory = connectionFactory;
-        }
-
-        public async Task<User> GetAsync(Guid id)
-        {
-            using var connection = _connectionFactory.GetSqlConnection();
-            string sql = "SELECT * FROM Users WHERE Id = @id";
-
-            return await connection.QueryFirstAsync<User>(sql, new { id = id });
-        }
-
-        public Task<IEnumerable<User>> GetEnumerableAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public UserReadRepository(IConnectionFactory connectionFactory) : base("Users", connectionFactory) { }
     }
 }

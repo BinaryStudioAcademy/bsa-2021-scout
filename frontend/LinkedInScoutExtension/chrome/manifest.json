@@ -1,0 +1,10 @@
+{
+    "name": "LinkedIn + Scout",
+    "description": "Scout integration into LinkedIn",
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "permissions": ["activeTab", "scripting"],
+    "action": {
+        "default_popup": "ui.html"
+    }
+}

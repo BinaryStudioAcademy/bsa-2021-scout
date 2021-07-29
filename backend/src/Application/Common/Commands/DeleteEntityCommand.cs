@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using AutoMapper;
 using Domain.Common;
 using Domain.Interfaces;
 
@@ -10,9 +9,9 @@ namespace Application.Common.Commands
 {
     public class DeleteEntityCommand : IRequest
     {
-        public Guid Id { get; }
+        public string Id { get; }
 
-        public DeleteEntityCommand(Guid id)
+        public DeleteEntityCommand(string id)
         {
             Id = id;
         }
