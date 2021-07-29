@@ -1,0 +1,50 @@
+name: lint
+
+on:
+  pull_request:
+    branches:
+      - develop
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  setup-node-modules:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend/ATS
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      id: node-modules-cache
+      with:
+        path: ./frontend/ATS/node_modules
+        key: node_modules-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          node_modules-
+
+    - name: Install dependencies
+      if: steps.node-modules-cache.outputs.cache-hit != 'true'
+      run: npm install
+
+  lint:
+    needs: setup-node-modules
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend/ATS
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Load dependencies
+      uses: actions/cache@v2
+      with:
+        path: ./frontend/ATS/node_modules
+        key: node_modules-${{ hashFiles('package-lock.json') }}
+
+    - name: Lint
+      run: npm run lint
