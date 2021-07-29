@@ -1,6 +1,9 @@
-﻿using MediatR;
+﻿using Application.Auth.Exceptions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
 
 namespace WebAPI.Controllers
 {
@@ -11,5 +14,17 @@ namespace WebAPI.Controllers
         private ISender _mediator;
 
         protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetService<ISender>();
+
+        public Guid GetUserIdFromToken()
+        {
+            var claimsUserId = this.User.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
+
+            if (string.IsNullOrEmpty(claimsUserId))
+            {
+                throw new InvalidTokenException("access");
+            }
+
+            return Guid.Parse(claimsUserId);
+        }
     }
 }

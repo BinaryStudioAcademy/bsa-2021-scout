@@ -24,6 +24,8 @@ namespace WebAPI
             services.AddApplication();
             services.AddInfrastracture();
 
+            services.ConfigureJwt(Configuration);
+
             services.AddSpecificCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
