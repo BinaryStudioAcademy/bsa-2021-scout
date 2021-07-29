@@ -1,15 +1,15 @@
-version: '3.8'
+version: "3.8"
 services:
   ats_database:
     image: mcr.microsoft.com/mssql/server:2017-latest
-    container_name: 'ats_database'
+    container_name: ats_database
     ports:
-        - 1433:1433
+      - 1433:1433
     networks:
-        - backend
+      - backend
     env_file:
       - ../.env/ats_database.env
-    volumes: 
+    volumes:
       - ats_database-data:/var/opt/mssql
   ats_elastic_server:
     image: "docker.elastic.co/elasticsearch/elasticsearch:7.13.4"
@@ -25,9 +25,19 @@ services:
       - 9200:9200
     networks:
       - backend
+  ats_mongodb:
+    image: mongo
+    container_name: ats_mongodb
+    env_file:
+      - ../.env/ats_mongodb.env
+    ports:
+      - 27017:27017
+    volumes:
+      - ats_mongodb-data:/data/db
 volumes:
-  ats_database-data:
+  ats_database-data: {}
+  ats_mongodb-data: {}
 
 networks:
   backend:
-      driver: bridge
+    driver: bridge

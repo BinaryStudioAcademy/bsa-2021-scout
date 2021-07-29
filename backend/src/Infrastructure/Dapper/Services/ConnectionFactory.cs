@@ -7,6 +7,7 @@ namespace Infrastructure.Dapper.Services
     public class ConnectionFactory : IConnectionFactory
     {
         private readonly string _connectionString;
+        private SqlConnection _connection;
 
         public ConnectionFactory()
         {
@@ -18,7 +19,7 @@ namespace Infrastructure.Dapper.Services
 
         public SqlConnection GetSqlConnection()
         {
-            return new SqlConnection(_connectionString);
+            return _connection ??= new SqlConnection(_connectionString);
         }
     }
 }

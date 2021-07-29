@@ -1,9 +1,10 @@
 ﻿using Application.Interfaces;
-using Application.Users.Dtos;
 using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Dapper.Services;
+using Infrastructure.Mongo.Interfaces;
+using Infrastructure.Mongo.Services;
 using Infrastructure.EF;
 using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.Read;
@@ -20,7 +21,9 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddDatabaseContext();
+
             services.AddDapper();
+            services.AddMongoDb();
 
             services.AddWriteRepositories();
             services.AddReadRepositories();
@@ -51,18 +54,25 @@ namespace Infrastructure
                 throw new Exception("Database connection string is not specified");
 
             services.AddDbContext<ApplicationDbContext>(
-                    options => options.UseSqlServer(
-                            connectionString,
-                            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
-                        )
-                );
+                options => options.UseSqlServer(
+                    connectionString,
+                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
+                )
+            );
 
             return services;
         }
 
         private static IServiceCollection AddDapper(this IServiceCollection services)
         {
-            services.AddTransient<IConnectionFactory, ConnectionFactory>();
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();            
+
+            return services;
+        }
+
+        private static IServiceCollection AddMongoDb(this IServiceCollection services)
+        {
+            services.AddScoped<IMongoConnectionFactory, MongoConnectionFactory>();
 
             return services;
         }
@@ -71,6 +81,7 @@ namespace Infrastructure
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
             services.AddScoped<IWriteRepository<Applicant>, ElasticWriteRepository<Applicant>>();
+            services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
 
             return services;
         }
@@ -79,7 +90,7 @@ namespace Infrastructure
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
             services.AddScoped<IReadRepository<Applicant>, ElasticReadRepository<Applicant>>();
-
+            services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
             return services;
         }
     }

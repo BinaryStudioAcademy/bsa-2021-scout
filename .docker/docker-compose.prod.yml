@@ -1,10 +1,8 @@
-version: '3.8'
+version: "3.8"
 services:
   ats_api:
-    build:
-      context: ../backend/src/
-      dockerfile: Dockerfile
     container_name: 'ats_api'
+    image: docker.pkg.github.com/binarystudioacademy/bsa-2021-ats/ats-api:latest
     restart: on-failure
     ports:
       - "5050:80"
@@ -28,31 +26,42 @@ services:
       - backend
   ats_database:
     image: mcr.microsoft.com/mssql/server:2017-latest
-    container_name: 'ats_database'
+    container_name: "ats_database"
     ports:
-        - 1433:1433
+      - 1433:1433
     networks:
-        - backend
+      - backend
     env_file:
       - ../.env/ats_database.env
-    volumes: 
+    volumes:
       - ats_database-data:/var/opt/mssql
 
+  ats_mongodb:
+    image: mongo
+    container_name: ats_mongodb
+    env_file:
+      - ../.env/ats_mongodb.env
+    ports:
+      - 27017:27017
+    volumes:
+      - ats_mongodb-data:/data/db
+
   ats_frontend:
-    build: ../frontend/ATS
     container_name: 'ats_frontend'
+    image: docker.pkg.github.com/binarystudioacademy/bsa-2021-ats/ats-frontend:latest
     restart: on-failure
     ports:
-        - 80:80
+      - 80:80
     networks:
-        - backend
-        - frontend
+      - backend
+      - frontend
 
 volumes:
-  ats_database-data:
+  ats_database-data: {}
+  ats_mongodb-data: {}
 
 networks:
   backend:
-      driver: bridge
+    driver: bridge
   frontend:
-      driver: bridge
+    driver: bridge

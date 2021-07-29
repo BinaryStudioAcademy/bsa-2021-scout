@@ -1,8 +1,7 @@
 ﻿using Domain.Common;
 using Domain.Common.Interfaces;
-using Domain.Enums;
-using System;
 using System.Collections.Generic;
+using Domain.Entities.Abstractions;
 
 namespace Domain.Entities
 {
@@ -12,8 +11,14 @@ namespace Domain.Entities
         {
             DomainEvents = new List<DomainEvent>();
         }
-        public UserStatus Status { get; set; }
+        public string Password { get; set; }
+        public string PasswordSalt { get; set; }
 
+        public ICollection<Vacancy> Vacancies { get; set; }
+        public ICollection<RefreshToken> RefreshTokens { get; set; }
+        public ICollection<UserToRole> UserRoles { get; set; }
+        public ICollection<CompanyToUser> UserCompanies { get; set; }
+        
         public IList<DomainEvent> DomainEvents { get; set; }
     }
 }
