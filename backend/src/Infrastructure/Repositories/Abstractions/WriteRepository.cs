@@ -34,7 +34,7 @@ namespace Infrastructure.Repositories.Abstractions
 
         public async Task DeleteAsync(string id)
         {
-            var entity = await _context.Set<T>().FirstOrDefaultAsync(_ => _.Id == id.ToString());
+            var entity = await _context.Set<T>().FirstOrDefaultAsync(_ => _.Id == id);
 
             if (entity != null)
                 _context.Remove(entity);
