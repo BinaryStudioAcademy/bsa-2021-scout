@@ -1,7 +1,3 @@
-/**
- * Can't add http request, because app's backend has no domain yet.
- */
-
 const parseButton = document.getElementById("parseButton");
 const notLinkedInPageError = document.getElementById("notLinkedInPageError");
 const linkedInUrlPattern = /^https:\/\/(www\.)?linkedin.com\/in\/[^/]+\/?$/;
@@ -19,10 +15,13 @@ function hideNotLinkedInError() {
     notLinkedInPageError.style.display = "none";
 }
 
+// This function can't be splitted, because it is executed in LinkedIn context
 function processLinkedInPage() {
     // window.document of LinkedIn page
 
-    const mode = "development"; // TODO: add http request and change to "production"
+    const mode = "development"; // TODO: add frontend domain and change to "production"
+    const frontendUrl = "http://localhost:4200/vacation/from-linkedin"; // TODO: Change to real url
+
     const leftMainInfoPanel = document.querySelector(".pv-text-details__left-panel");
     const rightMainInfoPanel = document.querySelector(".pv-text-details__right-panel");
     const experienceElements = document.querySelectorAll("#experience-section .pv-entity__summary-info--background-section");
@@ -77,17 +76,19 @@ function processLinkedInPage() {
         linkedInLink: window.location.href,
     };
 
+    const string = JSON.stringify(data);
+    const base64 = btoa(string);
+
     if (mode === "development") {
         console.log("Data:");
         console.log(data);
-    } else if (mode === "production") {
-        // TODO: add http request
     }
+
+    window.open(`${frontendUrl}?data=${base64}`, "_blank");
 }
 
 parseButton.addEventListener("click", async () => {
     const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    console.log(activeTab);
     
     if (!isLinkedInTab(activeTab)) {
         showNotLinkedInError();
