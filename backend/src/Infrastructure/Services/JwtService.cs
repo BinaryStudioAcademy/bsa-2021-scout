@@ -62,7 +62,7 @@ namespace Infrastructure.Services
             return Convert.ToBase64String(_securityService.GetRandomBytes());
         }
 
-        public Guid GetUserIdFromToken(string accessToken, string signingKey)
+        public string GetUserIdFromToken(string accessToken, string signingKey)
         {
             var claimsPrincipal = GetPrincipalFromToken(accessToken, signingKey);
 
@@ -72,7 +72,7 @@ namespace Infrastructure.Services
                 throw new InvalidTokenException("access");
             }
 
-            return Guid.Parse(claimsPrincipal.Claims.First(c => c.Type == "id").Value);
+            return claimsPrincipal.Claims.First(c => c.Type == "id").Value;
         }
 
         public ClaimsPrincipal GetPrincipalFromToken(string token, string signingKey)

@@ -5,7 +5,6 @@ using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -60,12 +59,12 @@ namespace Application.Auth.Commands
                 throw new ExpiredRefreshTokenException();
             }
      
-            return await GenerateAccessToken(user, refreshToken);
+            return await GenerateNewAccessToken(user, refreshToken);
         }
 
-        public async Task<AccessTokenDto> GenerateAccessToken(User user, RefreshToken refreshToken)
+        public async Task<AccessTokenDto> GenerateNewAccessToken(User user, RefreshToken refreshToken)
         {         
-            await _tokenWriteRepository.DeleteAsync(Guid.Parse(refreshToken.Id)); // delete the token we've exchanged
+            await _tokenWriteRepository.DeleteAsync(refreshToken.Id); // delete the token we've exchanged
 
             var newRefreshToken = _jwtService.GenerateRefreshToken();  
             await _tokenWriteRepository.CreateAsync(new RefreshToken   // add the new one

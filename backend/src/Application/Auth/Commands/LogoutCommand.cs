@@ -1,10 +1,7 @@
-﻿using Application.Auth.Dtos;
-using Application.Auth.Exceptions;
-using Application.Common.Exceptions;
+﻿using Application.Auth.Exceptions;
 using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,9 +10,9 @@ namespace Application.Auth.Commands
     public class LogoutCommand : IRequest<Unit>
     {
         public string RefreshToken { get; }
-        public Guid UserId { get;  }
+        public string UserId { get;  }
 
-        public LogoutCommand(string refreshToken, Guid userId)
+        public LogoutCommand(string refreshToken, string userId)
         {
             RefreshToken = refreshToken;
             UserId = userId;
@@ -42,7 +39,7 @@ namespace Application.Auth.Commands
                 throw new InvalidTokenException("refresh");
             }
 
-            await _tokenWriteRepository.DeleteAsync(Guid.Parse(refreshToken.Id));
+            await _tokenWriteRepository.DeleteAsync(refreshToken.Id);
 
             return Unit.Value;
         }
