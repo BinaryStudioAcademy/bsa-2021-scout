@@ -15,6 +15,6 @@ namespace Domain.Entities
         public string UserId { get; set; }
         public bool IsActive => DateTime.UtcNow <= Expires;
 
-        public User User { get; private set; }
+        public User User { get; set; }
     }
 }

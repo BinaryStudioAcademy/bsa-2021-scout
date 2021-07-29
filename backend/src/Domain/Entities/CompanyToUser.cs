@@ -7,7 +7,7 @@ namespace Domain.Entities
         public string CompanyId { get; set; }
         public string UserId { get; set; }
 
-        public Company Company { get; private set; }
-        public User User { get; private set; }
+        public Company Company { get; set; }
+        public User User { get; set; }
     }
 }

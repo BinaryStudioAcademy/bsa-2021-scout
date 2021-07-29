@@ -8,12 +8,12 @@ namespace Domain.Entities
     {
         public string Phone { get; set; }
         public string Skype { get; set; }
-        public string Experience { get; set; }
+        public double Experience { get; set; }
         public DateTime ToBeContacted { get; set; }
         public string CompanyId { get; set; }
 
-        public Company Company { get; private set; }
-        public ICollection<PoolToApplicant> ApplicantPools { get; private set; }
-        public ICollection<VacancyCandidate> Candidates { get; private set; }
+        public Company Company { get; set; }
+        public ICollection<PoolToApplicant> ApplicantPools { get; set; }
+        public ICollection<VacancyCandidate> Candidates { get; set; }
     }
 }

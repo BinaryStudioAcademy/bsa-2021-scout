@@ -14,10 +14,10 @@ namespace Domain.Entities
         public string Password { get; set; }
         public string PasswordSalt { get; set; }
 
-        public Vacancy Vacancy { get; private set; }
-        public RefreshToken RefreshToken { get; private set; }
-        public ICollection<UserToRole> UserRoles { get; private set; }
-        public ICollection<CompanyToUser> UserCompanies { get; private set; }
+        public ICollection<Vacancy> Vacancies { get; set; }
+        public ICollection<RefreshToken> RefreshTokens { get; set; }
+        public ICollection<UserToRole> UserRoles { get; set; }
+        public ICollection<CompanyToUser> UserCompanies { get; set; }
         
         public IList<DomainEvent> DomainEvents { get; set; }
     }

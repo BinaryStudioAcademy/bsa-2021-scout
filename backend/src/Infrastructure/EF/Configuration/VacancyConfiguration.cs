@@ -19,6 +19,12 @@ namespace Infrastructure.EF.Configuration
                 .HasForeignKey(v => v.ProjectId)
                 .HasConstraintName("vacancy_project_FK")
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(v => v.ResponsibleHr)
+                .WithMany(u => u.Vacancies)
+                .HasForeignKey(v => v.ResponsibleHrId)
+                .HasConstraintName("vacancy_user_FK")
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

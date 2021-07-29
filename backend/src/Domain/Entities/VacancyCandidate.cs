@@ -11,10 +11,10 @@ namespace Domain.Entities
         public int SalaryExpectation { get; set; }
         public string ContactedBy { get; set; }
         public string Comments { get; set; }
-        public string Experience { get; set; }
+        public double Experience { get; set; }
         public string StageId { get; set; }
 
-        public Applicant Applicant { get; private set; }
-        public Stage Stage { get; private set; }
+        public Applicant Applicant { get; set; }
+        public Stage Stage { get; set; }
     }
 }

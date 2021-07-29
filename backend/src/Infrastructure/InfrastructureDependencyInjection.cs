@@ -32,7 +32,7 @@ namespace Infrastructure
 
         private static IServiceCollection AddDatabaseContext(this IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
+            var connectionString = "Server=localhost;Database=ATS_dev;Trusted_Connection=True;";
 
             if (connectionString is null)
                 throw new Exception("Database connection string is not specified");

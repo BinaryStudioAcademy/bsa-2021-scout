@@ -9,8 +9,8 @@ namespace Infrastructure.EF.Configuration
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
             builder.HasOne(t => t.User)
-                .WithOne(u => u.RefreshToken)
-                .HasForeignKey<RefreshToken>(t => t.UserId)
+                .WithMany(u => u.RefreshTokens)
+                .HasForeignKey(t => t.UserId)
                 .HasConstraintName("refresh_token__user_FK")
                 .OnDelete(DeleteBehavior.Restrict);
         }

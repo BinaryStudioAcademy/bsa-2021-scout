@@ -12,8 +12,8 @@ namespace Domain.Entities
         public bool IsReviewable { get; set; }
         public string VacancyId { get; set; }
 
-        public Vacancy Vacancy { get; private set; }
-        public ICollection<Action> Actions { get; private set; }
-        public ICollection<VacancyCandidate> Candidates { get; private set; }
+        public Vacancy Vacancy { get; set; }
+        public ICollection<Action> Actions { get; set; }
+        public ICollection<VacancyCandidate> Candidates { get; set; }
     }
 }

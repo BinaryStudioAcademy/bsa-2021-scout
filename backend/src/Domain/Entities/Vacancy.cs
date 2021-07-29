@@ -23,9 +23,9 @@ namespace Domain.Entities
         public string ResponsibleHrId { get; set; }
         public string ProjectId { get; set; }
 
-        public Company Company { get; private set; }
-        public User ResponsibleHr { get; private set; }
-        public Project Project { get; private set; }
-        public ICollection<Stage> Stages { get; private set; }
+        public Company Company { get; set; }
+        public User ResponsibleHr { get; set; }
+        public Project Project { get; set; }
+        public ICollection<Stage> Stages { get; set; }
     }
 }

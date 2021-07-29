@@ -7,7 +7,7 @@ namespace Domain.Entities
         public string PoolId { get; set; }
         public string ApplicantId { get; set; }
 
-        public Pool Pool { get; private set; }
-        public Applicant Applicant { get; private set; }
+        public Pool Pool { get; set; }
+        public Applicant Applicant { get; set; }
     }
 }

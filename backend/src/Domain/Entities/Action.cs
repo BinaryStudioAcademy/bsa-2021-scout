@@ -9,6 +9,6 @@ namespace Domain.Entities
         public ActionType ActionType { get; set; }
         public string StageId { get; set; }
 
-        public Stage Stage { get; private set; }
+        public Stage Stage { get; set; }
     }
 }

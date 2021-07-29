@@ -16,7 +16,7 @@ namespace Domain.Entities
         public string WebsiteLink { get; set; }
         public string CompanyId { get; set; }
 
-        public Company Company { get; private set; }
-        public ICollection<Vacancy> Vacancies { get; private set; }
+        public Company Company { get; set; }
+        public ICollection<Vacancy> Vacancies { get; set; }
     }
 }

@@ -8,6 +8,6 @@ namespace Domain.Entities
         public string Name { get; set; }
         public int Key { get; set; }
 
-        public ICollection<UserToRole> RoleUsers { get; private set; }
+        public ICollection<UserToRole> RoleUsers { get; set; }
     }
 }
