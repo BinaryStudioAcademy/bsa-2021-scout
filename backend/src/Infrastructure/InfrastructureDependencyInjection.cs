@@ -26,6 +26,8 @@ namespace Infrastructure
             services.AddReadRepositories();
 
             services.AddScoped<IDomainEventService, DomainEventService>();
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<ISecurityService, SecurityService>();
 
             return services;
         }
@@ -57,13 +59,16 @@ namespace Infrastructure
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
-
+            services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
+            
             return services;
         }
 
         private static IServiceCollection AddReadRepositories(this IServiceCollection services)
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
+            services.AddScoped<IUserReadRepository, UserReadRepository>();
+            services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
 
             return services;
         }
