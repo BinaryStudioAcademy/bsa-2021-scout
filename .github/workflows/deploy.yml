@@ -24,6 +24,7 @@ jobs:
         registry: docker.pkg.github.com
         dockerfile: ./backend/src/Dockerfile
         image_tag: latest
+        context: ./backend/src
 
   build-ats-frontend:
     runs-on: ubuntu-latest
@@ -40,6 +41,7 @@ jobs:
         registry: docker.pkg.github.com
         dockerfile: ./frontend/ATS/Dockerfile
         image_tag: latest
+        context: ./frontend/ATS
 
   deploy:
     needs: [build-ats-api, build-ats-frontend]
