@@ -1,4 +1,4 @@
-name: lint
+name: deploy
 
 on:
   push:
@@ -22,7 +22,6 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
         image_name: ats-api
         registry: docker.pkg.github.com
-        dockerfile: ./backend/src/Dockerfile
         image_tag: latest
         context: ./backend/src
 
@@ -39,7 +38,6 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
         image_name: ats-frontend
         registry: docker.pkg.github.com
-        dockerfile: ./frontend/ATS/Dockerfile
         image_tag: latest
         context: ./frontend/ATS
 
