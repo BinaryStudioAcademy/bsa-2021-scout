@@ -1,9 +1,6 @@
 name: lint
 
 on:
-  pull_request:
-    branches:
-      - develop
   push:
     branches:
       - feature/setup-ci-cd
