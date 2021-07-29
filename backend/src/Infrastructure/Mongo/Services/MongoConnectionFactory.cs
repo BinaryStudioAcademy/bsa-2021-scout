@@ -1,8 +1,8 @@
 using System;
 using MongoDB.Driver;
-using Infrastructure.Dapper.Interfaces;
+using Infrastructure.Mongo.Interfaces;
 
-namespace Infrastructure.Dapper.Services
+namespace Infrastructure.Mongo.Services
 {
     public class MongoConnectionFactory : IMongoConnectionFactory
     {

@@ -4,7 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Domain.Interfaces;
 using Domain.Common;
-using Infrastructure.Dapper.Interfaces;
+using Infrastructure.Mongo.Interfaces;
 
 namespace Infrastructure.Repositories.Abstractions
 {

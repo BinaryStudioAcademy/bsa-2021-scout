@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 
-namespace Infrastructure.Dapper.Interfaces
+namespace Infrastructure.Mongo.Interfaces
 {
     public interface IMongoConnectionFactory
     {

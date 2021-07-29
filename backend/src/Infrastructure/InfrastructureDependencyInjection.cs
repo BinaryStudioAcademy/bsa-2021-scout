@@ -3,6 +3,8 @@ using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Dapper.Services;
+using Infrastructure.Mongo.Interfaces;
+using Infrastructure.Mongo.Services;
 using Infrastructure.EF;
 using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.Read;

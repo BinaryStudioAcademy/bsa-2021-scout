@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using Domain.Common;
 using Domain.Interfaces;
-using Infrastructure.Dapper.Interfaces;
+using Infrastructure.Mongo.Interfaces;
 
 namespace Infrastructure.Repositories.Abstractions
 {
