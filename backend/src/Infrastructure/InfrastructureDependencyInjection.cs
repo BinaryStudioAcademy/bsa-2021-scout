@@ -49,7 +49,13 @@ namespace Infrastructure
 
         private static IServiceCollection AddDapper(this IServiceCollection services)
         {
-            services.AddScoped<IConnectionFactory, ConnectionFactory>();
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();            
+
+            return services;
+        }
+
+        private static IServiceCollection AddMongoDb(this IServiceCollection services)
+        {
             services.AddScoped<IMongoConnectionFactory, MongoConnectionFactory>();
 
             return services;
