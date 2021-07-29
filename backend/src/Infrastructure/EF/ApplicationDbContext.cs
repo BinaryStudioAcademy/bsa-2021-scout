@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces;
-using Domain.Common;
 using Domain.Common.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +13,12 @@ namespace Infrastructure.EF
     {
         private readonly IDomainEventService _domainEventService;
 
+        public ApplicationDbContext() : base() { }
+
         public ApplicationDbContext(
-                DbContextOptions<ApplicationDbContext> options,
-                IDomainEventService domainEventService
-            ): base(options)
+            DbContextOptions<ApplicationDbContext> options,
+            IDomainEventService domainEventService
+        ) : base(options)
         {
             _domainEventService = domainEventService;
         }

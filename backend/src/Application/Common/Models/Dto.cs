@@ -3,7 +3,7 @@
 namespace Application.Common.Models
 {
     public abstract class Dto
-    { 
-        public Guid Id { get; set; }
+    {
+        public string Id { get; set; }
     }
 }
