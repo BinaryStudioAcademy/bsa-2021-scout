@@ -6,7 +6,7 @@ on:
       - develop
   push:
     branches:
-      - feature-ci-cd
+      - feature/setup-ci-cd
 
 jobs:
   setup-node-modules:
