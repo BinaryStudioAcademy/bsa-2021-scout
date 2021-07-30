@@ -1,4 +1,10 @@
 import { NgModule } from '@angular/core';
+import { UserRoutingModule } from './user-routing.module';
 
-@NgModule({})
+
+@NgModule({
+  imports: [
+    UserRoutingModule,
+  ],
+})
 export class UsersModule {}

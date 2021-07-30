@@ -4,7 +4,7 @@
         <form [formGroup]="loginForm">
             <div class="login-text"><span>Log in</span></div>
             <div class="login-no-account"><a href="#"><span>No account?</span><span>Sing Up</span></a></div>
-            <div class="login-input-email">
+            <div class="login-input-email form-group">
                 <div class="login-input-title"><span>Email</span></div>
                 <mat-form-field floatLabel="never"
                     [ngClass]="checkIsControlValid('userEmail') ? 'logo-invalid-input' : ''">
@@ -23,7 +23,7 @@
                     Your email must contain only latin letters, digits and special characters.
                 </div>
             </div>
-            <div class="login-input-password">
+            <div class="login-input-password form-group">
                 <div class="login-input-password-title-block">
                     <div class="login-input-title"><span>Password</span></div>
                     <div class="login-input-title"><a href="#">Forgot password</a></div>
@@ -72,11 +72,11 @@
                     Your password must contain only latin letters, digits and special characters.
                 </div>
             </div>
-            <div class="login-button">
+            <div class="login-button form-group">
                 <button mat-button color="primary">Log In</button>
             </div>
             <div class="login-separator-text"><span>or</span></div>
-            <div class="login-button">
+            <div class="login-button form-group">
                 <button mat-button color="accent">Log in with Google</button>
             </div>
         </form>

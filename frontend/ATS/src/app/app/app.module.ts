@@ -5,11 +5,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { RoutingModule } from '../routing/routing.module';
 import { AppComponent } from './components/app/app.component';
 import { ToastrModule } from 'ngx-toastr';
-import { LoginComponent} from '../shared/components/login/login.component';
-import { LogoBlockComponent } from '../shared/components/logo-block/logo-block.component';
+import { LoginComponent} from '../users/components/login/login.component';
+import { LogoBlockComponent } from '../users/components/logo-block/logo-block.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, LogoBlockComponent],
@@ -21,7 +23,9 @@ import { LogoBlockComponent } from '../shared/components/logo-block/logo-block.c
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIconModule,
     ToastrModule.forRoot(),
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
