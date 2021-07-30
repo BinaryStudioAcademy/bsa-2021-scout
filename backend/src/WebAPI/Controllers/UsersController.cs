@@ -1,7 +1,7 @@
 ﻿using Application.Common.Commands;
 using Application.Common.Queries;
 using Application.Users.Dtos;
-using Application.ApplicantCv.Dtos;
+using Application.Mail;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -14,6 +14,14 @@ namespace WebAPI.Controllers
         {
             var query = new GetEntityByIdQuery<UserDto>(id);
             return Ok(await Mediator.Send(query));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Send()
+        {
+            var command = new SendMailCommand("2m.roman2@gmail.com", "Hello!", "My first email!");
+            await Mediator.Send(command);
+            return Ok();
         }
 
         [HttpPost]

@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Dapper;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Domain.Common;
 using Infrastructure.Dapper.Interfaces;
 

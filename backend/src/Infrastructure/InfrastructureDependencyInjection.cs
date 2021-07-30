@@ -1,14 +1,16 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Read;
+using Domain.Interfaces.Abstractions;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Dapper.Services;
 using Infrastructure.Mongo.Interfaces;
 using Infrastructure.Mongo.Services;
 using Infrastructure.EF;
-using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.Read;
+using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Services;
+using Infrastructure.Mail;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -27,7 +29,8 @@ namespace Infrastructure
             services.AddWriteRepositories();
             services.AddReadRepositories();
 
-            services.AddScoped<IDomainEventService, DomainEventService>();
+            services.AddEvents();
+            services.AddMail();
 
             return services;
         }
@@ -51,7 +54,7 @@ namespace Infrastructure
 
         private static IServiceCollection AddDapper(this IServiceCollection services)
         {
-            services.AddScoped<IConnectionFactory, ConnectionFactory>();            
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();
 
             return services;
         }
@@ -59,6 +62,21 @@ namespace Infrastructure
         private static IServiceCollection AddMongoDb(this IServiceCollection services)
         {
             services.AddScoped<IMongoConnectionFactory, MongoConnectionFactory>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddEvents(this IServiceCollection services)
+        {
+            services.AddScoped<IDomainEventService, DomainEventService>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddMail(this IServiceCollection services)
+        {
+            services.AddScoped<IMailBuilderService, MailBuilderService>();
+            services.AddScoped<ISmtp, GmailSmtp>();
 
             return services;
         }
@@ -75,6 +93,7 @@ namespace Infrastructure
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
+            services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
 
             return services;
         }

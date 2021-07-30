@@ -1,8 +1,7 @@
 ﻿using Domain.Common;
-using System;
 using System.Threading.Tasks;
 
-namespace Domain.Interfaces
+namespace Domain.Interfaces.Abstractions
 {
     public interface IWriteRepository<T> where T : Entity
     {
