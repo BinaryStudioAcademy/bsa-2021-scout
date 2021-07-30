@@ -7,6 +7,8 @@ import { VacanciesListComponent } from './components/vacancies-list/vacancies-li
     ],
     imports:[
       HeaderModule
+    ],exports:[
+      VacanciesListComponent
     ]
   })
   export class VacanciesModule {}

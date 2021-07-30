@@ -35,7 +35,11 @@ body {
 }
 .mat-list-item.active,
 .mat-icon{
-  color: $primary-color
+  color: $primary-color;
+  font-weight: 500 !important;
+  .mat-line{
+    font-weight: 500 !important;
+  }
 }
 .toast-success-custom.toast-success{
   background-color: green;

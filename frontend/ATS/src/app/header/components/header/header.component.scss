@@ -1,0 +1,46 @@
+$a: 100vw;
+$b: 180px;
+.mat-toolbar{
+    position: fixed;
+    top:0px;
+    left:180px;
+    display:flex;
+    width: calc(#{$a} - #{$b});
+    align-items: center;
+    justify-content: flex-end;
+}
+.mat-toolbar .mat-icon{
+    color:white;
+    font-size:22px;
+}
+:host ::ng-deep .mat-badge-content 
+{
+    right: 2px !important;
+    top: 2px !important;
+    width: 8px;
+    height: 8px;
+}
+.mat-toolbar > *{
+    margin-left: 20px;
+}
+.avatar-info{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    .mat-icon-button{
+        width: auto;
+        height: auto;
+    }
+}
+.mat-badge-content {
+    width: 10px;
+    height: 10px;
+    top: 0px;
+    right: 0px;
+}
+img {
+    object-fit: cover;
+    width:34px;
+    height:34px;
+    border-radius: 50%;
+  }

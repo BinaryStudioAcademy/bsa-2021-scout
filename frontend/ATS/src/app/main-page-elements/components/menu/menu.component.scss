@@ -1,19 +1,36 @@
     .logo{
     background-color: rgb(245, 245, 245);
     color: rgb(179, 179, 179);
-    
     border: none;
     width: 80px;
     height: 40px;
     border-radius: 10px;
   }
   .logo-container{
-    padding:10px 26px;
-    height: 20%;
+    padding:25px;
+    height: 15%;
   }
- .mat-list-item{
-    font-size:14px;
+ :host::ng-deep .mat-list-item-content{
+    font-size:13px;
+    padding-left: 25px !important;
+    padding-right: 25px !important;
+    .mat-list-text{
+      padding-left:4px !important
+    }
+    
   }
-  .mat-nav-list{
-    padding: 10px;
+  :host::ng-deep .mat-list-base .mat-list-item .mat-list-icon, .mat-list-base .mat-list-option .mat-list-icon{
+    font-size: 20px;
+    width: auto;
+    height: auto;
+  }
+  :host ::ng-deep .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar{
+    height: 45px !important
+  }
+  :host ::ng-deep .mat-list-base .mat-list-item .mat-line{
+    white-space: initial;
+    overflow: visible;
+    text-overflow: unset;
+    display: block;
+    box-sizing: border-box;
   }

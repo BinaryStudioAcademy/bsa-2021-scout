@@ -5,11 +5,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RoutingModule } from '../routing/routing.module';
 import { AppComponent } from './components/app/app.component';
 import { ToastrModule } from 'ngx-toastr';
-import { MainPageElementsModule } from '../main-page-elements/main-page-elements.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
-import { HeaderModule } from '../header/header.module';
 import { SharedModule } from '../shared/shared.module';
+import { HeaderModule } from '../header/header.module';
+import { MainPageElementsModule } from '../main-page-elements/main-page-elements.module';
+import { VacanciesModule } from '../vacancies/vacancies.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +24,8 @@ import { SharedModule } from '../shared/shared.module';
     MatSidenavModule,
     MatIconModule,
     HeaderModule,
-    SharedModule
+    SharedModule,
+    VacanciesModule
   ],
   providers: [],
   bootstrap: [AppComponent],
