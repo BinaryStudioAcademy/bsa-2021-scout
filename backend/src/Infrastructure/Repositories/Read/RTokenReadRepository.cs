@@ -17,10 +17,13 @@ namespace Infrastructure.Repositories.Read
 
         public async Task<RefreshToken> GetAsync(string token, string userId)
         {
-            using var connection = _connectionFactory.GetSqlConnection();
-            string sql = "SELECT * FROM RefreshTokens WHERE UserId = @userId AND token = @token";
+            var connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
+            string sql = "SELECT * FROM RefreshTokens WHERE UserId = @userId AND Token = @token";
 
-            return await connection.QueryFirstAsync<RefreshToken>(sql, new { userId = userId, token = token });
+            var tokenEntity = await connection.QueryFirstAsync<RefreshToken>(sql, new { userId = userId, token = token });
+            await connection.CloseAsync();
+            return tokenEntity;
         }
     }
 }

@@ -13,10 +13,13 @@ namespace Infrastructure.Repositories.Read
 
         public async Task<User> GetByEmailAsync(string email)
         {
-            using var connection = _connectionFactory.GetSqlConnection();
+            var connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
             string sql = $"SELECT * FROM {_tableName} WHERE Email = @email";
 
-            return await connection.QueryFirstAsync<User>(sql, new { email = email });
+            var user = await connection.QueryFirstAsync<User>(sql, new { email = email });
+            await connection.CloseAsync();
+            return user;
         }
     }
 }
