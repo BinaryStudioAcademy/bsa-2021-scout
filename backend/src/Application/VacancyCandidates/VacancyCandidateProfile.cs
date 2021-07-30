@@ -8,6 +8,7 @@ namespace Application.VacancyCandidates
     {
         public VacancyCandidateProfile()
         {
+            CreateMap<VacancyCandidate, VacancyCandidateDto>();
             CreateMap<VacancyCandidate, VacancyCandidateWithApplicantDto>();
         }
     }

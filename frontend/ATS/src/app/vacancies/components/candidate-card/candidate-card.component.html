@@ -1,20 +1,16 @@
-<div class="draggable card" cdkDrag *ngIf="isDraggable">
-  <div class="user-data">
-    <div class="text">
-      <div>{{ candidate.applicant.firstName }} {{ candidate.applicant.lastName }}</div>
-      <a routerLink="/vacancy-candidate/{{ candidate.id }}">View profile</a>
-    </div>
+<div class="draggable card" [id]="candidate.id" cdkDrag *ngIf="isDraggable">
+  <div>
+    <div>{{ candidate.applicant.firstName }} {{ candidate.applicant.lastName }}</div>
+    <a routerLink="/vacancy-candidate/{{ candidate.id }}">View profile</a>
   </div>
   <div class="meta data" *ngIf="date">
     {{ fromNow(date!) }}
   </div>
 </div>
-<div class="card" *ngIf="!isDraggable">
-  <div class="user-data">
-    <div class="text">
-      <div>{{ candidate.applicant.firstName }} {{ candidate.applicant.lastName }}</div>
-      <a routerLink="/vacancy-candidate/{{ candidate.id }}">View profile</a>
-    </div>
+<div class="card" [id]="candidate.id" *ngIf="!isDraggable">
+  <div>
+    <div>{{ candidate.applicant.firstName }} {{ candidate.applicant.lastName }}</div>
+    <a routerLink="/vacancy-candidate/{{ candidate.id }}">View profile</a>
   </div>
   <div class="meta data" *ngIf="date">
     {{ fromNow(date!) }}

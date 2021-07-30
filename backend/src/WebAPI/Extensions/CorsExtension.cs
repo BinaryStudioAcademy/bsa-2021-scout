@@ -43,7 +43,10 @@ namespace WebAPI.Extensions
                 options.AddPolicy(name: DevelopmentPolicy,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:4200");
+                                      builder
+                                        .WithOrigins("http://localhost:4200")
+                                        .WithHeaders("Content-Type")
+                                        .WithMethods("GET", "POST", "PUT", "DELETE");
                                   });
             });
 
@@ -59,12 +62,14 @@ namespace WebAPI.Extensions
                                   {
                                       // If you want to test prod environmanet locally 
                                       // relpace next line with this: builder.WithOrigins("http://localhost");
-                                      builder.WithOrigins("");
+                                      builder
+                                        .WithOrigins("")
+                                        .WithHeaders("Content-Type")
+                                        .WithMethods("GET", "POST", "PUT", "DELETE");
                                   });
             });
 
             return services;
         }
-    
     }
 }

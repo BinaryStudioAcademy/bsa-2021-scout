@@ -16,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 // This line can't be shorter
 // eslint-disable-next-line max-len
 import { VacancyCandidateWithApplicant } from 'src/app/shared/models/vacancy-candidates/with-applicant';
+import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candidate.service';
 
 enum Filter {
   Qualified,
@@ -31,6 +32,7 @@ enum Filter {
 export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   public loading: boolean = true;
   public data: StageWithCandidates[] = [];
+  public title: string = '';
   public filter: Filter = Filter.Qualified;
   public listIds: string[] = [];
 
@@ -38,6 +40,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
 
   public constructor(
     private readonly stageService: StageService,
+    private readonly vacationCandidateService: VacancyCandidateService,
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
   ) {}
@@ -87,6 +90,32 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
         event.previousIndex,
         event.currentIndex,
       );
+
+      this.vacationCandidateService
+        .changeCandidateStage(
+          event.item.element.nativeElement.id, // Stores candidate id
+          event.container.id, // Stores new stage id
+        )
+        .subscribe(
+          () =>
+            this.notificationService.showSuccessMessage(
+              'Candidate\'s stage is updated',
+              'Success',
+            ),
+          () => {
+            this.notificationService.showErrorMessage(
+              'Failed to save candidate\'s stage',
+              'Error',
+            );
+
+            transferArrayItem(
+              event.container.data,
+              event.previousContainer.data,
+              event.currentIndex,
+              event.previousIndex,
+            );
+          },
+        );
     }
   }
 
@@ -96,7 +125,8 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (data) => {
-          this.data = data;
+          this.data = data.stages;
+          this.title = data.title;
           this.loading = false;
 
           this.filterData();
@@ -112,11 +142,6 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   }
 
   private prepareLists(): void {
-    this.listIds = this.data.map(({ id }) => `list-${id}`);
-  }
-
-  public l(a: any) {
-    console.log(a);
-    return 'Abc';
+    this.listIds = this.data.map(({ id }) => id);
   }
 }

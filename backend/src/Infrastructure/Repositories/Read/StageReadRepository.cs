@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using Dapper;
-using Domain.Interfaces;
+using Domain.Interfaces.Read;
 using Domain.Entities;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Repositories.Abstractions;
@@ -14,9 +14,17 @@ namespace Infrastructure.Repositories.Read
     {
         public StageReadRepository(IConnectionFactory connectionFactory) : base("Stages", connectionFactory) { }
 
-        public async Task<IEnumerable<Stage>> GetByVacancy(string vacancyId)
+        public async Task<Vacancy> GetByVacancyAsync(string vacancyId)
         {
             SqlConnection connection = _connectionFactory.GetSqlConnection();
+
+            string vacancySql = $@"
+                SELECT Id, Title
+                FROM Vacancies
+                WHERE Id = @id;
+            ";
+
+            Vacancy vacancy = await connection.QueryFirstAsync<Vacancy>(vacancySql, new { id = vacancyId });
 
             string stagesSql = $@"
                 SELECT *
@@ -25,12 +33,12 @@ namespace Infrastructure.Repositories.Read
                 ORDER BY Stage.[Index] ASC
             ";
 
-            IEnumerable<Stage> stages = await connection.QueryAsync<Stage>(stagesSql, new { vacancyId = vacancyId });
+            IEnumerable<Stage> stagesRaw = await connection.QueryAsync<Stage>(stagesSql, new { vacancyId = vacancyId });
 
             string candidatesSql = $@"
                 SELECT *
                 FROM VacancyCandidates
-                WHERE VacancyCandidates.StageId IN ({string.Join(", ", stages.Select(s => $"'{s.Id}'"))})
+                WHERE VacancyCandidates.StageId IN ({string.Join(", ", stagesRaw.Select(s => $"'{s.Id}'"))})
             ";
 
             IEnumerable<VacancyCandidate> candidatesRaw = await connection.QueryAsync<VacancyCandidate>(candidatesSql);
@@ -65,7 +73,7 @@ namespace Infrastructure.Repositories.Read
                 }
             );
 
-            return stages.GroupJoin<Stage, VacancyCandidate, string, Stage>(
+            IEnumerable<Stage> stages = stagesRaw.GroupJoin<Stage, VacancyCandidate, string, Stage>(
                 candidates,
                 s => s.Id,
                 c => c.StageId,
@@ -80,6 +88,13 @@ namespace Infrastructure.Repositories.Read
                     Candidates = stageCandidates.ToList(),
                 }
             );
+
+            return new Vacancy
+            {
+                Id = vacancy.Id,
+                Title = vacancy.Title,
+                Stages = stages.ToList(),
+            };
         }
     }
 }

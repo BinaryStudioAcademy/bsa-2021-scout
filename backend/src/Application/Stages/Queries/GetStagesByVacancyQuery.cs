@@ -1,16 +1,14 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using MediatR;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
-using Application.Stages.Dtos;
+using Domain.Interfaces.Read;
+using Application.Vacancies.Dtos;
 
 namespace Application.Stages.Queries
 {
-    public class GetStagesByVacancyQuery : IRequest<IEnumerable<StageWithCandidatesDto>>
+    public class GetStagesByVacancyQuery : IRequest<ShortVacancyWithStagesDto>
     {
         public string VacancyId { get; }
 
@@ -21,7 +19,7 @@ namespace Application.Stages.Queries
     }
 
     public class GetStagesByVacancyQueryHandler
-        : IRequestHandler<GetStagesByVacancyQuery, IEnumerable<StageWithCandidatesDto>>
+        : IRequestHandler<GetStagesByVacancyQuery, ShortVacancyWithStagesDto>
     {
         private readonly IStageReadRepository _repository;
         private readonly IMapper _mapper;
@@ -32,11 +30,11 @@ namespace Application.Stages.Queries
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<StageWithCandidatesDto>> Handle(GetStagesByVacancyQuery query, CancellationToken _)
+        public async Task<ShortVacancyWithStagesDto> Handle(GetStagesByVacancyQuery query, CancellationToken _)
         {
-            IEnumerable<Stage> stages = await _repository.GetByVacancy(query.VacancyId);
+            Vacancy vacancy = await _repository.GetByVacancyAsync(query.VacancyId);
 
-            return stages.Select(_mapper.Map<Stage, StageWithCandidatesDto>);
+            return _mapper.Map<Vacancy, ShortVacancyWithStagesDto>(vacancy);
         }
     }
 }

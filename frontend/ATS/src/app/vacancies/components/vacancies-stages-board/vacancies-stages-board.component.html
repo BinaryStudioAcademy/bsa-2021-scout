@@ -1,18 +1,27 @@
 <div class="container">
   <div>
-    <h2>Designer</h2>
+    <h2>{{ title }}</h2>
   </div>
-  <div>
+  <div class="toolbar">
     <mat-tab-group mat-align-tabs="start" (selectedIndexChange)="setFilter($event)">
       <mat-tab label="Qualified"></mat-tab>
       <mat-tab label="Disqualified"></mat-tab>
       <mat-tab label="Sourced"></mat-tab>
     </mat-tab-group>
+    <div class="buttons">
+      <button mat-raised-button color="primary">
+        <mat-icon>add</mat-icon>
+        Add candidates
+      </button>
+      <button mat-icon-button color="primary">
+        <mat-icon>settings</mat-icon>
+      </button>
+    </div>
   </div>
   <div class="board">
     <div
       class="column-wrp"
-      id="list-{{ stage.id }}"
+      [id]="stage.id"
       cdkDropList
       [cdkDropListData]="stage.candidates"
       [cdkDropListConnectedTo]="listIds"

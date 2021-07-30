@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import moment from 'moment';
-import { Observable, of } from 'rxjs';
-import { StageWithCandidates } from '../models/stages/with-candidates';
+import { Observable } from 'rxjs';
+import { ShortVacancyWithStages } from '../models/vacancy/short-with-stages';
 import { HttpClientService } from './http-client.service';
 
 @Injectable({
@@ -12,8 +11,8 @@ export class StageService {
 
   public getByVacancyIdWithCandidates(
     vacancyId: string,
-  ): Observable<StageWithCandidates[]> {
-    return this.http.getRequest<StageWithCandidates[]>(
+  ): Observable<ShortVacancyWithStages> {
+    return this.http.getRequest<ShortVacancyWithStages>(
       `/stages/by-vacancy/${vacancyId}`,
     );
   }

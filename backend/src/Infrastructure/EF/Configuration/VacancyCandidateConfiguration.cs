@@ -8,6 +8,8 @@ namespace Infrastructure.EF.Configuration
     {
         public void Configure(EntityTypeBuilder<VacancyCandidate> builder)
         {
+            builder.Ignore(_ => _.DomainEvents);
+
             builder.HasIndex(vc => vc.Id)
                 .IsUnique(false);
 

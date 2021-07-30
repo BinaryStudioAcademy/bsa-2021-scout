@@ -19,7 +19,7 @@ export class HttpClientService {
   }
 
   public setHeader(key: string, value: string): void {
-    this.headers.set(key,value);
+    this.headers.set(key, value);
   }
 
   public deleteHeader(key: string): HttpHeaders {
@@ -27,12 +27,21 @@ export class HttpClientService {
   }
 
   public getRequest<T>(url: string, httpParams?: any): Observable<T> {
-    return this.http.get<T>(this.buildUrl(url), { headers: this.getHeaders(), params: httpParams });
+    return this.http.get<T>(this.buildUrl(url), {
+      headers: this.getHeaders(),
+      params: httpParams,
+    });
   }
 
-  public getFullRequest<T>(url: string, httpParams?: any): Observable<HttpResponse<T>> {
-    return this.http.get<T>(this.buildUrl(url), 
-      { observe: 'response', headers: this.getHeaders(), params: httpParams });
+  public getFullRequest<T>(
+    url: string,
+    httpParams?: any,
+  ): Observable<HttpResponse<T>> {
+    return this.http.get<T>(this.buildUrl(url), {
+      observe: 'response',
+      headers: this.getHeaders(),
+      params: httpParams,
+    });
   }
 
   public postClearRequest<T>(url: string, payload: object): Observable<T> {
@@ -40,31 +49,63 @@ export class HttpClientService {
   }
 
   public postRequest<T>(url: string, payload: object): Observable<T> {
-    return this.http.post<T>(this.buildUrl(url), payload, { headers: this.getHeaders() });
+    return this.http.post<T>(this.buildUrl(url), payload, {
+      headers: this.getHeaders(),
+    });
   }
 
-  public postFullRequest<T>(url: string, payload: object): Observable<HttpResponse<T>> {
-    return this.http.post<T>(this.buildUrl(url), payload,
-      { headers: this.getHeaders(), observe: 'response' });
+  public postFullRequest<T>(
+    url: string,
+    payload: object,
+  ): Observable<HttpResponse<T>> {
+    return this.http.post<T>(this.buildUrl(url), payload, {
+      headers: this.getHeaders(),
+      observe: 'response',
+    });
+  }
+
+  public putClearRequest<T>(url: string): Observable<T> {
+    return this.http.put<T>(
+      this.buildUrl(url),
+      {},
+      {
+        headers: this.getHeaders(),
+      },
+    );
   }
 
   public putRequest<T>(url: string, payload: object): Observable<T> {
-    return this.http.put<T>(this.buildUrl(url), payload, { headers: this.getHeaders() });
+    return this.http.put<T>(this.buildUrl(url), payload, {
+      headers: this.getHeaders(),
+    });
   }
 
-  public putFullRequest<T>(url: string, payload: object): Observable<HttpResponse<T>> {
-    return this.http.put<T>(this.buildUrl(url), payload, 
-      { headers: this.getHeaders(), observe: 'response' });
+  public putFullRequest<T>(
+    url: string,
+    payload: object,
+  ): Observable<HttpResponse<T>> {
+    return this.http.put<T>(this.buildUrl(url), payload, {
+      headers: this.getHeaders(),
+      observe: 'response',
+    });
   }
 
   public deleteRequest<T>(url: string, httpParams?: any): Observable<T> {
-    return this.http.delete<T>(this.buildUrl(url), 
-      { headers: this.getHeaders(), params: httpParams });
+    return this.http.delete<T>(this.buildUrl(url), {
+      headers: this.getHeaders(),
+      params: httpParams,
+    });
   }
 
-  public deleteFullRequest<T>(url: string, httpParams?: any): Observable<HttpResponse<T>> {
-    return this.http.delete<T>(this.buildUrl(url),
-      { headers: this.getHeaders(), observe: 'response', params: httpParams });
+  public deleteFullRequest<T>(
+    url: string,
+    httpParams?: any,
+  ): Observable<HttpResponse<T>> {
+    return this.http.delete<T>(this.buildUrl(url), {
+      headers: this.getHeaders(),
+      observe: 'response',
+      params: httpParams,
+    });
   }
 
   public buildUrl(url: string): string {

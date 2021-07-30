@@ -1,14 +1,14 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Read;
 using Domain.Interfaces.Abstractions;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Dapper.Services;
 using Infrastructure.Mongo.Interfaces;
 using Infrastructure.Mongo.Services;
 using Infrastructure.EF;
-using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.Read;
+using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,6 +68,7 @@ namespace Infrastructure
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
+            services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
 
             return services;
         }
@@ -77,6 +78,8 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
             services.AddScoped<IStageReadRepository, StageReadRepository>();
+            services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
+            services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
 
             return services;
         }

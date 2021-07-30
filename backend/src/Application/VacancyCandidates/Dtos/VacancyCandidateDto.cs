@@ -1,17 +1,10 @@
 using System;
-using System.Collections.Generic;
-using Domain.Common;
-using Domain.Common.Interfaces;
 
-namespace Domain.Entities
+namespace Application.VacancyCandidates.Dtos
 {
-    public class VacancyCandidate : Entity, IHasDomainEvent
+    public class VacancyCandidateDto
     {
-        public VacancyCandidate()
-        {
-            DomainEvents = new List<DomainEvent>();
-        }
-
+        public string Id { get; set; }
         public DateTime FirstContactDate { get; set; }
         public DateTime SecondContactDate { get; set; }
         public DateTime ThirdContactDate { get; set; }
@@ -21,9 +14,5 @@ namespace Domain.Entities
         public double Experience { get; set; }
         public string StageId { get; set; }
         public string ApplicantId { get; set; }
-
-        public Applicant Applicant { get; set; }
-        public Stage Stage { get; set; }
-        public IList<DomainEvent> DomainEvents { get; set; }
     }
 }
