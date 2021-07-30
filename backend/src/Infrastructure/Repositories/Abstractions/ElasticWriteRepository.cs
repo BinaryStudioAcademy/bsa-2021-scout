@@ -6,10 +6,11 @@ using System;
 using System.Threading.Tasks;
 using Nest;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Infrastructure.Repositories.Abstractions
 {
-    public class ElasticWriteRepository<T> : IWriteRepository<T> where T : Entity
+    public class ElasticWriteRepository<T> : IElasticWriteRepository<T> where T : Entity
     {
         private readonly IElasticClient _client;
         private readonly string _indexName;
@@ -18,6 +19,10 @@ namespace Infrastructure.Repositories.Abstractions
         {
             _indexName = typeof(T).ToString();
             _client = client;
+        }
+        public async Task InsertBulk(IEnumerable<T> bulk)
+        {
+            await _client.IndexManyAsync<T>(bulk);
         }
 
         public async Task<Entity> CreateAsync(T entity)
