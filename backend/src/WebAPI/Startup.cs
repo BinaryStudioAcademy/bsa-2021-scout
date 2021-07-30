@@ -50,6 +50,7 @@ namespace WebAPI
 
             app.UserSpecificCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseMiddleware<ErrorHandlerMiddleware>();

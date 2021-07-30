@@ -3,7 +3,6 @@ using Application.Users.Commands;
 using Application.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -19,7 +18,7 @@ namespace WebAPI.Controllers
             var command = new RegisterUserCommand(user);
             var createdUserWithToken = await Mediator.Send(command);
 
-            return CreatedAtAction("GetById", "users", new { id = createdUserWithToken.User.Id }, createdUserWithToken);
+            return CreatedAtAction("GetUser", "users", new { id = createdUserWithToken.User.Id }, createdUserWithToken);
         }
     }
 }

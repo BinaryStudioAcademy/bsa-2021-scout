@@ -30,19 +30,13 @@ namespace Infrastructure.Services
         }
 
         public async Task<AccessToken> GenerateJsonWebToken(User user)
-        {
-            var identity = new ClaimsIdentity(new GenericIdentity(user.LastName, "Token"), new[]
-            {
-                new Claim("id", user.Id)
-            });
-
+        {            
             var claims = new[]
             {
-                 new Claim(JwtRegisteredClaimNames.Sub, user.LastName),
                  new Claim(JwtRegisteredClaimNames.Email, user.Email),
                  new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
                  new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                 identity.FindFirst("id")
+                 new Claim("id", user.Id)
              };
 
             // Create the JWT security token and encode it.

@@ -14,16 +14,16 @@ namespace WebAPI.Controllers
 
         protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetService<ISender>();
 
-        public string GetUserIdFromToken()
-        {
-            var claimsUserId = this.User.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
+        //public string GetUserIdFromToken()
+        //{
+        //    var claimsUserId = this.User.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
 
-            if (string.IsNullOrEmpty(claimsUserId))
-            {
-                throw new InvalidTokenException("access");
-            }
+        //    if (string.IsNullOrEmpty(claimsUserId))
+        //    {
+        //        throw new InvalidTokenException("access");
+        //    }
 
-            return claimsUserId;
-        }
+        //    return claimsUserId;
+        //}
     }
 }

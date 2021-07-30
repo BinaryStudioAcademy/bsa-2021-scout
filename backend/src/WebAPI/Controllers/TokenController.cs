@@ -3,6 +3,7 @@ using Application.Auth.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using WebAPI.Extensions;
 
 namespace WebAPI.Controllers
 {
@@ -19,10 +20,10 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(command));
         }
 
-        [HttpPost("logout")]
+        [HttpPost("revoke")]
         public async Task<IActionResult> RevokeRefreshToken([FromBody] RevokeRefreshTokenDto revokeRefreshToken)
         {
-            var userId = GetUserIdFromToken();
+            var userId = this.GetUserIdFromToken();
             var command = new LogoutCommand(revokeRefreshToken.RefreshToken, userId);
             await Mediator.Send(command);
 
