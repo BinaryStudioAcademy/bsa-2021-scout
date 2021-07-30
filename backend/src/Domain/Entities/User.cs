@@ -1,23 +1,24 @@
 ﻿using Domain.Common;
 using Domain.Common.Interfaces;
-using Domain.Enums;
-using System;
 using System.Collections.Generic;
+using Domain.Entities.Abstractions;
 
 namespace Domain.Entities
 {
-    public class User: Entity, IHasDomainEvent
+    public class User: Human, IHasDomainEvent
     {
         public User()
         {
             DomainEvents = new List<DomainEvent>();
         }
+        public string Password { get; set; }
+        public string PasswordSalt { get; set; }
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime Birth { get; set; }
-        public UserStatus Status { get; set; }
-
+        public ICollection<Vacancy> Vacancies { get; set; }
+        public ICollection<RefreshToken> RefreshTokens { get; set; }
+        public ICollection<UserToRole> UserRoles { get; set; }
+        public ICollection<CompanyToUser> UserCompanies { get; set; }
+        
         public IList<DomainEvent> DomainEvents { get; set; }
     }
 }

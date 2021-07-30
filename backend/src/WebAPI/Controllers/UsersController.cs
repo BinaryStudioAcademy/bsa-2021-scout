@@ -1,8 +1,8 @@
 ﻿using Application.Common.Commands;
 using Application.Common.Queries;
 using Application.Users.Dtos;
+using Application.ApplicantCv.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -10,7 +10,7 @@ namespace WebAPI.Controllers
     public class UsersController : ApiController
     {
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(Guid id)
+        public async Task<IActionResult> GetUser(string id)
         {
             var query = new GetEntityByIdQuery<UserDto>(id);
             return Ok(await Mediator.Send(query));

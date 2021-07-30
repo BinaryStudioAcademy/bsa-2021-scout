@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces;
-using Domain.Common;
 using Domain.Common.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -12,18 +11,32 @@ namespace Infrastructure.EF
 {
     public class ApplicationDbContext : DbContext
     {
+        public DbSet<Action> Actions { get; set; }
+        public DbSet<Applicant> Applicants { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<CompanyToUser> CompanyToUsers { get; set; }
+        public DbSet<Pool> Pools { get; set; }
+        public DbSet<PoolToApplicant> PoolToApplicants { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Stage> Stages { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserToRole> UserToRoles { get; set; }
+        public DbSet<Vacancy> Vacancies { get; set; }
+        public DbSet<VacancyCandidate> VacancyCandidates { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        
         private readonly IDomainEventService _domainEventService;
 
+        public ApplicationDbContext() : base() { }
+
         public ApplicationDbContext(
-                DbContextOptions<ApplicationDbContext> options,
-                IDomainEventService domainEventService
-            ): base(options)
+            DbContextOptions<ApplicationDbContext> options,
+            IDomainEventService domainEventService
+        ) : base(options)
         {
             _domainEventService = domainEventService;
         }
-
-        public DbSet<User> Users { get; set; }
-
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             var result = await base.SaveChangesAsync(cancellationToken);

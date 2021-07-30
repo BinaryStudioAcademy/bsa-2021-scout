@@ -32,7 +32,7 @@ namespace Infrastructure.Repositories.Abstractions
             return entity;
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(string id)
         {
             var entity = await _context.Set<T>().FirstOrDefaultAsync(_ => _.Id == id);
 

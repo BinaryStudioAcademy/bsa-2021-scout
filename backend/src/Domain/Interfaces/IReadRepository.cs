@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    public interface IReadRepository<T> where T: Entity
+    public interface IReadRepository<T> where T : Entity
     {
-        Task<T> GetAsync(Guid id);
+        Task<T> GetAsync(string id);
         Task<IEnumerable<T>> GetEnumerableAsync();
     }
 }

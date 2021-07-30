@@ -10,7 +10,6 @@ namespace Application.Users
         {
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>()
-                .ForMember(dest => dest.Status, opt => opt.Ignore())
                 .ForMember(dest => dest.DomainEvents, opt => opt.Ignore());
         }
     }
