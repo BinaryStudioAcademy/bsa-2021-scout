@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using Domain.Common;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Infrastructure.Mongo.Interfaces;
 
 namespace Infrastructure.Repositories.Abstractions

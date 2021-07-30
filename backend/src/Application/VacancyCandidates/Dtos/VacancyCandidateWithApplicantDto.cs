@@ -1,9 +1,9 @@
 using System;
-using Domain.Common;
+using Application.Applicants.Dtos;
 
-namespace Domain.Entities
+namespace Application.VacancyCandidates.Dtos
 {
-    public class VacancyCandidate : Entity
+    public class VacancyCandidateWithApplicantDto
     {
         public DateTime FirstContactDate { get; set; }
         public DateTime SecondContactDate { get; set; }
@@ -13,9 +13,6 @@ namespace Domain.Entities
         public string Comments { get; set; }
         public double Experience { get; set; }
         public string StageId { get; set; }
-        public string ApplicantId { get; set; }
-
-        public Applicant Applicant { get; set; }
-        public Stage Stage { get; set; }
+        public ApplicantDto Applicant { get; set; }
     }
 }

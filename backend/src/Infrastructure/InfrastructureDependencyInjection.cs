@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Dapper.Services;
 using Infrastructure.Mongo.Interfaces;
@@ -51,7 +52,7 @@ namespace Infrastructure
 
         private static IServiceCollection AddDapper(this IServiceCollection services)
         {
-            services.AddScoped<IConnectionFactory, ConnectionFactory>();            
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();
 
             return services;
         }
@@ -75,6 +76,7 @@ namespace Infrastructure
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
+            services.AddScoped<IStageReadRepository, StageReadRepository>();
 
             return services;
         }

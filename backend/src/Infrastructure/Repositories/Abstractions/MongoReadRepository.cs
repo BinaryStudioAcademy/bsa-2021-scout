@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Domain.Common;
 using Infrastructure.Mongo.Interfaces;
 

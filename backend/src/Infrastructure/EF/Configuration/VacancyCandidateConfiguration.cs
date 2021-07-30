@@ -13,7 +13,7 @@ namespace Infrastructure.EF.Configuration
 
             builder.HasOne(vc => vc.Applicant)
                 .WithMany(a => a.Candidates)
-                .HasForeignKey(vc => vc.Id)
+                .HasForeignKey(vc => vc.ApplicantId)
                 .HasConstraintName("candidate_applicant_FK")
                 .OnDelete(DeleteBehavior.Restrict);
 
