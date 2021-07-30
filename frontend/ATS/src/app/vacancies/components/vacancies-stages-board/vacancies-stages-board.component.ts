@@ -1,15 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+
 import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ShortCandidate } from 'src/app/shared/models/candidates/short';
-import { CandidateStatus } from 'src/app/shared/models/candidates/status';
-import { CandidateService } from 'src/app/shared/services/candidate.service';
+import { StageService } from 'src/app/shared/services/stage.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { StageWithCandidates } from 'src/app/shared/models/stages/with-candidates';
+import { ActivatedRoute } from '@angular/router';
+
+// This line can't be shorter
+// eslint-disable-next-line max-len
+import { VacancyCandidateWithApplicant } from 'src/app/shared/models/vacancy-candidates/with-applicant';
 
 enum Filter {
   Qualified,
@@ -24,34 +30,23 @@ enum Filter {
 })
 export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   public loading: boolean = true;
-  public data: ShortCandidate[] = [];
+  public data: StageWithCandidates[] = [];
   public filter: Filter = Filter.Qualified;
-
-  public cachedApplied: ShortCandidate[] = [];
-  public cachedPhoneScreen: ShortCandidate[] = [];
-  public cachedInterview: ShortCandidate[] = [];
-  public cachedTest: ShortCandidate[] = [];
-  public cachedOffer: ShortCandidate[] = [];
-  public cachedHired: ShortCandidate[] = [];
-
-  public applied: ShortCandidate[] = [];
-  public phoneScreen: ShortCandidate[] = [];
-  public interview: ShortCandidate[] = [];
-  public test: ShortCandidate[] = [];
-  public offer: ShortCandidate[] = [];
-  public hired: ShortCandidate[] = [];
+  public listIds: string[] = [];
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   public constructor(
-    private readonly candidateService: CandidateService,
+    private readonly stageService: StageService,
     private readonly notificationService: NotificationService,
+    private readonly route: ActivatedRoute,
   ) {}
 
   public ngOnInit(): void {
-    this.loadData();
-    this.classifyData();
-    this.filterData();
+    this.route.params.subscribe(({ id }) => {
+      this.loading = true;
+      this.loadData(id);
+    });
   }
 
   public ngOnDestroy(): void {
@@ -60,12 +55,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   }
 
   public filterData(): void {
-    this.applied = this.filterDataArray(this.cachedApplied);
-    this.phoneScreen = this.filterDataArray(this.cachedPhoneScreen);
-    this.interview = this.filterDataArray(this.cachedInterview);
-    this.test = this.filterDataArray(this.cachedTest);
-    this.offer = this.filterDataArray(this.cachedOffer);
-    this.hired = this.filterDataArray(this.cachedHired);
+    //
   }
 
   public setFilter(index: number): void {
@@ -83,7 +73,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onMove(event: CdkDragDrop<ShortCandidate[]>) {
+  public onMove(event: CdkDragDrop<VacancyCandidateWithApplicant[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -100,14 +90,17 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     }
   }
 
-  private loadData(): void {
-    this.candidateService
-      .getShortCandidates()
+  private loadData(vacancyId: string): void {
+    this.stageService
+      .getByVacancyIdWithCandidates(vacancyId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (data) => {
           this.data = data;
           this.loading = false;
+
+          this.filterData();
+          this.prepareLists();
         },
         () => {
           this.notificationService.showErrorMessage(
@@ -118,32 +111,12 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
       );
   }
 
-  private classifyData(): void {
-    this.data.forEach((candidate) => {
-      switch (candidate.status) {
-        case CandidateStatus.Applied:
-          this.cachedApplied.push(candidate);
-          break;
-        case CandidateStatus.PhoneScreen:
-          this.cachedPhoneScreen.push(candidate);
-          break;
-        case CandidateStatus.Interview:
-          this.cachedInterview.push(candidate);
-          break;
-        case CandidateStatus.Test:
-          this.cachedTest.push(candidate);
-          break;
-        case CandidateStatus.Offer:
-          this.cachedOffer.push(candidate);
-          break;
-        case CandidateStatus.Hired:
-          this.cachedHired.push(candidate);
-          break;
-      }
-    });
+  private prepareLists(): void {
+    this.listIds = this.data.map(({ id }) => `list-${id}`);
   }
 
-  private filterDataArray(array: ShortCandidate[]): ShortCandidate[] {
-    return array; //
+  public l(a: any) {
+    console.log(a);
+    return 'Abc';
   }
 }

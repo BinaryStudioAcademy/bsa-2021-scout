@@ -9,6 +9,10 @@
 </div>
 <div class="content">
   <div class="cards">
-    <app-candidate-card [isDraggable]="isDraggable" [card]="card" *ngFor="let card of data"></app-candidate-card>
+    <app-candidate-card
+      [candidate]="card"
+      [isDraggable]="isDraggable"
+      *ngFor="let card of data"
+    ></app-candidate-card>
   </div>
 </div>

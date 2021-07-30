@@ -51,6 +51,7 @@ namespace Infrastructure.Repositories.Read
                 a => a.Id,
                 (candidate, applicant) => new VacancyCandidate
                 {
+                    Id = candidate.Id,
                     FirstContactDate = candidate.FirstContactDate,
                     SecondContactDate = candidate.SecondContactDate,
                     ThirdContactDate = candidate.ThirdContactDate,
@@ -70,6 +71,7 @@ namespace Infrastructure.Repositories.Read
                 c => c.StageId,
                 (stage, stageCandidates) => new Stage
                 {
+                    Id = stage.Id,
                     Name = stage.Name,
                     Type = stage.Type,
                     Index = stage.Index,

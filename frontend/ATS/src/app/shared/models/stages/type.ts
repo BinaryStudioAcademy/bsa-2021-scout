@@ -1,4 +1,4 @@
-export enum CandidateStatus {
+export enum StageType {
   Applied,
   PhoneScreen,
   Interview,

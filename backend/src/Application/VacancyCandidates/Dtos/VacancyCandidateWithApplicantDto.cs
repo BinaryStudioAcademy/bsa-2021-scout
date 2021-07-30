@@ -5,6 +5,7 @@ namespace Application.VacancyCandidates.Dtos
 {
     public class VacancyCandidateWithApplicantDto
     {
+        public string Id { get; set; }
         public DateTime FirstContactDate { get; set; }
         public DateTime SecondContactDate { get; set; }
         public DateTime ThirdContactDate { get; set; }
