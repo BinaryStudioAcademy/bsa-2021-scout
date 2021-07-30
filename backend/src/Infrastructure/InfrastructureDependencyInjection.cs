@@ -24,12 +24,12 @@ namespace Infrastructure
 
             services.AddDapper();
             services.AddMongoDb();
+            services.AddElasticEngine();
 
             services.AddWriteRepositories();
             services.AddReadRepositories();
 
             services.AddScoped<IDomainEventService, DomainEventService>();
-            services.AddElasticEngine();
             return services;
         }
         private static IServiceCollection AddElasticEngine(this IServiceCollection services)
@@ -39,8 +39,8 @@ namespace Infrastructure
                 throw new Exception("Elastic connection string url is not specified");
             var settings = new ConnectionSettings(new Uri(connectionString))
                 .DefaultIndex("default_index")
-                .DefaultMappingFor<User>(m => m
-                .IndexName("users")
+                .DefaultMappingFor<ApplicantToTags>(m => m
+                .IndexName("applicant_to_tags")
             );
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
             return services;
@@ -65,7 +65,7 @@ namespace Infrastructure
 
         private static IServiceCollection AddDapper(this IServiceCollection services)
         {
-            services.AddScoped<IConnectionFactory, ConnectionFactory>();            
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();
 
             return services;
         }
@@ -80,7 +80,6 @@ namespace Infrastructure
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
-            services.AddScoped<IWriteRepository<Applicant>, ElasticWriteRepository<Applicant>>();
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
 
             return services;
@@ -89,7 +88,6 @@ namespace Infrastructure
         private static IServiceCollection AddReadRepositories(this IServiceCollection services)
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
-            services.AddScoped<IReadRepository<Applicant>, ElasticReadRepository<Applicant>>();
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
             return services;
         }
