@@ -14,7 +14,7 @@ import { UsersModule } from '../users/users.module';
     BrowserModule,
     RoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule,  
     ToastrModule.forRoot(),
     SharedModule,
     UsersModule,
