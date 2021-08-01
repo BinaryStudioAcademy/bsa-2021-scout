@@ -1,0 +1,28 @@
+:host {
+    display: flex;
+    background:url('/assets/images/loginAndRegistrationBackgroundImage.png')  100% 100% no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+.logo {
+    display: flex;
+    width: 422px;
+    height: 212px;
+    margin: auto;
+    background-color:rgba($color: #ABABAB, $alpha: 0.2);
+    border-radius: 60px;
+}
+
+.logo-text{
+    margin: auto;
+}
+
+.logo-text span{
+    font-family: Nunito;
+    font-size: 71px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 97px;
+    letter-spacing: 0em;
+    color: #898989;
+}
