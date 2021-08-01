@@ -25,16 +25,16 @@ namespace Application.Users.Commands
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthUserDto>
     {
         protected readonly ISender _mediator;
-        protected readonly IWriteRepository<User> _userRepository;
+        protected readonly IWriteRepository<User> _userWriteRepository;
 
         protected readonly ISecurityService _securityService;
         protected readonly IMapper _mapper;
 
-        public RegisterUserCommandHandler(ISender mediator, IWriteRepository<User> userRepository,
+        public RegisterUserCommandHandler(ISender mediator, IWriteRepository<User> userWriteRepository,
                                    ISecurityService securityService, IMapper mapper)
         {
             _mediator = mediator;
-            _userRepository = userRepository;
+            _userWriteRepository = userWriteRepository;
             _securityService = securityService;
             _mapper = mapper;
         }
@@ -47,14 +47,16 @@ namespace Application.Users.Commands
             newUser.PasswordSalt = Convert.ToBase64String(salt);
             newUser.Password = _securityService.HashPassword(command.RegisterUser.Password, salt);
 
-            var registeredUser = await _userRepository.CreateAsync(newUser) as User;
+            await _userWriteRepository.CreateAsync(newUser);
+            var registeredUser = _mapper.Map<UserDto>(newUser);
+            registeredUser.Roles = command.RegisterUser.Roles;
 
             var generateTokenCommand = new GenerateAccessTokenCommand(registeredUser);
             var token = await _mediator.Send(generateTokenCommand);
 
             return new AuthUserDto
             {
-                User = _mapper.Map<UserDto>(registeredUser),
+                User = registeredUser,
                 Token = token
             };
         }

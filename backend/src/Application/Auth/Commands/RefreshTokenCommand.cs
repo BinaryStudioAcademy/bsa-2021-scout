@@ -2,6 +2,8 @@
 using Application.Auth.Exceptions;
 using Application.Common.Exceptions;
 using Application.Interfaces;
+using Application.Users.Dtos;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
@@ -22,19 +24,22 @@ namespace Application.Auth.Commands
 
     public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, AccessTokenDto>
     {
-        protected readonly IReadRepository<User> _userRepository;
+        protected readonly IUserReadRepository _userRepository;
         protected readonly IRTokenReadRepository _tokenReadRepository;
         protected readonly IWriteRepository<RefreshToken> _tokenWriteRepository;
 
+        protected readonly IMapper _mapper;
         protected readonly IJwtService _jwtService;
 
-        public RefreshTokenCommandHandler(IReadRepository<User> userRepository, IRTokenReadRepository tokenReadRepository, 
-                                   IWriteRepository<RefreshToken> tokenWriteRepository, IJwtService jwtService)
+        public RefreshTokenCommandHandler(IUserReadRepository userRepository, IRTokenReadRepository tokenReadRepository, 
+                                   IWriteRepository<RefreshToken> tokenWriteRepository, IJwtService jwtService,
+                                   IMapper mapper)
         {
             _userRepository = userRepository;
             _tokenReadRepository = tokenReadRepository;
             _tokenWriteRepository = tokenWriteRepository;
             _jwtService = jwtService;
+            _mapper = mapper;
         }
 
         public async Task<AccessTokenDto> Handle(RefreshTokenCommand command, CancellationToken _)
@@ -47,6 +52,8 @@ namespace Application.Auth.Commands
                 throw new NotFoundException(typeof(User), userId);
             }
 
+            await _userRepository.LoadRolesAsync(user);
+
             var refreshToken = await _tokenReadRepository.GetAsync(command.Token.RefreshToken, userId);
             
             if (refreshToken == null)
@@ -58,11 +65,12 @@ namespace Application.Auth.Commands
             {
                 throw new ExpiredRefreshTokenException();
             }
-     
-            return await GenerateNewAccessToken(user, refreshToken);
+
+            var userDto = _mapper.Map<UserDto>(user);
+            return await GenerateNewAccessToken(userDto, refreshToken);
         }
 
-        public async Task<AccessTokenDto> GenerateNewAccessToken(User user, RefreshToken refreshToken)
+        public async Task<AccessTokenDto> GenerateNewAccessToken(UserDto user, RefreshToken refreshToken)
         {         
             await _tokenWriteRepository.DeleteAsync(refreshToken.Id); // delete the token we've exchanged
 

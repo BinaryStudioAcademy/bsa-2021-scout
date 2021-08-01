@@ -1,14 +1,14 @@
 ﻿using Application.Auth.Exceptions;
 using Application.Interfaces;
+using Application.Users.Dtos;
 using Domain.Common.Auth;
-using Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,15 +29,20 @@ namespace Infrastructure.Services
             _securityService = securityService;
         }
 
-        public async Task<AccessToken> GenerateJsonWebToken(User user)
-        {            
-            var claims = new[]
+        public async Task<AccessToken> GenerateJsonWebToken(UserDto user)
+        {
+            var claims = new List<Claim>()
             {
                  new Claim(JwtRegisteredClaimNames.Email, user.Email),
                  new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
                  new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
                  new Claim("id", user.Id)
-             };
+            };
+
+            foreach(var role in user.Roles)
+            {
+                claims.Add(new Claim("roles", role.Name));
+            }
 
             // Create the JWT security token and encode it.
             var jwt = new JwtSecurityToken(

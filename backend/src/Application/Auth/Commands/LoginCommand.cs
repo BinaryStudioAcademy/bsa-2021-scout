@@ -50,17 +50,21 @@ namespace Application.Auth.Commands
                 throw new NotFoundException(nameof(User));
             }
 
+            await _userRepository.LoadRolesAsync(user);
+
             if (!_securityService.ValidatePassword(command.Password, user.Password, user.PasswordSalt))
             {
                 throw new InvalidUsernameOrPasswordException();
             }
 
-            var generateTokenCommand = new GenerateAccessTokenCommand(user);
+            UserDto userDto = _mapper.Map<UserDto>(user);
+
+            var generateTokenCommand = new GenerateAccessTokenCommand(userDto);
             var token = await _mediator.Send(generateTokenCommand);
 
             return new AuthUserDto
             {
-                User = _mapper.Map<UserDto>(user),
+                User = userDto,
                 Token = token
             };
         }

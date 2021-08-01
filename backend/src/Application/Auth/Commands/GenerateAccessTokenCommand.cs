@@ -1,5 +1,6 @@
 ﻿using Application.Auth.Dtos;
 using Application.Interfaces;
+using Application.Users.Dtos;
 using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
@@ -10,9 +11,9 @@ namespace Application.Auth.Commands
 {
     public class GenerateAccessTokenCommand : IRequest<AccessTokenDto>
     {
-        public User User { get; }
+        public UserDto User { get; }
 
-        public GenerateAccessTokenCommand(User user)
+        public GenerateAccessTokenCommand(UserDto user)
         {
             User = user;
         }
