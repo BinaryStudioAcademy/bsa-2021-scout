@@ -11,6 +11,7 @@ import { SharedModule } from '../shared/shared.module';
 import { HeaderModule } from '../header/header.module';
 import { MainPageElementsModule } from '../main-page-elements/main-page-elements.module';
 import { VacanciesModule } from '../vacancies/vacancies.module';
+import { UsersModule } from '../users/users.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,14 +19,15 @@ import { VacanciesModule } from '../vacancies/vacancies.module';
     BrowserModule,
     RoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule,  
     ToastrModule.forRoot(),
     MainPageElementsModule,
     MatSidenavModule,
     MatIconModule,
     HeaderModule,
     SharedModule,
-    VacanciesModule
+    VacanciesModule,
+    UsersModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

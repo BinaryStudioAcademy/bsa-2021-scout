@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { VacanciesListComponent } from '../vacancies/components/vacancies-list/vacancies-list.component';
+import { UserRoutingModule } from '../users/user-routing.module';
 
 const routes: Routes = [
   { path: 'home', component: VacanciesListComponent, pathMatch: 'full' },
@@ -14,7 +15,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), UserRoutingModule],
   exports: [RouterModule],
 })
 export class RoutingModule {}
