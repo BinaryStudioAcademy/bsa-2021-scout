@@ -57,19 +57,10 @@ namespace Infrastructure.Repositories.Read
                 applicants,
                 c => c.ApplicantId,
                 a => a.Id,
-                (candidate, applicant) => new VacancyCandidate
+                (candidate, applicant) =>
                 {
-                    Id = candidate.Id,
-                    FirstContactDate = candidate.FirstContactDate,
-                    SecondContactDate = candidate.SecondContactDate,
-                    ThirdContactDate = candidate.ThirdContactDate,
-                    SalaryExpectation = candidate.SalaryExpectation,
-                    ContactedBy = candidate.ContactedBy,
-                    Comments = candidate.Comments,
-                    Experience = candidate.Experience,
-                    StageId = candidate.StageId,
-                    ApplicantId = candidate.ApplicantId,
-                    Applicant = applicant,
+                    candidate.Applicant = applicant;
+                    return candidate;
                 }
             );
 
@@ -77,15 +68,10 @@ namespace Infrastructure.Repositories.Read
                 candidates,
                 s => s.Id,
                 c => c.StageId,
-                (stage, stageCandidates) => new Stage
+                (stage, stageCandidates) =>
                 {
-                    Id = stage.Id,
-                    Name = stage.Name,
-                    Type = stage.Type,
-                    Index = stage.Index,
-                    IsReviewable = stage.IsReviewable,
-                    VacancyId = stage.VacancyId,
-                    Candidates = stageCandidates.ToList(),
+                    stage.Candidates = stageCandidates.ToList();
+                    return stage;
                 }
             );
 
