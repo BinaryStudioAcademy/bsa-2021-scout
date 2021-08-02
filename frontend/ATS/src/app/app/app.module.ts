@@ -12,6 +12,7 @@ import { HeaderModule } from '../header/header.module';
 import { MainPageElementsModule } from '../main-page-elements/main-page-elements.module';
 import { VacanciesModule } from '../vacancies/vacancies.module';
 import { UsersModule } from '../users/users.module';
+import { SidenavService } from '../shared/services/sidenav.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,7 +30,7 @@ import { UsersModule } from '../users/users.module';
     VacanciesModule,
     UsersModule,
   ],
-  providers: [],
+  providers: [SidenavService],
   bootstrap: [AppComponent],
   exports: [],
 })

@@ -11,6 +11,8 @@ import { SearchFormComponent } from './components/search-form/search-form.compon
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   exports: [ 
@@ -22,9 +24,15 @@ import { CommonModule } from '@angular/common';
     MatBadgeModule,
     FormsModule,
     ButtonComponent,
-    SearchFormComponent
+    SearchFormComponent,
+    ReactiveFormsModule,
+    CommonModule,
+    BrowserModule, 
+    FormsModule, 
+    BrowserAnimationsModule,
   ],
-  imports:[MatButtonModule, 
+  imports:[
+    MatButtonModule, 
     MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,
@@ -37,6 +45,9 @@ import { CommonModule } from '@angular/common';
     MatIconModule, 
     ReactiveFormsModule, 
     CommonModule,
+    BrowserModule, 
+    FormsModule, 
+    BrowserAnimationsModule,
   ],
   providers:[HttpClientService],
   declarations: [

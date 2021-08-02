@@ -5,6 +5,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { RoutingModule } from '../routing/routing.module';
 import { MatIconModule } from '@angular/material/icon';
+import { SharedModule } from '../shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -18,6 +20,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatListModule,
     RoutingModule,
     MatIconModule,
+    SharedModule,
+    BrowserAnimationsModule
   ],
   exports:[
     MenuComponent
