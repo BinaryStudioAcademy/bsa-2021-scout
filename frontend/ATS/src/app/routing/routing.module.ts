@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UserRoutingModule } from '../users/user-routing.module';
 
 // This line can't be shorter
 // eslint-disable-next-line max-len
@@ -14,7 +15,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), UserRoutingModule],
   exports: [RouterModule],
 })
 export class RoutingModule {}

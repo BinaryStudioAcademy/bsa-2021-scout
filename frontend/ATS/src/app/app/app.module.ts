@@ -7,6 +7,7 @@ import { AppComponent } from './components/app/app.component';
 import { ToastrModule } from 'ngx-toastr';
 import { SharedModule } from '../shared/shared.module';
 import { VacanciesModule } from '../vacancies/vacancies.module';
+import { UsersModule } from '../users/users.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +19,7 @@ import { VacanciesModule } from '../vacancies/vacancies.module';
     ToastrModule.forRoot(),
     SharedModule,
     VacanciesModule,
+    UsersModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
