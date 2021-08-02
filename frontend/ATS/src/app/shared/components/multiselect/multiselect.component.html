@@ -1,0 +1,6 @@
+<mat-select [fromControl]="control" multiple>
+  <mat-select-trigger>
+    <div class="topic" *ngFor="let opt of selected">{{ opt.label }}</div>
+  </mat-select-trigger>
+  <mat-option *ngFor="let opt of data" [value]="opt.value">{{ opt.label }}</mat-option>
+</mat-select>
