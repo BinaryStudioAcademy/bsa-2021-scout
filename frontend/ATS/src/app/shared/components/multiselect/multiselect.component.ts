@@ -33,14 +33,19 @@ export class MultiselectComponent implements OnChanges, OnInit {
 
   public ngOnChanges(changes: SimpleChanges) {
     if (
-      changes['data'] &&
-      !_.isEqual(changes['data'].previousValue, changes['data'].currentValue)
+      changes['selected'] &&
+      !_.isEqual(
+        changes['selected'].previousValue,
+        changes['selected'].currentValue,
+      )
     ) {
-      this.control.setValue(changes['data'].currentValue);
+      this.control.setValue(changes['selected'].currentValue);
     }
   }
 
   public ngOnInit(): void {
+    this.control.setValue(this.selected);
+
     this.control.valueChanges.subscribe((newValue) =>
       this.emitChange(newValue),
     );
