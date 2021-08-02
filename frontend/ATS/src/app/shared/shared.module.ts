@@ -10,7 +10,13 @@ import { CommonModule } from '@angular/common';
 import { MultiselectComponent } from './components/multiselect/multiselect.component';
 
 @NgModule({
-  imports: [MatSelectModule, ReactiveFormsModule, CommonModule],
+  imports: [
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    CommonModule,
+  ],
   declarations: [MultiselectComponent],
   exports: [
     MatButtonModule,
