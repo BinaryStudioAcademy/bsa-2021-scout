@@ -19,4 +19,23 @@
   .data {
     margin-top: 10px;
   }
+
+  .user-data {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .avatar {
+      $dim: 40px;
+      border-radius: 50%;
+      width: $dim;
+      height: $dim;
+      max-width: $dim;
+      max-height: $dim;
+    }
+
+    .texts {
+      flex-grow: 1;
+    }
+  }
 }

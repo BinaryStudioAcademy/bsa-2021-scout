@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import {
   CdkDragDrop,
@@ -11,18 +12,11 @@ import { takeUntil } from 'rxjs/operators';
 import { StageService } from 'src/app/shared/services/stage.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { StageWithCandidates } from 'src/app/shared/models/stages/with-candidates';
-import { ActivatedRoute } from '@angular/router';
+import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candidate.service';
 
 // This line can't be shorter
 // eslint-disable-next-line max-len
 import { VacancyCandidateWithApplicant } from 'src/app/shared/models/vacancy-candidates/with-applicant';
-import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candidate.service';
-
-enum Filter {
-  Qualified,
-  Disqualified,
-  Sourced,
-}
 
 @Component({
   selector: 'app-vacancies-stages-board',
@@ -33,9 +27,11 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   public loading: boolean = true;
   public data: StageWithCandidates[] = [];
   public title: string = '';
-  public filter: Filter = Filter.Qualified;
   public listIds: string[] = [];
+  public avatars: string[] = [];
+  public extraAvatarsCount: number = 0;
 
+  private readonly showingAvatarsCount: number = 7;
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   public constructor(
@@ -59,21 +55,6 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
 
   public filterData(): void {
     //
-  }
-
-  public setFilter(index: number): void {
-    switch (index) {
-      case 1:
-        this.filter = Filter.Disqualified;
-        break;
-      case 2:
-        this.filter = Filter.Sourced;
-        break;
-      case 0:
-      default:
-        this.filter = Filter.Qualified;
-        break;
-    }
   }
 
   public onMove(event: CdkDragDrop<VacancyCandidateWithApplicant[]>) {
@@ -131,6 +112,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
 
           this.filterData();
           this.prepareLists();
+          this.prepareAvatars();
         },
         () => {
           this.notificationService.showErrorMessage(
@@ -143,5 +125,19 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
 
   private prepareLists(): void {
     this.listIds = this.data.map(({ id }) => id);
+  }
+
+  private prepareAvatars(): void {
+    const allAvatars: string[] = [];
+
+    this.data.forEach((stage) =>
+      stage.candidates.forEach(
+        (_candidate) =>
+          allAvatars.push('../../../../assets/images/defaultAvatar.png'), //
+      ),
+    );
+
+    this.avatars = allAvatars.slice(0, this.showingAvatarsCount);
+    this.extraAvatarsCount = this.data.length - this.avatars.length + 1;
   }
 }

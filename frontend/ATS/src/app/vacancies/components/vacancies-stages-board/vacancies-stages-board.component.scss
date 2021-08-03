@@ -19,8 +19,85 @@
     margin-bottom: 20px;
     height: 100%;
 
+    .avatars {
+      position: relative;
+      $avatars-count: 7;
+      $avatars-space: 25px;
+
+      @for $i from 1 through $avatars-count {
+        .avatar-wrp:nth-child(#{$i}) {
+          left: calc((#{$i} - 1) * #{$avatars-space});
+        }
+      }
+
+      .avatar-wrp {
+        $dim: 40px;
+        border-radius: 50%;
+        width: $dim;
+        height: $dim;
+        max-width: $dim;
+        max-height: $dim;
+        position: absolute;
+        top: 0;
+        box-sizing: border-box;
+        border: 1px solid white;
+
+        .avatar {
+          border-radius: 50%;
+          width: 100%;
+          height: 100%;
+          max-width: 100%;
+          max-height: 100%;
+        }
+
+        .dimmer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #00000088;
+          color: white;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          font-size: 14px;
+          border-radius: 50%;
+        }
+      }
+
+      .plus-avatar {
+        $dim: 40px;
+        border-radius: 50%;
+        width: $dim;
+        height: $dim;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: calc((#{$avatars-count} + 1) * #{$avatars-space});
+      }
+    }
+
     .buttons {
       display: flex;
+      gap: 10px;
+
+      .button {
+        border-radius: 50px;
+        border: 3px solid $primary-color;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
     }
   }
 

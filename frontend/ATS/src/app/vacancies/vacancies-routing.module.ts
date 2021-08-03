@@ -16,6 +16,6 @@ const routes: Routes = [
 
 @NgModule({
   exports: [RouterModule],
-  imports: [CommonModule, RouterModule.forRoot(routes)],
+  imports: [CommonModule, RouterModule.forChild(routes)],
 })
 export class VacanciesRoutingModule {}
