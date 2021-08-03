@@ -44,9 +44,10 @@ namespace WebAPI.Extensions
                                   builder =>
                                   {
                                       builder
-                                        .WithOrigins("http://localhost:4200")
                                         .WithHeaders("Content-Type")
-                                        .WithMethods("GET", "POST", "PUT", "DELETE");
+                                        .WithMethods("GET", "POST", "PUT", "DELETE")
+                                        .WithExposedHeaders("Token-Expired")
+                                        .WithOrigins("http://localhost:4200");
                                   });
             });
 
@@ -63,9 +64,10 @@ namespace WebAPI.Extensions
                                       // If you want to test prod environmanet locally 
                                       // relpace next line with this: builder.WithOrigins("http://localhost");
                                       builder
-                                        .WithOrigins("")
                                         .WithHeaders("Content-Type")
-                                        .WithMethods("GET", "POST", "PUT", "DELETE");
+                                        .WithMethods("GET", "POST", "PUT", "DELETE")
+                                        .WithExposedHeaders("Token-Expired")
+                                        .WithOrigins("");
                                   });
             });
 

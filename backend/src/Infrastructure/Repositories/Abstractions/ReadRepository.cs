@@ -22,23 +22,24 @@ namespace Infrastructure.Repositories.Abstractions
         public async Task<T> GetAsync(string id)
         {
             var connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
             string sql = $"SELECT * FROM {_tableName} WHERE Id = @id";
 
-            T result = await connection.QueryFirstAsync<T>(sql, new { id = id });
+            var entity = await connection.QueryFirstAsync<T>(sql, new { id = id });
             await connection.CloseAsync();
-
-            return result;
+            return entity;
         }
 
         public async Task<IEnumerable<T>> GetEnumerableAsync()
         {
             var connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
             string sql = $"SELECT * FROM {_tableName}";
 
-            IEnumerable<T> result = await connection.QueryAsync<T>(sql);
+            var entities = await connection.QueryAsync<T>(sql);
             await connection.CloseAsync();
 
-            return result;
+            return entities;
         }
     }
 }
