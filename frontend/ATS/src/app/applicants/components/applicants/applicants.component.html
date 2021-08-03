@@ -1,0 +1,86 @@
+<div class="applicants-header-bar">
+    <mat-form-field appearance="fill">
+        <mat-icon>search</mat-icon>
+        <input matInput type="search" (keyup)="applyFilter($event)" placeholder="Search..." [(ngModel)]="searchValue">
+        <button *ngIf="searchValue" mat-icon-button class="search-close-btn" (click)="clearInput()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+    <button mat-button class="create-button" (click)="showApplicantCreateDialog()">
+        + New applicant
+    </button>
+</div>
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Full name </th>
+        <td mat-cell *matCellDef="let applicant"> {{applicant.firstName}} {{applicant.lastName}} {{applicant.middleName}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="rate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="rate"> Rate </th>
+        <td mat-cell *matCellDef="let applicant">
+            <button mat-icon-button (click)="changeRate(applicant, i)" class="star-button" *ngFor="let i of [1, 2, 3, 4, 5]">
+            <mat-icon>
+                {{showStarIcon(i, applicant.rate)}}
+            </mat-icon>
+            </button>
+        </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
+        <td mat-cell *matCellDef="let applicant"> {{applicant.email}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="active_vacancies">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="active_vacancies"> Active vacancies </th>
+        <td mat-cell *matCellDef="let applicant"> {{applicant.vacancies.length}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="jobs_list">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="jobs_list"> Jobs </th>
+        <td mat-cell *matCellDef="let applicant">
+            <mat-list class="jobs-list">
+            <mat-list-item *ngFor="let vacancy of applicant.vacancies">
+                {{vacancy.title}} ({{vacancy.stage}})
+            </mat-list-item>
+            </mat-list>
+        </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let applicant"> Status </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="tags">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="tags"> Tags </th>
+        <td mat-cell *matCellDef="let applicant">
+            <mat-list class="tags-list">
+            <mat-list-item *ngFor="let tag of applicant.tags">
+                {{tag}}
+            </mat-list-item>
+            </mat-list>
+        </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="control_buttons">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let applicant" class="control-buttons-cell">
+            <div class="buttons-wrap">
+            <button mat-icon-button class="applicant-control-btn">
+                <mat-icon>turned_in</mat-icon>
+            </button>
+            <button (click)="showApplicantUpdateDialog(applicant)" mat-icon-button class="applicant-control-btn">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="applicant-control-btn">
+                <mat-icon>more_horiz</mat-icon>
+            </button>
+            </div>
+        </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let myRowData; columns: displayedColumns"></tr>
+  </table>

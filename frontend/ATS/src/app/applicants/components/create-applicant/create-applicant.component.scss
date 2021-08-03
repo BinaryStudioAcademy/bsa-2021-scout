@@ -1,0 +1,41 @@
+.head-section {
+    margin: 22px 46px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .mat-dialog-title {
+        margin: 0;
+    }
+}
+
+.mat-dialog-content {
+    margin: 0 46px;
+    padding: 0;
+
+    p {
+        margin: 0;
+    }
+}
+
+:host ::ng-deep .mat-form-field {
+    width: 100%;
+    margin-bottom: 15px;
+
+    .mat-form-field-wrapper {
+        max-width: none;
+        border-radius: 10px;
+        width: calc(100% - 40px);
+    
+        .mat-form-field-subscript-wrapper {
+            margin-top: 17px;
+            width: calc(100% - 40px);
+        }
+    }
+}
+
+.publish-action {
+    margin: 0 46px 50px;
+    width: 141px;
+    padding: 0;
+}

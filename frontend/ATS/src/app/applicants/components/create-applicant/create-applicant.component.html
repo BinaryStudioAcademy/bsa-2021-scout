@@ -1,0 +1,77 @@
+<div class="head-section">
+    <h2 mat-dialog-title>Applicant creation form</h2>
+    <mat-dialog-actions>
+        <button mat-icon-button mat-dialog-close>
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-dialog-actions>
+</div>
+<mat-dialog-content>
+    <form [formGroup]="validationGroup!" novalidate>
+        <p>First name</p>
+        <mat-form-field>
+            <input formControlName="firstName" type="text" matInput placeholder="Enter first name">
+            <mat-error>
+                Please enter a first name
+            </mat-error>
+        </mat-form-field>
+
+        <p>Last name</p>
+        <mat-form-field>
+            <input formControlName="lastName" type="text" matInput placeholder="Enter last name">
+            <mat-error>
+                Please enter a last name
+            </mat-error>
+        </mat-form-field>
+
+        <p>Middle name</p>
+        <mat-form-field>
+            <input formControlName="middleName" type="text" matInput placeholder="Enter middle name">
+            <mat-error>
+                Please enter a middle name
+            </mat-error> 
+        </mat-form-field>
+
+        <p>Email</p>
+        <mat-form-field>
+            <input formControlName="email" type="email" matInput placeholder="Enter email">
+            <mat-error *ngIf="validationGroup!.controls['email'].value === '';else invalidEmail">
+                Please enter an email address.
+            </mat-error>
+            <ng-template #invalidEmail>
+                <mat-error *ngIf="validationGroup!.controls['email'].invalid">
+                    Please enter a valid email address.
+                </mat-error> 
+            </ng-template>
+        </mat-form-field>
+
+        <p>Experience</p>
+        <mat-form-field>
+            <input formControlName="experience" type="number" matInput placeholder="Enter experience" step=".1" min="0">
+            <mat-error>
+                Please enter an experience
+            </mat-error>   
+        </mat-form-field>
+        
+        <p>Phone</p>
+        <mat-form-field>
+            <input formControlName="phone" type="tel" matInput placeholder="Enter phone number">
+            <mat-error>
+                Please enter a phone number
+            </mat-error>   
+        </mat-form-field>
+
+        <p>Skype</p>
+        <mat-form-field>
+            <input formControlName="skype" type="text" matInput placeholder="Enter skype">
+            <mat-error>
+                Please enter a skype address
+            </mat-error>  
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions class="publish-action">
+    <button [disabled]="validationGroup!.invalid" mat-button>
+        Publish
+    </button>
+</mat-dialog-actions>

@@ -1,0 +1,151 @@
+$row-height: 55px;
+
+:host ::ng-deep .mat-form-field-wrapper {
+    height: 45px;
+    width: 282px;
+    padding: 0;
+    color: #4d4d4d;
+    background-color: #fff;
+
+    .mat-form-field-flex {
+        background: none;
+        padding: 0;
+    }
+}
+
+:host ::ng-deep .mat-form-field-infix {
+    display: flex;
+    padding: 15px 23px;
+    align-items: center;
+
+    .mat-icon,
+    .mat-input-element {
+        height: 15px;
+    }
+
+    .search-close-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .mat-button-wrapper {
+        display: block;
+        height: 15px;
+    }
+
+    .mat-icon {
+        display: block;
+        font-size: 15px;
+        line-height: 1;
+    }
+}
+
+:host {
+    display: block;
+    background-color: #F6F7F9;
+    padding: 45px 51px 294px 0;
+}
+
+.applicants-header-bar {
+    display: flex;
+    background: none;
+    justify-content: space-between;
+    padding: 0 0 30px 51px;
+
+    .create-button {
+        width: 153px;
+    }
+}
+
+.mat-table {
+    width: 100%;
+
+    .mat-header-row {
+        height: 30px;
+    }
+
+    .mat-row {
+        height: 55px;
+    }
+
+    button {
+        border: none;
+        background: none;
+
+        &.star-button {
+            width: 25px;
+            height: 25px;
+            color: #ffd900;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            .mat-icon {
+                font-size: 25px;
+            }
+        }
+    }
+
+    mat-list {
+        padding: 0;
+    }
+
+    td {
+        border: none;
+        padding-right: 15px;
+
+        &:not(.control-buttons-cell) {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            
+            min-width: 50px;
+            max-width: 250px;
+        }
+
+        mat-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .jobs-list {
+            display: flex;
+            flex-direction: column;
+            height: $row-height;
+            overflow-y: scroll;
+        }
+
+        .tags-list {
+
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 1fr);
+            grid-gap: 10px;
+            max-width: 70%;
+            overflow-x: scroll;
+            background: none;
+
+            mat-list-item {
+                grid-row: 1 / 2;
+                width: max-content;
+                height: min-content;
+                padding: 2px;
+                border-radius: 15px;
+                background-color: #dddddd;
+            }
+        }
+    }
+    
+    .mat-row:nth-child(even) {
+        background-color: #F0F3F9;
+    }
+
+    .control-buttons-cell .buttons-wrap {
+        display: flex;
+        justify-content: flex-end;
+        align-content: center;
+
+        .applicant-control-btn {
+            color: #8E8E8E;
+        }
+    }
+}
