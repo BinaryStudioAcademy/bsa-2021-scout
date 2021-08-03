@@ -27,6 +27,8 @@ namespace Infrastructure
 
             services.AddWriteRepositories();
             services.AddReadRepositories();
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<ISecurityService, SecurityService>();
 
             services.AddScoped<IDomainEventService, DomainEventService>();
             services.AddElasticEngine();
@@ -38,14 +40,14 @@ namespace Infrastructure
             if (connectionString is null)
                 throw new Exception("Elastic connection string url is not specified");
             var settings = new ConnectionSettings(new Uri(connectionString))
-                .DefaultIndex("defaultIndex")
-                .DefaultMappingFor<User>(m => m
-                .IndexName("users")
+                .DefaultIndex("default_index")
+                .DefaultMappingFor<ApplicantToTags>(m => m
+                .IndexName("applicant_to_tags")
             );
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
+            
             return services;
         }
-
         private static IServiceCollection AddDatabaseContext(this IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
@@ -65,7 +67,7 @@ namespace Infrastructure
 
         private static IServiceCollection AddDapper(this IServiceCollection services)
         {
-            services.AddScoped<IConnectionFactory, ConnectionFactory>();            
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();
 
             return services;
         }
@@ -80,8 +82,10 @@ namespace Infrastructure
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
+            services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
+
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
-            services.AddScoped<IWriteRepository<Applicant>, ElasticWriteRepository<Applicant>>();
+            services.AddScoped<IElasticWriteRepository<ApplicantToTags>, ElasticWriteRepository<ApplicantToTags>>();
 
             return services;
         }
@@ -89,9 +93,12 @@ namespace Infrastructure
         private static IServiceCollection AddReadRepositories(this IServiceCollection services)
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
-            services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
-            services.AddScoped<IReadRepository<Applicant>, ElasticReadRepository<Applicant>>();
 
+            services.AddScoped<IUserReadRepository, UserReadRepository>();
+            services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
+
+            services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
+            services.AddScoped<IElasticReadRepository<ApplicantToTags>, ElasticReadRepository<ApplicantToTags>>();
             return services;
         }
     }

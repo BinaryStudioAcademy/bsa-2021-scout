@@ -25,6 +25,8 @@ namespace WebAPI
             services.AddApplication();
             services.AddInfrastructure();
 
+            services.ConfigureJwt(Configuration);
+
             services.AddSpecificCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -48,6 +50,7 @@ namespace WebAPI
 
             app.UserSpecificCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseMiddleware<ErrorHandlerMiddleware>();

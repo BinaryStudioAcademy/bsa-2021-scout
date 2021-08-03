@@ -11,7 +11,6 @@ namespace Domain.Entities
         {
             DomainEvents = new List<DomainEvent>();
         }
-<<<<<<< HEAD
         public string Password { get; set; }
         public string PasswordSalt { get; set; }
 
