@@ -9,9 +9,9 @@ namespace Application.Interfaces
 {
     public interface ICurrentUserContext
     {
-        bool IsAuthorised { get; set; }
-        UserDto CurrentUser { get; set; }
-        RoleDto[] Roles { get; set; }
+        public bool IsAuthorised { get; }
+        public UserDto CurrentUser { get;  }
+        public RoleDto[] Roles { get; }
         Task<UserDto> LoadUser();
     }
 }

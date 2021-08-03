@@ -18,10 +18,11 @@ namespace Infrastructure.Services
     public class CurrentUserContext : ICurrentUserContext
     {
         
-        public bool IsAuthorised { get; set; }
-        public UserDto CurrentUser { get; set; }
-        public RoleDto[] Roles { get; set; }
-        
+        public bool IsAuthorised { get; }
+        public UserDto CurrentUser { get; private set; }
+        public RoleDto[] Roles { get; private set; }
+        public Lazy<Task<User>> LazyUser { get; }
+
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserReadRepository _userRepository;
         private readonly IMapper _mapper;
@@ -32,13 +33,13 @@ namespace Infrastructure.Services
             _userRepository = userRepository;
             _mapper = mapper;
 
-            IsAuthorised = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value != null;
+            var Email = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
+            IsAuthorised = Email != null;
+            LazyUser = new Lazy<Task<User>>(_userRepository.GetByEmailAsync(Email));
         }
         public async Task<UserDto> LoadUser()
         {
-            var Email = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email).Value;
-            var lazyTask = new Lazy<Task<User>>(_userRepository.GetByEmailAsync(Email));
-            User user = await lazyTask;
+            User user = await LazyUser;
             CurrentUser = _mapper.Map<UserDto>(user);
             Roles = CurrentUser.Roles.ToArray();
             return CurrentUser;
