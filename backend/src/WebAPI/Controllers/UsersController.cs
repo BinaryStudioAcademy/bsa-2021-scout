@@ -20,7 +20,6 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetUser(string id)
         {
             var query = new GetEntityByIdQuery<UserDto>(id);
-            await smtp.SendAsync("2m.roman2@gmail.com", "hello", "hello");
             return Ok(await Mediator.Send(query));
         }
 

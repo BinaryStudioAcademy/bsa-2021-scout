@@ -8,26 +8,32 @@ using Application.Interfaces;
 
 namespace Infrastructure.Mail
 {
-    public class GmailSmtp : ISmtp, IDisposable
+    public class Smtp : ISmtp
     {
         private readonly SmtpClient _client;
         private readonly MailAddress _from;
         private readonly IMailTemplateReadRepository _repository;
         private readonly IMailBuilderService _mailBuilder;
 
-        public GmailSmtp(IMailTemplateReadRepository repository, IMailBuilderService mailBuilder)
+        public Smtp(
+            string address,
+            string password,
+            string displayName,
+            string host,
+            int port,
+            bool useSsl,
+            IMailTemplateReadRepository repository,
+            IMailBuilderService mailBuilder
+        )
         {
-            string address = Environment.GetEnvironmentVariable("GMAIL_ADDRESS");
-            string password = Environment.GetEnvironmentVariable("GMAIL_PASSWORD");
-
             _repository = repository;
             _mailBuilder = mailBuilder;
-            _from = new MailAddress(address, "Scout Notifications");
+            _from = new MailAddress(address, displayName);
 
-            _client = new SmtpClient("smtp.gmail.com")
+            _client = new SmtpClient(host)
             {
-                Port = 587,
-                EnableSsl = true,
+                Port = port,
+                EnableSsl = useSsl,
                 Credentials = new NetworkCredential(address, password),
             };
         }

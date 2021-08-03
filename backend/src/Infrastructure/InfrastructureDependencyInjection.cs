@@ -76,7 +76,7 @@ namespace Infrastructure
         private static IServiceCollection AddMail(this IServiceCollection services)
         {
             services.AddScoped<IMailBuilderService, MailBuilderService>();
-            services.AddScoped<ISmtp, GmailSmtp>();
+            services.AddScoped<ISmtpFactory, GmailSmtpFactory>();
 
             return services;
         }
