@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Nest;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Dynamic;
+using Domain.Entities;
 
 namespace Infrastructure.Repositories.Abstractions
 {
@@ -20,7 +22,7 @@ namespace Infrastructure.Repositories.Abstractions
             _indexName = typeof(T).ToString();
             _client = client;
         }
-        public async Task InsertBulk(IEnumerable<T> bulk)
+        public async Task InsertBulkAsync(IEnumerable<T> bulk)
         {
             await _client.IndexManyAsync<T>(bulk);
         }
@@ -40,10 +42,19 @@ namespace Infrastructure.Repositories.Abstractions
                 i => i.Doc(entity));
             return entity;
         }
-
         public async Task DeleteAsync(string id)
         {
             await _client.DeleteAsync<T>(id);
+        }
+
+        public async Task UpdateAsyncPartially(string id, ExpandoObject dynamicUpdate)
+        {
+            var indexResponse = await _client.UpdateAsync<T, object>(
+                DocumentPath<T>.Id(id),
+                i => i.Doc(dynamicUpdate));
+            
+            if(!indexResponse.IsValid)
+                throw new InvalidOperationException("Partial update invalid");
         }
     }
 }

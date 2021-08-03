@@ -20,6 +20,7 @@ namespace Application.Common.Commands
 
     public class DeleteElasticDocumentCommandHandler<TDocument, TDto> : IRequestHandler<DeleteElasticDocumentCommand>
         where TDocument : Entity
+        where TDto : Dto
     {
         protected readonly IElasticWriteRepository<TDocument> _repository;
 

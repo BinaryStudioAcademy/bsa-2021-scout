@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using System;
 using Application.ApplicantToTags.Dtos;
 using Microsoft.AspNetCore.Http;
-
+using System.Collections.Generic;
+using Application.ApplicantToTags.CommandQuery.AddTagCommand;
+using Application.ApplicantToTags.CommandQuery.DeleteTagCommand;
 namespace WebAPI.Controllers
 {
     public class ApplicantsController : ApiController
@@ -48,6 +50,21 @@ namespace WebAPI.Controllers
 
             return Ok(await Mediator.Send(query));
         }
+        [HttpPost("tags/{applicantId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> PostTagAsync(string applicantId, [FromBody] TagDto createDto)
+        {
+            var query = new AddTagCommand(applicantId, createDto);
+            return StatusCode(204, await Mediator.Send(query));
+        }
+        [HttpPost("to_tags/bulk")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> PostElasticBulkAsync([FromBody] IEnumerable<CreateApplicantToTagsDto> createDtoList)
+        {
+            var query = new CreateBulkElasticDocumentCommand<CreateApplicantToTagsDto>(createDtoList);
+
+            return StatusCode(204, await Mediator.Send(query));
+        }
 
         [HttpPut]
         public async Task<IActionResult> PutApplicantAsync([FromBody] UpdateApplicantDto updateDto)
@@ -78,6 +95,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteElasticAsync(string id)
         {
             var query = new DeleteElasticDocumentCommand(id);
+            return StatusCode(204, await Mediator.Send(query));
+        }
+        [HttpDelete("tags")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteElasticAsync(string applicantId, string tagId)
+        {
+            var query = new DeleteTagCommand(applicantId, tagId);
             return StatusCode(204, await Mediator.Send(query));
         }
     }
