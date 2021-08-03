@@ -7,20 +7,28 @@ $ATS-primary: mat.define-palette($md-ats-primary, 500);
 $ATS-accent: mat.define-palette($md-ats-secondary, 500);
 
 $ATS-warn: mat.define-palette(mat.$red-palette);
+$ATS-typography: mat.define-typography-config(
+    $font-family: 'Nunito',
+  );
 
 $ATS-theme: mat.define-light-theme((
   color: (
     primary: $ATS-primary,
     accent: $ATS-accent,
     warn: $ATS-warn,
-  )
+  ),
+  typography: $ATS-typography,
 ));
 
 @include mat.all-component-themes($ATS-theme);
+@include mat.core($ATS-typography);
+
 @import './common.scss';
 
 // fonts
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
+
+
 
 * {
   margin: 0;
@@ -29,10 +37,6 @@ $ATS-theme: mat.define-light-theme((
 
 html, body {
   height: 100%;
-}
-
-body {
-  font-family: 'Nunito';
 }
 
 .toast-success-custom.toast-success{

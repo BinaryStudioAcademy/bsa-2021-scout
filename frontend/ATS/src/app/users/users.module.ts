@@ -8,6 +8,7 @@ import { LoginRegistCommonComponent }
   from './components/login-regist-common/login-regist-common.component';
 
 
+
 @NgModule({
   declarations: [LoginBoxComponent, LoginComponent, LoginRegistCommonComponent, LogoBlockComponent],
   imports: [

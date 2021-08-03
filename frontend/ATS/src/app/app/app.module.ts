@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -7,15 +8,18 @@ import { AppComponent } from './components/app/app.component';
 import { ToastrModule } from 'ngx-toastr';
 import { SharedModule } from '../shared/shared.module';
 import { UsersModule } from '../users/users.module';
+import { VacancyCardComponent } from '../vacancy/vacancy-card/vacancy-card.component';
+import { VacancyWidgetComponent } from '../vacancy/vacancy-widget/vacancy-widget.component';
+import { HomeComponent } from '../users/components/home/home.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,VacancyCardComponent,VacancyWidgetComponent,HomeComponent],
   imports: [
     BrowserModule,
     RoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,  
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot(),       
     SharedModule,
     UsersModule,
   ],
