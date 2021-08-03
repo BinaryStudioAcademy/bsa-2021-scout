@@ -1,5 +1,6 @@
 ﻿using Application.Auth.Commands;
 using Application.Auth.Dtos;
+using Application.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -15,6 +16,12 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<AuthUserDto>> Login(UserLoginDto userLogin)
         {
             var command = new LoginCommand(userLogin);
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpGet("isauth")]
+        public async Task<ActionResult<UserDto>> IsAuth()
+        {
+            var command = new IsAuthorisedCommand();
             return Ok(await Mediator.Send(command));
         }
     }

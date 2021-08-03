@@ -1,5 +1,7 @@
 using Application;
+using Application.Interfaces;
 using Infrastructure;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +27,10 @@ namespace WebAPI
             services.AddApplication();
             services.AddInfrastracture();
 
+            
             services.ConfigureJwt(Configuration);
+            services.AddScoped<ICurrentUserContext, CurrentUserContext>();
+            services.AddHttpContextAccessor();
 
             services.AddSpecificCors();
             services.AddControllers();
