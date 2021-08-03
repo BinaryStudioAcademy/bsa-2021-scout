@@ -11,5 +11,6 @@ namespace WebAPI.Controllers
         private ISender _mediator;
 
         protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetService<ISender>();
+
     }
 }
