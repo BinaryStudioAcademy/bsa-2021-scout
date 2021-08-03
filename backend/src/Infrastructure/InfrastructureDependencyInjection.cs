@@ -28,6 +28,8 @@ namespace Infrastructure
 
             services.AddWriteRepositories();
             services.AddReadRepositories();
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<ISecurityService, SecurityService>();
 
             services.AddScoped<IDomainEventService, DomainEventService>();
             return services;
@@ -43,9 +45,9 @@ namespace Infrastructure
                 .IndexName("applicant_to_tags")
             );
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
+            
             return services;
         }
-
         private static IServiceCollection AddDatabaseContext(this IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
@@ -80,6 +82,8 @@ namespace Infrastructure
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
+            services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
+
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
             services.AddScoped<IElasticWriteRepository<ApplicantToTags>, ElasticWriteRepository<ApplicantToTags>>();
 
@@ -89,6 +93,10 @@ namespace Infrastructure
         private static IServiceCollection AddReadRepositories(this IServiceCollection services)
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
+
+            services.AddScoped<IUserReadRepository, UserReadRepository>();
+            services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
+
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
             services.AddScoped<IElasticReadRepository<ApplicantToTags>, ElasticReadRepository<ApplicantToTags>>();
             return services;
