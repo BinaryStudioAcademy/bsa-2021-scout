@@ -12,12 +12,13 @@ using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Nest;
 
 namespace Infrastructure
 {
     public static class InfrastructureDependencyInjection
     {
-        public static IServiceCollection AddInfrastracture(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddDatabaseContext();
 
@@ -28,7 +29,20 @@ namespace Infrastructure
             services.AddReadRepositories();
 
             services.AddScoped<IDomainEventService, DomainEventService>();
-
+            services.AddElasticEngine();
+            return services;
+        }
+        private static IServiceCollection AddElasticEngine(this IServiceCollection services)
+        {
+            var connectionString = Environment.GetEnvironmentVariable("ELASTIC_CONNECTION_STRING");
+            if (connectionString is null)
+                throw new Exception("Elastic connection string url is not specified");
+            var settings = new ConnectionSettings(new Uri(connectionString))
+                .DefaultIndex("defaultIndex")
+                .DefaultMappingFor<User>(m => m
+                .IndexName("users")
+            );
+            services.AddSingleton<IElasticClient>(new ElasticClient(settings));
             return services;
         }
 
@@ -67,6 +81,7 @@ namespace Infrastructure
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
+            services.AddScoped<IWriteRepository<Applicant>, ElasticWriteRepository<Applicant>>();
 
             return services;
         }
@@ -75,6 +90,7 @@ namespace Infrastructure
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
+            services.AddScoped<IReadRepository<Applicant>, ElasticReadRepository<Applicant>>();
 
             return services;
         }

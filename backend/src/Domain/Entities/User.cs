@@ -11,6 +11,7 @@ namespace Domain.Entities
         {
             DomainEvents = new List<DomainEvent>();
         }
+<<<<<<< HEAD
         public string Password { get; set; }
         public string PasswordSalt { get; set; }
 
@@ -18,7 +19,6 @@ namespace Domain.Entities
         public ICollection<RefreshToken> RefreshTokens { get; set; }
         public ICollection<UserToRole> UserRoles { get; set; }
         public ICollection<CompanyToUser> UserCompanies { get; set; }
-        
         public IList<DomainEvent> DomainEvents { get; set; }
     }
 }
