@@ -2,6 +2,6 @@ namespace Application.Common.Mail
 {
     public static class MailSubjectFactory
     {
-        // public const string SUBJECT_1 = "..."
+        // public static readonly string SUBJECT_1 = "...";
     }
 }

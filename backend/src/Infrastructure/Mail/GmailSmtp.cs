@@ -8,7 +8,7 @@ using Application.Interfaces;
 
 namespace Infrastructure.Mail
 {
-    public class GmailSmtp : ISmtp
+    public class GmailSmtp : ISmtp, IDisposable
     {
         private readonly SmtpClient _client;
         private readonly MailAddress _from;
@@ -32,38 +32,28 @@ namespace Infrastructure.Mail
             };
         }
 
-        public async Task SendAsync(string to, string subject, string body, string templateSlug = "default")
+        public void Dispose()
+        {
+            _client.Dispose();
+        }
+
+        public async Task<string> SendAsync(string to, string subject, string body, string templateSlug = "default")
+        {
+            return await SendAsync(new string[] { to }, subject, body, templateSlug);
+        }
+
+        public async Task<string> SendAsync(IEnumerable<string> to, string subject, string body, string templateSlug = "default")
         {
             string html = await _mailBuilder.Build(body, templateSlug);
-            MailMessage message = GenerateMessage(to, subject, html);
+            string id = GenerateMessageId();
+
+            MailMessage message = GenerateMessage(to, subject, html, id);
 
             _client.Send(message);
+            return id;
         }
 
-        public async Task SendAsync(IEnumerable<string> to, string subject, string body, string templateSlug = "default")
-        {
-            string html = await _mailBuilder.Build(body, templateSlug);
-            MailMessage message = GenerateMessage(to, subject, html);
-
-            _client.Send(message);
-        }
-
-        private MailMessage GenerateMessage(string to, string subject, string html)
-        {
-            MailMessage message = new MailMessage
-            {
-                From = _from,
-                Subject = subject,
-                Body = html,
-                IsBodyHtml = true,
-            };
-
-            message.To.Add(new MailAddress(to));
-
-            return message;
-        }
-
-        private MailMessage GenerateMessage(IEnumerable<string> to, string subject, string html)
+        private MailMessage GenerateMessage(IEnumerable<string> to, string subject, string html, string id)
         {
             MailMessage message = new MailMessage
             {
@@ -78,7 +68,14 @@ namespace Infrastructure.Mail
                 message.To.Add(new MailAddress(address));
             }
 
+            message.Headers.Add("Message-ID", $"<{id}>");
+
             return message;
+        }
+
+        private string GenerateMessageId()
+        {
+            return $"{Guid.NewGuid().ToString()}@scout.com";
         }
     }
 }

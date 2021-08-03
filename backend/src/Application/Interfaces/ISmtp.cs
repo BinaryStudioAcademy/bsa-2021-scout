@@ -5,7 +5,7 @@ namespace Application.Interfaces
 {
     public interface ISmtp
     {
-        Task SendAsync(string to, string subject, string body, string templateSlug = "default");
-        Task SendAsync(IEnumerable<string> to, string subject, string body, string templateSlug = "default");
+        Task<string> SendAsync(string to, string subject, string body, string templateSlug = "default");
+        Task<string> SendAsync(IEnumerable<string> to, string subject, string body, string templateSlug = "default");
     }
 }
