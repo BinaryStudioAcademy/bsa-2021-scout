@@ -1,7 +1,6 @@
 ﻿using Application.Common.Commands;
 using Application.Common.Queries;
 using Application.Users.Dtos;
-using Application.ApplicantCv.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
