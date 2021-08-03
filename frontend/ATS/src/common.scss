@@ -1,6 +1,7 @@
 $primary-color: #ee2a64;
 $primary-color-white: #f6f7f9;
 $primary-color-darkgrey: #919398;
+$accent-color: #190e49;
 $primary-font: Nunito;
 
 //button
@@ -58,7 +59,7 @@ $primary-font: Nunito;
 }
 
 a {
-  color: $primary-color;
+  color: $accent-color;
   text-decoration: none;
 
   &:hover {
