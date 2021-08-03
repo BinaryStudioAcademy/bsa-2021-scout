@@ -18,8 +18,8 @@ namespace WebAPI.Controllers
             var command = new LoginCommand(userLogin);
             return Ok(await Mediator.Send(command));
         }
-        [HttpGet("isauth")]
-        public async Task<ActionResult<UserDto>> IsAuth()
+        [HttpGet("isauthorised")]
+        public async Task<ActionResult<UserDto>> IsAuthorised()
         {
             var command = new IsAuthorisedCommand();
             return Ok(await Mediator.Send(command));

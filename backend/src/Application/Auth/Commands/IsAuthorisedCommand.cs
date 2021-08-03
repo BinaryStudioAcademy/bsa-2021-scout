@@ -15,10 +15,6 @@ namespace Application.Auth.Commands
 {
     public class IsAuthorisedCommand : IRequest<UserDto>
     {
-
-        public IsAuthorisedCommand()
-        {
-        }
     }
 
     public class IsAuthorisedCommandHandler : IRequestHandler<IsAuthorisedCommand, UserDto>
@@ -40,31 +36,10 @@ namespace Application.Auth.Commands
 
         public async Task<UserDto> Handle(IsAuthorisedCommand command, CancellationToken _)
         {
-            return _currentUserContext.CurrentUser;
-            //User user = await _userRepository.GetByEmailAsync(command.Email);
-
-            //if (user == null)
-            //{
-            //    throw new NotFoundException(nameof(User));
-            //}
-
-            //await _userRepository.LoadRolesAsync(user);
-
-            //if (!_securityService.ValidatePassword(command.Password, user.Password, user.PasswordSalt))
-            //{
-            //    throw new InvalidUsernameOrPasswordException();
-            //}
-
-            //UserDto userDto = _mapper.Map<UserDto>(user);
-
-            //var generateTokenCommand = new GenerateAccessTokenCommand(userDto);
-            //var token = await _mediator.Send(generateTokenCommand);
-
-            //return new AuthUserDto
-            //{
-            //    User = userDto,
-            //    Token = token
-            //};
+            if (_currentUserContext.IsAuthorised)
+                return await _currentUserContext.LoadUser();
+            else
+                throw new Exception("The user is anonymous");
         }
     }
 }

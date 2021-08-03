@@ -12,5 +12,6 @@ namespace Application.Interfaces
         bool IsAuthorised { get; set; }
         UserDto CurrentUser { get; set; }
         RoleDto[] Roles { get; set; }
+        Task<UserDto> LoadUser();
     }
 }
