@@ -6,6 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   exports: [ 
@@ -15,6 +17,8 @@ import { CommonModule } from '@angular/common';
     MatIconModule, 
     ReactiveFormsModule, 
     CommonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers:[HttpClientService],
 })

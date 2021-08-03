@@ -35,5 +35,12 @@ namespace Infrastructure.Repositories.Abstractions
 
             return await connection.QueryAsync<T>(sql);
         }
+
+        public async Task<T> GetByPropertyAsync(string property, string propertyValue)
+        {
+            using var connection = _connectionFactory.GetSqlConnection();
+            string sql = $"SELECT * FROM {_tableName} WHERE "+property+" = @propertyValue";
+            return await connection.QueryFirstOrDefaultAsync<T>(sql, new { propertyValue });
+        }
     }
 }

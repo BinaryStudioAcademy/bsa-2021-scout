@@ -9,5 +9,7 @@ namespace Domain.Interfaces
     {
         Task<T> GetAsync(string id);
         Task<IEnumerable<T>> GetEnumerableAsync();
+        Task<T> GetByPropertyAsync(string property, string propertyValue);
+
     }
 }
