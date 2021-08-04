@@ -15,6 +15,8 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatListModule} from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
+import { MultiselectComponent } from './components/multiselect/multiselect.component';
 
 @NgModule({
   exports: [ 
@@ -34,6 +36,8 @@ import {MatListModule} from '@angular/material/list';
     BrowserAnimationsModule,
     HeaderComponent,
     MatListModule,
+    MatSelectModule,
+    MultiselectComponent,
   ],
   imports:[
     MatButtonModule, 
@@ -47,15 +51,16 @@ import {MatListModule} from '@angular/material/list';
     MatFormFieldModule, 
     MatInputModule, 
     MatIconModule, 
-    ReactiveFormsModule, 
-    CommonModule,
+    ReactiveFormsModule,
+    MatSelectModule,
     BrowserModule, 
-    FormsModule, 
     BrowserAnimationsModule,
     MatListModule,
   ],
   providers:[HttpClientService],
-  declarations: [
+  declarations: 
+  [
+    MultiselectComponent,
     ButtonComponent,
     SearchFormComponent,
     HeaderComponent,

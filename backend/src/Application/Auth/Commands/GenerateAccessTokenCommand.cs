@@ -2,7 +2,7 @@
 using Application.Interfaces;
 using Application.Users.Dtos;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

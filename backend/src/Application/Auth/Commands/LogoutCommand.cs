@@ -1,6 +1,7 @@
 ﻿using Application.Auth.Exceptions;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Read;
+using Domain.Interfaces.Abstractions;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace Application.Auth.Commands
     public class LogoutCommand : IRequest<Unit>
     {
         public string RefreshToken { get; }
-        public string UserId { get;  }
+        public string UserId { get; }
 
         public LogoutCommand(string refreshToken, string userId)
         {

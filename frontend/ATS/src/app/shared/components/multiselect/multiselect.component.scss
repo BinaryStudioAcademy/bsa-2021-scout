@@ -1,0 +1,31 @@
+@import "../../../../common.scss";
+
+.topics {
+  overflow-x: scroll;
+  padding: 5px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .topic {
+    padding: 0px 5px;
+    border-radius: 2px;
+    font-size: 12px;
+    background-color: $primary-color;
+    color: white;
+    margin-right: 2px;
+    width: min-content;
+    height: min-content;
+    display: inline-flex;
+    align-items: center;
+
+    .icon {
+      width: 12px;
+      height: 12px;
+      font-size: 12px;
+      line-height: 12px;
+      cursor: pointer;
+    }
+  }
+}

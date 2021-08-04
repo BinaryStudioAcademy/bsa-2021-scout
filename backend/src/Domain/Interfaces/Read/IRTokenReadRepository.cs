@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using System.Threading.Tasks;
 
-namespace Domain.Interfaces
+namespace Domain.Interfaces.Read
 {
     public interface IRTokenReadRepository
     {
