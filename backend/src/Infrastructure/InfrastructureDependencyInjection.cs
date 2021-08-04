@@ -1,18 +1,21 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Read;
+using Domain.Interfaces.Abstractions;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Dapper.Services;
 using Infrastructure.Mongo.Interfaces;
 using Infrastructure.Mongo.Services;
 using Infrastructure.EF;
-using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.Read;
+using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Services;
+using Infrastructure.Mail;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Nest;
+using Domain.Interfaces;
 
 namespace Infrastructure
 {
@@ -30,6 +33,10 @@ namespace Infrastructure
             services.AddReadRepositories();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<ISecurityService, SecurityService>();
+
+            services.AddEvents();
+            services.AddMail();
+            services.AddJWT();
 
             services.AddScoped<IDomainEventService, DomainEventService>();
             return services;
@@ -79,6 +86,29 @@ namespace Infrastructure
             return services;
         }
 
+        private static IServiceCollection AddEvents(this IServiceCollection services)
+        {
+            services.AddScoped<IDomainEventService, DomainEventService>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddMail(this IServiceCollection services)
+        {
+            services.AddScoped<IMailBuilderService, MailBuilderService>();
+            services.AddScoped<ISmtpFactory, GmailSmtpFactory>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddJWT(this IServiceCollection services)
+        {
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<ISecurityService, SecurityService>();
+
+            return services;
+        }
+
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
@@ -99,6 +129,8 @@ namespace Infrastructure
 
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
             services.AddScoped<IElasticReadRepository<ApplicantToTags>, ElasticReadRepository<ApplicantToTags>>();
+            
+            services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
             return services;
         }
     }

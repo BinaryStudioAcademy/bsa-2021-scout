@@ -1,12 +1,12 @@
 ﻿using Dapper;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Read;
 using Infrastructure.Dapper.Interfaces;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Read
 {
-    public class RTokenReadRepository: IRTokenReadRepository
+    public class RTokenReadRepository : IRTokenReadRepository
     {
         private readonly IConnectionFactory _connectionFactory;
 

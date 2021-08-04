@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Threading.Tasks;
 using Domain.Common;
+using Domain.Interfaces.Abstractions;
+
 namespace Domain.Interfaces
 {
     public interface IElasticWriteRepository<T> : IWriteRepository<T> where T : Entity

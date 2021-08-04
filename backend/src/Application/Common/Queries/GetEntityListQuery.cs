@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using MediatR;
 using AutoMapper;
 using Domain.Common;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Application.Common.Models;
 
 namespace Application.Common.Queries
