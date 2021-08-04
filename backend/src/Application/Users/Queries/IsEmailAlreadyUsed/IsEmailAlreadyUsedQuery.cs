@@ -1,9 +1,7 @@
-﻿using Application.Users.Dtos;
-using Application.Common.Queries;
+﻿using Application.Common.Queries;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
-using System;
+using Domain.Interfaces.Abstractions;
 
 namespace Application.Users.Queries.GetUserById
 {

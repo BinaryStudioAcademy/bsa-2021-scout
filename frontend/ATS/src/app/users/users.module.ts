@@ -10,6 +10,7 @@ import { LoginRegistCommonComponent } from
   './components/login-regist-common/login-regist-common.component';
 import { LOCALE_ID } from '@angular/core';
 
+
 @NgModule({
   declarations: [
     LoginBoxComponent, 

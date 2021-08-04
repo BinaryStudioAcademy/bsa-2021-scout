@@ -5,16 +5,18 @@ import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'home', component: HomeComponent },
+  {
+    path: 'login',
+    pathMatch: 'full',
+    component: LoginComponent,
+  },
   { path: 'registration', component: RegistrationComponent },
 ];
 
 @NgModule({
   declarations: [],
   exports: [RouterModule],
-  imports: [
-    CommonModule,
-    RouterModule.forRoot(routes),
-  ],
+  imports: [CommonModule, RouterModule.forChild(routes)],
 })
-export class UserRoutingModule { }
+export class UserRoutingModule {}

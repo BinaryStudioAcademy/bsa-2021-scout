@@ -1,11 +1,9 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using AutoMapper;
 using Domain.Common;
-using Domain.Interfaces;
-using Application.Common.Models;
+using Domain.Interfaces.Abstractions;
 
 namespace Application.Common.Queries
 {
