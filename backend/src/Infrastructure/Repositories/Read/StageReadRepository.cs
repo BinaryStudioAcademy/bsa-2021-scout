@@ -1,3 +1,4 @@
+using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -5,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using Dapper;
 using Domain.Interfaces.Read;
 using Domain.Entities;
+using Application.Common.Exceptions;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Repositories.Abstractions;
 
@@ -18,69 +20,70 @@ namespace Infrastructure.Repositories.Read
         {
             SqlConnection connection = _connectionFactory.GetSqlConnection();
 
-            string vacancySql = $@"
-                SELECT Id, Title
-                FROM Vacancies
-                WHERE Id = @id;
-            ";
+            StringBuilder sql = new StringBuilder();
+            sql.Append("SELECT");
+            sql.Append(" Vacancies.Id,");
+            sql.Append(" Vacancies.Title,");
+            sql.Append(" Stages.*,");
+            sql.Append(" VacancyCandidates.*,");
+            sql.Append(" Applicants.*");
+            sql.Append(" FROM Vacancies");
+            sql.Append(" LEFT JOIN Stages ON Stages.VacancyId = Vacancies.Id");
+            sql.Append(" LEFT JOIN VacancyCandidates ON VacancyCandidates.StageId = Stages.Id");
+            sql.Append(" LEFT JOIN Applicants ON VacancyCandidates.ApplicantId = Applicants.Id");
+            sql.Append($" WHERE Vacancies.Id = '{vacancyId}'");
 
-            Vacancy vacancy = await connection.QueryFirstAsync<Vacancy>(vacancySql, new { id = vacancyId });
+            Dictionary<string, Stage> stageDict = new Dictionary<string, Stage>();
+            Vacancy cachedVacancy = null;
 
-            string stagesSql = $@"
-                SELECT *
-                FROM {_tableName} Stage
-                WHERE VacancyId = @vacancyId
-                ORDER BY Stage.[Index] ASC
-            ";
+            IEnumerable<Vacancy> resultAsEnumerable = await connection
+                .QueryAsync<Vacancy, Stage, VacancyCandidate, Applicant, Vacancy>(
+                    sql.ToString(),
+                    (vacancy, stage, candidate, applicant) =>
+                    {
+                        if (cachedVacancy == null)
+                        {
+                            cachedVacancy = vacancy;
+                            cachedVacancy.Stages = new List<Stage>();
+                        }
 
-            IEnumerable<Stage> stagesRaw = await connection.QueryAsync<Stage>(stagesSql, new { vacancyId = vacancyId });
+                        if (candidate != null && applicant != null)
+                        {
+                            candidate.Applicant = applicant;
+                        }
 
-            string candidatesSql = $@"
-                SELECT *
-                FROM VacancyCandidates
-                WHERE VacancyCandidates.StageId IN ({string.Join(", ", stagesRaw.Select(s => $"'{s.Id}'"))})
-            ";
+                        Stage stageEntry;
 
-            IEnumerable<VacancyCandidate> candidatesRaw = await connection.QueryAsync<VacancyCandidate>(candidatesSql);
+                        if (!stageDict.TryGetValue(stage.Id, out stageEntry))
+                        {
+                            stageEntry = stage;
+                            stageEntry.Candidates = new List<VacancyCandidate>();
+                            stageDict.Add(stageEntry.Id, stageEntry);
+                            cachedVacancy.Stages.Add(stageEntry);
+                        }
 
-            string applicantsSql = $@"
-                SELECT *
-                FROM Applicants
-                WHERE Applicants.Id IN ({string.Join(", ", candidatesRaw.Select(c => $"'{c.ApplicantId}'"))})
-            ";
+                        if (candidate != null)
+                        {
+                            stageEntry.Candidates.Add(candidate);
+                        }
 
-            IEnumerable<Applicant> applicants = await connection.QueryAsync<Applicant>(applicantsSql);
+                        return cachedVacancy;
+                    },
+                    splitOn: "Id,Id,Id"
+                );
+
+            Vacancy result = resultAsEnumerable.Distinct().FirstOrDefault();
+
+            if (result == null)
+            {
+                throw new NotFoundException(typeof(Vacancy), vacancyId);
+            }
 
             await connection.CloseAsync();
 
-            IEnumerable<VacancyCandidate> candidates = candidatesRaw.Join<VacancyCandidate, Applicant, string, VacancyCandidate>(
-                applicants,
-                c => c.ApplicantId,
-                a => a.Id,
-                (candidate, applicant) =>
-                {
-                    candidate.Applicant = applicant;
-                    return candidate;
-                }
-            );
+            result.Stages = result.Stages.OrderBy(s => s.Index).ToList();
 
-            IEnumerable<Stage> stages = stagesRaw.GroupJoin<Stage, VacancyCandidate, string, Stage>(
-                candidates,
-                s => s.Id,
-                c => c.StageId,
-                (stage, stageCandidates) =>
-                {
-                    stage.Candidates = stageCandidates.ToList();
-                    return stage;
-                }
-            );
-
-            return new Vacancy
-            {
-                Id = vacancy.Id,
-                Title = vacancy.Title,
-                Stages = stages.ToList(),
-            };
+            return result;
         }
     }
 }
