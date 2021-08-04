@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Domain.Interfaces.Abstractions;
 using Domain.Common;
+using Application.Common.Exceptions;
 using Infrastructure.Mongo.Interfaces;
 
 namespace Infrastructure.Repositories.Abstractions
@@ -22,8 +23,14 @@ namespace Infrastructure.Repositories.Abstractions
         {
             BsonDocument filter = new BsonDocument(new BsonElement("_id", id));
             IAsyncCursor<T> cursor = await _context.GetMongoConnection().GetCollection<T>(typeof(T).Name).FindAsync<T>(filter);
+            T result = await cursor.FirstOrDefaultAsync();
 
-            return await cursor.FirstAsync();
+            if (result == null)
+            {
+                throw new NotFoundException(typeof(T), id);
+            }
+
+            return result;
         }
 
         public async Task<IEnumerable<T>> GetEnumerableAsync()

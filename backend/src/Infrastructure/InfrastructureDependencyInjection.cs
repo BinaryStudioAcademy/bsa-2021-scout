@@ -110,6 +110,7 @@ namespace Infrastructure
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
+            services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
 
             return services;
