@@ -13,6 +13,8 @@ import { SearchFormComponent } from './components/search-form/search-form.compon
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule} from '@angular/material/list';
@@ -56,11 +58,12 @@ import { MultiselectComponent } from './components/multiselect/multiselect.compo
     MatFormFieldModule, 
     MatInputModule, 
     MatIconModule, 
-    ReactiveFormsModule,
-    MatSelectModule,
-    BrowserModule, 
-    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatListModule,
+    BrowserAnimationsModule,
+    BrowserModule, 
+    MatSelectModule,
   ],
   providers:[HttpClientService],
   declarations: 

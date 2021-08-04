@@ -21,7 +21,7 @@ export class NotificationService {
     _toastr.toastrConfig.positionClass = this._toastrPosition;
   }
 
-  public showSuccessMessage(message: string, title: string, options?: {}) {
+  public showSuccessMessage(message: string, title?: string, options?: {}) {
     this._toastr.success(
       message,
       title,
@@ -29,7 +29,7 @@ export class NotificationService {
     );
   }
 
-  public showErrorMessage(message: string, title: string, options?: {}) {
+  public showErrorMessage(message: string, title?: string, options?: {}) {
     this._toastr.error(
       message,
       title,
@@ -37,7 +37,7 @@ export class NotificationService {
     );
   }
 
-  public showInfoMessage(message: string, title: string, options?: {}) {
+  public showInfoMessage(message: string, title?: string, options?: {}) {
     this._toastr.info(
       message,
       title,
@@ -45,11 +45,11 @@ export class NotificationService {
     );
   }
 
-  public showDefaultMessage(message: string, title: string, options?: {}) {
+  public showDefaultMessage(message: string, title?: string, options?: {}) {
     this._toastr.show(message, title, options);
   }
 
-  public showWarningMessage(message: string, title: string, options?: {}) {
+  public showWarningMessage(message: string, title?: string, options?: {}) {
     this._toastr.warning(message, title, options);
   }
 }
