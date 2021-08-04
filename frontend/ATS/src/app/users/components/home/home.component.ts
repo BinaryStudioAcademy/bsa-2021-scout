@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { VacancyWidgetInfo } from 'src/app/shared/models/vacancy/vacancy-widget';
-import { VacancyInfo } from 'src/app/shared/models/vacancy/vacancy-info';
 
 @Component({
   selector: 'app-home',
@@ -29,6 +28,19 @@ export class HomeComponent implements OnInit{
     ],
   };  
 
+  public recrutWidget : VacancyWidgetInfo = {
+    iconName: 'monitor', 
+    count:4, 
+    description:'Recruiter', 
+    list:[],
+  };  
+
+  public processedWidget : VacancyWidgetInfo = {
+    iconName: 'verified_user', 
+    count:12, 
+    description:'Processed', 
+    list:[],
+  };  
 
   public widgets : any [] = [this.testWidget];
 
