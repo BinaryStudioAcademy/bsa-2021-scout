@@ -1,0 +1,14 @@
+mat-sidenav {
+    max-width: 225px;
+}
+
+.main_content {
+    width:100%; 
+    height: 100vh; 
+    background: #efefef;
+}
+
+:host::ng-deep .mat-drawer-inner-container{
+    overflow-y: auto;
+    overflow-x: hidden;
+  }

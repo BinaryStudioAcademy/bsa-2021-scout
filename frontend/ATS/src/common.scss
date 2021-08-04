@@ -2,6 +2,10 @@ $primary-color: #ee2a64;
 $primary-color-white: #f6f7f9;
 $primary-font: Nunito;
 
+.mat-toolbar{
+    background-color:#291965;
+    height:120px;
+}
 //button
 .mat-button.mat-button {
   border-radius: 70px;
