@@ -25,7 +25,11 @@ namespace Infrastructure.Repositories.Read
             sql.Append("SELECT *");
             sql.Append(" FROM VacancyCandidates");
             sql.Append(" LEFT JOIN Applicants ON VacancyCandidates.ApplicantId = Applicants.Id");
-            sql.Append(" LEFT JOIN Stages ON VacancyCandidates.StageId = Stages.Id");
+            sql.Append(" LEFT JOIN Stages ON EXISTS");
+            sql.Append("(SELECT Id");
+            sql.Append(" FROM CandidateToStages");
+            sql.Append(" WHERE CandidateToStages.CandidateId = VacancyCandidates.Id");
+            sql.Append(" AND CandidateToStages.StageId = Stages.Id AND CandidateToStages.DateRemoved IS NULL)");
             sql.Append($" WHERE VacancyCandidates.Id = {id}");
 
             IEnumerable<VacancyCandidate> resultAsArray = await connection

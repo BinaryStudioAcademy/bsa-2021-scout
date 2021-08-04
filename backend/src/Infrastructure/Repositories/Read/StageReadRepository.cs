@@ -29,7 +29,11 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" Applicants.*");
             sql.Append(" FROM Vacancies");
             sql.Append(" LEFT JOIN Stages ON Stages.VacancyId = Vacancies.Id");
-            sql.Append(" LEFT JOIN VacancyCandidates ON VacancyCandidates.StageId = Stages.Id");
+            sql.Append(" LEFT JOIN VacancyCandidates ON EXISTS");
+            sql.Append("(SELECT Id");
+            sql.Append(" FROM CandidateToStages");
+            sql.Append(" WHERE CandidateToStages.CandidateId = VacancyCandidates.Id");
+            sql.Append(" AND CandidateToStages.StageId = Stages.Id)");
             sql.Append(" LEFT JOIN Applicants ON VacancyCandidates.ApplicantId = Applicants.Id");
             sql.Append($" WHERE Vacancies.Id = '{vacancyId}'");
 

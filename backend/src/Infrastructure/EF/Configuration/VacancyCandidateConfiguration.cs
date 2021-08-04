@@ -18,13 +18,6 @@ namespace Infrastructure.EF.Configuration
                 .HasForeignKey(vc => vc.ApplicantId)
                 .HasConstraintName("candidate_applicant_FK")
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne(vc => vc.Stage)
-                .WithMany(s => s.Candidates)
-                .HasForeignKey(vc => vc.StageId)
-                .HasConstraintName("candidate_stage_FK")
-                .OnDelete(DeleteBehavior.Restrict);
-
         }
     }
 }

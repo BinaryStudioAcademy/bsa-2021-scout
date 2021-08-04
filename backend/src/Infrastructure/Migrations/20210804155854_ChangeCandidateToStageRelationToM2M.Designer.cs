@@ -4,14 +4,16 @@ using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210804155854_ChangeCandidateToStageRelationToM2M")]
+    partial class ChangeCandidateToStageRelationToM2M
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -441,6 +443,9 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("SecondContactDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("StageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("ThirdContactDate")
                         .HasColumnType("datetime2");
 
@@ -449,6 +454,8 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ApplicantId");
 
                     b.HasIndex("Id");
+
+                    b.HasIndex("StageId");
 
                     b.ToTable("VacancyCandidates");
                 });

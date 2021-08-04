@@ -19,11 +19,11 @@ namespace Domain.Entities
         public string ContactedBy { get; set; }
         public string Comments { get; set; }
         public double Experience { get; set; }
-        public string StageId { get; set; }
         public string ApplicantId { get; set; }
 
         public Applicant Applicant { get; set; }
         public Stage Stage { get; set; }
+        public ICollection<CandidateToStage> CandidateToStages { get; set; }
         public IList<DomainEvent> DomainEvents { get; set; }
     }
 }
