@@ -61,14 +61,14 @@ namespace Infrastructure.Repositories.Read
                         if (!stageDict.TryGetValue(stage.Id, out stageEntry))
                         {
                             stageEntry = stage;
-                            stageEntry.Candidates = new List<VacancyCandidate>();
+                            stageEntry.CandidateToStages = new List<CandidateToStage>();
                             stageDict.Add(stageEntry.Id, stageEntry);
                             cachedVacancy.Stages.Add(stageEntry);
                         }
 
                         if (candidate != null)
                         {
-                            stageEntry.Candidates.Add(candidate);
+                            stageEntry.CandidateToStages.Add(new CandidateToStage { Candidate = candidate });
                         }
 
                         return cachedVacancy;

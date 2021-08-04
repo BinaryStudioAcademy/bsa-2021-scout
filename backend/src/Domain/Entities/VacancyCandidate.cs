@@ -22,8 +22,8 @@ namespace Domain.Entities
         public string ApplicantId { get; set; }
 
         public Applicant Applicant { get; set; }
-        public Stage Stage { get; set; }
         public ICollection<CandidateToStage> CandidateToStages { get; set; }
+        public ICollection<CandidateReview> Reviews { get; set; }
         public IList<DomainEvent> DomainEvents { get; set; }
     }
 }

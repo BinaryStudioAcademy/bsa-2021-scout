@@ -12,6 +12,6 @@ namespace Application.Stages.Dtos
         public int Index { get; set; }
         public bool IsReviewable { get; set; }
         public string VacancyId { get; set; }
-        public ICollection<VacancyCandidateWithApplicantDto> Candidates { get; set; }
+        public IEnumerable<VacancyCandidateWithApplicantDto> Candidates { get; set; }
     }
 }

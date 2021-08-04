@@ -26,6 +26,8 @@ namespace Infrastructure.EF
         public DbSet<VacancyCandidate> VacancyCandidates { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<CandidateToStage> CandidateToStages { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<CandidateReview> CandidateReviews { get; set; }
 
         private readonly IDomainEventService _domainEventService;
 

@@ -38,7 +38,7 @@ namespace Infrastructure.Repositories.Read
                     (candidate, applicant, stage) =>
                     {
                         candidate.Applicant = applicant;
-                        candidate.Stage = stage;
+                        // candidate.Stage = stage;
 
                         return candidate;
                     },
