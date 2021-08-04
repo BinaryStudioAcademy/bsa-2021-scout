@@ -10,6 +10,7 @@ using Infrastructure.EF;
 using Infrastructure.Repositories.Read;
 using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Services;
+using Infrastructure.Mail;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -28,9 +29,9 @@ namespace Infrastructure
             services.AddWriteRepositories();
             services.AddReadRepositories();
 
-            services.AddScoped<IDomainEventService, DomainEventService>();
-            services.AddScoped<IJwtService, JwtService>();
-            services.AddScoped<ISecurityService, SecurityService>();
+            services.AddEvents();
+            services.AddMail();
+            services.AddJWT();
 
             return services;
         }
@@ -66,11 +67,34 @@ namespace Infrastructure
             return services;
         }
 
+        private static IServiceCollection AddEvents(this IServiceCollection services)
+        {
+            services.AddScoped<IDomainEventService, DomainEventService>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddMail(this IServiceCollection services)
+        {
+            services.AddScoped<IMailBuilderService, MailBuilderService>();
+            services.AddScoped<ISmtpFactory, GmailSmtpFactory>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddJWT(this IServiceCollection services)
+        {
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<ISecurityService, SecurityService>();
+
+            return services;
+        }
+
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
-            
+
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
             services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
 
@@ -80,14 +104,13 @@ namespace Infrastructure
         private static IServiceCollection AddReadRepositories(this IServiceCollection services)
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
-
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
-
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
+            services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
 
             return services;
         }

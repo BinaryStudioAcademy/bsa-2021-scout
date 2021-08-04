@@ -3,11 +3,19 @@ using Application.Common.Queries;
 using Application.Users.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Application.Interfaces;
 
 namespace WebAPI.Controllers
 {
     public class UsersController : ApiController
     {
+        private ISmtp smtp;
+
+        public UsersController(ISmtp smtp)
+        {
+            this.smtp = smtp;
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
