@@ -35,7 +35,7 @@
       [id]="stage.id"
       cdkDropList
       [cdkDropListData]="stage.candidates"
-      [cdkDropListConnectedTo]="listIds"
+      [cdkDropListConnectedTo]="getLinkedWith(stage.id)"
       (cdkDropListDropped)="onMove($event)"
       *ngFor="let stage of data"
     >

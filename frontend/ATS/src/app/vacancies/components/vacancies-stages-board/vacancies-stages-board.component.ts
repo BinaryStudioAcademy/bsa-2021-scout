@@ -123,6 +123,24 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
       );
   }
 
+  public getLinkedWith(id: string): string[] {
+    const index: number = this.listIds.findIndex((lid) => lid === id);
+    const prevIndex: number = Math.max(index - 1, 0);
+    const nextIndex: number = Math.min(index + 1, this.listIds.length - 1);
+
+    const indexes: number[] = [prevIndex, index, nextIndex];
+
+    const distinctIndexes: number[] = [];
+
+    indexes.forEach((i) => {
+      if (!distinctIndexes.includes(i)) {
+        distinctIndexes.push(i);
+      }
+    });
+
+    return indexes.map((i) => this.listIds[i]);
+  }
+
   private prepareLists(): void {
     this.listIds = this.data.map(({ id }) => id);
   }
