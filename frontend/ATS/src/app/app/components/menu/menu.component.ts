@@ -8,12 +8,13 @@ import { SidenavService } from 'src/app/shared/services/sidenav.service';
   styleUrls: ['./menu.component.scss'],
   animations: [onSideNavChange, animateText],
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
 
   public hideMenu = false;
-  public sideNavState: boolean = true;
-  public linkText: boolean = true;
 
+  public sideNavState: boolean = true;
+
+  public linkText: boolean = true;
 
   constructor(private _sidenavService: SidenavService) { 
     //
@@ -27,9 +28,4 @@ export class MenuComponent implements OnInit {
     }, 200);
     this._sidenavService.sideNavState$.next(this.sideNavState);
   }
-  ngOnInit(): void {
-    console.log();
-  }
-
-
 }

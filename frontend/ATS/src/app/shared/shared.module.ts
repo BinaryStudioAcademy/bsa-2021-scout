@@ -7,12 +7,14 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatBadgeModule} from '@angular/material/badge';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from './components/button/button.component';
+import { HeaderComponent } from './components/header/header.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   exports: [ 
@@ -30,6 +32,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule, 
     FormsModule, 
     BrowserAnimationsModule,
+    HeaderComponent,
+    MatListModule,
   ],
   imports:[
     MatButtonModule, 
@@ -48,11 +52,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule, 
     FormsModule, 
     BrowserAnimationsModule,
+    MatListModule,
   ],
   providers:[HttpClientService],
   declarations: [
     ButtonComponent,
     SearchFormComponent,
+    HeaderComponent,
   ],
 })
 export class SharedModule {}

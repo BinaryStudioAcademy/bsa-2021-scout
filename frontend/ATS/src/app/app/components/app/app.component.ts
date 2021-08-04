@@ -9,7 +9,7 @@ import { onMainContentChange } from '../../animations/animation';
   styleUrls: ['./app.component.scss'],
   animations: [onMainContentChange],
 })
-export class AppComponent implements OnInit {
+export class AppComponent{
   title = 'ATS';
 
   public onSideNavChange: boolean =true;
@@ -19,9 +19,5 @@ export class AppComponent implements OnInit {
       console.log(res);
       this.onSideNavChange = res;
     });
-  }
-
-  ngOnInit(): void {
-    console.log();
   }
 }

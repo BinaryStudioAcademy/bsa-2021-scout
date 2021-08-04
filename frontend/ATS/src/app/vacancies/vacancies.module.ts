@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { HeaderModule } from '../header/header.module';
 import { SharedModule } from '../shared/shared.module';
 import { VacanciesListComponent } from './components/vacancies-list/vacancies-list.component';
 @NgModule({
@@ -7,7 +6,6 @@ import { VacanciesListComponent } from './components/vacancies-list/vacancies-li
     VacanciesListComponent,
   ],
   imports:[
-    HeaderModule,
     SharedModule,
   ],exports:[
     VacanciesListComponent,

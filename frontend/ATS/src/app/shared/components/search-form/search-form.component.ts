@@ -5,12 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss'],
 })
-export class SearchFormComponent implements OnInit {
+export class SearchFormComponent {
   value = '';
   constructor() { }
-
-  ngOnInit(): void {
-    console.log();
-  }
-
 }

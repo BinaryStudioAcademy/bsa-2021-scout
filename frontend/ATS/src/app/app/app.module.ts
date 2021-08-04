@@ -8,24 +8,24 @@ import { ToastrModule } from 'ngx-toastr';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
 import { SharedModule } from '../shared/shared.module';
-import { HeaderModule } from '../header/header.module';
-import { MainPageElementsModule } from '../main-page-elements/main-page-elements.module';
 import { VacanciesModule } from '../vacancies/vacancies.module';
 import { UsersModule } from '../users/users.module';
 import { SidenavService } from '../shared/services/sidenav.service';
+import { MenuComponent } from './components/menu/menu.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    MenuComponent,
+  ],
   imports: [
     BrowserModule,
     RoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,  
     ToastrModule.forRoot(),
-    MainPageElementsModule,
     MatSidenavModule,
     MatIconModule,
-    HeaderModule,
     SharedModule,
     VacanciesModule,
     UsersModule,

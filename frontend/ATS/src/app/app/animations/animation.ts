@@ -4,35 +4,33 @@ import {trigger,state,style,transition,animate,animateChild,query} from '@angula
 export const onSideNavChange = trigger('onSideNavChange', [
   state('close',
     style({
-      'max-width': '80px',
-      'padding':'0 10px',
+      'max-width': '90px',
+      'padding':'0 15px',
     }),
   ),
   state('open',
     style({
-      'max-width': '180px',
+      'max-width': '225px',
     }),
   ),
   transition('close => open', animate('350ms ease-in')),
   transition('open => close', animate('350ms ease-in')),
 ]);
-
 
 export const onMainContentChange = trigger('onMainContentChange', [
   state('close',
     style({
-      'margin-left': '100px',
+      'margin-left': '120px',
     }),
   ),
   state('open',
     style({
-      'margin-left': '180px',
+      'margin-left': '225px',
     }),
   ),
   transition('close => open', animate('350ms ease-in')),
   transition('open => close', animate('350ms ease-in')),
 ]);
-
 
 export const animateText = trigger('animateText', [
   state('hide',
