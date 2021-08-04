@@ -96,6 +96,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
 
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
+            services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
 
             return services;
         }
@@ -103,11 +104,12 @@ namespace Infrastructure
         private static IServiceCollection AddReadRepositories(this IServiceCollection services)
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
-
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
-
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
+            services.AddScoped<IStageReadRepository, StageReadRepository>();
+            services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
+            services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
 
             return services;

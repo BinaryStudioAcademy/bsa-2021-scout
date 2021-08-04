@@ -1,5 +1,7 @@
 $primary-color: #ee2a64;
 $primary-color-white: #f6f7f9;
+$primary-color-darkgrey: #919398;
+$accent-color: #4f1cb1;
 $primary-font: Nunito;
 
 .mat-toolbar{
@@ -58,6 +60,23 @@ $primary-font: Nunito;
 
 .mat-form-field-infix {
   border: none;
+}
+
+a {
+  color: $accent-color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.meta {
+  color: $primary-color-darkgrey;
+
+  &:not(&.only-color) {
+    font-size: 12px;
+  }
 }
 
 .mat-pseudo-checkbox.mat-pseudo-checkbox-checked {
