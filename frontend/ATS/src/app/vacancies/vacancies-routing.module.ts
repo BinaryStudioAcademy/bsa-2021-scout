@@ -8,7 +8,7 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
 
 const routes: Routes = [
   {
-    path: 'applicants/:id',
+    path: 'candidates/:id',
     pathMatch: 'full',
     component: VacanciesStagesBoardComponent,
   },

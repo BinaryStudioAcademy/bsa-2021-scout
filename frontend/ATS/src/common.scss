@@ -4,6 +4,10 @@ $primary-color-darkgrey: #919398;
 $accent-color: #4f1cb1;
 $primary-font: Nunito;
 
+.mat-toolbar{
+    background-color:#291965;
+    height:120px;
+}
 //button
 .mat-button.mat-button {
   border-radius: 70px;
