@@ -14,6 +14,6 @@ import { LoginRegistCommonComponent }
     UserRoutingModule,
     SharedModule,
   ],
-  providers: [LoginRegistCommonComponent],
+  providers: [LoginRegistCommonComponent ],
 })
 export class UsersModule { }
