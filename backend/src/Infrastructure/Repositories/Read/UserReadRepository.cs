@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Read;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Repositories.Abstractions;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace Infrastructure.Repositories.Read
 
             var userRoles = await connection.QueryAsync<UserToRole, Role, UserToRole>(sql.ToString(),
             (ur, r) =>
-            {               
+            {
                 ur.Role = r;
                 return ur;
             },

@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Domain.Common;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 
 namespace Application.Common.Commands
 {

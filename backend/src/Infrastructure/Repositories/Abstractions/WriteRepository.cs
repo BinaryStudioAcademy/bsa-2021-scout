@@ -1,5 +1,5 @@
 ﻿using Domain.Common;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using System;

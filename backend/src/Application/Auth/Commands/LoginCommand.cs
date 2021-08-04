@@ -5,7 +5,7 @@ using Application.Interfaces;
 using Application.Users.Dtos;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Read;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
