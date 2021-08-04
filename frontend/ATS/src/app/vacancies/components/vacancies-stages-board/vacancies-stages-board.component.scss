@@ -23,6 +23,8 @@
       position: relative;
       $avatars-count: 7;
       $avatars-space: 25px;
+      $dim: 40px;
+      height: $dim;
 
       @for $i from 1 through $avatars-count {
         .avatar-wrp:nth-child(#{$i}) {
@@ -31,7 +33,6 @@
       }
 
       .avatar-wrp {
-        $dim: 40px;
         border-radius: 50%;
         width: $dim;
         height: $dim;
