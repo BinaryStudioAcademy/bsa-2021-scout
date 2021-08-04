@@ -12,7 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
-    MenuComponent
+    MenuComponent,
   ],
   imports: [
     CommonModule,
@@ -21,10 +21,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RoutingModule,
     MatIconModule,
     SharedModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   exports:[
-    MenuComponent
-  ]
+    MenuComponent,
+  ],
 })
 export class MainPageElementsModule { }

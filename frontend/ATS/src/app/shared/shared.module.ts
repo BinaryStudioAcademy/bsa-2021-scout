@@ -52,7 +52,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   providers:[HttpClientService],
   declarations: [
     ButtonComponent,
-    SearchFormComponent
+    SearchFormComponent,
   ],
 })
 export class SharedModule {}

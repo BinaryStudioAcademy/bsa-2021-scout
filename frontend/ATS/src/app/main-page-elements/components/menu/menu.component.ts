@@ -6,7 +6,7 @@ import { SidenavService } from 'src/app/shared/services/sidenav.service';
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
-  animations: [onSideNavChange, animateText]
+  animations: [onSideNavChange, animateText],
 })
 export class MenuComponent implements OnInit {
 
@@ -20,15 +20,15 @@ export class MenuComponent implements OnInit {
   }
 
   onSinenavToggle() {
-    this.sideNavState = !this.sideNavState
+    this.sideNavState = !this.sideNavState;
     
     setTimeout(() => {
       this.linkText = this.sideNavState;
-    }, 200)
-    this._sidenavService.sideNavState$.next(this.sideNavState)
+    }, 200);
+    this._sidenavService.sideNavState$.next(this.sideNavState);
   }
   ngOnInit(): void {
-    console.log()
+    console.log();
   }
 
 

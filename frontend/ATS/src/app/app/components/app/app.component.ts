@@ -7,7 +7,7 @@ import { onMainContentChange } from '../../animations/animation';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [onMainContentChange]
+  animations: [onMainContentChange],
 })
 export class AppComponent implements OnInit {
   title = 'ATS';
@@ -16,9 +16,9 @@ export class AppComponent implements OnInit {
 
   constructor(private _sidenavService: SidenavService) {
     this._sidenavService.sideNavState$.subscribe( res => {
-      console.log(res)
+      console.log(res);
       this.onSideNavChange = res;
-    })
+    });
   }
 
   ngOnInit(): void {

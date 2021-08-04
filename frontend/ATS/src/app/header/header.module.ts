@@ -6,14 +6,14 @@ import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
-    HeaderComponent
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
   ],
   exports:[
-    HeaderComponent
-  ]
+    HeaderComponent,
+  ],
 })
 export class HeaderModule { }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { VacanciesListComponent } from '../vacancies/components/vacancies-list/vacancies-list.component';
+import{VacanciesListComponent}from'../vacancies/components/vacancies-list/vacancies-list.component';
 import { UserRoutingModule } from '../users/user-routing.module';
 import { AppRoute } from './AppRoute';
 
@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: AppRoute.Analytics, component: VacanciesListComponent, pathMatch: 'full' },
   { path: AppRoute.TaskManagement, component: VacanciesListComponent, pathMatch: 'full' },
   { path: AppRoute.Templates, component: VacanciesListComponent, pathMatch: 'full' },
-  { path: '**', redirectTo: AppRoute.Home }
+  { path: '**', redirectTo: AppRoute.Home },
 ];
 
 @NgModule({
