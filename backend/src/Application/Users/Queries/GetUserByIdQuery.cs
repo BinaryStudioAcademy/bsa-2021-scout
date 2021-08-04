@@ -3,7 +3,6 @@ using Application.Common.Queries;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
-using System;
 
 namespace Application.Users.Queries.GetUserById
 {

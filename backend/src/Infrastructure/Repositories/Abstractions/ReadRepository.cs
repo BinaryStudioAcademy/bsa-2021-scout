@@ -38,6 +38,7 @@ namespace Infrastructure.Repositories.Abstractions
 
             var entities = await connection.QueryAsync<T>(sql);
             await connection.CloseAsync();
+
             return entities;
         }
     }
