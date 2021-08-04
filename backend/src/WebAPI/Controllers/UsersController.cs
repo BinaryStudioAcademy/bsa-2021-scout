@@ -4,9 +4,14 @@ using Application.Users.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using WebAPI.Extensions;
 
 namespace WebAPI.Controllers
 {
+    [Route("api/[controller]")]
+    [Authorize]
+    [ApiController]
     public class UsersController : ApiController
     {
         private ISmtp smtp;
@@ -20,6 +25,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetUser(string id)
         {
             var query = new GetEntityByIdQuery<UserDto>(id);
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpGet("fromToken")]
+        public async Task<ActionResult<UserDto>> GetUserFromToken()
+        {
+            var query = new GetEntityByIdQuery<UserDto>(this.GetUserIdFromToken());
             return Ok(await Mediator.Send(query));
         }
 
