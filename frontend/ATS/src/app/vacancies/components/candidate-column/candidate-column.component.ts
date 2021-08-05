@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 // This line can't be shorter
 // eslint-disable-next-line max-len
@@ -13,4 +13,10 @@ export class CandidateColumnComponent {
   @Input() public isDraggable: boolean = false;
   @Input() public data: ShortVacancyCandidateWithApplicant[] = [];
   @Input() public title: string = 'Data';
+  @Output() public clickAction: EventEmitter<string> =
+  new EventEmitter<string>();
+
+  public emitClick(id: string): void {
+    this.clickAction.emit(id);
+  }
 }

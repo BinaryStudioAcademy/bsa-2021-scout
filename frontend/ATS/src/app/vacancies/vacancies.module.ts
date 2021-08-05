@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RoutingModule } from '../routing/routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -12,6 +13,10 @@ import { CandidateCardComponent } from './components/candidate-card/candidate-ca
 import { CandidateColumnComponent } from './components/candidate-column/candidate-column.component';
 import { VacanciesListComponent } from './components/vacancies-list/vacancies-list.component';
 import { OneCandidateComponent } from './components/one-candidate/one-candidate.component';
+
+// This line can't be shorter
+// eslint-disable-next-line max-len
+import { OneCandidateModalComponent } from './components/one-candidate-modal/one-candidate-modal.component';
 
 // This line can't be shorter
 // eslint-disable-next-line max-len
@@ -24,6 +29,7 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     VacanciesStagesBoardComponent,
     VacanciesListComponent,
     OneCandidateComponent,
+    OneCandidateModalComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +39,7 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     MatTabsModule,
     MatProgressBarModule,
     MatDividerModule,
+    MatDialogModule,
     DragDropModule,
     SharedModule,
   ],
@@ -42,6 +49,7 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     VacanciesStagesBoardComponent,
     VacanciesListComponent,
     OneCandidateComponent,
+    OneCandidateModalComponent,
   ],
 })
 export class VacanciesModule {}

@@ -43,6 +43,7 @@
         [title]="stage.name"
         [data]="stage.candidates"
         [isDraggable]="true"
+        (clickAction)="openCandidateModal($event)"
       ></app-candidate-column>
     </div>
   </div>

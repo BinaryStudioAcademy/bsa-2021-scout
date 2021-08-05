@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import moment from 'moment';
 
 // This line can't be shorter
@@ -12,9 +12,17 @@ import { ShortVacancyCandidateWithApplicant } from 'src/app/shared/models/vacanc
 })
 export class CandidateCardComponent {
   @Input() public isDraggable: boolean = false;
+  @Input() public isClickable: boolean = false;
   @Input() public candidate!: ShortVacancyCandidateWithApplicant;
+  @Output() public clickAction: EventEmitter<void> = new EventEmitter<void>();
 
   public fromNow(date: Date): string {
     return moment(date).fromNow();
+  }
+
+  public emitClick(): void {
+    if (this.isClickable) {
+      this.clickAction.emit();
+    }
   }
 }

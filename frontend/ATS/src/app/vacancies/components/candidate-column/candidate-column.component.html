@@ -12,6 +12,8 @@
     <app-candidate-card
       [candidate]="card"
       [isDraggable]="isDraggable"
+      [isClickable]="true"
+      (clickAction)="emitClick(card.id)"
       *ngFor="let card of data"
     ></app-candidate-card>
   </div>

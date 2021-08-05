@@ -35,7 +35,7 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" FROM CandidateToStages");
             sql.Append(" WHERE CandidateToStages.CandidateId = VacancyCandidates.Id");
             sql.Append(" AND CandidateToStages.StageId = Stages.Id");
-            sql.Append(" AND CandidateToStages.DateRemoved IS NOT NULL)");
+            sql.Append(" AND CandidateToStages.DateRemoved IS NULL)");
             sql.Append(" LEFT JOIN CandidateReviews ON CandidateReviews.CandidateId = VacancyCandidates.Id");
             sql.Append(" LEFT JOIN Applicants ON VacancyCandidates.ApplicantId = Applicants.Id");
             sql.Append($" WHERE Vacancies.Id = '{vacancyId}'");

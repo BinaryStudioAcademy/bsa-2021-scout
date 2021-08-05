@@ -11,7 +11,7 @@ import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candida
   styleUrls: ['./one-candidate.component.scss'],
 })
 export class OneCandidateComponent implements OnInit, OnDestroy {
-  @Input() public id: string = 'f722427a-c87d-488a-951b-b80da52ceb84';
+  @Input() public id!: string;
 
   public data!: FullVacancyCandidate;
   public loading: boolean = true;
