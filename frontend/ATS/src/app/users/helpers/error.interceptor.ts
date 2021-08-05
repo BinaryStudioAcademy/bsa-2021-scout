@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/auth.service';
+import { TokenErrorType } from '../models/auth/token-error-type';
 
 
 @Injectable()
@@ -40,17 +41,18 @@ export class ErrorInterceptor implements HttpInterceptor {
           const errorInfo: { type: string; description: string} 
           = JSON.parse(response.error.message);
           if (errorInfo) {
-            if (errorInfo.type === 'InvalidToken' && !this.authService.areTokensExist()) {
-              return throwError(response.error.error);
+            if (errorInfo.type === TokenErrorType.InvalidToken && 
+                !this.authService.areTokensExist()) {
+              return throwError(errorInfo);
             }
-            if (errorInfo.type === 'ExpiredRefreshToken') {
+            if (errorInfo.type === TokenErrorType.ExpiredRefreshToken) {
               this.router.navigate(['/']);
               this.authService.logout().subscribe(
                 () => console.log('expired refresh token is deleted'), 
-                (error) => console.log(error));;
-              return throwError(response.error.error);
+                (error) => console.log(error));
+              return throwError(errorInfo);
             }
-          }        
+          }         
         }
 
         const error = response.error.message
