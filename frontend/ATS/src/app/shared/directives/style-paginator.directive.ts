@@ -128,6 +128,7 @@ export class StylePaginatorDirective {
   private switchPage(i: number): void {
     this._currentPage = i;
     this.matPag.pageIndex = i;
+    this.matPag.page.emit();
     this.initPageRange();
   }
 
@@ -143,7 +144,8 @@ export class StylePaginatorDirective {
     });
 
     this.matPag.page.subscribe((v) => {
-      this.switchPage(v.pageIndex);
+      this._currentPage = this.matPag.pageIndex;
+      this.initPageRange();
     });
   }
 }
