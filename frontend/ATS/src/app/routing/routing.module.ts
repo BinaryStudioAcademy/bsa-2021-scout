@@ -4,7 +4,7 @@ import{VacanciesListComponent}from'../vacancies/components/vacancies-list/vacanc
 import { UserRoutingModule } from '../users/user-routing.module';
 import { VacanciesRoutingModule } from '../vacancies/vacancies-routing.module';
 import { AppRoute } from './AppRoute';
-
+ 
 const routes: Routes = [
   { path: AppRoute.Home, component: VacanciesListComponent, pathMatch: 'full' },
   { path: AppRoute.Vacancies, component: VacanciesListComponent, pathMatch: 'full' },
