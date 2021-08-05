@@ -14,19 +14,28 @@ import { CandidateColumnComponent } from './components/candidate-column/candidat
 import { VacanciesStagesBoardComponent } from './components/vacancies-stages-board/vacancies-stages-board.component';
 
 import { VacanciesListComponent } from './components/vacancies-list/vacancies-list.component';
-
+import { VacanciesTableComponent } from './components/vacancies-table/vacancies-table.component';
+import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   declarations: [
     CandidateCardComponent,
     CandidateColumnComponent,
     VacanciesStagesBoardComponent,
     VacanciesListComponent,
+    VacanciesTableComponent,
+    StylePaginatorDirective,
   ],
   imports: [
+    MatDialogModule,
     CommonModule,
     RoutingModule,
     MatIconModule,
     MatButtonModule,
+    MatPaginatorModule,
+    MatTableModule,
     MatTabsModule,
     DragDropModule,
     SharedModule,
@@ -36,6 +45,7 @@ import { VacanciesListComponent } from './components/vacancies-list/vacancies-li
     CandidateColumnComponent,
     VacanciesStagesBoardComponent,
     VacanciesListComponent,
+    VacanciesTableComponent,
   ],
 })
 export class VacanciesModule {}

@@ -14,7 +14,8 @@ import { VacancyWidgetComponent } from '../vacancies/components/vacancy-widget/v
 import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
 import { MenuComponent } from './components/menu/menu.component';
-
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 @NgModule({
   declarations: [
     AppComponent, 
@@ -26,6 +27,8 @@ import { MenuComponent } from './components/menu/menu.component';
     BrowserModule,
     RoutingModule,
     HttpClientModule,
+    MatSortModule,
+    MatTableModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),    
     SharedModule,

@@ -8,8 +8,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "lint:fix": "ng lint --fix"
-  },
+    "lint:fix": "ng lint --fix",
+    "postinstall": "ngcc"
+    },
   "private": true,
   "dependencies": {
     "@angular/animations": "~12.1.2",
