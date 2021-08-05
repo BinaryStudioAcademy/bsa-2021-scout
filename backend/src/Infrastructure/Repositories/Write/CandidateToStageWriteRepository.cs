@@ -28,7 +28,7 @@ namespace Infrastructure.Repositories.Write
             SqlConnection connection = _connectionFactory.GetSqlConnection();
 
             StringBuilder sql = new StringBuilder();
-            sql.Append("SELECT Id");
+            sql.Append("SELECT *");
             sql.Append(" FROM CandidateToStages");
             sql.Append($" WHERE CandidateToStages.DateRemoved IS NULL AND CandidateToStages.CandidateId = '{candidateId}'");
 

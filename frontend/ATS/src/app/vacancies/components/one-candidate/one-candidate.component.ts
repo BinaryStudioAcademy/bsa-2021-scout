@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import moment from 'moment';
 import { Subject } from 'rxjs';
 import { FullVacancyCandidate } from 'src/app/shared/models/vacancy-candidates/full';
 import { NotificationService } from 'src/app/shared/services/notification.service';
@@ -10,7 +11,7 @@ import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candida
   styleUrls: ['./one-candidate.component.scss'],
 })
 export class OneCandidateComponent implements OnInit, OnDestroy {
-  @Input() public id!: string;
+  @Input() public id: string = 'f722427a-c87d-488a-951b-b80da52ceb84';
 
   public data!: FullVacancyCandidate;
   public loading: boolean = true;
@@ -22,16 +23,20 @@ export class OneCandidateComponent implements OnInit, OnDestroy {
     private readonly notificationService: NotificationService,
   ) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.loadData(this.id);
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  private loadData(id: string) {
+  public formatDate(date: Date): string {
+    return moment(date).format('DD[.]MM[.]YYYY');
+  }
+
+  private loadData(id: string): void {
     this.service.getFull(id).subscribe(
       (data) => {
         this.loading = false;

@@ -8,6 +8,7 @@ namespace Application.VacancyCandidates.Dtos
 {
     public class VacancyCandidateFullDto : Dto
     {
+        public string HrWhoAddedId { get; set; }
         public string HrWhoAddedFullName { get; set; }
         public string CurrentStageName { get; set; }
         public string FullName { get; set; }

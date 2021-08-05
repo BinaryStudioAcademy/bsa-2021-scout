@@ -65,8 +65,6 @@ namespace Infrastructure.Repositories.Read
                             candidateReviewEntry.Review = review;
                         }
 
-                        System.Console.WriteLine(candidateToStage == null);
-
                         if (candidateToStage != null)
                         {
                             CandidateToStage candidateToStageEntry;
@@ -91,10 +89,15 @@ namespace Infrastructure.Repositories.Read
 
             VacancyCandidate candidate = resultAsArray.Distinct().FirstOrDefault();
 
-            if (candidate == null)
+            if (candidate == null || candidate.CandidateToStages.Where(cts => cts.DateRemoved == null).Count() == 0)
             {
                 throw new NotFoundException(typeof(VacancyCandidate), id);
             }
+
+            candidate.CandidateToStages = candidate.CandidateToStages
+                .OrderBy(cts => cts.DateRemoved)
+                .OrderByDescending(cts => cts.DateRemoved.HasValue)
+                .ToList();
 
             return candidate;
         }

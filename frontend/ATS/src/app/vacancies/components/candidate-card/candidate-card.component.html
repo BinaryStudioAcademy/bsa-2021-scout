@@ -3,7 +3,7 @@
     <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />
     <div class="texts">
       <div>{{ candidate.applicant.firstName }} {{ candidate.applicant.lastName }}</div>
-      <a routerLink="/vacancy-candidate/{{ candidate.id }}">View profile</a>
+      <a routerLink="/profile/{{ candidate.id }}">View profile</a>
     </div>
   </div>
   <div class="meta data" *ngIf="!candidate.averageMark && candidate.averageMark !== 0">
@@ -22,7 +22,7 @@
     <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />
     <div class="texts">
       <div>{{ candidate.applicant.firstName }} {{ candidate.applicant.lastName }}</div>
-      <a routerLink="/vacancy-candidate/{{ candidate.id }}">View profile</a>
+      <a routerLink="/profile/{{ candidate.id }}">View profile</a>
     </div>
   </div>
   <div class="meta data" *ngIf="!candidate.averageMark && candidate.averageMark !== 0">
