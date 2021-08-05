@@ -1,4 +1,5 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component,
+  ViewChild, ElementRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -54,14 +55,22 @@ export class VacanciesTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
-​
+  @ViewChild('input') serachField!: ElementRef;
+
   constructor(private dialog: MatDialog) {
     const vacancies = Array.from({ length: 99 }, (_, k) => createNewVacancy());
 ​
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(vacancies);
   }
-​
+  public clearSearchField(){
+    this.serachField.nativeElement.value = '';
+    this.dataSource.filter = '';
+    if (this.dataSource.paginator) {
+      this.directive.applyFilter$.emit();
+      this.dataSource.paginator.firstPage();
+    }
+  }
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
