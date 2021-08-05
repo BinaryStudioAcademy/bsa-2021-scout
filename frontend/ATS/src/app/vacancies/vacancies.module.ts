@@ -1,11 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatDialogModule } from '@angular/material/dialog';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RoutingModule } from '../routing/routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -31,18 +25,7 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     OneCandidateComponent,
     OneCandidateModalComponent,
   ],
-  imports: [
-    CommonModule,
-    RoutingModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTabsModule,
-    MatProgressBarModule,
-    MatDividerModule,
-    MatDialogModule,
-    DragDropModule,
-    SharedModule,
-  ],
+  imports: [CommonModule, RoutingModule, DragDropModule, SharedModule],
   exports: [
     CandidateCardComponent,
     CandidateColumnComponent,
