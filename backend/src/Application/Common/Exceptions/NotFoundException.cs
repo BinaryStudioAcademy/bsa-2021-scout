@@ -2,7 +2,7 @@
 
 namespace Application.Common.Exceptions
 {
-    public class NotFoundException: Exception
+    public class NotFoundException : Exception
     {
         public NotFoundException(Type type, string id) :
             this($"Entity of type {type.Name} with id {id} is not found")

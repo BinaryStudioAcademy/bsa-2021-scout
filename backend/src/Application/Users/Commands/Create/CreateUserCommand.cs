@@ -1,6 +1,6 @@
 ﻿using Application.Users.Dtos;
 using Application.Common.Commands;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Domain.Entities;
 using AutoMapper;
 

@@ -5,7 +5,8 @@ using Application.Interfaces;
 using Application.Users.Dtos;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Read;
+using Domain.Interfaces.Abstractions;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace Application.Auth.Commands
         protected readonly IMapper _mapper;
         protected readonly IJwtService _jwtService;
 
-        public RefreshTokenCommandHandler(IUserReadRepository userRepository, IRTokenReadRepository tokenReadRepository, 
+        public RefreshTokenCommandHandler(IUserReadRepository userRepository, IRTokenReadRepository tokenReadRepository,
                                    IWriteRepository<RefreshToken> tokenWriteRepository, IJwtService jwtService,
                                    IMapper mapper)
         {
@@ -55,7 +56,7 @@ namespace Application.Auth.Commands
             await _userRepository.LoadRolesAsync(user);
 
             var refreshToken = await _tokenReadRepository.GetAsync(command.Token.RefreshToken, userId);
-            
+
             if (refreshToken == null)
             {
                 throw new InvalidTokenException("refresh");
@@ -71,10 +72,10 @@ namespace Application.Auth.Commands
         }
 
         public async Task<AccessTokenDto> GenerateNewAccessToken(UserDto user, RefreshToken refreshToken)
-        {         
+        {
             await _tokenWriteRepository.DeleteAsync(refreshToken.Id); // delete the token we've exchanged
 
-            var newRefreshToken = _jwtService.GenerateRefreshToken();  
+            var newRefreshToken = _jwtService.GenerateRefreshToken();
             await _tokenWriteRepository.CreateAsync(new RefreshToken   // add the new one
             {
                 Token = newRefreshToken,

@@ -8,12 +8,14 @@ namespace Infrastructure.EF.Configuration
     {
         public void Configure(EntityTypeBuilder<VacancyCandidate> builder)
         {
+            builder.Ignore(_ => _.DomainEvents);
+
             builder.HasIndex(vc => vc.Id)
                 .IsUnique(false);
 
             builder.HasOne(vc => vc.Applicant)
                 .WithMany(a => a.Candidates)
-                .HasForeignKey(vc => vc.Id)
+                .HasForeignKey(vc => vc.ApplicantId)
                 .HasConstraintName("candidate_applicant_FK")
                 .OnDelete(DeleteBehavior.Restrict);
 

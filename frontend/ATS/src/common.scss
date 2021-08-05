@@ -1,36 +1,41 @@
-$primary-color: #EE2A64;
-$primary-color-white: #F6F7F9;
+$primary-color-icons: #4F00B5;
+$primary-color: #ee2a64;
+$primary-color-white: #f6f7f9;
+$primary-color-darkgrey: #919398;
+$accent-color: #4f1cb1;
 $primary-font: Nunito;
 
-
+.mat-toolbar{
+    background-color:#291965;
+    height:120px;
+}
 //button
 .mat-button.mat-button {
-    border-radius: 70px;
-    font-family: $primary-font;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    text-align: center;
-    line-height: 40px;
-    width: 140px;
-    background-color: $primary-color;
-    color: $primary-color-white;
+  border-radius: 70px;
+  font-family: $primary-font;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  line-height: 40px;
+  width: 140px;
+  background-color: $primary-color;
+  color: $primary-color-white;
 }
 
 //primary button
 .mat-button.mat-primary {
-    line-height: 35px;
+  line-height: 35px;
 }
 
 //accent button
 .mat-button.mat-accent {
-    line-height: 31px;
-    width: 165px;
-    background-color: $primary-color-white;
-    border: 2px solid $primary-color;
-    color: $primary-color;
+  line-height: 31px;
+  width: 165px;
+  background-color: $primary-color-white;
+  border: 2px solid $primary-color;
+  color: $primary-color;
 }
-
 
 //input
 .mat-form-field-wrapper.mat-form-field-wrapper {
@@ -44,16 +49,37 @@ $primary-font: Nunito;
     min-width: 250px;
     max-width: 500px;
     width: 100%;
-    border-radius: 50px;
+    border-radius: 10px;
     padding: 0px 20px 0px 20px;
     height: 40px;
     color: $primary-color;
 }
 
 .mat-form-field-underline {
-    display: none;
+  display: none;
 }
 
 .mat-form-field-infix {
-    border: none;
+  border: none;
+}
+
+a {
+  color: $accent-color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.meta {
+  color: $primary-color-darkgrey;
+
+  &:not(&.only-color) {
+    font-size: 12px;
+  }
+}
+
+.mat-pseudo-checkbox.mat-pseudo-checkbox-checked {
+  background-color: $primary-color;
 }

@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { SidenavService } from 'src/app/shared/services/sidenav.service';
+import { onMainContentChange } from '../../animations/animation';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  animations: [onMainContentChange],
 })
-export class AppComponent implements OnInit {
-  title = 'ATS';
+export class AppComponent {
+  public onSideNavChange: boolean = true;
 
-  constructor() { }
-
-  ngOnInit(): void {
-    console.log();
+  constructor(private _sidenavService: SidenavService) {
+    this._sidenavService.sideNavState$.subscribe((res) => {
+      this.onSideNavChange = res;
+    });
   }
 }
