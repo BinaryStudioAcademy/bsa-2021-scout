@@ -9,8 +9,7 @@ using Application.Interfaces;
 using Application.Users.Dtos;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
-using Infrastructure.EF;
+using Domain.Interfaces.Read;
 using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Services
