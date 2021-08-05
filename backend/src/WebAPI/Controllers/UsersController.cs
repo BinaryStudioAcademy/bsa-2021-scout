@@ -3,6 +3,7 @@ using Application.Common.Queries;
 using Application.Users.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
@@ -12,6 +13,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetUser(string id)
         {
             var query = new GetEntityByIdQuery<UserDto>(id);
+            return Ok(await Mediator.Send(query));
+        }
+
+        [AllowAnonymous]
+        [HttpGet, Route("Email/{email}")]
+        public async Task<IActionResult> IsEmailAlreadyUsed(string email)
+        {
+            var query = new IsEntityWithPropertyExistQuery("Email", email);
             return Ok(await Mediator.Send(query));
         }
 

@@ -1,18 +1,16 @@
 @import '/src/common.scss';
 
-$card-width : 229px;
+$card-width : 200px;
 $card-height : 216px;
 
 .vacancy-card-wrapper {    
     background-color: $primary-color-white;
-    padding: 20px 5px 20px 20px;
+    padding: 20px 10px 20px 10px;
     border-radius: 7px;
-    font-family: $primary-font;
-    width: $card-width;
+    font-family: $primary-font;   
 }
 
 .vacancy-card-wrapper h2,h3,h4 {
-    font-family: $primary-font;
     margin-bottom: 5px;
 }
 
