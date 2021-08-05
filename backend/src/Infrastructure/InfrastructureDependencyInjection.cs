@@ -109,7 +109,8 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
-            services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
+            services.AddScoped<IReadRepository<ApplicantCv>, ApplicantCvReadRepository>();
+            services.AddScoped<IApplicantCvReadRepository, ApplicantCvReadRepository>();
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();

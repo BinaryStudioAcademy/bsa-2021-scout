@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using Domain.Enums;
 using Application.VacancyCandidates.Dtos;
+using Application.Common.Models;
 
 namespace Application.Stages.Dtos
 {
-    public class StageWithCandidatesDto
+    public class StageWithCandidatesDto : Dto
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public StageType Type { get; set; }
         public int Index { get; set; }

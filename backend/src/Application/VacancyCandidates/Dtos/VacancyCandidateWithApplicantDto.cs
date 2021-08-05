@@ -1,11 +1,11 @@
 using System;
 using Application.Applicants.Dtos;
+using Application.Common.Models;
 
 namespace Application.VacancyCandidates.Dtos
 {
-    public class VacancyCandidateWithApplicantDto
+    public class VacancyCandidateWithApplicantDto : Dto
     {
-        public string Id { get; set; }
         public DateTime FirstContactDate { get; set; }
         public DateTime SecondContactDate { get; set; }
         public DateTime ThirdContactDate { get; set; }
