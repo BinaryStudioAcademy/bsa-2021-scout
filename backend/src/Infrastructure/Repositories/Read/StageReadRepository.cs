@@ -26,6 +26,7 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" Vacancies.Title,");
             sql.Append(" Stages.*,");
             sql.Append(" VacancyCandidates.*,");
+            sql.Append(" CandidateReviews.*,");
             sql.Append(" Applicants.*");
             sql.Append(" FROM Vacancies");
             sql.Append(" LEFT JOIN Stages ON Stages.VacancyId = Vacancies.Id");
@@ -34,26 +35,24 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" FROM CandidateToStages");
             sql.Append(" WHERE CandidateToStages.CandidateId = VacancyCandidates.Id");
             sql.Append(" AND CandidateToStages.StageId = Stages.Id)");
+            sql.Append(" LEFT JOIN CandidateReviews ON VacancyCandidates.Id = CandidateReviews.CandidateId");
+            sql.Append(" AND CandidateReviews.StageId = Stages.Id");
             sql.Append(" LEFT JOIN Applicants ON VacancyCandidates.ApplicantId = Applicants.Id");
             sql.Append($" WHERE Vacancies.Id = '{vacancyId}'");
 
             Dictionary<string, Stage> stageDict = new Dictionary<string, Stage>();
+            Dictionary<string, VacancyCandidate> candidateDict = new Dictionary<string, VacancyCandidate>();
             Vacancy cachedVacancy = null;
 
             IEnumerable<Vacancy> resultAsEnumerable = await connection
-                .QueryAsync<Vacancy, Stage, VacancyCandidate, Applicant, Vacancy>(
+                .QueryAsync<Vacancy, Stage, VacancyCandidate, CandidateReview, Applicant, Vacancy>(
                     sql.ToString(),
-                    (vacancy, stage, candidate, applicant) =>
+                    (vacancy, stage, candidate, review, applicant) =>
                     {
                         if (cachedVacancy == null)
                         {
                             cachedVacancy = vacancy;
                             cachedVacancy.Stages = new List<Stage>();
-                        }
-
-                        if (candidate != null && applicant != null)
-                        {
-                            candidate.Applicant = applicant;
                         }
 
                         Stage stageEntry;
@@ -66,9 +65,24 @@ namespace Infrastructure.Repositories.Read
                             cachedVacancy.Stages.Add(stageEntry);
                         }
 
-                        if (candidate != null)
+                        if (candidate != null && applicant != null)
                         {
-                            stageEntry.CandidateToStages.Add(new CandidateToStage { Candidate = candidate });
+                            VacancyCandidate candidateEntry;
+
+                            if (!candidateDict.TryGetValue(candidate.Id, out candidateEntry))
+                            {
+                                candidateEntry = candidate;
+                                candidateDict.Add(candidateEntry.Id, candidateEntry);
+                                candidateEntry.Reviews = new List<CandidateReview>();
+                                stageEntry.CandidateToStages.Add(new CandidateToStage { Candidate = candidate });
+                            }
+
+                            candidateEntry.Applicant = applicant;
+
+                            if (review != null)
+                            {
+                                candidateEntry.Reviews.Add(review);
+                            }
                         }
 
                         return cachedVacancy;

@@ -6,8 +6,15 @@
       <a routerLink="/vacancy-candidate/{{ candidate.id }}">View profile</a>
     </div>
   </div>
-  <div class="meta data" *ngIf="date">
-    {{ fromNow(date!) }}
+  <div class="meta data" *ngIf="!candidate.averageMark && candidate.averageMark !== 0">
+    {{ fromNow(candidate.dateAdded) }}
+  </div>
+  <div class="mark data" *ngIf="candidate.averageMark || candidate.averageMark === 0">
+    <mat-progress-bar
+      color="accent"
+      mode="determinate"
+      [value]="candidate.averageMark * 10"
+    ></mat-progress-bar>
   </div>
 </div>
 <div class="card" [id]="candidate.id" *ngIf="!isDraggable">
@@ -18,7 +25,14 @@
       <a routerLink="/vacancy-candidate/{{ candidate.id }}">View profile</a>
     </div>
   </div>
-  <div class="meta data" *ngIf="date">
-    {{ fromNow(date!) }}
+  <div class="meta data" *ngIf="!candidate.averageMark && candidate.averageMark !== 0">
+    {{ fromNow(candidate.dateAdded) }}
+  </div>
+  <div class="mark data" *ngIf="candidate.averageMark || candidate.averageMark === 0">
+    <mat-progress-bar
+      color="accent"
+      mode="determinate"
+      [value]="candidate.averageMark * 10"
+    ></mat-progress-bar>
   </div>
 </div>

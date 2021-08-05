@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { FullVacancyCandidate } from 'src/app/shared/models/vacancy-candidates/full';
 import { NotificationService } from 'src/app/shared/services/notification.service';
@@ -11,6 +10,8 @@ import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candida
   styleUrls: ['./one-candidate.component.scss'],
 })
 export class OneCandidateComponent implements OnInit, OnDestroy {
+  @Input() public id!: string;
+
   public data!: FullVacancyCandidate;
   public loading: boolean = true;
 
@@ -19,14 +20,10 @@ export class OneCandidateComponent implements OnInit, OnDestroy {
   public constructor(
     private readonly service: VacancyCandidateService,
     private readonly notificationService: NotificationService,
-    private readonly route: ActivatedRoute,
   ) {}
 
   public ngOnInit() {
-    this.route.params.subscribe(({ id }) => {
-      this.loading = true;
-      this.loadData(id);
-    });
+    this.loadData(this.id);
   }
 
   public ngOnDestroy() {

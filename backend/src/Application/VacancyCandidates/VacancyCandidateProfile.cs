@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using AutoMapper;
 using Domain.Entities;
@@ -10,7 +11,16 @@ namespace Application.VacancyCandidates
         public VacancyCandidateProfile()
         {
             CreateMap<VacancyCandidate, VacancyCandidateDto>();
-            CreateMap<VacancyCandidate, VacancyCandidateWithApplicantDto>();
+
+            CreateMap<VacancyCandidate, ShortVacancyCandidateWithApplicantDto>()
+                .ForMember(
+                    dto => dto.AverageMark,
+                    opt => opt
+                        .MapFrom(vc =>
+                            vc.Reviews.Count > 0
+                                ? Math.Max(Math.Min((int)Math.Ceiling(vc.Reviews.Select(r => r.Mark).Average()), 10), 0)
+                                : (int?)null)
+                );
 
             CreateMap<VacancyCandidate, VacancyCandidateFullDto>()
                 .ForMember(

@@ -16,7 +16,7 @@ import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candida
 
 // This line can't be shorter
 // eslint-disable-next-line max-len
-import { VacancyCandidateWithApplicant } from 'src/app/shared/models/vacancy-candidates/with-applicant';
+import { ShortVacancyCandidateWithApplicant } from 'src/app/shared/models/vacancy-candidates/short-with-applicant';
 
 @Component({
   selector: 'app-vacancies-stages-board',
@@ -57,7 +57,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     //
   }
 
-  public onMove(event: CdkDragDrop<VacancyCandidateWithApplicant[]>) {
+  public onMove(event: CdkDragDrop<ShortVacancyCandidateWithApplicant[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
