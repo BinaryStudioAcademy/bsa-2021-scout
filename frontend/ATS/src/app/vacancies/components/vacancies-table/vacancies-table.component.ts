@@ -28,7 +28,7 @@ const HRs: string[] = [
   'Mira Workham',
 ];
 const NAMES: string[] = [
-  'Google', 'Facebook', 'Amazone', 'Binary Studio', 'Uber',
+  'Interface Designer', 'Software Enginner', 'Project Manager', 'Developer', 'QA',
 ];
 
 const STATUES: VacancyStatus[] = [
@@ -56,7 +56,7 @@ export class VacanciesTableComponent implements AfterViewInit {
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
 ​
   constructor(private dialog: MatDialog) {
-    const vacancies = Array.from({ length: 14 }, (_, k) => createNewVacancy());
+    const vacancies = Array.from({ length: 99 }, (_, k) => createNewVacancy());
 ​
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(vacancies);
@@ -66,19 +66,18 @@ export class VacanciesTableComponent implements AfterViewInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
-​
+  ​
 ​
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-​
     if (this.dataSource.paginator) {
       this.directive.applyFilter$.emit();
       this.dataSource.paginator.firstPage();
     }
   }
 ​
-​
+  ​ 
 }
 ​
 /** Builds and returns a new User. */

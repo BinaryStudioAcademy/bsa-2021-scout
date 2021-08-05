@@ -66,6 +66,11 @@
         </tr>
 
     </table>
-    <div>Showing <span style="color:red">{{dataSource.filteredData.length/(paginator.length/paginator.pageSize)}}</span>/{{dataSource.filteredData.length}}</div>
+    <div>Showing 
+        <span style="color:red">{{
+            (dataSource.filteredData.length-paginator.pageIndex*paginator.pageSize) < paginator.pageSize
+            ? dataSource.filteredData.length-paginator.pageIndex*paginator.pageSize
+            : paginator.pageSize
+        }}</span>/{{dataSource.filteredData.length}}</div>
     <mat-paginator #paginator appStylePaginator hidePageSize [showTotalPages]="5" [pageSize]="10"></mat-paginator>
 </div>
