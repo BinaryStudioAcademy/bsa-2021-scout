@@ -44,10 +44,11 @@ import { MultiselectComponent } from './components/multiselect/multiselect.compo
     MatListModule,
     MatSelectModule,
     MultiselectComponent,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   imports:[
     MatButtonModule, 
-    MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,
     MatIconModule,
@@ -64,6 +65,7 @@ import { MultiselectComponent } from './components/multiselect/multiselect.compo
     BrowserAnimationsModule,
     BrowserModule, 
     MatSelectModule,
+    ReactiveFormsModule,
   ],
   providers:[HttpClientService],
   declarations: 
