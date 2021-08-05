@@ -32,9 +32,9 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" AND CandidateToStages.StageId = Stages.Id AND CandidateToStages.DateRemoved IS NULL)");
             sql.Append(" LEFT JOIN Users ON VacancyCandidates.HrWhoAddedId = Users.Id");
             sql.Append(" LEFT JOIN CandidateReviews ON CandidateReviews.CandidateId = VacancyCandidates.Id");
-            sql.Append(" LEFT JOIN Stages ON CandidateReviews.StageId = Stages.Id");
+            sql.Append(" LEFT JOIN Stages AS ReviewStages ON CandidateReviews.StageId = ReviewStages.Id");
             sql.Append(" LEFT JOIN Reviews ON CandidateReviews.ReviewId = Reviews.Id");
-            sql.Append($" WHERE VacancyCandidates.Id = {id}");
+            sql.Append($" WHERE VacancyCandidates.Id = '{id}'");
 
             Dictionary<string, CandidateReview> candidateReviewDictionary = new Dictionary<string, CandidateReview>();
             VacancyCandidate cachedCandidate = null;

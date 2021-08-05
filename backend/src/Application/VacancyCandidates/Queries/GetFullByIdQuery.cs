@@ -43,7 +43,11 @@ namespace Application.VacancyCandidates.Queries
             ApplicantCv cv = await _cvReadRepository.GetByApplicantAsync(candidate.ApplicantId);
 
             VacancyCandidateFullDto result = _mapper.Map<VacancyCandidate, VacancyCandidateFullDto>(candidate);
-            result.Cv = cv.Cv;
+
+            if (cv != null)
+            {
+                result.Cv = cv.Cv;
+            }
 
             return result;
         }

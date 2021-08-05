@@ -12,7 +12,6 @@ namespace Application.VacancyCandidates.Dtos
         public string ContactedBy { get; set; }
         public string Comments { get; set; }
         public double Experience { get; set; }
-        public string StageId { get; set; }
         public string ApplicantId { get; set; }
     }
 }

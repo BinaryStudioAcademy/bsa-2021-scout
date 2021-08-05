@@ -31,6 +31,8 @@ namespace Application.VacancyCandidates
                     opt => opt
                         .MapFrom(vc => vc.Applicant.FirstName + " " + vc.Applicant.LastName)
                 )
+                .ForMember(dto => dto.Email, opt => opt.MapFrom(vc => vc.Applicant.Email))
+                .ForMember(dto => dto.Phone, opt => opt.MapFrom(vc => vc.Applicant.Phone))
                 .ForMember(dto => dto.Cv, opt => opt.Ignore());
         }
     }

@@ -14,7 +14,7 @@ namespace Application.VacancyCandidates.Dtos
         public string Phone { get; set; }
         public string Cv { get; set; }
         public double Experience { get; set; }
-        public string Comment { get; set; }
+        public string Comments { get; set; }
         public IEnumerable<CandidateReviewShortDto> Reviews { get; set; }
         public DateTime DateAdded { get; set; }
     }
