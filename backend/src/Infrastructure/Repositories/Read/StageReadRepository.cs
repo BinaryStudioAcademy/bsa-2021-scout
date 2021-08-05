@@ -35,8 +35,7 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" FROM CandidateToStages");
             sql.Append(" WHERE CandidateToStages.CandidateId = VacancyCandidates.Id");
             sql.Append(" AND CandidateToStages.StageId = Stages.Id)");
-            sql.Append(" LEFT JOIN CandidateReviews ON VacancyCandidates.Id = CandidateReviews.CandidateId");
-            sql.Append(" AND CandidateReviews.StageId = Stages.Id");
+            sql.Append(" LEFT JOIN CandidateReviews ON CandidateReviews.CandidateId = VacancyCandidates.Id");
             sql.Append(" LEFT JOIN Applicants ON VacancyCandidates.ApplicantId = Applicants.Id");
             sql.Append($" WHERE Vacancies.Id = '{vacancyId}'");
 
@@ -87,7 +86,7 @@ namespace Infrastructure.Repositories.Read
 
                         return cachedVacancy;
                     },
-                    splitOn: "Id,Id,Id"
+                    splitOn: "Id,Id,Id,Id"
                 );
 
             Vacancy result = resultAsEnumerable.Distinct().FirstOrDefault();

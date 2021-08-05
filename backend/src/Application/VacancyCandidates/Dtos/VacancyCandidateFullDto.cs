@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Application.CandidateReviews.Dtos;
+using Application.CandidateToStages.Dtos;
 using Application.Common.Models;
 
 namespace Application.VacancyCandidates.Dtos
@@ -15,7 +16,8 @@ namespace Application.VacancyCandidates.Dtos
         public string Cv { get; set; }
         public double Experience { get; set; }
         public string Comments { get; set; }
-        public IEnumerable<CandidateReviewShortDto> Reviews { get; set; }
         public DateTime DateAdded { get; set; }
+        public IEnumerable<CandidateToStageHistoryDto> StagesHistory { get; set; }
+        public IEnumerable<CandidateReviewShortDto> Reviews { get; set; }
     }
 }

@@ -25,28 +25,27 @@ namespace Infrastructure.Repositories.Read
             sql.Append("SELECT *");
             sql.Append(" FROM VacancyCandidates");
             sql.Append(" LEFT JOIN Applicants ON VacancyCandidates.ApplicantId = Applicants.Id");
-            sql.Append(" LEFT JOIN Stages ON EXISTS");
-            sql.Append("(SELECT Id");
-            sql.Append(" FROM CandidateToStages");
-            sql.Append(" WHERE CandidateToStages.CandidateId = VacancyCandidates.Id");
-            sql.Append(" AND CandidateToStages.StageId = Stages.Id AND CandidateToStages.DateRemoved IS NULL)");
+            sql.Append(" LEFT JOIN CandidateToStages ON CandidateToStages.CandidateId = VacancyCandidates.Id");
+            sql.Append(" LEFT JOIN Stages ON CandidateToStages.StageId = Stages.Id");
             sql.Append(" LEFT JOIN Users ON VacancyCandidates.HrWhoAddedId = Users.Id");
             sql.Append(" LEFT JOIN CandidateReviews ON CandidateReviews.CandidateId = VacancyCandidates.Id");
-            sql.Append(" LEFT JOIN Stages AS ReviewStages ON CandidateReviews.StageId = ReviewStages.Id");
             sql.Append(" LEFT JOIN Reviews ON CandidateReviews.ReviewId = Reviews.Id");
             sql.Append($" WHERE VacancyCandidates.Id = '{id}'");
 
-            Dictionary<string, CandidateReview> candidateReviewDictionary = new Dictionary<string, CandidateReview>();
+            Dictionary<string, CandidateReview> candidateReviewDict = new Dictionary<string, CandidateReview>();
+            Dictionary<string, CandidateToStage> candidateToStageDict = new Dictionary<string, CandidateToStage>();
             VacancyCandidate cachedCandidate = null;
 
             IEnumerable<VacancyCandidate> resultAsArray = await connection
-                .QueryAsync<VacancyCandidate, Applicant, Stage, User, CandidateReview, Stage, Review, VacancyCandidate>(
+                .QueryAsync<VacancyCandidate, Applicant, CandidateToStage, Stage, User, CandidateReview, Review, VacancyCandidate>(
                     sql.ToString(),
-                    (candidate, applicant, stage, hrWhoAdded, candidateReview, candidateReviewStage, review) =>
+                    (candidate, applicant, candidateToStage, stage, hrWhoAdded, candidateReview, review) =>
                     {
                         if (cachedCandidate == null)
                         {
                             cachedCandidate = candidate;
+                            cachedCandidate.Reviews = new List<CandidateReview>();
+                            cachedCandidate.CandidateToStages = new List<CandidateToStage>();
                         }
 
                         cachedCandidate.Applicant = applicant;
@@ -56,22 +55,33 @@ namespace Infrastructure.Repositories.Read
                         {
                             CandidateReview candidateReviewEntry;
 
-                            if (!candidateReviewDictionary.TryGetValue(candidateReview.Id, out candidateReviewEntry))
+                            if (!candidateReviewDict.TryGetValue(candidateReview.Id, out candidateReviewEntry))
                             {
                                 candidateReviewEntry = candidateReview;
-                                candidateReviewDictionary.Add(candidateReviewEntry.Id, candidateReviewEntry);
+                                candidateReviewDict.Add(candidateReviewEntry.Id, candidateReviewEntry);
                                 cachedCandidate.Reviews.Add(candidateReviewEntry);
                             }
 
-                            candidateReviewEntry.Stage = candidateReviewStage;
                             candidateReviewEntry.Review = review;
                         }
 
-                        if (stage != null)
+                        System.Console.WriteLine(candidateToStage == null);
+
+                        if (candidateToStage != null)
                         {
-                            cachedCandidate.CandidateToStages = new List<CandidateToStage> {
-                                new CandidateToStage { Stage = stage },
-                            };
+                            CandidateToStage candidateToStageEntry;
+
+                            if (!candidateToStageDict.TryGetValue(candidateToStage.Id, out candidateToStageEntry))
+                            {
+                                candidateToStageEntry = candidateToStage;
+                                candidateToStageDict.Add(candidateToStageEntry.Id, candidateToStageEntry);
+                                cachedCandidate.CandidateToStages.Add(candidateToStageEntry);
+                            }
+
+                            if (stage != null)
+                            {
+                                candidateToStageEntry.Stage = stage;
+                            }
                         }
 
                         return cachedCandidate;

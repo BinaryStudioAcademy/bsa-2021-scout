@@ -9,8 +9,7 @@ namespace Application.CandidateReviews
         public CandidateReviewProfile()
         {
             CreateMap<CandidateReview, CandidateReviewShortDto>()
-                .ForMember(dto => dto.ReviewName, opt => opt.MapFrom(cr => cr.Review.Name))
-                .ForMember(dto => dto.StageName, opt => opt.MapFrom(cr => cr.Stage.Name));
+                .ForMember(dto => dto.ReviewName, opt => opt.MapFrom(cr => cr.Review.Name));
         }
     }
 }

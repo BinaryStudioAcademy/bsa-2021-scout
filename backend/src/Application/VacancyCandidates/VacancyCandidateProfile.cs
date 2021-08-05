@@ -33,7 +33,11 @@ namespace Application.VacancyCandidates
                     opt =>
                         opt.MapFrom(vc =>
                             vc.CandidateToStages.Count > 0
-                                ? vc.CandidateToStages.First().Stage.Name
+                                ? vc.CandidateToStages
+                                    .Where(cts => cts.DateRemoved == null)
+                                    .First()
+                                    .Stage
+                                    .Name
                                 : null)
                 )
                 .ForMember(
@@ -41,6 +45,7 @@ namespace Application.VacancyCandidates
                     opt => opt
                         .MapFrom(vc => vc.Applicant.FirstName + " " + vc.Applicant.LastName)
                 )
+                .ForMember(dto => dto.StagesHistory, opt => opt.MapFrom(vc => vc.CandidateToStages))
                 .ForMember(dto => dto.Email, opt => opt.MapFrom(vc => vc.Applicant.Email))
                 .ForMember(dto => dto.Phone, opt => opt.MapFrom(vc => vc.Applicant.Phone))
                 .ForMember(dto => dto.Cv, opt => opt.Ignore());
