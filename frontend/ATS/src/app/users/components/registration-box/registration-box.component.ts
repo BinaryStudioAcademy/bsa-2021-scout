@@ -49,4 +49,8 @@ export class RegistrationBoxComponent {
     ]),
   }, { validators: this.loginRegistCommonComponent.passwordsMatch });
 
+
+  onSubmit(){
+    console.log(this.registrationForm.controls['userFirstName'].valid);
+  }
 }

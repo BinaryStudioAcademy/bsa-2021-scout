@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { animateText, onSideNavChange } from 'src/app/app/animations/animation';
+import { Component } from '@angular/core';
+import { animateText, onSideNavChange } from 'src/app/shared/animations/animation';
 import { SidenavService } from 'src/app/shared/services/sidenav.service';
 
 @Component({

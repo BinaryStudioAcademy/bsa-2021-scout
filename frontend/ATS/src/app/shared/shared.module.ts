@@ -20,7 +20,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule} from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MultiselectComponent } from './components/multiselect/multiselect.component';
-
+import { MenuComponent } from './components/menu/menu.component';
+import { MainContentComponent } from './components/main-content/main-content.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -46,6 +48,7 @@ import { MultiselectComponent } from './components/multiselect/multiselect.compo
     MultiselectComponent,
     MatDatepickerModule,
     MatNativeDateModule,
+    MenuComponent,
   ],
   imports:[
     MatButtonModule, 
@@ -66,6 +69,7 @@ import { MultiselectComponent } from './components/multiselect/multiselect.compo
     BrowserModule, 
     MatSelectModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
   providers:[HttpClientService],
   declarations: 
@@ -74,6 +78,8 @@ import { MultiselectComponent } from './components/multiselect/multiselect.compo
     ButtonComponent,
     SearchFormComponent,
     HeaderComponent,
+    MenuComponent,
+    MainContentComponent,
   ],
 })
 export class SharedModule {}

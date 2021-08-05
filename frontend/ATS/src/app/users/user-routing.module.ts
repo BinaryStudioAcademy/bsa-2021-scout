@@ -3,16 +3,18 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
   {
     path: 'login',
     pathMatch: 'full',
     component: LoginComponent,
   },
-  { path: 'registration', component: RegistrationComponent },
+  { 
+    path: 'registration',
+    pathMatch: 'full', 
+    component: RegistrationComponent, 
+  },
 ];
 
 @NgModule({
