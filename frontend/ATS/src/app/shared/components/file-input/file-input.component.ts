@@ -16,13 +16,12 @@ import {
 export class FileInputComponent implements OnInit {
   @Input() public image: boolean = false;
   @Input() public accept?: string;
-  @Input() public multiple: boolean = false;
-  @Input() public default?: File | File[];
+  @Input() public single: boolean = false;
+  @Input() public default?: string[];
 
-  @Output() public upload: EventEmitter<File> = new EventEmitter<File>();
-
-  @Output() public uploadMultiple: EventEmitter<File[]> = new EventEmitter<
-  File[]
+  @Output() public upload: EventEmitter<File[]> = new EventEmitter<File[]>();
+  @Output() public removeDefault: EventEmitter<string[]> = new EventEmitter<
+  string[]
   >();
 
   @ViewChild('realInput') public realInput!: ElementRef<HTMLInputElement>;
@@ -32,19 +31,36 @@ export class FileInputComponent implements OnInit {
   public inputAccept!: string;
   public dragging: boolean = false;
   public chosen: File[] = [];
+  public arrayDefault: string[] = [];
 
   public ngOnInit(): void {
     this.initVariables();
   }
 
   public focusRealInput(): void {
-    this.realInput.nativeElement.focus();
+    this.realInput.nativeElement.click();
   }
 
   public removeFile(index: number): void {
-    const newChosen = [...this.chosen];
+    const newChosen: File[] = [...this.chosen];
     newChosen.splice(index, 1);
     this.chosen = [...newChosen];
+    this.upload.emit(this.chosen);
+  }
+
+  public emitRemoveDefault(index: number): void {
+    const newDefault: string[] = [...this.arrayDefault];
+    newDefault.splice(index, 1);
+    this.arrayDefault = [...newDefault];
+    this.removeDefault.emit([...newDefault]);
+  }
+
+  public clear(): void {
+    this.chosen = [];
+    this.arrayDefault = [];
+
+    this.upload.emit([]);
+    this.removeDefault.emit([]);
   }
 
   public cancelEvent(event: Event): void {
@@ -66,18 +82,37 @@ export class FileInputComponent implements OnInit {
     this.setNotDragging(event);
 
     const transfered: File[] = event.dataTransfer?.files
-      ? Array.from(event.dataTransfer?.files)
+      ? Array.from(event.dataTransfer.files)
       : [];
 
-    if (this.multiple) {
-      this.chosen = [...this.chosen, ...transfered];
+    if (this.single && transfered.length) {
+      this.chosen = [...transfered];
     } else {
-      this.chosen = [...(transfered.length > 0 ? [transfered[0]] : [])];
+      this.chosen = [...this.chosen, ...transfered];
     }
+
+    this.limitFiles();
+    this.upload.emit(this.chosen);
+  }
+
+  public onChangeRealInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+
+    if (this.single && files.length) {
+      this.chosen = [...files];
+    } else {
+      this.chosen = [...this.chosen, ...files];
+    }
+
+    this.limitFiles();
+    this.upload.emit(this.chosen);
   }
 
   private initVariables(): void {
-    this.iconName = this.image ? 'image' : 'file';
+    this.iconName = this.image ? 'image' : 'insert_drive_file';
+    this.arrayDefault = [...(this.default ?? [])];
+    this.limitDefault();
 
     if (this.accept) {
       this.inputAccept = this.accept;
@@ -85,22 +120,22 @@ export class FileInputComponent implements OnInit {
       this.inputAccept = this.image ? 'image/*' : '*/*';
     }
 
-    if (this.multiple) {
-      this.dragObjectName = this.image ? 'images' : 'files';
-    } else {
+    if (this.single) {
       this.dragObjectName = this.image ? 'image' : 'file';
+    } else {
+      this.dragObjectName = this.image ? 'images' : 'files';
     }
+  }
 
-    if (this.default) {
-      if (Array.isArray(this.default)) {
-        if (this.multiple) {
-          this.chosen = [...this.default];
-        } else if (this.default.length > 0) {
-          this.chosen = [this.default[0]];
-        }
-      } else {
-        this.chosen = [this.default];
-      }
+  private limitFiles(): void {
+    if (this.single) {
+      this.chosen.slice(0, 1);
+    }
+  }
+
+  private limitDefault(): void {
+    if (this.single) {
+      this.arrayDefault.slice(0, 1);
     }
   }
 }

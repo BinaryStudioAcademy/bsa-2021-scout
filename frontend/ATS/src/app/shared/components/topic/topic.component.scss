@@ -1,14 +1,24 @@
+@import "../../../../common.scss";
+
 .topic {
   padding: 0px 5px;
   border-radius: 2px;
+  margin-right: 2px;
   font-size: 12px;
   background-color: $primary-color;
   color: white;
-  margin-right: 2px;
   width: min-content;
   height: min-content;
   display: inline-flex;
   align-items: center;
+
+  .text {
+    max-width: 100px;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   .icon {
     width: 12px;
