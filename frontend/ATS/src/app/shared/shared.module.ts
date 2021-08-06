@@ -3,8 +3,8 @@ import { HttpClientService } from './services/http-client.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatToolbarModule} from '@angular/material/toolbar';
-import { MatBadgeModule} from '@angular/material/badge';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from './components/button/button.component';
@@ -17,15 +17,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MultiselectComponent } from './components/multiselect/multiselect.component';
-
-
+import { TopicComponent } from './components/topic/topic.component';
+import { FileInputComponent } from './components/file-input/file-input.component';
 
 @NgModule({
-  exports: [ 
-    MatButtonModule, 
+  exports: [
+    MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,
@@ -37,8 +37,8 @@ import { MultiselectComponent } from './components/multiselect/multiselect.compo
     SearchFormComponent,
     ReactiveFormsModule,
     CommonModule,
-    BrowserModule, 
-    FormsModule, 
+    BrowserModule,
+    FormsModule,
     BrowserAnimationsModule,
     HeaderComponent,
     MatListModule,
@@ -46,9 +46,11 @@ import { MultiselectComponent } from './components/multiselect/multiselect.compo
     MultiselectComponent,
     MatDatepickerModule,
     MatNativeDateModule,
+    TopicComponent,
+    FileInputComponent,
   ],
-  imports:[
-    MatButtonModule, 
+  imports: [
+    MatButtonModule,
     MatInputModule,
     MatToolbarModule,
     MatIconModule,
@@ -56,24 +58,25 @@ import { MultiselectComponent } from './components/multiselect/multiselect.compo
     MatSidenavModule,
     FormsModule,
     CommonModule,
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatIconModule, 
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatListModule,
     BrowserAnimationsModule,
-    BrowserModule, 
+    BrowserModule,
     MatSelectModule,
     ReactiveFormsModule,
   ],
-  providers:[HttpClientService],
-  declarations: 
-  [
+  providers: [HttpClientService],
+  declarations: [
     MultiselectComponent,
     ButtonComponent,
     SearchFormComponent,
     HeaderComponent,
+    TopicComponent,
+    FileInputComponent,
   ],
 })
 export class SharedModule {}

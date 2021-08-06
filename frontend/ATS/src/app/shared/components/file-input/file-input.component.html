@@ -1,0 +1,34 @@
+<div
+  class="file-input"
+  [ngClass]="{'dragging': dragging}"
+  (drag)="cancelEvent($event)"
+  (dragstart)="cancelEvent($event)"
+  (dragover)="setDragging($event)"
+  (dragenter)="setDragging($event)"
+  (dragend)="setNotDragging($event)"
+  (dragleave)="setNotDragging($event)"
+  (drop)="setFiles($event)"
+>
+  <div class="text">
+    <mat-icon>{{ iconName }}</mat-icon>
+    <div>Drag {{ dragObjectName }} here or</div>
+    <div class="choose" (click)="focusRealInput()">choose</div>
+  </div>
+  <div class="text" *ngIf="chosen.length">
+    <div>Chosen:</div>
+    <app-topic
+      [text]="file.name"
+      [removable]="true"
+      (remove)="removeFile(i)"
+      *ngFor="let file in chosen; index as i;"
+    />
+  </div>
+  <input
+    type="file"
+    class="real-input"
+    #realInput
+    [multiple]="multiple"
+    [accept]="inputAccept"
+    (change)="onChangeRealInput($event)"
+  />
+</div>
