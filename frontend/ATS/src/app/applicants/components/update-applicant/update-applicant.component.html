@@ -1,16 +1,14 @@
-<div class="head-section">
-    <h2 mat-dialog-title>Applicant editing form</h2>
-    <mat-dialog-actions>
-        <button mat-icon-button mat-dialog-close>
-            <mat-icon>close</mat-icon>
-        </button>
-    </mat-dialog-actions>
-</div>
+<mat-dialog-actions align="end">
+    <button mat-icon-button mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-dialog-actions>
+<h2 mat-dialog-title>Applicant editing form</h2>
 <mat-dialog-content>
     <form [formGroup]="validationGroup!" novalidate>
         <p>First name</p>
         <mat-form-field>
-            <input type="text" formControlName="firstName" matInput placeholder="Enter first name" [(ngModel)]="applicant.firstName">   
+            <input type="text" formControlName="firstName" matInput placeholder="Enter first name" [(ngModel)]="updatedApplicant.firstName">   
             <mat-error>
                 Please enter a first name
             </mat-error>
@@ -18,7 +16,7 @@
 
         <p>Last name</p>
         <mat-form-field>
-            <input type="text" formControlName="lastName" matInput placeholder="Enter last name" [(ngModel)]="applicant.lastName">   
+            <input type="text" formControlName="lastName" matInput placeholder="Enter last name" [(ngModel)]="updatedApplicant.lastName">   
             <mat-error>
                 Please enter a last name
             </mat-error>
@@ -26,7 +24,7 @@
 
         <p>Middle name</p>
         <mat-form-field>
-            <input type="text" formControlName="middleName" matInput placeholder="Enter middle name" [(ngModel)]="applicant.middleName">   
+            <input type="text" formControlName="middleName" matInput placeholder="Enter middle name" [(ngModel)]="updatedApplicant.middleName">   
             <mat-error>
                 Please enter a middle name
             </mat-error> 
@@ -34,7 +32,7 @@
 
         <p>Email</p>
         <mat-form-field>
-            <input type="email" formControlName="email" matInput placeholder="Enter email" [(ngModel)]="applicant.email">   
+            <input type="email" formControlName="email" matInput placeholder="Enter email" [(ngModel)]="updatedApplicant.email">   
             <mat-error *ngIf="validationGroup!.controls['email'].value === '';else invalidEmail">
                 Please enter an email address.
             </mat-error>
@@ -47,7 +45,7 @@
 
         <p>Experience</p>
         <mat-form-field>
-            <input type="number" formControlName="experience" matInput placeholder="Enter experience" [(ngModel)]="applicant.experience"  step=".1" min="0">   
+            <input type="number" formControlName="experience" matInput placeholder="Enter experience" [(ngModel)]="updatedApplicant.experience"  step=".1" min="0">   
             <mat-error>
                 Please enter an experience
             </mat-error>   
@@ -71,7 +69,7 @@
     </form>
 </mat-dialog-content>
 <mat-dialog-actions class="edit-action">
-    <button [disabled]="validationGroup!.invalid" mat-button>
+    <button [disabled]="validationGroup!.invalid" (click)="updateApplicant()" mat-button>
         Edit
     </button>
 </mat-dialog-actions>

@@ -1,8 +1,13 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Applicant } from 'src/app/shared/models/applicant/applicant';
+import { UpdateApplicant } from 'src/app/shared/models/applicant/update-applicant';
+import { HttpClientService } from 'src/app/shared/services/http-client.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 import { applicantGroup } from '../../validators/applicant-validator';
-import { FullApplicant } from '../applicants/applicants.component';
 
 @Component({
   selector: 'app-update-applicant',
@@ -10,10 +15,54 @@ import { FullApplicant } from '../applicants/applicants.component';
   styleUrls: [ 'update-applicant.component.scss' ],
 })
 
-export class UpdateApplicantComponent {
+export class UpdateApplicantComponent implements OnDestroy {
   public validationGroup: FormGroup|undefined = undefined;
+  public updatedApplicant: UpdateApplicant = {
+    id: '',
+    firstName: '',
+    lastName: '',
+    middleName: '',
+    email: '',
+    phone: '',
+    skype: '',
+    experience: 0,
+  }
     
-  constructor(@Inject(MAT_DIALOG_DATA) public applicant: FullApplicant) {
+  private $unsubscribe = new Subject();
+
+  constructor(
+  @Inject(MAT_DIALOG_DATA) applicant: Applicant,
+    private readonly httpClient: HttpClientService,
+    private readonly dialogRef: MatDialogRef<UpdateApplicantComponent>,
+    private readonly notificationsService: NotificationService,
+  ) {
     this.validationGroup = applicantGroup;
+
+    this.updatedApplicant.id = applicant.id;
+    this.updatedApplicant.firstName = applicant.firstName;
+    this.updatedApplicant.lastName = applicant.lastName;
+    this.updatedApplicant.middleName = applicant.middleName;
+    this.updatedApplicant.email = applicant.email;
+    this.updatedApplicant.phone = applicant.phone;
+    this.updatedApplicant.skype = applicant.skype;
+    this.updatedApplicant.experience = applicant.experience;
+  }
+
+  public updateApplicant(): void {
+    this.httpClient.putRequest<Applicant>('/applicants', this.updateApplicant)
+      .pipe(
+        takeUntil(this.$unsubscribe),
+      )
+      .subscribe((result: Applicant) => {
+        this.dialogRef.close(result);
+      },
+      (error: Error) => {
+        this.notificationsService.showErrorMessage(error.message, 'Cannot update the applicant');
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this.$unsubscribe.next();
+    this.$unsubscribe.complete();
   }
 }

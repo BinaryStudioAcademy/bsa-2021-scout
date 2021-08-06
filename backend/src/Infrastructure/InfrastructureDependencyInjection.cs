@@ -83,6 +83,7 @@ namespace Infrastructure
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
+            services.AddScoped<IWriteRepository<Applicant>, WriteRepository<Applicant>>();
 
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
             services.AddScoped<IElasticWriteRepository<ApplicantToTags>, ElasticWriteRepository<ApplicantToTags>>();
@@ -96,6 +97,15 @@ namespace Infrastructure
 
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
+            
+            services.AddScoped<IReadRepository<Applicant>, ReadRepository<Applicant>>(fact =>
+                new ReadRepository<Applicant>("Applicants", fact.GetRequiredService<IConnectionFactory>()));
+            services.AddScoped<IReadRepository<Vacancy>, ReadRepository<Vacancy>>(fact =>
+                new ReadRepository<Vacancy>("Vacancies", fact.GetRequiredService<IConnectionFactory>()));
+            services.AddScoped<IReadRepository<Stage>, ReadRepository<Stage>>(fact =>
+                new ReadRepository<Stage>("Stages", fact.GetRequiredService<IConnectionFactory>()));
+            services.AddScoped<IReadRepository<VacancyCandidate>, ReadRepository<VacancyCandidate>>(fact =>
+                new ReadRepository<VacancyCandidate>("VacancyCandidates", fact.GetRequiredService<IConnectionFactory>()));
 
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
             services.AddScoped<IElasticReadRepository<ApplicantToTags>, ElasticReadRepository<ApplicantToTags>>();

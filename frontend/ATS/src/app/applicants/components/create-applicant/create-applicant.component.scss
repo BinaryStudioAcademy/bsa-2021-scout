@@ -1,20 +1,29 @@
-.head-section {
-    margin: 22px 46px 0px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.mat-dialog-title {
+    margin: 0 16px 20px;
+}
 
-    .mat-dialog-title {
-        margin: 0;
-    }
+.mat-dialog-actions {
+    padding: 15px 16px 10px;
 }
 
 .mat-dialog-content {
-    margin: 0 46px;
-    padding: 0;
+    padding: 0 40px 10px;
 
     p {
         margin: 0;
+    }
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba($color: (#291965), $alpha: 0.5);
+        border-radius: 5px;
     }
 }
 
@@ -24,18 +33,18 @@
 
     .mat-form-field-wrapper {
         max-width: none;
+        box-sizing: border-box;
+        margin: 0;
         border-radius: 10px;
-        width: calc(100% - 40px);
+        width: 100%;
     
         .mat-form-field-subscript-wrapper {
             margin-top: 17px;
-            width: calc(100% - 40px);
+            width: calc(100% - 60px);
         }
     }
 }
 
 .publish-action {
-    margin: 0 46px 50px;
-    width: 141px;
-    padding: 0;
+    margin-bottom: 20px;
 }

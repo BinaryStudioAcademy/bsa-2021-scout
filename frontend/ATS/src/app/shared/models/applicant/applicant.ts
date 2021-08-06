@@ -8,6 +8,7 @@ export interface Applicant {
   email: string
   phone: string
   skype: string
+  experience: number
 
   tags: string[]
   vacancies: ApplicantVacancyInfo[]

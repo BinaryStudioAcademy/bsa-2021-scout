@@ -19,11 +19,7 @@
     <ng-container matColumnDef="rate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="rate"> Rate </th>
         <td mat-cell *matCellDef="let applicant">
-            <button mat-icon-button (click)="changeRate(applicant, i)" class="star-button" *ngFor="let i of [1, 2, 3, 4, 5]">
-            <mat-icon>
-                {{showStarIcon(i, applicant.rate)}}
-            </mat-icon>
-            </button>
+            5
         </td>
     </ng-container>
   

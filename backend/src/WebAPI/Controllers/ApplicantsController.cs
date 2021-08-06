@@ -3,20 +3,29 @@ using Application.Common.Queries;
 using Application.Applicants.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using System;
+using AutoMapper;
 using Application.ApplicantToTags.Dtos;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Application.ApplicantToTags.CommandQuery.AddTagCommand;
 using Application.ApplicantToTags.CommandQuery.DeleteTagCommand;
+using Application.Applicants.Queries;
+
+
 namespace WebAPI.Controllers
 {
     public class ApplicantsController : ApiController
     {
+        protected IMapper _mapper;
+        public ApplicantsController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetApplicantAsync(string id)
         {
-            var query = new GetEntityByIdQuery<ApplicantDto>(id);
+            var query = new GetComposedApplicantQuery(id);
 
             return Ok(await Mediator.Send(query));
         }
@@ -24,10 +33,11 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetApplicantsAsync()
         {
-            var query = new GetEntityListQuery<ApplicantDto>();
+            var query = new GetComposedApplicantListQuery();
 
             return Ok(await Mediator.Send(query));
         }
+
         [HttpGet("to_tags/{searchRequest}")]
         public async Task<IActionResult> SearchElasticAsync(string searchRequest)
         {
@@ -38,7 +48,8 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostApplicantAsync([FromBody] CreateApplicantDto createDto)
         {
-            var query = new CreateEntityCommand<CreateApplicantDto>(createDto);
+            var newApplicant = _mapper.Map<ApplicantDto>(createDto);
+            var query = new CreateEntityCommand<ApplicantDto>(newApplicant);
 
             return Ok(await Mediator.Send(query));
         }
@@ -69,7 +80,8 @@ namespace WebAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> PutApplicantAsync([FromBody] UpdateApplicantDto updateDto)
         {
-            var query = new UpdateEntityCommand<UpdateApplicantDto>(updateDto);
+            var updatedApplicant = _mapper.Map<ApplicantDto>(updateDto);
+            var query = new UpdateEntityCommand<ApplicantDto>(updatedApplicant);
 
             return Ok(await Mediator.Send(query));
         }
@@ -86,8 +98,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteApplicantAsync(string id)
         {
             var query = new DeleteEntityCommand(id);
+            await Mediator.Send(query);
 
-            return StatusCode(204, await Mediator.Send(query));
+            return StatusCode(204);
         }
 
         [HttpDelete("to_tags/{id}")]

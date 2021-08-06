@@ -25,17 +25,17 @@ $row-height: 55px;
 
     .search-close-btn {
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
     }
 
     .mat-button-wrapper {
-        display: block;
+        display: flex;
+        justify-content: center;
         height: 15px;
     }
 
     .mat-icon {
-        display: block;
         font-size: 15px;
         line-height: 1;
     }
@@ -69,29 +69,7 @@ $row-height: 55px;
         height: 55px;
     }
 
-    button {
-        border: none;
-        background: none;
-
-        &.star-button {
-            width: 25px;
-            height: 25px;
-            color: #ffd900;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            .mat-icon {
-                font-size: 25px;
-            }
-        }
-    }
-
-    mat-list {
-        padding: 0;
-    }
-
-    td {
+    .mat-cell {
         border: none;
         padding-right: 15px;
 
@@ -104,33 +82,54 @@ $row-height: 55px;
             max-width: 250px;
         }
 
-        mat-list::-webkit-scrollbar {
-            display: none;
+        .mat-list::-webkit-scrollbar {
+            width: 2px;
+            height: 2px;
+        }
+
+        .mat-list::-webkit-scrollbar-track {
+            background: none;
+        }
+
+        .mat-list::-webkit-scrollbar-thumb {
+            background-color: rgba($color: (#291965), $alpha: 0.5);
+            border-radius: 5px;
         }
 
         .jobs-list {
             display: flex;
+            font-size: 12px;
+            padding: 0;
             flex-direction: column;
-            height: $row-height;
+            height: 40px;
             overflow-y: scroll;
+
+            .mat-list-item {
+                font-size: 13px;
+                height: 20px;
+            }
         }
 
         .tags-list {
-
+            height: $row-height;
+            padding: 0;
             display: grid;
             grid-template-columns: repeat(auto-fill, 1fr);
             grid-gap: 10px;
             max-width: 70%;
             overflow-x: scroll;
+            display: flex;
+            align-items: center;
             background: none;
 
             mat-list-item {
                 grid-row: 1 / 2;
                 width: max-content;
                 height: min-content;
-                padding: 2px;
+                padding: 2px 0;
                 border-radius: 15px;
-                background-color: #dddddd;
+                background-color: #EE2A64;
+                color: #fff;
             }
         }
     }
@@ -149,3 +148,12 @@ $row-height: 55px;
         }
     }
 }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.5;
+    }
+  }

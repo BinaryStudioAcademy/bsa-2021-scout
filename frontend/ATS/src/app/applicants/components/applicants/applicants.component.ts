@@ -2,13 +2,16 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Applicant } from 'src/app/shared/models/applicant';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Applicant } from 'src/app/shared/models/applicant/applicant';
+import { HttpClientService } from 'src/app/shared/services/http-client.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { applicants } from '../../applicants-test';
 import { CreateApplicantComponent } from '../create-applicant/create-applicant.component';
 import { UpdateApplicantComponent } from '../update-applicant/update-applicant.component';
 
-export type FullApplicant = Applicant
-& { rate: number }
-& { experience: number }
+const isTestMode = true;
 
 @Component({
   selector: 'app-applicants',
@@ -28,77 +31,33 @@ export class ApplicantsComponent {
     'control_buttons',
   ];
 
-  public dataSource = new MatTableDataSource([
-    { id: '2', firstName: 'sfsaf', lastName: 'sdsfff', middleName: 'gfdgggg',
-      email: 'dsg@jhgjgh', rate: 3, vacancies: [ 
-        { title: 'UI/UX', stage: 'Pre-offer' },
-        { title: '.Net Dev', stage: 'Hot' },
-        { title: 'Frontend', stage: 'Declined' },
-      ], tags: [ 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA' ],
-      experience: 1.2},
-    { id: '2', firstName: 'sfsaf', lastName: 'sdsfff', middleName: 'gfdgggg',
-      email: 'dsg@jhgjgh', rate: 3, vacancies: [ 
-        { title: 'UI/UX', stage: 'Pre-offer' },
-        { title: '.Net Dev', stage: 'Hot' },
-        { title: 'Frontend', stage: 'Declined' },
-      ], tags: [ 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA' ],
-      experience: 1.2},
-    { id: '2', firstName: 'sfsaf', lastName: 'sdsfff', middleName: 'gfdgggg',
-      email: 'dsg@jhgjgh', rate: 3, vacancies: [ 
-        { title: 'UI/UX', stage: 'Pre-offer' },
-        { title: '.Net Dev', stage: 'Hot' },
-        { title: 'Frontend', stage: 'Declined' },
-      ], tags: [ 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA' ],
-      experience: 1.2},
-    { id: '2', firstName: 'sfsaf', lastName: 'sdsfff', middleName: 'gfdgggg',
-      email: 'dsg@jhgjgh', rate: 3, vacancies: [ 
-        { title: 'UI/UX', stage: 'Pre-offer' },
-        { title: '.Net Dev', stage: 'Hot' },
-        { title: 'Frontend', stage: 'Declined' },
-      ], tags: [ 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA' ],
-      experience: 1.2},
-    { id: '2', firstName: 'sfsaf', lastName: 'sdsfff', middleName: 'gfdgggg',
-      email: 'dsg@jhgjgh', rate: 3, vacancies: [ 
-        { title: 'UI/UX', stage: 'Pre-offer' },
-        { title: '.Net Dev', stage: 'Hot' },
-        { title: 'Frontend', stage: 'Declined' },
-      ], tags: [ 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA' ],
-      experience: 1.2},
-    { id: '2', firstName: 'sfsaf', lastName: 'sdsfff', middleName: 'gfdgggg',
-      email: 'dsg@jhgjgh', rate: 3, vacancies: [ 
-        { title: 'UI/UX', stage: 'Pre-offer' },
-        { title: '.Net Dev', stage: 'Hot' },
-        { title: 'Frontend', stage: 'Declined' },
-      ], tags: [ 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA' ],
-      experience: 1.2},
-    { id: '2', firstName: 'sfsaf', lastName: 'sdsfff', middleName: 'gfdgggg',
-      email: 'dsg@jhgjgh', rate: 3, vacancies: [ 
-        { title: 'UI/UX', stage: 'Pre-offer' },
-        { title: '.Net Dev', stage: 'Hot' },
-      ], tags: [ 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA' ],
-      experience: 1.2},
-    { id: '2', firstName: 'sfsaf', lastName: 'sdsfff', middleName: 'gfdgggg',
-      email: 'dsg@jhgjgh', rate: 3, vacancies: [ 
-        { title: 'UI/UX', stage: 'Pre-offer' },
-        { title: '.Net Dev', stage: 'Hot' },
-        { title: 'Frontend', stage: 'Declined' },
-      ], tags: [ 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA', 'Job', 'Offer', 'BSA' ],
-      experience: 1.2},
-  ]);
-
   public searchValue = '';
+  public dataSource = new MatTableDataSource<Applicant>();
 
-  constructor(private dialog: MatDialog)
-  {}
+  private $unsubscribe = new Subject();
 
-  public showStarIcon(rateValue: number, applicantRate: number): string {
-    return rateValue <= applicantRate
-      ? 'star'
-      : 'star_border';
-  }
-
-  public changeRate(applicant: FullApplicant, rateValue: number): void {
-    applicant.rate = rateValue;
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly notificationsService: NotificationService,
+    private readonly httpCLient: HttpClientService,
+  ) {
+    if (isTestMode) {
+      this.dataSource.data = applicants;
+    }
+    else {
+      // Will be the code of the controller after applicants backend will be implemented
+      this.httpCLient.getRequest<Applicant[]>('/applicants')
+        .pipe(
+          takeUntil(this.$unsubscribe),
+        )
+        .subscribe((result: Applicant[]) => {
+          this.dataSource.data = result;
+        },
+        (error: Error) => {
+          this.notificationsService.showErrorMessage(error.message,
+            'Cannot download applicants from the host');
+        });
+    }
   }
 
   public showApplicantCreateDialog(): void {
@@ -108,10 +67,17 @@ export class ApplicantsComponent {
       autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe();
+    dialogRef.afterClosed()
+      .subscribe((result: Applicant) => {
+        if (result) {
+          this.dataSource.data.unshift(result);
+          this.notificationsService.showSuccessMessage('An applicant was succesfully created',
+            'Success!');
+        }
+      });
   }
 
-  public showApplicantUpdateDialog(applicant: FullApplicant): void {
+  public showApplicantUpdateDialog(applicant: Applicant): void {
     const dialogRef = this.dialog.open(UpdateApplicantComponent, {
       width: '914px',
       height: 'min-content',
@@ -119,11 +85,34 @@ export class ApplicantsComponent {
       data: applicant,
     });
 
-    dialogRef.afterClosed().subscribe();
+    dialogRef.afterClosed()
+      .subscribe((result: Applicant) => {
+        if (result) {
+          let applicantIndex = this.dataSource.data.findIndex(a => a.id === result.id);
+          this.dataSource.data[applicantIndex] = result;
+
+          this.notificationsService.showSuccessMessage('An applicant was succesfully updated',
+            'Success!');
+        }
+      });
   }
 
-  public deleteApplicant(): void {
-        
+  public deleteApplicant(applicantId: string): void {
+    this.httpCLient.deleteRequest('/applicants/' + applicantId)
+      .pipe(
+        takeUntil(this.$unsubscribe),
+      )
+      .subscribe(() => {
+        let applicantIndex = this.dataSource.data.findIndex(a => a.id === applicantId);
+        this.dataSource.data.slice(applicantIndex, 1);
+
+        this.notificationsService.showSuccessMessage('The applicant was succesfully deleted',
+          'Success!');
+      },
+      (error: Error) => {
+        this.notificationsService.showErrorMessage(error.message,
+          'Cannot delete the applicant');
+      });
   }
 
   public clearInput(): void {
@@ -137,15 +126,13 @@ export class ApplicantsComponent {
   }
 
   public sortData(sort: Sort): void {
-    this.dataSource.data = (this.dataSource.data as FullApplicant[]).sort((a, b) => {
+    this.dataSource.data = (this.dataSource.data as Applicant[]).sort((a, b) => {
       const isAsc = sort.direction === 'asc';
-            
+                  
       switch (sort.active) {
         case 'name':
           return this.compareRows(a.firstName + ' ' + a.lastName + ' ' + a.middleName,
             b.firstName + ' ' + b.lastName + ' ' + b.middleName, isAsc);
-        case 'rate':
-          return this.compareRows(a.rate, b.rate, isAsc);
         case 'email':
           return this.compareRows(a.email, b.email, isAsc);
         case 'active_vacancies':

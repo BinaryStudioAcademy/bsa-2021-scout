@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   exports: [
@@ -21,6 +23,9 @@ import { MatSortModule } from '@angular/material/sort';
     MatListModule,
     MatDialogModule,
     MatSortModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers:[HttpClientService],
 })
