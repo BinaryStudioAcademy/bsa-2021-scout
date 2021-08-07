@@ -36,5 +36,13 @@ namespace Infrastructure.Repositories.Abstractions
             var result = await _client.SearchAsync<T>();
             return result.Documents;
         }
+
+        public async Task<T> GetByPropertyAsync(string property, string propertyValue)
+        {
+            var searchResponse = await _client.SearchAsync<T>(s => s.QueryOnQueryString($"{property}: {propertyValue}"));
+            if(!searchResponse.IsValid)
+                throw new ArgumentException("Search properties is invalid");
+            return searchResponse.Documents.FirstOrDefault();
+        }
     }
 }

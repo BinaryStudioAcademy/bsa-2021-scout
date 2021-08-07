@@ -4,7 +4,7 @@ using Application.Interfaces;
 using Application.Users.Dtos;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using MediatR;
 using System;
 using System.Threading;

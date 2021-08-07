@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Dapper;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Domain.Common;
 using Infrastructure.Dapper.Interfaces;
 
@@ -38,7 +38,15 @@ namespace Infrastructure.Repositories.Abstractions
 
             var entities = await connection.QueryAsync<T>(sql);
             await connection.CloseAsync();
+
             return entities;
+        }
+
+        public async Task<T> GetByPropertyAsync(string property, string propertyValue)
+        {
+            using var connection = _connectionFactory.GetSqlConnection();
+            string sql = $"SELECT * FROM {_tableName} WHERE "+property+" = @propertyValue";
+            return await connection.QueryFirstOrDefaultAsync<T>(sql, new { propertyValue });
         }
     }
 }

@@ -43,8 +43,11 @@ namespace WebAPI.Extensions
                 options.AddPolicy(name: DevelopmentPolicy,
                                   builder =>
                                   {
-                                      builder.WithExposedHeaders("Token-Expired")
-                                             .WithOrigins("http://localhost:4200");
+                                      builder
+                                        .WithHeaders("Content-Type")
+                                        .WithMethods("GET", "POST", "PUT", "DELETE")
+                                        .WithExposedHeaders("Token-Expired")
+                                        .WithOrigins("http://localhost:4200");
                                   });
             });
 
@@ -60,13 +63,15 @@ namespace WebAPI.Extensions
                                   {
                                       // If you want to test prod environmanet locally 
                                       // relpace next line with this: builder.WithOrigins("http://localhost");
-                                      builder.WithExposedHeaders("Token-Expired")
-                                             .WithOrigins("");
+                                      builder
+                                        .WithHeaders("Content-Type")
+                                        .WithMethods("GET", "POST", "PUT", "DELETE")
+                                        .WithExposedHeaders("Token-Expired")
+                                        .WithOrigins("");
                                   });
             });
 
             return services;
         }
-    
     }
 }

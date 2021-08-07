@@ -393,6 +393,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("ApplicantId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
@@ -419,7 +422,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("ApplicantId");
 
                     b.HasIndex("StageId");
 
@@ -580,10 +583,9 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Applicant", "Applicant")
                         .WithMany("Candidates")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("ApplicantId")
                         .HasConstraintName("candidate_applicant_FK")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Entities.Stage", "Stage")
                         .WithMany("Candidates")

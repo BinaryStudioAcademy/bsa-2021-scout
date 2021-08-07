@@ -1,0 +1,41 @@
+@import "../../../../common.scss";
+
+.card {
+  width: 100%;
+  margin-bottom: 15px;
+  background-color: $primary-color-white;
+  padding: 20px 15px;
+  border-radius: 5px;
+  box-sizing: border-box;
+
+  & > * {
+    width: 100%;
+  }
+
+  &.draggable {
+    cursor: all-scroll;
+  }
+
+  .data {
+    margin-top: 10px;
+  }
+
+  .user-data {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .avatar {
+      $dim: 40px;
+      border-radius: 50%;
+      width: $dim;
+      height: $dim;
+      max-width: $dim;
+      max-height: $dim;
+    }
+
+    .texts {
+      flex-grow: 1;
+    }
+  }
+}

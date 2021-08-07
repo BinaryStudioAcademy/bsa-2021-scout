@@ -1,2 +1,17 @@
+<<<<<<< HEAD
 <p>test</p>
 <app-applicants></app-applicants>
+=======
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #leftSidenav mode="side" opened>
+    <app-menu></app-menu>
+  </mat-sidenav>
+  <mat-sidenav-content [@onMainContentChange]="onSideNavChange ? 'open': 'close'">
+    <div class="main-content-wrp">
+      <div class="main-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+>>>>>>> feature-ivan-hedz-elastic-search
