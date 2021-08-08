@@ -1,9 +1,9 @@
-import { AfterViewInit, ChangeDetectorRef, Component,
+import { AfterViewInit, Component,
   ViewChild, ElementRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
 import { VacancyStatus } from 'src/app/shared/models/vacancy/vacancy-status';
 import { VacancyData } from 'src/app/shared/models/vacancy/vacancy-data';
