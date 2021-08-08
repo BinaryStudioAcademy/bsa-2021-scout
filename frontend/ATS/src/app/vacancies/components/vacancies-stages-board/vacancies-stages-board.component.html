@@ -1,49 +1,53 @@
 <div class="container">
-  <div>
-    <h2>{{ title }}</h2>
-  </div>
-  <div class="toolbar">
-    <div class="avatars">
-      <div class="avatar-wrp" *ngFor="let avatar of avatars; index as i;">
-        <img class="avatar" [src]="avatar" />
-        <div class="dimmer" *ngIf="i === avatars.length - 1 && extraAvatarsCount > 0">
-          +{{ extraAvatarsCount }}
+  <app-spinner *ngIf="loading"></app-spinner>
+  <ng-container *ngIf="!loading">
+    <div>
+      <h2>{{ title }}</h2>
+    </div>
+    <div class="toolbar">
+      <div class="avatars">
+        <div class="avatar-wrp" *ngFor="let avatar of avatars; index as i;">
+          <img class="avatar" [src]="avatar" />
+          <div class="dimmer" *ngIf="i === avatars.length - 1 && extraAvatarsCount > 0">
+            +{{ extraAvatarsCount }}
+          </div>
+        </div>
+        <div class="plus-avatar">
+          <button mat-icon-button color="accent">
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
       </div>
-      <div class="plus-avatar">
-        <button mat-icon-button color="accent">
+      <div class="buttons">
+        <button mat-stroked-button class="button" color="primary">
           <mat-icon>add</mat-icon>
+          <span>Add candidates</span>
+        </button>
+        <button mat-icon-button color="accent">
+          <mat-icon>filter_list</mat-icon>
+        </button>
+        <button mat-icon-button color="accent">
+          <mat-icon>settings</mat-icon>
         </button>
       </div>
     </div>
-    <div class="buttons">
-      <button mat-stroked-button class="button" color="primary">
-        <mat-icon>add</mat-icon>
-        <span>Add candidates</span>
-      </button>
-      <button mat-icon-button color="accent">
-        <mat-icon>filter_list</mat-icon>
-      </button>
-      <button mat-icon-button color="accent">
-        <mat-icon>settings</mat-icon>
-      </button>
+    <div class="board">
+      <div
+        class="column-wrp"
+        [id]="stage.id"
+        cdkDropList
+        [cdkDropListData]="stage.candidates"
+        [cdkDropListConnectedTo]="getLinkedWith(stage.id)"
+        (cdkDropListDropped)="onMove($event)"
+        *ngFor="let stage of data"
+      >
+        <app-candidate-column
+          [title]="stage.name"
+          [data]="stage.candidates"
+          [isDraggable]="true"
+          (clickAction)="openCandidateModal($event)"
+        ></app-candidate-column>
+      </div>
     </div>
-  </div>
-  <div class="board">
-    <div
-      class="column-wrp"
-      [id]="stage.id"
-      cdkDropList
-      [cdkDropListData]="stage.candidates"
-      [cdkDropListConnectedTo]="getLinkedWith(stage.id)"
-      (cdkDropListDropped)="onMove($event)"
-      *ngFor="let stage of data"
-    >
-      <app-candidate-column
-        [title]="stage.name"
-        [data]="stage.candidates"
-        [isDraggable]="true"
-      ></app-candidate-column>
-    </div>
-  </div>
+  </ng-container>
 </div>

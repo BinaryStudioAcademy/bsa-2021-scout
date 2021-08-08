@@ -1,10 +1,10 @@
 using System;
+using Application.Common.Models;
 
 namespace Application.Applicants.Dtos
 {
-    public class ApplicantDto
+    public class ApplicantDto : Dto
     {
-        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MiddleName { get; set; }

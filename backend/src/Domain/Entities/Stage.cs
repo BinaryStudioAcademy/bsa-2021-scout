@@ -14,6 +14,7 @@ namespace Domain.Entities
 
         public Vacancy Vacancy { get; set; }
         public ICollection<Action> Actions { get; set; }
-        public ICollection<VacancyCandidate> Candidates { get; set; }
+        public ICollection<CandidateToStage> CandidateToStages { get; set; }
+        public ICollection<CandidateReview> Reviews { get; set; }
     }
 }
