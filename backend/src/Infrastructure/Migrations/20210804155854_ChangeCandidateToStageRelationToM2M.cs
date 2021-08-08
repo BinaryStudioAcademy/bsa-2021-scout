@@ -11,10 +11,6 @@ namespace Infrastructure.Migrations
                 name: "candidate_stage_FK",
                 table: "VacancyCandidates");
 
-            migrationBuilder.DropColumn(
-                name: "StageId",
-                table: "VacancyCandidates");
-
             migrationBuilder.CreateTable(
                 name: "CandidateToStages",
                 columns: table => new
