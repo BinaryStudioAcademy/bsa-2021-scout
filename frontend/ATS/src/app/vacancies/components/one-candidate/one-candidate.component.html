@@ -1,0 +1,76 @@
+<div class="container">
+  <app-spinner *ngIf="loading"></app-spinner>
+  <ng-container *ngIf="!loading">
+    <div class="avatar-col">
+      <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />
+    </div>
+    <div class="content-col">
+      <div class="top block">
+        <h2>{{ data.fullName }}</h2>
+        <p class="only-color meta">
+          <span>Added by HR </span>
+          <a routerLink="/profile/{{ data.hrWhoAddedId }}">{{ data.hrWhoAddedFullName }}</a>
+          <span> {{ formatDate(data.dateAdded) }}</span>
+        </p>
+        <p class="only-color meta">
+          <span>Current stage: </span>
+          <span class="only-color dark meta">{{ data.currentStageName }}</span>
+        </p>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="block">
+        <h3>Contacts</h3>
+        <ul class="list">
+          <li>
+            <mat-icon color="accent">phone_in_talk</mat-icon>
+            <span>{{ data.phone }}</span>
+          </li>
+          <li>
+            <mat-icon color="accent">email</mat-icon>
+            <span>{{ data.email }}</span>
+          </li>
+        </ul>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="block" *ngIf="data.cv">
+        <h3>Experience</h3>
+        <div>
+          {{ data.cv }}
+        </div>
+      </div>
+      <mat-divider *ngIf="data.cv"></mat-divider>
+      <div class="block" *ngIf="data.stagesHistory.length">
+        <h3>Activity</h3>
+        <div class="activity">
+          <div class="activity-item" *ngFor="let item of data.stagesHistory">
+            <h4>{{ item.stageName }}</h4>
+            <mat-divider></mat-divider>
+            <div class="meta" *ngIf="item.dateRemoved">{{ formatDate(item.dateRemoved) }}</div>
+            <div class="meta" *ngIf="!item.dateRemoved">not assigned</div>
+          </div>
+        </div>
+      </div>
+      <mat-divider *ngIf="data.stagesHistory.length"></mat-divider>
+      <div class="block" *ngIf="data.comments">
+        <h3>Comments</h3>
+        <div>
+          {{ data.comments }}
+        </div>
+      </div>
+      <mat-divider *ngIf="data.comments && data.reviews.length"></mat-divider>
+      <div class="block" *ngIf="data.reviews.length">
+        <h3>Reviews</h3>
+        <div class="reviews">
+          <div *ngFor="let item of data.reviews">
+            <h4 class="only-color dark meta">{{ item.reviewName }}</h4>
+            <mat-progress-bar
+              color="accent"
+              mode="determinate"
+              [value]="item.mark * 10"
+            ></mat-progress-bar>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

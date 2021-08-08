@@ -25,7 +25,10 @@ namespace Infrastructure.EF
         public DbSet<Vacancy> Vacancies { get; set; }
         public DbSet<VacancyCandidate> VacancyCandidates { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-        
+        public DbSet<CandidateToStage> CandidateToStages { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<CandidateReview> CandidateReviews { get; set; }
+
         private readonly IDomainEventService _domainEventService;
 
         public ApplicationDbContext() : base() { }
@@ -37,6 +40,15 @@ namespace Infrastructure.EF
         {
             _domainEventService = domainEventService;
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=(local);Database=ATS_dev;User Id=sa;Password=123Admin!;");
+            }
+        }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             var result = await base.SaveChangesAsync(cancellationToken);

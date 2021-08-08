@@ -1,0 +1,27 @@
+@import "../../../../common.scss";
+
+h1 {
+  padding: 0;
+  margin: 0;
+}
+
+.space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icon {
+  font-size: 12px;
+  width: 12px;
+  height: 12px;
+}
+
+.button {
+  cursor: pointer;
+  color: #333333;
+
+  &.primary {
+    color: $primary-color;
+  }
+}

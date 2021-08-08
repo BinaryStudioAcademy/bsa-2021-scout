@@ -1,3 +1,4 @@
+using System.Linq;
 using AutoMapper;
 using Domain.Entities;
 using Application.Stages.Dtos;
@@ -8,7 +9,12 @@ namespace Application.Stages
     {
         public StageProfile()
         {
-            CreateMap<Stage, StageWithCandidatesDto>();
+            CreateMap<Stage, StageWithCandidatesDto>()
+                .ForMember(
+                    dto => dto.Candidates,
+                    opt => opt.MapFrom(s =>
+                        s.CandidateToStages.Select(cts => cts.Candidate))
+                );
         }
     }
 }

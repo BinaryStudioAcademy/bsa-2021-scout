@@ -1,6 +1,6 @@
 using Application.Common.Models;
 
-namespace Application.ApplicantCv.Dtos
+namespace Application.ApplicantCvs.Dtos
 {
     public class ApplicantCvDto : Dto
     {
