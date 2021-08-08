@@ -25,7 +25,7 @@
 
         <ng-container matColumnDef="candidates">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Candidates </th>
-            <td mat-cell *matCellDef="let row"> {{row.candidates}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.current_applicants_amount}} / <span style="color:#EE2A64">{{row.required_candidates_amount}} </span></td>
         </ng-container>
         <ng-container matColumnDef="department">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Department </th>
@@ -67,7 +67,7 @@
 
     </table>
     <div>Showing 
-        <span style="color:red">{{
+        <span style="color:#EE2A64">{{
             (dataSource.filteredData.length-paginator.pageIndex*paginator.pageSize) < paginator.pageSize
             ? dataSource.filteredData.length-paginator.pageIndex*paginator.pageSize
             : paginator.pageSize

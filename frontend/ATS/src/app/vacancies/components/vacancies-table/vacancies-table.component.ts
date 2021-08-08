@@ -5,23 +5,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
+import { VacancyStatus } from 'src/app/shared/models/vacancy/vacancy-status';
+import { VacancyData } from 'src/app/shared/models/vacancy/vacancy-data';
 
-export enum VacancyStatus{
-  Invited = 'Invited',
-  Active = 'Active',
-  Former = 'Former',
-  Vacation = 'Vacation'
-}
-
-export interface VacancyData {
-  title: string;
-  candidates: string;
-  department: string;
-  responsible: string;
-  created: Date;
-  status: VacancyStatus;
-}
-​
 ​
 const HRs: string[] = [
   'Livia Baptista',
@@ -95,7 +81,8 @@ function createNewVacancy(): VacancyData {
 ​
   return {
     title: name,
-    candidates: '10/10',
+    required_candidates_amount: Math.round(Math.random()*4+1),
+    current_applicants_amount: Math.round(Math.random()*10 +1),
     responsible: HRs[Math.round(Math.random() * (HRs.length - 1))],
     department: 'Lorem ipsum dorot sit',
     created: new Date(),

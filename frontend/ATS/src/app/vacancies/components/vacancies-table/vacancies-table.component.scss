@@ -25,6 +25,9 @@ th {
     display: flex;
     flex-direction: row;
 }
+.icons > .mat-icon{
+    font-size: large;
+}
 ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: transparent; 
 }
