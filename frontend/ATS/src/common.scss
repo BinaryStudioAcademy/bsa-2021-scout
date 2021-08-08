@@ -1,13 +1,15 @@
-$primary-color-icons: #4F00B5;
+$primary-color-icons: #4f00b5;
 $primary-color: #ee2a64;
 $primary-color-white: #f6f7f9;
+$primary-color-lightgrey: #d8dadf;
 $primary-color-darkgrey: #919398;
+$primary-color-extradarkgrey: #818388;
 $accent-color: #4f1cb1;
 $primary-font: Nunito;
 
-.mat-toolbar{
-    background-color:#291965;
-    height:120px;
+.mat-toolbar {
+  background-color: #291965;
+  height: 120px;
 }
 //button
 .mat-button.mat-button {
@@ -74,6 +76,10 @@ a {
 
 .meta {
   color: $primary-color-darkgrey;
+
+  &.dark {
+    color: $primary-color-extradarkgrey;
+  }
 
   &:not(&.only-color) {
     font-size: 12px;

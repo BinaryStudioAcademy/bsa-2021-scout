@@ -1,0 +1,19 @@
+<div class="space-between" mat-dialog-title>
+  <h1>{{ data.vacancyName }}</h1>
+  <button mat-icon-button mat-dialog-close="none">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<app-one-candidate mat-dialog-content [id]="data.candidateId"></app-one-candidate>
+<div mat-dialog-actions class="space-between">
+  <div class="button" mat-dialog-close="prev" *ngIf="data.hasPrevious">
+    <mat-icon class="icon">chevron_left</mat-icon>
+    <span>Previous candidate</span>
+  </div>
+  <div *ngIf="!data.hasPrevious"></div>
+  <div class="primary button" mat-dialog-close="next" cdkFocusInitial *ngIf="data.nextFullName">
+    <span>Next: {{ data.nextFullName }}</span>
+    <mat-icon class="icon">chevron_right</mat-icon>
+  </div>
+  <div *ngIf="!data.nextFullName"></div>
+</div>

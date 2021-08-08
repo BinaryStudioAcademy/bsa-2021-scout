@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.Data.SqlClient;
 using Dapper;
 using Domain.Interfaces.Abstractions;
 using Domain.Common;
+using Application.Common.Exceptions;
 using Infrastructure.Dapper.Interfaces;
 
 namespace Infrastructure.Repositories.Abstractions
@@ -21,12 +23,19 @@ namespace Infrastructure.Repositories.Abstractions
 
         public async Task<T> GetAsync(string id)
         {
-            var connection = _connectionFactory.GetSqlConnection();
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
-            string sql = $"SELECT * FROM {_tableName} WHERE Id = @id";
 
-            var entity = await connection.QueryFirstAsync<T>(sql, new { id = id });
+            string sql = $"SELECT * FROM {_tableName} WHERE Id = @id";
+            T entity = await connection.QueryFirstOrDefaultAsync<T>(sql, new { id = id });
+
+            if (entity == null)
+            {
+                throw new NotFoundException(typeof(T), id);
+            }
+
             await connection.CloseAsync();
+
             return entity;
         }
 
@@ -45,7 +54,7 @@ namespace Infrastructure.Repositories.Abstractions
         public async Task<T> GetByPropertyAsync(string property, string propertyValue)
         {
             using var connection = _connectionFactory.GetSqlConnection();
-            string sql = $"SELECT * FROM {_tableName} WHERE "+property+" = @propertyValue";
+            string sql = $"SELECT * FROM {_tableName} WHERE [{property}] = @propertyValue";
             return await connection.QueryFirstOrDefaultAsync<T>(sql, new { propertyValue });
         }
     }
