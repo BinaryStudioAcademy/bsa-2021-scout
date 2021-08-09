@@ -2,11 +2,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using AutoMapper;
+using entities = Domain.Entities;
 using Domain.Entities;
 using Domain.Interfaces.Read;
 using Domain.Interfaces.Abstractions;
 using Application.VacancyCandidates.Dtos;
-
 namespace Application.VacancyCandidates.Queries
 {
     public class GetFullVacancyCandidateByIdQuery : IRequest<VacancyCandidateFullDto>
@@ -23,12 +23,12 @@ namespace Application.VacancyCandidates.Queries
         : IRequestHandler<GetFullVacancyCandidateByIdQuery, VacancyCandidateFullDto>
     {
         private readonly IVacancyCandidateReadRepository _readRepository;
-        private readonly IReadRepository<ApplicantCv> _cvReadRepository;
+        private readonly IReadRepository<entities::ApplicantCv> _cvReadRepository;
         private readonly IMapper _mapper;
 
         public GetFullVacancyCandidateByIdQueryHandler(
             IVacancyCandidateReadRepository readRepository,
-            IReadRepository<ApplicantCv> cvReadRepository,
+            IReadRepository<entities::ApplicantCv> cvReadRepository,
             IMapper mapper
         )
         {

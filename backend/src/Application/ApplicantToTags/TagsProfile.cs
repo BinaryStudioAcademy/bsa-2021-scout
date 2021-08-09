@@ -2,7 +2,7 @@ using AutoMapper;
 using Domain.Entities;
 using Application.ApplicantToTags.Dtos;
 
-namespace Application.ApplicantCv
+namespace Application.ApplicantToTags
 {
     public class TagsProfile : Profile
     {

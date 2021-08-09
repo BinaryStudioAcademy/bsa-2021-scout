@@ -3,7 +3,7 @@ using entities = Domain.Entities;
 using Application.ApplicantToTags.Dtos;
 using Domain.Entities;
 
-namespace Application.ApplicantCv
+namespace Application.ApplicantToTags
 {
     public class ApplicantToTagProfile : Profile
     {
