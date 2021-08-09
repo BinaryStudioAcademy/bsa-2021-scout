@@ -11,7 +11,7 @@ namespace Application.Vacancies
         {
             //CreateMap<VacancyDto, Vacancy>();
             CreateMap<VacancyCreateDto, Vacancy>()
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(x => VacancyStatus.Ok));
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(x => VacancyStatus.Active));
                 //.ForMember(dest=>dest.Company, opt=>opt.);
             CreateMap<Vacancy, VacancyDto>();
             CreateMap<Vacancy, VacancyCreateDto>();

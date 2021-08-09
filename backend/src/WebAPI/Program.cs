@@ -9,12 +9,13 @@ namespace WebAPI
     {
         public async static Task Main(string[] args)
         {
-            (
-                await CreateHostBuilder(args)
+            (await (
+                (await CreateHostBuilder(args)
                     .Build()
                     .ApplyDatabaseMigrations()
                     .ApplyElasticSeeding()
-            )
+                ).ApplyVacancySeeding()
+            ))
             .Run();
 
         }

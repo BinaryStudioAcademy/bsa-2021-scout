@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Entities;
+using Domain.Interfaces.Abstractions;
 using Infrastructure.EF;
+using Infrastructure.EF.Seeds;
 using Infrastructure.Elastic.Seeding;
+using Infrastructure.Repositories.Read;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,6 +32,17 @@ namespace WebAPI.Extensions
             await client.IndexManyAsync<ApplicantToTags>(
                 ApplicantToTagsSeeds.GetSeed()
             );
+            
+            return host;
+        }
+        public async static Task<IHost> ApplyVacancySeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var repo = scope.ServiceProvider.GetService<IWriteRepository<Vacancy>>();
+
+            foreach(var vacancy in VacancySeeds.Vacancies){
+                await repo.CreateAsync(vacancy);
+            }
             
             return host;
         }
