@@ -47,7 +47,7 @@ namespace Application.Auth.Commands
 
             if (user == null)
             {
-                throw new NotFoundException(nameof(User));
+                throw new NotFoundException($"Can't find user with email {command.Email}.");
             }
 
             await _userRepository.LoadRolesAsync(user);

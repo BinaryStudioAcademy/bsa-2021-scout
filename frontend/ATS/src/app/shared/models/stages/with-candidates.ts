@@ -1,5 +1,5 @@
 import { Model } from '../model';
-import { VacancyCandidateWithApplicant } from '../vacancy-candidates/with-applicant';
+import { ShortVacancyCandidateWithApplicant } from '../vacancy-candidates/short-with-applicant';
 import { StageType } from './type';
 
 export interface StageWithCandidates extends Model {
@@ -8,5 +8,5 @@ export interface StageWithCandidates extends Model {
   index: number;
   isReviewable: boolean;
   vacancyId: string;
-  candidates: VacancyCandidateWithApplicant[];
+  candidates: ShortVacancyCandidateWithApplicant[];
 }
