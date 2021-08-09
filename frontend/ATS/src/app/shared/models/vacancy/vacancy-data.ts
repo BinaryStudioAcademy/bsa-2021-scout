@@ -6,7 +6,7 @@ export interface VacancyData {
   required_candidates_amount: number;
   department: string;
   responsible: string;
-  created: Date;
+  creationDate: Date;
   status: VacancyStatus;
 }
   ​

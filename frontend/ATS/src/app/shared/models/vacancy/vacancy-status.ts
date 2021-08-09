@@ -1,7 +1,7 @@
 export enum VacancyStatus{
-  Invited = 'Invited',
-  Active = 'Active',
-  Former = 'Former',
-  Vacation = 'Vacation'
+  Invited = 1,
+  Active = 2,
+  Former = 3,
+  Vacation = 4
 }
   
