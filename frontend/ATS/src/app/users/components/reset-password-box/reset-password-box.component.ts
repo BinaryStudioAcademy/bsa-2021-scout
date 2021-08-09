@@ -54,6 +54,6 @@ export class ResetPasswordBoxComponent {
       this.notificationService.showSuccessMessage('Your password has been changed');
       this.router.navigate(['/login']);
     },
-      () => this.notificationService.showErrorMessage('Something went wrong'));
+    () => this.notificationService.showErrorMessage('Something went wrong'));
   }
 }
