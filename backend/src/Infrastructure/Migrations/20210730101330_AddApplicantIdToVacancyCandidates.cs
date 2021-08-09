@@ -10,12 +10,6 @@ namespace Infrastructure.Migrations
                 name: "candidate_applicant_FK",
                 table: "VacancyCandidates");
 
-            migrationBuilder.AddColumn<string>(
-                name: "ApplicantId",
-                table: "VacancyCandidates",
-                type: "nvarchar(450)",
-                nullable: true);
-
             migrationBuilder.CreateIndex(
                 name: "IX_VacancyCandidates_ApplicantId",
                 table: "VacancyCandidates",
