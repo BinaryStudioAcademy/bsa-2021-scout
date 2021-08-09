@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Common.Commands;
+using Application.Common.Queries;
 using Application.Vacancies.Commands.Create;
 using Application.Vacancies.Commands.Edit;
 using Application.Vacancies.Dtos;
@@ -12,6 +13,12 @@ namespace WebAPI.Controllers
 {
     public class VacanciesController : ApiController
     {
+        [HttpGet]
+        public async Task<IActionResult> GetAllVacancies()
+        {
+            var command = new GetEntityListQuery<VacancyDto>();
+            return Ok(await Mediator.Send(command));
+        }
         [HttpPost]
         public async Task<IActionResult> CreateVacancy(VacancyCreateDto vacancy)
         {
