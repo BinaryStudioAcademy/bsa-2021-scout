@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Auth.Exceptions;
+using Application.Common.Exceptions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
@@ -34,6 +35,9 @@ namespace WebAPI.Middleware
                         break;
                     case NotFoundException e:
                         response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    case InvalidUsernameOrPasswordException e:
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
