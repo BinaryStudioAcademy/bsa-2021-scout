@@ -12,17 +12,17 @@ namespace Infrastructure.Files.Abstraction
     public class AwsS3FileWriteRepository : IFileWriteRepository
     {
         private readonly IAmazonS3 _clientAmazonS3;
-        private readonly string _bucketName;
-        private readonly string _bucketRegion;
         private readonly IWriteRepository<FileInfo> _fileInfoRepository;
+        private readonly IFileReadRepository _fileReadRepository;
+        private readonly string _bucketName;
 
-        public AwsS3FileWriteRepository(IAmazonS3 clientAmazonS3, IWriteRepository<FileInfo> fileInfoRepository)
+        public AwsS3FileWriteRepository(IAmazonS3 clientAmazonS3, IFileReadRepository fileReadRepository, IWriteRepository<FileInfo> fileInfoRepository)
         {
             _clientAmazonS3 = clientAmazonS3;
             _fileInfoRepository = fileInfoRepository;
+            _fileReadRepository = fileReadRepository;
 
             _bucketName = Environment.GetEnvironmentVariable("AWS_S3_BUCKET_NAME");
-            _bucketRegion = Environment.GetEnvironmentVariable("AWS_REGION");
         }
 
         public async Task<FileInfo> UploadPrivateFileAsync(string filePath, string fileName, byte[] content)
@@ -48,7 +48,7 @@ namespace Infrastructure.Files.Abstraction
             {
                 Name = fileName,
                 Path = filePath,
-                PublicUrl = GetPublicUrl(filePath, fileName)
+                PublicUrl = await _fileReadRepository.GetPublicUrlAsync(filePath, fileName)
             };
 
             await _fileInfoRepository.CreateAsync(fileInfo);
@@ -70,13 +70,6 @@ namespace Infrastructure.Files.Abstraction
             using var transferUtility = new TransferUtility(_clientAmazonS3);
 
             await transferUtility.UploadAsync(uploadRequest);
-        }
-
-        private string GetPublicUrl(string filePath, string fileName)
-        {
-            var fileKey = AwsS3Helpers.GetFileKey(filePath, fileName);
-
-            return $"https://{_bucketName}.s3-{_bucketRegion}.amazonaws.com/{fileKey}";
         }
     }
 }
