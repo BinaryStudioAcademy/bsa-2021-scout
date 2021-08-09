@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
 import { VacancyStatus } from 'src/app/shared/models/vacancy/vacancy-status';
 import { VacancyData } from 'src/app/shared/models/vacancy/vacancy-data';
+import { VacancyDataService } from 'src/app/shared/services/vacancy-data.service';
 
 ​
 const HRs: string[] = [
@@ -35,7 +36,7 @@ const STATUES: VacancyStatus[] = [
 export class VacanciesTableComponent implements AfterViewInit {
   displayedColumns: string[] =
   ['position', 'title', 'candidates', 'department',
-    'responsible', 'created', 'status', 'actions'];
+    'responsible', 'creationDate', 'status', 'actions'];
   dataSource: MatTableDataSource<VacancyData>;
 ​
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -43,11 +44,16 @@ export class VacanciesTableComponent implements AfterViewInit {
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild('input') serachField!: ElementRef;
 
-  constructor(private dialog: MatDialog) {
-    const vacancies = Array.from({ length: 99 }, (_, k) => createNewVacancy());
-​
+  constructor(private dialog: MatDialog, private service: VacancyDataService) {
+    // const vacancies =  Array.from({ length: 99 }, (_, k) => createNewVacancy());
+    service.getList().subscribe(data=>
+      this.dataSource = new MatTableDataSource(data),
+    );
     // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(vacancies);
+    this.dataSource = new MatTableDataSource();
+  }
+  public getStatus(index:number): string{
+    return VacancyStatus[index];
   }
   public clearSearchField(){
     this.serachField.nativeElement.value = '';
@@ -85,7 +91,7 @@ function createNewVacancy(): VacancyData {
     current_applicants_amount: Math.round(Math.random()*10 +1),
     responsible: HRs[Math.round(Math.random() * (HRs.length - 1))],
     department: 'Lorem ipsum dorot sit',
-    created: new Date(),
+    creationDate: new Date(),
     status: STATUES[Math.round(Math.random()*(STATUES.length - 1))],
   };
 }
