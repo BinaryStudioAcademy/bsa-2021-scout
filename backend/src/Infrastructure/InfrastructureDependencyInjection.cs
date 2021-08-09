@@ -46,8 +46,9 @@ namespace Infrastructure
         private static IServiceCollection AddElasticEngine(this IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("ELASTIC_CONNECTION_STRING");
-            if (connectionString is null)
-                throw new Exception("Elastic connection string url is not specified");
+            
+            // if (connectionString is null)
+            //     throw new Exception("Elastic connection string url is not specified");
             var settings = new ConnectionSettings(new Uri(connectionString))
                 .DefaultIndex("default_index")
                 .DefaultMappingFor<ApplicantToTags>(m => m
