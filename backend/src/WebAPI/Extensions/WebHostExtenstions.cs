@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
@@ -39,7 +39,10 @@ namespace WebAPI.Extensions
         {
             using var scope = host.Services.CreateScope();
             var repo = scope.ServiceProvider.GetService<IWriteRepository<Vacancy>>();
-
+            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Vacancy>>();
+            foreach(var id in (await otherRepo.GetEnumerableAsync()).Select(v=>v.Id)){
+                await repo.DeleteAsync(id);
+            }
             foreach(var vacancy in VacancySeeds.Vacancies){
                 await repo.CreateAsync(vacancy);
             }
