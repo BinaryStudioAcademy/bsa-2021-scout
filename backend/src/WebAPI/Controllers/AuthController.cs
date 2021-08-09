@@ -2,6 +2,7 @@
 using Application.Auth.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -14,8 +15,15 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<AuthUserDto>> Login(UserLoginDto userLogin)
         {
-            var command = new LoginCommand(userLogin);
-            return Ok(await Mediator.Send(command));
+            try
+            {
+                var command = new LoginCommand(userLogin);
+                return Ok(await Mediator.Send(command));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

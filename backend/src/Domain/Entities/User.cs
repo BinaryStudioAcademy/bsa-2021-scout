@@ -22,5 +22,10 @@ namespace Domain.Entities
         public ICollection<CompanyToUser> UserCompanies { get; set; }
 
         public IList<DomainEvent> DomainEvents { get; set; }
+
+        public bool IsEmailConfirmed { get; set; }
+
+        public EmailToken EmailToken { get; set; }
+
     }
 }

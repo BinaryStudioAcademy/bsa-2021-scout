@@ -1,6 +1,8 @@
 ﻿using Application.Auth.Commands;
 using Application.Auth.Dtos;
+using Application.Common.Mail;
 using Application.Interfaces;
+using Application.Mail;
 using Application.Users.Dtos;
 using AutoMapper;
 using Domain.Entities;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Commands
 {
-    public class RegisterUserCommand : IRequest<AuthUserDto>
+    public class RegisterUserCommand : IRequest<Unit>
     {
         public UserRegisterDto RegisterUser { get; }
 
@@ -22,7 +24,7 @@ namespace Application.Users.Commands
         }
     }
 
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthUserDto>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Unit>
     {
         protected readonly ISender _mediator;
         protected readonly IWriteRepository<User> _userWriteRepository;
@@ -39,7 +41,7 @@ namespace Application.Users.Commands
             _mapper = mapper;
         }
 
-        public async Task<AuthUserDto> Handle(RegisterUserCommand command, CancellationToken _)
+        public async Task<Unit> Handle(RegisterUserCommand command, CancellationToken _)
         {
             var newUser = _mapper.Map<User>(command.RegisterUser);
             var salt = _securityService.GetRandomBytes();
@@ -51,14 +53,14 @@ namespace Application.Users.Commands
             var registeredUser = _mapper.Map<UserDto>(newUser);
             registeredUser.Roles = command.RegisterUser.Roles;
 
-            var generateTokenCommand = new GenerateAccessTokenCommand(registeredUser);
-            var token = await _mediator.Send(generateTokenCommand);
+            var sendConfirmEmailMailCommand = new SendConfirmEmailMailCommand(
+                registeredUser,
+                MailSubjectFactory.confirmEmailMailSubject, 
+                MailBodyFactory.confirmEmailMailBody);
+            await _mediator.Send(sendConfirmEmailMailCommand);
 
-            return new AuthUserDto
-            {
-                User = registeredUser,
-                Token = token
-            };
+            return Unit.Value;
+
         }
     }
 }

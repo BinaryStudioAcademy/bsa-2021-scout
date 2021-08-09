@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Application.Users.Dtos
 {
-    public class UserDto: Dto
+    public class UserDto : Dto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -14,6 +14,8 @@ namespace Application.Users.Dtos
         public string Email { get; set; }
 
         public ICollection<RoleDto> Roles { get; set; }
+
+        public bool IsEmailConfirmed {get ; set;}
     }
     public class UserDtoValidator : AbstractValidator<UserDto>
     {
