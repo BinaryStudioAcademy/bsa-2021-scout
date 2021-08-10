@@ -67,9 +67,9 @@ namespace Application.Auth.Commands
         {
             var getUserByPropertyQuery = new GetEntityByPropertyQuery<UserDto>("Email",command.Email);
             var user = _mapper.Map<User>(await _mediator.Send(getUserByPropertyQuery));
-
-            var getEmailTokenByPropertyQuery = new GetEntityByPropertyQuery<EmailTokenDto>("UserId", user.Id);
-            var token = _mapper.Map<EmailToken>(await _mediator.Send(getEmailTokenByPropertyQuery));
+            var token = await _tokenReadRepository.GetByPropertyAsync("UserId", user.Id);
+            //var getEmailTokenByPropertyQuery = new GetEntityByPropertyQuery<EmailTokenDto>("UserId", user.Id);
+            //var token = _mapper.Map<EmailToken>(await _mediator.Send(getEmailTokenByPropertyQuery));
             if (token?.Token == command.Token)
             {
                 await _tokenWriteRepository.DeleteAsync(token.Id);

@@ -46,6 +46,8 @@ namespace Application.Users.Commands
             var newUser = _mapper.Map<User>(command.RegisterUser);
             var salt = _securityService.GetRandomBytes();
 
+            newUser.IsEmailConfirmed = false;
+
             newUser.PasswordSalt = Convert.ToBase64String(salt);
             newUser.Password = _securityService.HashPassword(command.RegisterUser.Password, salt);
 
