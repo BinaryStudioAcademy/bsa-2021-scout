@@ -12,6 +12,6 @@ namespace Application.Interfaces
     {
         public string Email { get; }
         public bool IsAuthorized { get; }
-        public Task<User> CurrentUser { get; }
+        public Task<UserDto> GetCurrentUser();
     }
 }
