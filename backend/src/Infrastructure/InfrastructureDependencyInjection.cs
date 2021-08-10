@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Interfaces.AWS;
 using Domain.Entities;
 using Domain.Interfaces.Read;
 using Domain.Interfaces.Write;
@@ -13,6 +14,7 @@ using Infrastructure.Repositories.Write;
 using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Services;
 using Infrastructure.Mail;
+using Infrastructure.AWS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -33,20 +35,18 @@ namespace Infrastructure
 
             services.AddWriteRepositories();
             services.AddReadRepositories();
-            services.AddScoped<IJwtService, JwtService>();
-            services.AddScoped<ISecurityService, SecurityService>();
 
             services.AddEvents();
             services.AddMail();
             services.AddJWT();
+            services.AddAWS();
 
-            services.AddScoped<IDomainEventService, DomainEventService>();
             return services;
         }
         private static IServiceCollection AddElasticEngine(this IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("ELASTIC_CONNECTION_STRING");
-            
+
             // if (connectionString is null)
             //     throw new Exception("Elastic connection string url is not specified");
             var settings = new ConnectionSettings(new Uri(connectionString))
@@ -55,7 +55,7 @@ namespace Infrastructure
                 .IndexName("applicant_to_tags")
             );
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
-            
+
             return services;
         }
         private static IServiceCollection AddDatabaseContext(this IServiceCollection services)
@@ -112,14 +112,21 @@ namespace Infrastructure
             return services;
         }
 
+        private static IServiceCollection AddAWS(this IServiceCollection services)
+        {
+            services.AddSingleton<ITextParser, TextParser>();
+            services.AddSingleton<IComprehendParser, ComprehendParser>();
+            services.AddSingleton<ICvParser, CvParser>();
+
+            return services;
+        }
+
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
-
             services.AddScoped<IElasticWriteRepository<ApplicantToTags>, ElasticWriteRepository<ApplicantToTags>>();
-
             services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
             services.AddScoped<IWriteRepository<CandidateToStage>, CandidateToStageWriteRepository>();
             services.AddScoped<ICandidateToStageWriteRepository, CandidateToStageWriteRepository>();
@@ -135,12 +142,12 @@ namespace Infrastructure
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
             services.AddScoped<IElasticReadRepository<ApplicantToTags>, ElasticReadRepository<ApplicantToTags>>();
-        
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
+
             return services;
         }
     }
