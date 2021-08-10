@@ -87,8 +87,8 @@ function createNewVacancy(): VacancyData {
 ​
   return {
     title: name,
-    required_candidates_amount: Math.round(Math.random()*4+1),
-    current_applicants_amount: Math.round(Math.random()*10 +1),
+    requiredCandidatesAmount: Math.round(Math.random()*4+1),
+    currentApplicantsAmount: Math.round(Math.random()*10 +1),
     responsible: HRs[Math.round(Math.random() * (HRs.length - 1))],
     department: 'Lorem ipsum dorot sit',
     creationDate: new Date(),
