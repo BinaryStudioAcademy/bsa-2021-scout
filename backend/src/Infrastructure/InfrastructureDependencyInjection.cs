@@ -52,7 +52,7 @@ namespace Infrastructure
             var settings = new ConnectionSettings(new Uri(connectionString))
                 .DefaultIndex("default_index")
                 .DefaultMappingFor<ElasticEntity>(m => m
-                .IndexName("applicant_to_tags")
+                .IndexName("elastic_entity")
             );
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
             

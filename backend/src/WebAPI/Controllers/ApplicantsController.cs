@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Application.ElasticEnities.CommandQuery.AddTagCommand;
 using Application.ElasticEnities.CommandQuery.DeleteTagCommand;
+using System.Threading;
+
 namespace WebAPI.Controllers
 {
     public class ApplicantsController : ApiController
@@ -29,9 +31,9 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
         [HttpGet("to_tags/{searchRequest}")]
-        public async Task<IActionResult> SearchElasticAsync(string searchRequest)
+        public async Task<IActionResult> SearchElasticAsync(string searchRequest, CancellationToken token)
         {
-            var query = new GetElasticDocumentsListBySearchRequestQuery<ElasticEnitityDto>(searchRequest);
+            var query = new GetElasticDocumentsListBySearchRequestQuery<ElasticEnitityDto>(searchRequest, token);
 
             return Ok(await Mediator.Send(query));
         }
@@ -50,7 +52,7 @@ namespace WebAPI.Controllers
 
             return Ok(await Mediator.Send(query));
         }
-        [HttpPost("tags/{applicantId}")]
+        [HttpPost("tags/{entityId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> PostTagAsync(string entityId, [FromBody] TagDto createDto)
         {

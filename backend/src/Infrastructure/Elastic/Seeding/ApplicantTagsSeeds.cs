@@ -52,64 +52,71 @@ namespace Infrastructure.Elastic.Seeding
             {
                 new ElasticEntity
                 {
-                    Id = "f0efedc7-a5c4-4e8c-a1d7-d071c9a474ab",
+                    Id = "f0efedc7-a5c4-4e8c-a1d7-d071c9a474a1",
                     Tags = new List<Tag>
                     {
                         Tags[0],
                         Tags[2]
-                    }
+                    },
+                    ElasticType = ElasticType.ApplicantTags
                 },
                 new ElasticEntity
                 {
-                    Id = "16a4547b-cde7-40c2-8249-ec8e331c22e5",
+                    Id = "16a4547b-cde7-40c2-8249-ec8e331c22e1",
                     Tags = new List<Tag>
                     {
                         Tags[1],
                         Tags[3]
-                    }
+                    },
+                    ElasticType = ElasticType.VacancyTags
                 },
                 new ElasticEntity
                 {
-                    Id = "0de2cfc2-0121-4e0d-8417-2bd5d466cbdd",
+                    Id = "0de2cfc2-0121-4e0d-8417-2bd5d466cbd1",
                     Tags = new List<Tag>
                     {
                         Tags[4]
-                    }
+                    },
+                    ElasticType = ElasticType.VacancyTags
                 },
                 new ElasticEntity
                 {
-                    Id = "ed6ab1ee-a95a-45b4-ab8c-c0c23fcc41f6",
+                    Id = "ed6ab1ee-a95a-45b4-ab8c-c0c23fcc41f1",
                     Tags = new List<Tag>
                     {
                         Tags[2],
                         Tags[3],
                         Tags[5]
-                    }
+                    },
+                    ElasticType = ElasticType.ApplicantTags
                 },
                 new ElasticEntity
                 {
-                    Id = "8e182e40-78d2-4ff5-a3b4-670dfe5cad34",
+                    Id = "8e182e40-78d2-4ff5-a3b4-670dfe5cad31",
                     Tags = new List<Tag>
                     {
                         Tags[3],
                         Tags[2],
                         Tags[4]
-                    }
+                    },
+                    ElasticType = ElasticType.ApplicantTags
                 },
                 new ElasticEntity
                 {
-                    Id = "6cfe6a66-714f-46a5-aa85-8755a3a110fe",
+                    Id = "6cfe6a66-714f-46a5-aa85-8755a3a110f1",
                     Tags = new List<Tag>
                     {
                         Tags[1],
                         Tags[4]
-                    }
+                    },
+                    ElasticType = ElasticType.VacancyTags
                 },
                 new ElasticEntity{
-                    Id = "15edec87-538a-41af-971f-919712ad0fbd",
+                    Id = "15edec87-538a-41af-971f-919712ad0fb1",
                     Tags = new List<Tag>{
                         Tags[0]
-                    }
+                    },
+                    ElasticType = ElasticType.ApplicantTags
                 }
             };
         }

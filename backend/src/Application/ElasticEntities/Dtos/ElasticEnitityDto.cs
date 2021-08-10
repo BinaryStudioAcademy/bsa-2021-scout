@@ -6,7 +6,7 @@ namespace Application.ElasticEnities.Dtos
 {
     public class ElasticEnitityDto: Dto
     {
-        public ElasticType EntityType { get; set; }
+        public ElasticType ElasticType { get; set; }
         public IEnumerable<TagDto> TagDtos { get; set; }
     }
 }
