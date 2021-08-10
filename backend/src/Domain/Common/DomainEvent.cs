@@ -6,6 +6,7 @@ namespace Domain.Common
     {
         public DomainEvent()
         {
+            IsPublished = false;
             DateOccurred = DateTime.UtcNow;
         }
 

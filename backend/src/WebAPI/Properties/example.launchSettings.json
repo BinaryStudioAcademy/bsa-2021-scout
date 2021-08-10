@@ -26,7 +26,14 @@
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DATABASE_CONNECTION_STRING": "Server=localhost;Database=ATS_dev;Trusted_Connection=True;"
+        "DATABASE_CONNECTION_STRING": "Server=localhost;Database=ATS_dev;Trusted_Connection=True;",
+        "ELASTIC_CONNECTION_STRING": "http://localhost:9200",
+        "MONGODB_CONNECTION_URI": "mongodb://mongo:123Admin!@localhost:27017",
+        "MONGODB_DATABASE_NAME": "ats_database",
+        "MAIL_ADDRESS": "notifications.scout@gmail.com",
+        "MAIL_PASSWORD": "yourpassword",
+        "MAIL_DISPLAY_NAME": "Scout Notifications",
+        "SECRET_JWT_KEY": "DD70E219DCF6408A7506EA0186D183AE"
       }
     }
   }

@@ -1,5 +1,7 @@
 using Application;
+using Application.Interfaces;
 using Infrastructure;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,7 +25,12 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplication();
-            services.AddInfrastracture();
+            services.AddInfrastructure();
+
+            
+            services.ConfigureJwt(Configuration);
+            services.AddScoped<ICurrentUserContext, CurrentUserContext>();
+            services.AddHttpContextAccessor();
 
             services.AddSpecificCors();
             services.AddControllers();
@@ -48,6 +55,7 @@ namespace WebAPI
 
             app.UserSpecificCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseMiddleware<ErrorHandlerMiddleware>();

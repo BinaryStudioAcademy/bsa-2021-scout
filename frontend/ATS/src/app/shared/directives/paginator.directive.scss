@@ -1,0 +1,35 @@
+$primary-color: #ee2a64;
+$primary-font: Nunito;
+
+.mat-paginator.mat-button-base {
+  color: $primary-color;
+}
+
+.mat-paginator-range-label {
+  display: none;
+}
+
+p.mat-custom-page {
+  height: 18px;
+  width: 18px;
+  font-family: $primary-font;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 14px;
+  color: #8e8e8e;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0;
+  margin: 0px 5px 0px 5px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+p.selected {
+  font-weight: bold;
+  background: $primary-color;
+  color: #ffffff;
+  border-radius: 50px;
+}

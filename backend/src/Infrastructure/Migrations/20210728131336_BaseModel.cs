@@ -298,6 +298,7 @@ namespace Infrastructure.Migrations
                     ContactedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Experience = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApplicantId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     StageId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -305,7 +306,7 @@ namespace Infrastructure.Migrations
                     table.PrimaryKey("PK_VacancyCandidates", x => x.Id);
                     table.ForeignKey(
                         name: "candidate_applicant_FK",
-                        column: x => x.Id,
+                        column: x => x.ApplicantId,
                         principalTable: "Applicants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
