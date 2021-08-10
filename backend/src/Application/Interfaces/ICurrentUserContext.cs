@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Users.Dtos;
+using Domain.Entities;
 
 namespace Application.Interfaces
 {
     public interface ICurrentUserContext
     {
-        public bool IsAuthorised { get; }
-        public UserDto CurrentUser { get;  }
+        public string Email { get; }
+        public bool IsAuthorized { get; }
+        public Task<User> CurrentUser { get; }
     }
 }

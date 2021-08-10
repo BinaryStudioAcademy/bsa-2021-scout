@@ -16,52 +16,21 @@ namespace Infrastructure.Services
 {
     public class CurrentUserContext : ICurrentUserContext
     {
-        private UserDto user;
-        public bool IsAuthorised { get; }
-        public UserDto CurrentUser {
-            get
-            {
-                if (user is null && IsAuthorised)
-                {
-                    LoadUser().Wait();
-                }
-                else if(!IsAuthorised)
-                {
-                    user = null;
-                }
-                return user;
-            }
-            private set { user = value; }
-        }
-        public Lazy<Task<User>> LazyUser { get; }
+        public string Email { get; }
+        public bool IsAuthorized { get; }
+        public Task<User> CurrentUser { get; }
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserReadRepository _userRepository;
-        private readonly IMapper _mapper;
 
-        public CurrentUserContext(IHttpContextAccessor httpContextAccessor, IUserReadRepository userRepository, IMapper mapper)
+        public CurrentUserContext(IHttpContextAccessor httpContextAccessor, IUserReadRepository userRepository)
         {
             _httpContextAccessor = httpContextAccessor;
             _userRepository = userRepository;
-            _mapper = mapper;
 
-            var Email = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
-            IsAuthorised = Email != null;
-            LazyUser = new Lazy<Task<User>>(_userRepository.GetByEmailAsync(Email));
-        }
-        public async Task LoadUser()
-        {
-            User curruser = await LazyUser;
-            user = _mapper.Map<UserDto>(curruser);
+            Email = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
+            IsAuthorized = Email != null;
+            CurrentUser = _userRepository.GetByEmailAsync(Email);
         }
     }
-        static class LazyExtension
-        {
-            public static TaskAwaiter<T> GetAwaiter<T>(this Lazy<Task<T>> asyncTask)
-            {
-                return asyncTask.Value.GetAwaiter();
-            }
-        }
-        
-    
 }

@@ -18,5 +18,6 @@ namespace WebAPI.Controllers
             var command = new LoginCommand(userLogin);
             return Ok(await Mediator.Send(command));
         }
+        
     }
 }
