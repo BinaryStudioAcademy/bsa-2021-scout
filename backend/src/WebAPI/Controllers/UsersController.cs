@@ -10,29 +10,10 @@ namespace WebAPI.Controllers
 {
     public class UsersController : ApiController
     {
-        private readonly ICvParser _cvParser;
-
-        public UsersController(ICvParser cvParser)
-        {
-            _cvParser = cvParser;
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
             var query = new GetEntityByIdQuery<UserDto>(id);
-            await _cvParser.ParseAsync(@"
-Hello, my name is Roman Melamud
-My contacts:
-  Email: 2m.roman2@gmail.com
-  Phone: +380951550028
-Organization: Binary Studio Corp.
-My skills:
-  Software Testing
-  C#
-  .NET
-  Python Development
-");
             return Ok(await Mediator.Send(query));
         }
 
