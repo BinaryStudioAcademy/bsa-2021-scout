@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Amazon;
 using Amazon.Textract;
 using Amazon.Textract.Model;
 using Application.Interfaces.AWS;
@@ -18,13 +19,14 @@ namespace Infrastructure.AWS
             string key = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
             string region = Environment.GetEnvironmentVariable("AWS_REGION");
 
-            _textract = new AmazonTextractClient(keyId, key, region);
+            _textract = new AmazonTextractClient(keyId, key, RegionEndpoint.GetBySystemName(region));
         }
 
         public async Task<string> ParseAsync(byte[] fileContent)
         {
             MemoryStream stream = new MemoryStream(fileContent);
             DetectDocumentTextRequest request = new DetectDocumentTextRequest();
+            request.Document = new Document();
             request.Document.Bytes = stream;
 
             DetectDocumentTextResponse response = await _textract.DetectDocumentTextAsync(request);

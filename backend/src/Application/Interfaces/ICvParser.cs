@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using Domain.Entities;
+using Application.Applicants.Dtos;
 
 namespace Application.Interfaces
 {
     public interface ICvParser
     {
-        Task<Applicant> ParseAsync(string text, string lang = "en");
+        Task<ApplicantCreationVariantsDto> ParseAsync(string text, string lang = "en");
     }
 }

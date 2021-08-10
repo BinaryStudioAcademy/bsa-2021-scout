@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
 
             return Ok(await Mediator.Send(query));
         }
-        
+
         [HttpPost("to_tags/")]
         public async Task<IActionResult> PostElasticAsync([FromBody] CreateApplicantToTagsDto createDto)
         {
@@ -50,6 +50,7 @@ namespace WebAPI.Controllers
 
             return Ok(await Mediator.Send(query));
         }
+
         [HttpPost("tags/{applicantId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> PostTagAsync(string applicantId, [FromBody] TagDto createDto)
@@ -57,6 +58,7 @@ namespace WebAPI.Controllers
             var query = new AddTagCommand(applicantId, createDto);
             return StatusCode(204, await Mediator.Send(query));
         }
+
         [HttpPost("to_tags/bulk")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> PostElasticBulkAsync([FromBody] IEnumerable<CreateApplicantToTagsDto> createDtoList)
@@ -97,6 +99,7 @@ namespace WebAPI.Controllers
             var query = new DeleteElasticDocumentCommand(id);
             return StatusCode(204, await Mediator.Send(query));
         }
+
         [HttpDelete("tags")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteElasticAsync(string applicantId, string tagId)

@@ -21,7 +21,7 @@ namespace Infrastructure.AWS
             string key = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
             string region = Environment.GetEnvironmentVariable("AWS_REGION");
 
-            _comprehend = new AmazonComprehendClient(keyId, key, RegionEndpoint.EUWest2);
+            _comprehend = new AmazonComprehendClient(keyId, key, RegionEndpoint.GetBySystemName(region));
         }
 
         public async Task<IEnumerable<common::TextEntity>> ParseEntitiesAsync(string text, string lang = "en")

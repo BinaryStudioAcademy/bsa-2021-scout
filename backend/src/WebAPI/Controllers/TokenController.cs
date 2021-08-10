@@ -3,7 +3,6 @@ using Application.Auth.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using WebAPI.Extensions;
 
 namespace WebAPI.Controllers
 {

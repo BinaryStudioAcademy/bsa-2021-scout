@@ -1,6 +1,10 @@
-﻿using MediatR;
+﻿using System.IO;
+using System.Linq;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Application.Auth.Exceptions;
 
 namespace WebAPI.Controllers
 {
@@ -12,5 +16,25 @@ namespace WebAPI.Controllers
 
         protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetService<ISender>();
 
+        protected string GetUserIdFromToken()
+        {
+            string claimsUserId = User.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
+
+            if (string.IsNullOrEmpty(claimsUserId))
+            {
+                throw new InvalidTokenException("access");
+            }
+
+            return claimsUserId;
+        }
+
+        protected byte[] GetFileBytes(IFormFile file)
+        {
+            Stream stream = file.OpenReadStream();
+            MemoryStream memory = new MemoryStream();
+            stream.CopyTo(memory);
+
+            return memory.ToArray();
+        }
     }
 }
