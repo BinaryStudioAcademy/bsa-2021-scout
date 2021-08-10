@@ -21,7 +21,7 @@ namespace Infrastructure.Services
 
             try
             {
-                template = await _repository.GetBySlug(templateSlug);
+                template = await _repository.GetBySlugAsync(templateSlug);
             }
             catch
             {
