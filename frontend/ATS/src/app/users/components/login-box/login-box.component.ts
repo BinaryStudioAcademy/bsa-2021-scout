@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ForgotPasswordDialogComponent } 
+  from '../forgot-password-dialog/forgot-password-dialog.component';
 import { LoginRegistCommonComponent } from '../login-regist-common/login-regist-common.component';
 
 @Component({
@@ -10,7 +13,9 @@ import { LoginRegistCommonComponent } from '../login-regist-common/login-regist-
 })
 export class LoginBoxComponent {
 
-  public constructor(public loginRegistCommonComponent: LoginRegistCommonComponent) { }
+  public constructor(
+    public loginRegistCommonComponent: LoginRegistCommonComponent,
+    public dialog: MatDialog) { }
 
   public isPasswordHide = true;
 
@@ -25,4 +30,10 @@ export class LoginBoxComponent {
     ]),
   });
 
+  public openDialog(): void {
+    this.dialog.open(ForgotPasswordDialogComponent, {
+      disableClose: true,
+      maxWidth: '400px',
+    });
+  }
 }

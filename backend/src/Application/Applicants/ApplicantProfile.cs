@@ -1,6 +1,6 @@
 using AutoMapper;
-using Domain.Entities;
 using Application.Applicants.Dtos;
+using Domain.Entities;
 
 namespace Application.Applicants
 {
@@ -8,7 +8,10 @@ namespace Application.Applicants
     {
         public ApplicantProfile()
         {
+            CreateMap<ApplicantDto, Applicant>();
             CreateMap<Applicant, ApplicantDto>();
+            CreateMap<CreateApplicantDto, Applicant>();
+            CreateMap<UpdateApplicantDto, Applicant>();
         }
     }
 }

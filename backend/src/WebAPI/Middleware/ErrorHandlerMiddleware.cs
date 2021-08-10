@@ -42,6 +42,9 @@ namespace WebAPI.Middleware
                     case ExpiredRefreshTokenException e:
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         break;
+                    case InvalidUsernameOrPasswordException e:
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;

@@ -16,28 +16,48 @@ using Infrastructure.Mail;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Nest;
+using Domain.Interfaces;
 
 namespace Infrastructure
 {
     public static class InfrastructureDependencyInjection
     {
-        public static IServiceCollection AddInfrastracture(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddDatabaseContext();
 
             services.AddDapper();
             services.AddMongoDb();
+            services.AddElasticEngine();
 
             services.AddWriteRepositories();
             services.AddReadRepositories();
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<ISecurityService, SecurityService>();
 
             services.AddEvents();
             services.AddMail();
             services.AddJWT();
 
+            services.AddScoped<IDomainEventService, DomainEventService>();
             return services;
         }
-
+        private static IServiceCollection AddElasticEngine(this IServiceCollection services)
+        {
+            var connectionString = Environment.GetEnvironmentVariable("ELASTIC_CONNECTION_STRING");
+            
+            // if (connectionString is null)
+            //     throw new Exception("Elastic connection string url is not specified");
+            var settings = new ConnectionSettings(new Uri(connectionString))
+                .DefaultIndex("default_index")
+                .DefaultMappingFor<ApplicantToTags>(m => m
+                .IndexName("applicant_to_tags")
+            );
+            services.AddSingleton<IElasticClient>(new ElasticClient(settings));
+            
+            return services;
+        }
         private static IServiceCollection AddDatabaseContext(this IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
@@ -97,6 +117,9 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
+
+            services.AddScoped<IElasticWriteRepository<ApplicantToTags>, ElasticWriteRepository<ApplicantToTags>>();
+
             services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
             services.AddScoped<IWriteRepository<CandidateToStage>, CandidateToStageWriteRepository>();
             services.AddScoped<ICandidateToStageWriteRepository, CandidateToStageWriteRepository>();
@@ -112,6 +135,8 @@ namespace Infrastructure
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
+            services.AddScoped<IElasticReadRepository<ApplicantToTags>, ElasticReadRepository<ApplicantToTags>>();
+        
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
