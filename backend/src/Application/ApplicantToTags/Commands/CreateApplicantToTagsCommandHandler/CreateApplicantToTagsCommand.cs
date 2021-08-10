@@ -1,13 +1,13 @@
-using Application.ApplicantToTags.Dtos;
+using Application.ElasticEnities.Dtos;
 using entities = Domain.Entities;
 using Application.Common.Commands;
 using Domain.Interfaces;
 using AutoMapper;
 
-namespace Application.ApplicantToTags.Commands.CreateApplicantToTagsCommandHandler
+namespace Application.ElasticEnities.Commands.CreateApplicantToTagsCommandHandler
 {
-    public class CreateApplicantToTagsCommandHandler: CreateElasticDocumentCommandHandler<entities::ApplicantToTags, CreateApplicantToTagsDto>
+    public class CreateApplicantToTagsCommandHandler: CreateElasticDocumentCommandHandler<entities::ElasticEntity, CreateElasticEntityDto>
     {
-         public CreateApplicantToTagsCommandHandler(IElasticWriteRepository<entities::ApplicantToTags> repository, IMapper mapper) : base(repository, mapper) { }
+         public CreateApplicantToTagsCommandHandler(IElasticWriteRepository<entities::ElasticEntity> repository, IMapper mapper) : base(repository, mapper) { }
     }
 }

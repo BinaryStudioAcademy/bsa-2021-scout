@@ -1,13 +1,13 @@
-using Application.ApplicantToTags.Dtos;
+using Application.ElasticEnities.Dtos;
 using entities = Domain.Entities;
 using Domain.Interfaces;
 using AutoMapper;
 using Application.Common.Queries;
 
-namespace Application.ApplicantToTags.Quaries.GetApplicantToTagsByIdQueryHandler
+namespace Application.ElasticEnities.Quaries.GetApplicantToTagsByIdQueryHandler
 {
-    public class GetApplicantToTagsByIdQueryHandler: GetElasticDocumentsListBySearchRequestQueryHandler<entities::ApplicantToTags, ApplicantToTagsDto>
+    public class GetApplicantToTagsByIdQueryHandler: GetElasticDocumentsListBySearchRequestQueryHandler<entities::ElasticEntity, ElasticEnitityDto>
     {
-         public GetApplicantToTagsByIdQueryHandler(IElasticReadRepository<entities::ApplicantToTags> repository, IMapper mapper) : base(repository, mapper) { }
+         public GetApplicantToTagsByIdQueryHandler(IElasticReadRepository<entities::ElasticEntity> repository, IMapper mapper) : base(repository, mapper) { }
     }
 }

@@ -1,6 +1,6 @@
 using Application.Common.Models;
 
-namespace Application.ApplicantToTags.Dtos
+namespace Application.ElasticEnities.Dtos
 {
     public class TagDto: Dto
     {

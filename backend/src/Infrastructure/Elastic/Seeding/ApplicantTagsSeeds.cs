@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Infrastructure.Elastic.Seeding
 {
-    public static class ApplicantToTagsSeeds
+    public static class ApplicantTagsSeeds
     {
         #region Tags
         private readonly static IList<Tag> Tags = new List<Tag>
@@ -11,7 +11,7 @@ namespace Infrastructure.Elastic.Seeding
             new Tag
             {
                 Id = "f926cc1a-d5e5-4753-b1ff-6af2baacfe13",
-                TagName = "Web Developer"
+                TagName = "Web Developer",
             },
             new Tag
             {
@@ -46,11 +46,11 @@ namespace Infrastructure.Elastic.Seeding
         };
         #endregion
 
-        public static IEnumerable<ApplicantToTags> GetSeed()
+        public static IEnumerable<ElasticEntity> GetSeed()
         {
-            return new List<ApplicantToTags>
+            return new List<ElasticEntity>
             {
-                new ApplicantToTags
+                new ElasticEntity
                 {
                     Id = "f0efedc7-a5c4-4e8c-a1d7-d071c9a474ab",
                     Tags = new List<Tag>
@@ -59,7 +59,7 @@ namespace Infrastructure.Elastic.Seeding
                         Tags[2]
                     }
                 },
-                new ApplicantToTags
+                new ElasticEntity
                 {
                     Id = "16a4547b-cde7-40c2-8249-ec8e331c22e5",
                     Tags = new List<Tag>
@@ -68,7 +68,7 @@ namespace Infrastructure.Elastic.Seeding
                         Tags[3]
                     }
                 },
-                new ApplicantToTags
+                new ElasticEntity
                 {
                     Id = "0de2cfc2-0121-4e0d-8417-2bd5d466cbdd",
                     Tags = new List<Tag>
@@ -76,7 +76,7 @@ namespace Infrastructure.Elastic.Seeding
                         Tags[4]
                     }
                 },
-                new ApplicantToTags
+                new ElasticEntity
                 {
                     Id = "ed6ab1ee-a95a-45b4-ab8c-c0c23fcc41f6",
                     Tags = new List<Tag>
@@ -86,7 +86,7 @@ namespace Infrastructure.Elastic.Seeding
                         Tags[5]
                     }
                 },
-                new ApplicantToTags
+                new ElasticEntity
                 {
                     Id = "8e182e40-78d2-4ff5-a3b4-670dfe5cad34",
                     Tags = new List<Tag>
@@ -96,7 +96,7 @@ namespace Infrastructure.Elastic.Seeding
                         Tags[4]
                     }
                 },
-                new ApplicantToTags
+                new ElasticEntity
                 {
                     Id = "6cfe6a66-714f-46a5-aa85-8755a3a110fe",
                     Tags = new List<Tag>
@@ -105,7 +105,7 @@ namespace Infrastructure.Elastic.Seeding
                         Tags[4]
                     }
                 },
-                new ApplicantToTags{
+                new ElasticEntity{
                     Id = "15edec87-538a-41af-971f-919712ad0fbd",
                     Tags = new List<Tag>{
                         Tags[0]

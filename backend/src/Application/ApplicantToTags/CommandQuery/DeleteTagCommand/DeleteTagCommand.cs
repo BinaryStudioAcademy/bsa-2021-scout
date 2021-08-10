@@ -4,13 +4,13 @@ using MediatR;
 using AutoMapper;
 using entities = Domain.Entities;
 using Domain.Interfaces;
-using Application.ApplicantToTags.Dtos;
+using Application.ElasticEnities.Dtos;
 using Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Dynamic;
 
-namespace Application.ApplicantToTags.CommandQuery.DeleteTagCommand
+namespace Application.ElasticEnities.CommandQuery.DeleteTagCommand
 {
     public class DeleteTagCommand : IRequest
     {
@@ -26,11 +26,11 @@ namespace Application.ApplicantToTags.CommandQuery.DeleteTagCommand
 
     public class DeleteTagCommandHandler : IRequestHandler<DeleteTagCommand>
     {
-        protected readonly IElasticWriteRepository<entities::ApplicantToTags> _repository;
-        protected readonly IElasticReadRepository<entities::ApplicantToTags> _readRepo;
+        protected readonly IElasticWriteRepository<entities::ElasticEntity> _repository;
+        protected readonly IElasticReadRepository<entities::ElasticEntity> _readRepo;
         protected readonly IMapper _mapper;
 
-        public DeleteTagCommandHandler(IElasticReadRepository<entities::ApplicantToTags> readRepo, IElasticWriteRepository<entities::ApplicantToTags> repository, IMapper mapper)
+        public DeleteTagCommandHandler(IElasticReadRepository<entities::ElasticEntity> readRepo, IElasticWriteRepository<entities::ElasticEntity> repository, IMapper mapper)
         {
             _repository = repository;
             _readRepo = readRepo;
