@@ -21,17 +21,15 @@ namespace Infrastructure.Services
 
         private UserDto currentUser { get; set; }
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserReadRepository _userRepository;
         private readonly IMapper _mapper;
 
         public CurrentUserContext(IHttpContextAccessor httpContextAccessor, IUserReadRepository userRepository, IMapper mapper)
         {
-            _httpContextAccessor = httpContextAccessor;
             _userRepository = userRepository;
             _mapper = mapper;
 
-            Email = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
+            Email = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
             IsAuthorized = Email != null;
         }
 
@@ -42,10 +40,6 @@ namespace Infrastructure.Services
             {
                 if(currentUser is null)
                     currentUser = _mapper.Map<UserDto>(await _userRepository.GetByEmailAsync(Email));
-            }
-            else
-            {
-                currentUser = null;
             }
 
             return currentUser;
