@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { HttpClientService } from 'src/app/shared/services/http-client.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { LoginRegistCommonComponent } from '../login-regist-common/login-regist-common.component';
 import { ResetPasswordDto } from '../../models/reset-password-dto';
 import { mergeMap } from 'rxjs/operators';
+import { AuthenticationService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-reset-password-box',
@@ -17,7 +17,7 @@ export class ResetPasswordBoxComponent {
 
   public constructor(public loginRegistCommonComponent: LoginRegistCommonComponent,
     private notificationService: NotificationService,
-    private httpClientService: HttpClientService,
+    private authService: AuthenticationService,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -48,7 +48,7 @@ export class ResetPasswordBoxComponent {
           email: params.email,
           token: params.token,
         };
-        return this.httpClientService.postRequest<void>('/Auth/reset-password', resetPasswordDto);
+        return this.authService.resetPassword(resetPasswordDto);
       }),
     ).subscribe(() => {
       this.notificationService.showSuccessMessage('Your password has been changed');

@@ -3,9 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { EMPTY } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { HttpClientService } from 'src/app/shared/services/http-client.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { environment } from 'src/environments/environment';
 import { ForgotPasswordDto } from '../../models/forgot-password-dto';
+import { AuthenticationService } from '../../services/auth.service';
 import { LoginRegistCommonComponent } from '../login-regist-common/login-regist-common.component';
 
 @Component({
@@ -19,7 +20,7 @@ export class ForgotPasswordDialogComponent {
     private dialogRef: MatDialogRef<ForgotPasswordDialogComponent>,
     public loginRegistCommonComponent: LoginRegistCommonComponent,
     private notificationService: NotificationService,
-    private httpClientService: HttpClientService) {}
+    private authService: AuthenticationService) {}
 
 
   public emailForm: FormGroup = new FormGroup({
@@ -31,16 +32,15 @@ export class ForgotPasswordDialogComponent {
   });
 
   public resetPassword(): void {
-    this.httpClientService.getRequest<boolean>
-    (`/Users/Email/${this.emailForm.get('userEmail')?.value}`).pipe(
+    this.authService.isEmailExist(this.emailForm.get('userEmail')?.value).pipe(
       mergeMap(isEmailExist => {
         if (isEmailExist) {
-          const dto: ForgotPasswordDto = 
+          const forgotPasswordDto: ForgotPasswordDto = 
           { 
             email: this.emailForm.get('userEmail')?.value, 
-            clientURI: 'http://localhost:4200/reset-password', 
+            clientURI: environment.resetPasswordClientUri, 
           };
-          return this.httpClientService.postFullRequest<void>('/Auth/forgot-password', dto);      
+          return this.authService.sendPasswordResetRequest(forgotPasswordDto);      
         }
         this.notificationService.showErrorMessage('There is no user with such email address.');
         return EMPTY;

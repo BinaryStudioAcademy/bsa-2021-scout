@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:5001/api',
+  resetPasswordClientUri: 'http://localhost:4200/reset-password',
 };
 
 /*
