@@ -17,15 +17,6 @@ namespace Infrastructure.Repositories.Read
 
         public async Task<User> GetByEmailAsync(string email)
         {
-            //var connection = _connectionFactory.GetSqlConnection();
-            //await connection.OpenAsync();
-            //string sql = $"SELECT * FROM {_tableName} WHERE Email = @email";
-
-            //var user = await connection.QueryFirstAsync<User>(sql, new { email = email });
-
-            //await connection.CloseAsync();
-            //return user;
-
             var connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
             StringBuilder sql = new StringBuilder();
@@ -75,7 +66,7 @@ namespace Infrastructure.Repositories.Read
 
             if (user == null)
             {
-                throw new NotFoundException(typeof(VacancyCandidate), email);
+                throw new NotFoundException(typeof(User), email);
             }
 
             await connection.CloseAsync();
