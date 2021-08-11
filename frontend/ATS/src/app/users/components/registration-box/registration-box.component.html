@@ -38,14 +38,14 @@
             <div class="registration-input-title"><span>Email</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userEmail') ? 'logo-invalid-input' : ''">
-                <input matInput type="email" formControlName="userEmail" placeholder="Enter your email" [(ngModel)]="userRegisterDto.email">
+                <input matInput type="email" formControlName="userEmail" placeholder="Enter your Email" [(ngModel)]="userRegisterDto.email">
             </mat-form-field>
             <div class="logo-validation-message" *ngIf="registrationForm.controls['userEmail'].errors?.useremailexists">
                 This username is already taken!
             </div>
             <div class="logo-validation-message"
                 *ngIf="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userEmail') && registrationForm.controls['userEmail'].errors?.pattern">
-                Please enter a valid address.
+                Please enter a valid email address.
             </div>
             <div class="logo-validation-message"
                 *ngIf="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userEmail') && this.registrationForm.controls['userEmail'].errors?.required">
