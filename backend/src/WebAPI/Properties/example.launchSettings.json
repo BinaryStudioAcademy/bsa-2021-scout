@@ -37,7 +37,10 @@
         "AWS_ACCESS_KEY_ID": "yourkey",
         "AWS_SECRET_ACCESS_KEY": "yourkey",
         "AWS_REGION": "eu-west-2",
-        "AWS_COMPREHEND_SKILLS_ENDPOINT": "arn:aws:comprehend:eu-west-2:<user id>:entity-recognizer-endpoint/<name>"
+        "AWS_COMPREHEND_SKILLS_ENDPOINT": "arn:aws:comprehend:eu-west-2:<user id>:entity-recognizer-endpoint/<name>",
+        "AWS_DEFAULT_BUCKET": "yourbucket",
+        "AWS_TEXTRACT_SNS_ROLE": "arn:aws:iam::<user id>:role/<name>",
+        "AWS_TEXTRACT_SNS_TOPIC": "arn:aws:sns:eu-west-2:<user id>:<name>"
       }
     }
   }

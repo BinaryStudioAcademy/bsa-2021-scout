@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Application.Applicants.Dtos;
 using Application.ApplicantCvs.Dtos;
 using Application.ApplicantCvs.Commands;
 
@@ -9,12 +8,20 @@ namespace WebAPI.Controllers
     public class ApplicantCvController : ApiController
     {
         [HttpPost("file-to-applicant")]
-        public async Task<ActionResult<ApplicantDto>> ParseFileToApplicant([FromForm] ApplicantCvOnlyFileDto dto)
+        public async Task<ActionResult> ParseFileToApplicant([FromForm] ApplicantCvOnlyFileDto dto)
         {
-            byte[] bytes = GetFileBytes(dto.File);
-            var command = new ParseCvFileToApplicantCommand(bytes, dto.File.ContentType);
+            ActionResult fileError = ValidateFileType(dto.File);
 
-            return Ok(await Mediator.Send(command));
+            if (fileError != null)
+            {
+                return fileError;
+            }
+
+            byte[] bytes = GetFileBytes(dto.File);
+            var command = new StartApplicantCvTextDetectionCommand(bytes);
+            await Mediator.Send(command);
+
+            return Ok();
         }
     }
 }

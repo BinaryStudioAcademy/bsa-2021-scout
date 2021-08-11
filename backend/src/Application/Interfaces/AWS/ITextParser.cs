@@ -5,8 +5,9 @@ namespace Application.Interfaces.AWS
 {
     public interface ITextParser
     {
-        Task<string> ParseAsync(byte[] fileContent);
-        Task<string> ParseAsync(string fileContent);
-        Task<string> ParseAsync(string fileContent, Encoding encoding);
+
+        Task<string> StartParsingAsync(byte[] fileContent);
+        Task<string> StartParsingAsync(string fileContent);
+        Task<string> StartParsingAsync(string fileContent, Encoding enconding);
     }
 }

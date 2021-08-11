@@ -10,13 +10,11 @@ namespace Application.ApplicantCvs.Commands
 {
     public class ParseCvFileToApplicantCommand : IRequest<ApplicantCreationVariantsDto>
     {
-        public byte[] Bytes { get; set; }
-        public string ContentType { get; set; }
+        public string Text { get; set; }
 
-        public ParseCvFileToApplicantCommand(byte[] bytes, string contentType)
+        public ParseCvFileToApplicantCommand(string text)
         {
-            Bytes = bytes;
-            ContentType = contentType;
+            Text = text;
         }
     }
 
@@ -24,29 +22,15 @@ namespace Application.ApplicantCvs.Commands
         : IRequestHandler<ParseCvFileToApplicantCommand, ApplicantCreationVariantsDto>
     {
         private readonly ICvParser _parser;
-        private readonly ITextParser _textParser;
 
-        public ParseCvFileToApplicantCommandHandler(ICvParser parser, ITextParser textParser)
+        public ParseCvFileToApplicantCommandHandler(ICvParser parser)
         {
             _parser = parser;
-            _textParser = textParser;
         }
 
         public async Task<ApplicantCreationVariantsDto> Handle(ParseCvFileToApplicantCommand command, CancellationToken _)
         {
-            string text;
-
-            if (command.ContentType == "text/plain")
-            {
-                text = Encoding.UTF8.GetString(command.Bytes);
-            }
-            else
-            {
-                text = await _textParser.ParseAsync(command.Bytes);
-            }
-
-            ApplicantCreationVariantsDto dto = await _parser.ParseAsync(text);
-
+            ApplicantCreationVariantsDto dto = await _parser.ParseAsync(command.Text);
             return dto;
         }
     }

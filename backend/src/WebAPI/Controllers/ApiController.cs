@@ -36,5 +36,21 @@ namespace WebAPI.Controllers
 
             return memory.ToArray();
         }
+
+        protected ActionResult ValidateFileType(IFormFile file, params string[] allowed)
+        {
+            foreach (string type in allowed)
+            {
+                if (file.ContentType == type)
+                {
+                    return null;
+                }
+            }
+
+            return StatusCode(415, new
+            {
+                Message = $"Disallowed file type. Allowed: {string.Join(", ", allowed)}",
+            });
+        }
     }
 }

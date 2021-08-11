@@ -114,6 +114,7 @@ namespace Infrastructure
 
         private static IServiceCollection AddAWS(this IServiceCollection services)
         {
+            services.AddSingleton<IS3Uploader, S3Uploader>();
             services.AddSingleton<ITextParser, TextParser>();
             services.AddSingleton<IComprehendParser, ComprehendParser>();
             services.AddSingleton<ICvParser, CvParser>();
