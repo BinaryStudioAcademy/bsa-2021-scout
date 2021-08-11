@@ -29,8 +29,8 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Candidates </th>
             <td mat-cell *matCellDef="let row"> {{row.currentApplicantsAmount}} / <span style="color:#EE2A64">{{row.requiredCandidatesAmount}} </span></td>
         </ng-container>
-        <ng-container matColumnDef="department">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Department </th>
+        <ng-container matColumnDef="teamInfo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Team Info </th>
             <td mat-cell *matCellDef="let row"> {{row.department}} </td>
         </ng-container>
 

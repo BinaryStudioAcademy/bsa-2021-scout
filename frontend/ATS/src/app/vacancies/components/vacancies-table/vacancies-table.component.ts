@@ -35,7 +35,7 @@ const STATUES: VacancyStatus[] = [
 ​
 export class VacanciesTableComponent implements AfterViewInit {
   displayedColumns: string[] =
-  ['position', 'title', 'candidates', 'department',
+  ['position', 'title', 'candidates', 'teamInfo',
     'responsible', 'creationDate', 'status', 'actions'];
   dataSource: MatTableDataSource<VacancyData>;
 ​
