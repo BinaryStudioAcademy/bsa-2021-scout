@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         stages:
-          - stage: develop
+          - stage: develop-deployment
             shouldRelease: ${{ contains(github.ref, 'fix/backend-url-on-frontend') }}
     steps:
     - name: Checkout
@@ -27,7 +27,7 @@ jobs:
       with:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        image_name: ats-api
+        image_name: ats-api-${{ matrix.stages.stage }}
         registry: docker.pkg.github.com
         image_tag: latest
         context: ./backend/src
@@ -38,7 +38,7 @@ jobs:
     strategy:
       matrix:
         stages:
-          - stage: develop
+          - stage: develop-deployment
             shouldRelease: ${{ contains(github.ref, 'fix/backend-url-on-frontend') }}
             FRONTEND_CONFIGURATION: 'develop-deployment'
     steps:
@@ -51,7 +51,7 @@ jobs:
       with:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        image_name: ats-frontend
+        image_name: ats-frontend-${{ matrix.stages.stage }}
         registry: docker.pkg.github.com
         image_tag: latest
         context: ./frontend/ATS
@@ -64,7 +64,7 @@ jobs:
     strategy:
       matrix:
         stages:
-          - stage: develop
+          - stage: develop-deployment
             shouldRelease: ${{ contains(github.ref, 'fix/backend-url-on-frontend') }}
             DEPLOYMENT_HOST: DEVELOP_DEPLOYMENT_HOST
             DEPLOYMENT_USERNAME: DEVELOP_DEPLOYMENT_USERNAME
@@ -99,6 +99,6 @@ jobs:
           export GITHUB_TOKEN=$GITHUB_TOKEN
           echo "$GITHUB_TOKEN" | docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
           cd app/.docker
-          docker-compose -f docker-compose.prod.yml pull
-          docker-compose -f docker-compose.prod.yml stop
-          docker-compose -f docker-compose.prod.yml up -d --build
+          docker-compose -f docker-compose.${{ matrix.stages.stage }}.yml pull
+          docker-compose -f docker-compose.${{ matrix.stages.stage }}.yml stop
+          docker-compose -f docker-compose.${{ matrix.stages.stage }}.yml up -d --build
