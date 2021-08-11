@@ -55,6 +55,7 @@ jobs:
   deploy:
     needs: [build-ats-api, build-ats-frontend]
     runs-on: ubuntu-latest
+    strategy:
     - matrix:
         stages:
           - stage: develop
