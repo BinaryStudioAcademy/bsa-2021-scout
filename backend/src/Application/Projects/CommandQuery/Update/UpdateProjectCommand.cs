@@ -38,9 +38,12 @@ namespace Application.Projects.CommandQuery.Update
 
         public async Task<ProjectDto> Handle(UpdateProjectCommand command, CancellationToken _)
         {
-            await _readRepository.GetAsync(command.Project.Id);
+            Project projectToUpdate = await _readRepository.GetAsync(command.Project.Id);
 
             Project entity = _mapper.Map<Project>(command.Project);
+
+            entity.CreationDate = projectToUpdate.CreationDate;
+
             var updated = await _writeRepository.UpdateAsync(entity);
 
             return _mapper.Map<ProjectDto>(updated);

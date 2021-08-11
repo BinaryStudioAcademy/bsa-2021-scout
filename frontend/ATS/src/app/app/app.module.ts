@@ -14,6 +14,7 @@ import { VacancyWidgetComponent } from '../vacancy/vacancy-widget/vacancy-widget
 import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
 import { MenuComponent } from './components/menu/menu.component';
+import { ProjectsModule } from '../projects/projects.module';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { MenuComponent } from './components/menu/menu.component';
     SharedModule,
     VacanciesModule,
     UsersModule,
+    ProjectsModule,
   ],
   providers: [SidenavService],
   bootstrap: [AppComponent],

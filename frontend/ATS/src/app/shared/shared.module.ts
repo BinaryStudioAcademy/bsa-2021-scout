@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MultiselectComponent } from './components/multiselect/multiselect.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { StylePaginatorDirective } from './directives/style-paginator.directive';
 
 @NgModule({
   exports: [
@@ -52,6 +53,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatNativeDateModule,
     MatProgressBarModule,
     SpinnerComponent,
+    StylePaginatorDirective,
   ],
   imports: [
     MatButtonModule,
@@ -83,6 +85,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     SearchFormComponent,
     HeaderComponent,
     SpinnerComponent,
+    StylePaginatorDirective,
   ],
 })
 export class SharedModule {}

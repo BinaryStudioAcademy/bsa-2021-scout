@@ -26,16 +26,43 @@ namespace Infrastructure.Repositories.Read
             SqlConnection connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
 
-            string sql = $"SELECT * FROM {_tableName} WHERE Id = @id AND IsDeleted = 0";
-            Project project = await connection.QueryFirstOrDefaultAsync<Project>(sql, new { id = id });
+            string sql = @$"
+                    SELECT p.*, v.*
+                    FROM Projects p
+                    LEFT OUTER JOIN Vacancies v ON p.Id = v.ProjectId     
+                    WHERE p.Id = @id AND IsDeleted = 0
+            ";
+
+            var projectsDictionary = new Dictionary<string, Project>();
+
+            await connection.QueryAsync<Project, Vacancy, Project>(sql, (p, v) =>
+            {
+                Project project;
+                if (!projectsDictionary.TryGetValue(p.Id, out project))
+                {
+                    projectsDictionary.Add(p.Id, project = p);
+                }
+
+                if (project.Vacancies == null)
+                {
+                    project.Vacancies = new List<Vacancy>();
+                }
+
+                if (v != null)
+                {
+                    project.Vacancies.Add(v);
+                }
+
+                return project;
+            },
+            new { id = @id });
+
+            Project project = projectsDictionary.Values.FirstOrDefault();
 
             if (project == null)
             {
                 throw new NotFoundException(typeof(Project), id);
             }
-
-            string sqlVacancies = $"SELECT * FROM Vacancies WHERE ProjectId = '{project.Id}'";
-            project.Vacancies = (await connection.QueryAsync<Vacancy>(sqlVacancies)).ToList();
 
             await connection.CloseAsync();
 
@@ -53,15 +80,38 @@ namespace Infrastructure.Repositories.Read
         {
             var connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
-            string sql = $"SELECT * FROM {_tableName} WHERE IsDeleted = 0";
 
-            IEnumerable<Project> projects = await connection.QueryAsync<Project>(sql);
+            string sql = @"
+                    SELECT p.*, v.*
+                    FROM Projects p
+                    LEFT OUTER JOIN Vacancies v ON p.Id = v.ProjectId     
+                    WHERE p.IsDeleted = 0
+            ";
 
-            foreach (var project in projects)
-            {
-                string sqlVacancies = $"SELECT * FROM Vacancies WHERE ProjectId = '{project.Id}'";
-                project.Vacancies = (await connection.QueryAsync<Vacancy>(sqlVacancies)).ToList();
-            }
+            var projectsDictionary = new Dictionary<string, Project>();
+
+            await connection.QueryAsync<Project, Vacancy, Project>(sql, (p, v) =>
+                {
+                    Project project;
+                    if (!projectsDictionary.TryGetValue(p.Id, out project))
+                    {
+                        projectsDictionary.Add(p.Id, project = p);
+                    }
+
+                    if (project.Vacancies == null)
+                    {
+                        project.Vacancies = new List<Vacancy>();
+                    }
+
+                    if (v != null)
+                    {
+                        project.Vacancies.Add(v);
+                    }
+
+                    return project;
+                });
+
+            var projects = projectsDictionary.Values;
 
             await connection.CloseAsync();
 
