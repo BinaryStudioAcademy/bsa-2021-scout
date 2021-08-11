@@ -33,9 +33,6 @@ namespace Infrastructure.EF.Seeds
                 TierFrom = Tier.Middle,
                 TierTo = Tier.TeamLead,
                 Sources = "¯\\_(ツ)_/¯",
-                
-                
-                
             },
             new Vacancy
             {

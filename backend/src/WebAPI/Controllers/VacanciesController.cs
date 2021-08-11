@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllVacancies()
         {
-            var command = new GetEntityListQuery<VacancyDto>();
+            var command = new GetEntityListQuery<VacancyTableDto>();
             return Ok(await Mediator.Send(command));
         }
         [HttpPost]

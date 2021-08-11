@@ -1,0 +1,62 @@
+  .logo{
+    background-color: rgb(245, 245, 245);
+    color: rgb(179, 179, 179);
+    border: none;
+    width: 107px;
+    height: 54px;
+    border-radius: 15px;
+    flex-shrink: 0;
+    font-size:18px;
+  }
+
+  .logo-container{
+    padding-top: 32px;
+    height: 15%;
+    max-width: 170px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mat-nav-list button{
+    font-size:15px;
+    margin-left: 26px;
+  }
+  
+  .minimized{
+      .mat-line{
+        display: none !important;
+      }
+  }
+  
+  .sidenav_container {
+    width:225px;
+    height: 100%;
+  }
+
+ :host::ng-deep .mat-list-item-content{
+    font-size:18px;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    .mat-list-text{
+      padding-left:4px !important
+    }
+  }
+
+  :host::ng-deep .mat-list-base .mat-list-item .mat-list-icon, .mat-list-base .mat-list-option .mat-list-icon{
+    font-size: 24px;
+    width: auto;
+    height: auto;
+  }
+  
+  :host ::ng-deep .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar{
+    height: 60px !important
+  }
+  
+  :host ::ng-deep .mat-list-base .mat-list-item .mat-line{
+    white-space: initial;
+    overflow: visible;
+    text-overflow: unset;
+    display: block;
+    box-sizing: border-box;
+  }
