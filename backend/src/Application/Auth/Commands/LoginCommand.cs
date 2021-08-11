@@ -47,7 +47,12 @@ namespace Application.Auth.Commands
 
             if (user == null)
             {
-                throw new NotFoundException($"Can't find user with email {command.Email}.");
+                throw new InvalidUsernameOrPasswordException();
+            }
+
+            if (!user.IsEmailConfirmed)
+            {
+                throw new EmailIsNotConfirmedException();
             }
 
             await _userRepository.LoadRolesAsync(user);

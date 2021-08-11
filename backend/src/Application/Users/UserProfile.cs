@@ -16,7 +16,15 @@ namespace Application.Users
 
             CreateMap<UserDto, User>()
                 .ForMember(dest => dest.DomainEvents, opt => opt.Ignore())
-                .ForMember(dest => dest.UserRoles, opt => opt.MapFrom((src, dest, i, context) =>
+                .ForMember(dest => dest.UserRoles, opt => opt.MapFrom(src =>
+                    src.Roles.Select(role => new UserToRole()
+                    {
+                        RoleId = role.Id
+                    })));
+
+            CreateMap<UserRegisterDto, User>()
+                .ForMember(dest => dest.DomainEvents, opt => opt.Ignore())
+                .ForMember(dest => dest.UserRoles, opt => opt.MapFrom(src =>
                     src.Roles.Select(role => new UserToRole()
                     {
                         RoleId = role.Id

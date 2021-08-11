@@ -181,6 +181,27 @@ namespace Infrastructure.Migrations
                     b.ToTable("CompanyToUsers");
                 });
 
+            modelBuilder.Entity("Domain.Entities.EmailToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.ToTable("EmailToken");
+                });
+
             modelBuilder.Entity("Domain.Entities.Pool", b =>
                 {
                     b.Property<string>("Id")
@@ -357,6 +378,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsEmailConfirmed")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -367,6 +391,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordSalt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResetPasswordToken")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -603,6 +630,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.EmailToken", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithOne("EmailToken")
+                        .HasForeignKey("Domain.Entities.EmailToken", "UserId")
+                        .HasConstraintName("email_token__user_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.Pool", b =>
                 {
                     b.HasOne("Domain.Entities.Company", "Company")
@@ -783,6 +821,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("AddedCandidates");
+
+                    b.Navigation("EmailToken");
 
                     b.Navigation("RefreshTokens");
 

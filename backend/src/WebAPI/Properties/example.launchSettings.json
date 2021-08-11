@@ -28,7 +28,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DATABASE_CONNECTION_STRING": "Server=localhost;Database=ATS_dev;Trusted_Connection=True;",
         "ELASTIC_CONNECTION_STRING": "http://localhost:9200",
-        "MONGODB_CONNECTION_URI": "mongodb://mongo:123Admin!@localhost:27017",
+        "MONGODB_CONNECTION_URI": "mongodb://mongo:MyBadPass123!@localhost:27017",
         "MONGODB_DATABASE_NAME": "ats_database",
         "MAIL_ADDRESS": "notifications.scout@gmail.com",
         "MAIL_PASSWORD": "yourpassword",

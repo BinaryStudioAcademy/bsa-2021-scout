@@ -1,16 +1,24 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoginRegistCommonComponent } from '../login-regist-common/login-regist-common.component';
+import { RegisterDto } from '../../models/register-dto';
+import { AuthenticationService } from '../../services/auth.service';
+import { UserRegisterDto } from '../../models/auth/user-register-dto';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-registration-box',
   templateUrl: './registration-box.component.html',
-  styleUrls: ['./registration-box.component.scss', 
+  styleUrls: ['./registration-box.component.scss',
     '../login-regist-common/login-regist-common.component.scss'],
 })
 export class RegistrationBoxComponent {
-  constructor(public loginRegistCommonComponent: LoginRegistCommonComponent) {
-  }
+  constructor(public loginRegistCommonComponent: LoginRegistCommonComponent,
+    public authenticationService: AuthenticationService,
+    private notificationService: NotificationService) { }
+
+  public userRegisterDto: UserRegisterDto = {} as UserRegisterDto;
 
   public isPasswordHide = true;
 
@@ -49,6 +57,20 @@ export class RegistrationBoxComponent {
     ]),
   }, { validators: this.loginRegistCommonComponent.passwordsMatch });
 
-  onSubmit(){
+
+  public onSubmit() {
+    if (this.registrationForm.valid) {
+      const dto: RegisterDto =
+      {
+        userRegisterDto: this.userRegisterDto,
+        clientUrl: environment.confirmEmailUrl,
+      };
+      this.authenticationService.register(dto).pipe()
+        .subscribe(() => {
+          this.notificationService.showSuccessMessage(
+            'Please check your email to confirm your email.');
+        },
+        () => this.notificationService.showErrorMessage('Something went wrong'));
+    }
   }
 }

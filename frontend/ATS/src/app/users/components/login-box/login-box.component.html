@@ -1,11 +1,11 @@
 <div class="login-container">
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="login-text"><span>Log in</span></div>
         <div class="login-input-email form-group">
             <div class="login-input-title"><span>Email</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userEmail') ? 'logo-invalid-input' : ''">
-                <input matInput type="email" formControlName="userEmail" placeholder="Enter your name">
+                <input matInput type="email" formControlName="userEmail" placeholder="Enter your name" [(ngModel)]="userLoginDto.email">
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userEmail')">
                 <div class="logo-validation-message" *ngIf="loginForm.controls['userEmail'].errors?.pattern">
@@ -23,12 +23,12 @@
         <div class="login-input-password form-group">
             <div class="login-input-password-title-block">
                 <div class="login-input-title"><span>Password</span></div>
-                <div class="login-input-title"><a href="#">Forgot password</a></div>
+                <div class="login-input-title"><a (click)="openDialog()">Forgot password</a></div>
             </div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userPassword') ? 'logo-invalid-input' : ''">
                 <input matInput [type]="isPasswordHide ? 'password' : 'text'" formControlName="userPassword"
-                    [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'" autocomplete="on">
+                    [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'" autocomplete="on" [(ngModel)]="userLoginDto.password">
                 <mat-icon class="login-show-password" matSuffix (click)="isPasswordHide = !isPasswordHide">
                     {{isPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>

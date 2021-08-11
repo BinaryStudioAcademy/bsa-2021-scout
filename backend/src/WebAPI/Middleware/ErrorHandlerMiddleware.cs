@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Auth.Exceptions;
+using Application.Common.Exceptions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
@@ -26,7 +27,7 @@ namespace WebAPI.Middleware
             {
                 var response = context.Response;
                 response.ContentType = "application/json";
-
+                
                 switch (error)
                 {
                     case ValidationException e:
@@ -34,6 +35,18 @@ namespace WebAPI.Middleware
                         break;
                     case NotFoundException e:
                         response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    case InvalidTokenException e:
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
+                    case ExpiredRefreshTokenException e:
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
+                    case InvalidUsernameOrPasswordException e:
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
+                    case EmailIsNotConfirmedException e:
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;

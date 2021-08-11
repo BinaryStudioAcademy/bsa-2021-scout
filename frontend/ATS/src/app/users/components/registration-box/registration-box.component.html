@@ -5,7 +5,7 @@
             <div class="registration-input-title"><span>First name</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userFirstName') ? 'logo-invalid-input' : ''">
-                <input matInput type="text" formControlName="userFirstName" placeholder="Enter your first name">
+                <input matInput type="text" formControlName="userFirstName" placeholder="Enter your first name" [(ngModel)]="userRegisterDto.firstName">
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userFirstName')">
                 <div class="logo-validation-message"
@@ -22,7 +22,7 @@
             <div class="registration-input-title"><span>Last name</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userLastName') ? 'logo-invalid-input' : ''">
-                <input matInput type="text" formControlName="userLastName" placeholder="Enter your last name">
+                <input matInput type="text" formControlName="userLastName" placeholder="Enter your last name" [(ngModel)]="userRegisterDto.lastName">
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userLastName')">
                 <div class="logo-validation-message"
@@ -38,7 +38,7 @@
             <div class="registration-input-title"><span>Email</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userEmail') ? 'logo-invalid-input' : ''">
-                <input matInput type="email" formControlName="userEmail" placeholder="Enter your email">
+                <input matInput type="email" formControlName="userEmail" placeholder="Enter your email" [(ngModel)]="userRegisterDto.email">
             </mat-form-field>
             <div class="logo-validation-message" *ngIf="registrationForm.controls['userEmail'].errors?.useremailexists">
                 This username is already taken!
@@ -63,7 +63,7 @@
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userPassword') ? 'logo-invalid-input' : ''">
                 <input matInput [type]="isPasswordHide ? 'password' : 'text'" formControlName="userPassword"
-                    [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'" autocomplete="on">
+                    [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'" autocomplete="on"  [(ngModel)]="userRegisterDto.password">
                 <mat-icon class="registration-show-password" matSuffix (click)="isPasswordHide = !isPasswordHide">
                     {{isPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
@@ -105,7 +105,7 @@
             <mat-form-field floatLabel="never" class="birthdate-form-field"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userBirthdate') ? 'logo-invalid-input' : ''">
                 <input matInput [matDatepicker]="picker" name="date" formControlName="userBirthdate"
-                    placeholder="dd/mm/yyyy">
+                    placeholder="dd/mm/yyyy"  [(ngModel)]="userRegisterDto.birthDate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
