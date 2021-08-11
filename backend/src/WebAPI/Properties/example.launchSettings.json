@@ -33,7 +33,8 @@
         "MAIL_ADDRESS": "notifications.scout@gmail.com",
         "MAIL_PASSWORD": "yourpassword",
         "MAIL_DISPLAY_NAME": "Scout Notifications",
-        "SECRET_JWT_KEY": "DD70E219DCF6408A7506EA0186D183AE"
+        "SECRET_JWT_KEY": "DD70E219DCF6408A7506EA0186D183AE",
+        "FRONTEND_URL": "http://localhost:4200"
       }
     }
   }

@@ -56,6 +56,8 @@ namespace WebAPI.Extensions
 
         private static IServiceCollection AddProductionCorsPolicies(this IServiceCollection services)
         {
+            var frontendUrl = Environment.GetEnvironmentVariable("FRONTEND_URL");
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: ProductionPolicy,
@@ -67,7 +69,7 @@ namespace WebAPI.Extensions
                                         .WithHeaders("Content-Type")
                                         .WithMethods("GET", "POST", "PUT", "DELETE")
                                         .WithExposedHeaders("Token-Expired")
-                                        .WithOrigins("");
+                                        .WithOrigins(frontendUrl ?? "");
                                   });
             });
 
