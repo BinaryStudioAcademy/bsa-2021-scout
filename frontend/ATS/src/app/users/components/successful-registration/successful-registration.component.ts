@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { environment } from 'src/environments/environment';
 import { ResendConfirmEmailDto } from '../../models/resend-confirm-email-dto';
 import { AuthenticationService } from '../../services/auth.service';
 
@@ -18,6 +19,7 @@ export class SuccessfulRegistrationComponent {
   public resendEmail(): void {
     const dto : ResendConfirmEmailDto =  {
       email : this.route.snapshot.queryParamMap.get('email') as string,
+      clientUrl : environment.confirmEmailUrl,
     };
     this.authenticationService.resendConfirmationEmail(dto).pipe()
       .subscribe(() => {

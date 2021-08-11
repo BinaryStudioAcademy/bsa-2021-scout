@@ -37,10 +37,12 @@ export class AuthenticationService {
 
   public resendConfirmationEmail(resendConfirmEmailDto: ResendConfirmEmailDto):
   Observable<HttpResponse<void>> {
-    return this.httpService.postFullRequest<void>('/register/resend-email', resendConfirmEmailDto);
+    return this.httpService.postFullRequest<void>('/register/resend-confirm-email',
+      resendConfirmEmailDto);
   }
 
   public confirmEmail(confirmEmailDto: ConfirmEmailDto): Observable<User> {
+    console.log(confirmEmailDto);
     return this._handleAuthResponse(
       this.httpService.postFullRequest<AuthUser>('/register/confirm-email', confirmEmailDto));
   }

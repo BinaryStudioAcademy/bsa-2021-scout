@@ -31,5 +31,13 @@ namespace WebAPI.Controllers
             var authUserDto = await Mediator.Send(comfirmUserEmailCommand);
             return CreatedAtAction("GetUser", "users", new { id = authUserDto.User.Id }, authUserDto);
         }
+
+        [HttpPost("resend-confirm-email")]
+        public async Task<ActionResult<AuthUserDto>> Reseb([FromBody] ResendConfirmEmailDto resendConfirmEmailDto)
+        {
+            var command = new ResendConfirmEmailCommand(resendConfirmEmailDto);
+            await Mediator.Send(command);
+            return Ok();
+        }
     }
 }

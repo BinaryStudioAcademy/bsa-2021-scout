@@ -83,7 +83,10 @@ namespace Application.Auth.Commands
                     Token = generateToken
                 };
             }
-            return null;
+            else
+            {
+                throw new InvalidTokenException("email confirmation");
+            }
         }
     }
 }

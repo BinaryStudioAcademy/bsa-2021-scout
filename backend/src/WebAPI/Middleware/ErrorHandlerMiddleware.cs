@@ -51,6 +51,9 @@ namespace WebAPI.Middleware
                     case EmailIsAlreadyConfirmed e:
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
+                    case InvalidOperationException e:
+                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;

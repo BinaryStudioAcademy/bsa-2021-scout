@@ -17,6 +17,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((response) => {
+        
         const errorInfo: { type: string; description: string }
           = JSON.parse(response.error.message);
         if (response.status === 401) {
