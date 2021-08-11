@@ -46,7 +46,7 @@ namespace Application.Auth.Commands
             var getEntityByPropertyQuery = new GetEntityByPropertyQuery<EmailTokenDto>("UserId", command.UserId);
             var emailToken = await _mediator.Send(getEntityByPropertyQuery);
 
-            //await _tokenWriteRepository.DeleteAsync(emailToken);
+            await _tokenWriteRepository.DeleteAsync(emailToken.Id);
 
             return Unit.Value;
         }

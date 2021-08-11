@@ -52,7 +52,7 @@ namespace Application.Auth.Commands
 
             if (!user.IsEmailConfirmed)
             {
-                throw new NotFoundException($"User email is not confirmed");
+                throw new EmailIsNotConfirmedException();
             }
 
             await _userRepository.LoadRolesAsync(user);

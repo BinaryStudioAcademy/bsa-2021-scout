@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { finalize, map, retry } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
-import { UserRegisterDto } from '../models/auth/user-register-dto';
 import { AuthUser } from '../models/auth/auth-user';
 import { UserLoginDto } from '../models/auth/user-login-dto';
 import { Observable, of, throwError } from 'rxjs';
 import { RefreshAccessTokenDto } from '../models/token/refresh-access-token-dto';
 import { User } from 'src/app/users/models/user';
 import { HttpClientService } from 'src/app/shared/services/http-client.service';
+import { RegisterDto } from '../models/register-dto';
+import { ConfirmEmailDto } from '../models/confirm-email-dto';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -29,9 +30,13 @@ export class AuthenticationService {
       );
   }
 
-  public register(user: UserRegisterDto): Observable<User> {
+  public register(registerDto: RegisterDto): Observable<HttpResponse<void>>{
+    return this.httpService.postFullRequest<void>('/register', registerDto);
+  }
+
+  public confirmEmail(confirmEmailDto: ConfirmEmailDto): Observable<User> {
     return this._handleAuthResponse(
-      this.httpService.postFullRequest<AuthUser>('/register', user));
+      this.httpService.postFullRequest<AuthUser>('/register/confirm-email', confirmEmailDto));
   }
 
   public login(user: UserLoginDto): Observable<User> {

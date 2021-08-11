@@ -16,15 +16,8 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<AuthUserDto>> Login(UserLoginDto userLogin)
         {
-            try
-            {
-                var command = new LoginCommand(userLogin);
-                return Ok(await Mediator.Send(command));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var command = new LoginCommand(userLogin);
+            return Ok(await Mediator.Send(command));
         }
         [AllowAnonymous]
         [HttpPost("forgot-password")]

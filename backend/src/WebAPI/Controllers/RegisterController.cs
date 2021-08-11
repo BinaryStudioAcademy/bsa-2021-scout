@@ -16,36 +16,20 @@ namespace WebAPI.Controllers
     public class RegisterController : ApiController
     {
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] UserRegisterDto user)
+        public async Task<ActionResult> Post([FromBody] RegisterDto registerDto)
         {
-            try
-            {
-                var command = new RegisterUserCommand(user);
-                await Mediator.Send(command);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
+            var command = new RegisterUserCommand(registerDto);
+            await Mediator.Send(command);
+            return Ok();
         }
 
 
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult<AuthUserDto>> ComfirmEmail(string email, string token)
+        [HttpPost("confirm-email")]
+        public async Task<ActionResult<AuthUserDto>> ComfirmEmail([FromBody] ConfirmEmailDto emailTokenDto)
         {
-            try
-            {
-                var comfirmUserEmailCommand = new ComfirmUserEmailCommand(email, token);
-                var authUserDto = await Mediator.Send(comfirmUserEmailCommand);
-                return CreatedAtAction("GetUser", "users", new { id = authUserDto.User.Id }, authUserDto);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var comfirmUserEmailCommand = new ComfirmUserEmailCommand(emailTokenDto);
+            var authUserDto = await Mediator.Send(comfirmUserEmailCommand);
+            return CreatedAtAction("GetUser", "users", new { id = authUserDto.User.Id }, authUserDto);
         }
     }
 }

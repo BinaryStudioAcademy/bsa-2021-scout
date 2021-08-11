@@ -16,11 +16,11 @@ namespace Application.Users.Commands
 {
     public class RegisterUserCommand : IRequest<Unit>
     {
-        public UserRegisterDto RegisterUser { get; }
+        public RegisterDto RegisterDto { get; }
 
-        public RegisterUserCommand(UserRegisterDto registerUser)
+        public RegisterUserCommand(RegisterDto registerDto)
         {
-            RegisterUser = registerUser;
+            RegisterDto = registerDto;
         }
     }
 
@@ -43,20 +43,21 @@ namespace Application.Users.Commands
 
         public async Task<Unit> Handle(RegisterUserCommand command, CancellationToken _)
         {
-            var newUser = _mapper.Map<User>(command.RegisterUser);
+            var newUser = _mapper.Map<User>(command.RegisterDto.UserRegisterDto);
             var salt = _securityService.GetRandomBytes();
 
             newUser.IsEmailConfirmed = false;
 
             newUser.PasswordSalt = Convert.ToBase64String(salt);
-            newUser.Password = _securityService.HashPassword(command.RegisterUser.Password, salt);
+            newUser.Password = _securityService.HashPassword(command.RegisterDto.UserRegisterDto.Password, salt);
 
             await _userWriteRepository.CreateAsync(newUser);
             var registeredUser = _mapper.Map<UserDto>(newUser);
-            registeredUser.Roles = command.RegisterUser.Roles;
+            registeredUser.Roles = command.RegisterDto.UserRegisterDto.Roles;
 
             var sendConfirmEmailMailCommand = new SendConfirmEmailMailCommand(
                 registeredUser,
+                command.RegisterDto.ClientUrl,
                 MailSubjectFactory.confirmEmailMailSubject, 
                 MailBodyFactory.confirmEmailMailBody);
             await _mediator.Send(sendConfirmEmailMailCommand);

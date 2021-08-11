@@ -17,15 +17,12 @@ namespace Application.Auth.Commands
 {
     public class ComfirmUserEmailCommand : IRequest<AuthUserDto>
     {
-        public string Email { get; }
-        public string Token { get; }
+        public ConfirmEmailDto EmailToken { get; }
 
 
-        public ComfirmUserEmailCommand(string email, string token)
+        public ComfirmUserEmailCommand(ConfirmEmailDto emailToken)
         {
-            Email = email;
-
-            Token = token;
+            EmailToken = emailToken;
         }
     }
 
@@ -65,12 +62,11 @@ namespace Application.Auth.Commands
 
         public async Task<AuthUserDto> Handle(ComfirmUserEmailCommand command, CancellationToken _)
         {
-            var getUserByPropertyQuery = new GetEntityByPropertyQuery<UserDto>("Email",command.Email);
-            var user = _mapper.Map<User>(await _mediator.Send(getUserByPropertyQuery));
-            var token = await _tokenReadRepository.GetByPropertyAsync("UserId", user.Id);
-            //var getEmailTokenByPropertyQuery = new GetEntityByPropertyQuery<EmailTokenDto>("UserId", user.Id);
-            //var token = _mapper.Map<EmailToken>(await _mediator.Send(getEmailTokenByPropertyQuery));
-            if (token?.Token == command.Token)
+            var user = await _userReadRepository.GetByPropertyAsync("Email", command.EmailToken.Email);
+
+            var getEmailTokenByPropertyQuery = new GetEntityByPropertyQuery<EmailTokenDto>("UserId", user.Id);
+            var token = _mapper.Map<EmailTokenDto>(await _mediator.Send(getEmailTokenByPropertyQuery));
+            if (token?.Token == command.EmailToken.Token)
             {
                 await _tokenWriteRepository.DeleteAsync(token.Id);
 

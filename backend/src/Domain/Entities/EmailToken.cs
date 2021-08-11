@@ -1,4 +1,5 @@
-﻿using Domain.Common;
+﻿
+using Domain.Common;
 
 namespace Domain.Entities
 {
@@ -9,5 +10,6 @@ namespace Domain.Entities
         public string Token { get; set; }
 
         public User User { get; set; }
+
     }
 }

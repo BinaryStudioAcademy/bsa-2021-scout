@@ -7,14 +7,21 @@ using Application.Auth.Commands;
 using Application.Users.Dtos;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
+using Application.Auth.Dtos;
+using AutoMapper;
 
 namespace Application.Mail
 {
     public class SendConfirmEmailMailCommand : SendMailCommand
     {
-        public UserDto userDTO { get; set; }
-        public SendConfirmEmailMailCommand(UserDto userDTO, string subject, string body, string templateSlug = "default") : base(userDTO.Email, subject, body, templateSlug = "default") {
-            this.userDTO = userDTO;
+        public UserDto UserDto { get; set; }
+
+        public string ClientUrl { get; set; }
+
+
+        public SendConfirmEmailMailCommand(UserDto userDto, string clientUrl,  string subject, string body, string templateSlug = "default") : base(userDto.Email, subject, body, templateSlug = "default") {
+            UserDto = userDto;
+            ClientUrl = clientUrl;
         }
 
         public class SendConfirmEmailMailCommandHandler : IRequestHandler<SendConfirmEmailMailCommand>
@@ -34,15 +41,15 @@ namespace Application.Mail
                 string password = Environment.GetEnvironmentVariable("MAIL_PASSWORD");
                 string displayName = Environment.GetEnvironmentVariable("MAIL_DISPLAY_NAME");
 
-                var emailTokenCommand = new GenerateEmailTokenCommand(command.userDTO);
+                var emailTokenCommand = new GenerateEmailTokenCommand(command.UserDto);
 
                 var queryParam = new Dictionary<string, string>
                 {
-                    {"email", command.userDTO.Email },
+                    {"email", command.UserDto.Email },
                     {"token", (await _mediator.Send(emailTokenCommand)).Token },
                 };
 
-                var callbackUrl = QueryHelpers.AddQueryString("https://localhost:5001/api/Register", queryParam);
+                var callbackUrl = QueryHelpers.AddQueryString(command.ClientUrl, queryParam);
 
                 using (ISmtp connection = _smtp.Connect(address, password, displayName))
                 {

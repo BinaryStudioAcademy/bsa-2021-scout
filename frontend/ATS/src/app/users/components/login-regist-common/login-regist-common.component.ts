@@ -3,7 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { AsyncValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { HttpClientService } from 'src/app/shared/services/http-client.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
@@ -61,7 +61,7 @@ export class LoginRegistCommonComponent {
 
   public firstAndLastNameValidation(control: FormControl) {
     return (control.value as string || '')
-      .match(/^[A-Z]+(([',. -][a-zA-Z])?[a-zA-Z]*)*$/) != null ? 
+      .match(/^[A-Z]+(([',. -][a-zA-Z])?[a-zA-Z]*)*$/) != null ?
       null : { 'firstandlastname': true };
   }
 
@@ -102,6 +102,9 @@ export class LoginRegistCommonComponent {
             return { userEmailExists: true };
           }
           return null;
+        }), catchError(err => {
+          this.notificationService.showErrorMessage('Email uniqueness check error.');
+          return of([{ userEmailExists: true }]);
         }),
       );
     };

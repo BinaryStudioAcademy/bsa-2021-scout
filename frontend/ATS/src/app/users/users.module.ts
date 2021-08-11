@@ -16,6 +16,7 @@ import { ResetPasswordBoxComponent }
 // This line can't be shorter
 // eslint-disable-next-line
 import { LoginRegistCommonComponent } from './components/login-regist-common/login-regist-common.component';
+import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { LoginRegistCommonComponent } from './components/login-regist-common/log
     ForgotPasswordDialogComponent,
     ResetPasswordComponent,
     ResetPasswordBoxComponent,
+    ConfirmEmailComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
