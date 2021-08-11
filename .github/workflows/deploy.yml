@@ -80,7 +80,7 @@ jobs:
         host: ${{ secrets[matrix.stages.DEPLOYMENT_HOST] }}
         username: ${{ secrets[matrix.stages.DEPLOYMENT_USERNAME] }}
         password: ${{ secrets[matrix.stages.DEPLOYMENT_PASSWORD] }}
-        source: ".docker/docker-compose.prod.yml"
+        source: ".docker/docker-compose.${{ matrix.stages.stage }}.yml"
         target: "app"
 
     - name: Run docker-compose.prod.yml to deployment server
