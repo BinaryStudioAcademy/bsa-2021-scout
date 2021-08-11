@@ -13,7 +13,8 @@ namespace WebAPI
                 await CreateHostBuilder(args)
                     .Build()
                     .ApplyDatabaseMigrations()
-                    .ApplyElasticSeeding()
+                    .ApplyDatabaseSeeding()
+                    .ApplyElasticSeeding()                    
             )
             .Run();
 

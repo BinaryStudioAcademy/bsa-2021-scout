@@ -11,7 +11,6 @@ namespace Domain.Entities
         public User()
         {
             DomainEvents = new List<DomainEvent>();
-            CreationDate = DateTime.UtcNow;
         }
 
         public string Password { get; set; }

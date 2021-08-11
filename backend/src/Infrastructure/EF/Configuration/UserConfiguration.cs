@@ -14,6 +14,9 @@ namespace Infrastructure.EF.Configuration
                 .HasForeignKey(a => a.CompanyId)
                 .HasConstraintName("user_company_FK")
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(u => u.CreationDate)
+                   .HasDefaultValueSql("GETUTCDATE()");
         }
     }
 }

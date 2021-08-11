@@ -42,12 +42,14 @@ namespace Application.Users.Commands
         public async Task<AuthUserDto> Handle(RegisterUserCommand command, CancellationToken _)
         {
             var newUser = _mapper.Map<User>(command.RegisterUser);
-            var salt = _securityService.GetRandomBytes();
+            newUser.CompanyId = "1"; // !IMPORTANT! delete in the future
 
+            var salt = _securityService.GetRandomBytes();
             newUser.PasswordSalt = Convert.ToBase64String(salt);
             newUser.Password = _securityService.HashPassword(command.RegisterUser.Password, salt);
 
             await _userWriteRepository.CreateAsync(newUser);
+
             var registeredUser = _mapper.Map<UserDto>(newUser);
             registeredUser.Roles = command.RegisterUser.Roles;
 

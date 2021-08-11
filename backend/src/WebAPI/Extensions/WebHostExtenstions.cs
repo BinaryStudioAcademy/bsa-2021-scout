@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Domain.Entities;
 using Infrastructure.EF;
+using Infrastructure.EF.Seeding;
 using Infrastructure.Elastic.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +30,13 @@ namespace WebAPI.Extensions
                 ApplicantTagsSeeds.GetSeed()
             );
             
+            return host;
+        }
+        public static IHost ApplyDatabaseSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            ApplicationDbContextSeeding.Seed(scope);
+
             return host;
         }
     }
