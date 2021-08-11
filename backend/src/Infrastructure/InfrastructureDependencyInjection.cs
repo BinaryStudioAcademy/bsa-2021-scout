@@ -147,7 +147,7 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
-            services.AddScoped<IReadRepository<CvParsingJob>, ReadRepository<CvParsingJob>>();
+            services.AddScoped<IReadRepository<CvParsingJob>, CvParsingJobReadRepository>();
             services.AddScoped<IWriteRepository<CvParsingJob>, WriteRepository<CvParsingJob>>();
 
             return services;

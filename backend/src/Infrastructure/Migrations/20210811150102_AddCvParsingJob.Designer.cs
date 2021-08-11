@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210811102824_AddCvParsingJob")]
+    [Migration("20210811150102_AddCvParsingJob")]
     partial class AddCvParsingJob
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -199,7 +199,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TriggerId");
 
-                    b.ToTable("CvParsingJob");
+                    b.ToTable("CvParsingJobs");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pool", b =>
@@ -371,6 +371,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");

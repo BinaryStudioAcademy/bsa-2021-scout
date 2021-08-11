@@ -6,12 +6,8 @@ namespace Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Email",
-                table: "Users");
-
             migrationBuilder.CreateTable(
-                name: "CvParsingJob",
+                name: "CvParsingJobs",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -20,7 +16,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CvParsingJob", x => x.Id);
+                    table.PrimaryKey("PK_CvParsingJobs", x => x.Id);
                     table.ForeignKey(
                         name: "cv_parsing_job_user_FK",
                         column: x => x.TriggerId,
@@ -30,21 +26,15 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CvParsingJob_TriggerId",
-                table: "CvParsingJob",
+                name: "IX_CvParsingJobs_TriggerId",
+                table: "CvParsingJobs",
                 column: "TriggerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CvParsingJob");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Email",
-                table: "Users",
-                type: "nvarchar(max)",
-                nullable: true);
+                name: "CvParsingJobs");
         }
     }
 }

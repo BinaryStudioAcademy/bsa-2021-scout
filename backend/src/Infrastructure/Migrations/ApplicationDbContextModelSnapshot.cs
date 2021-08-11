@@ -197,7 +197,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TriggerId");
 
-                    b.ToTable("CvParsingJob");
+                    b.ToTable("CvParsingJobs");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pool", b =>
@@ -369,6 +369,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
