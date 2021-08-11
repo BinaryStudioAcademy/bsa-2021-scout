@@ -27,7 +27,7 @@ services:
     networks:
       - backend
   ats_database:
-    image: mcr.microsoft.com/mssql/server:2017-latest
+    image: justin2004/mssql_server_tiny
     container_name: "ats_database"
     ports:
       - 1433:1433

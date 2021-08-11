@@ -1,13 +1,13 @@
-import { Component, OnDestroy } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
+import { FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { Applicant } from 'src/app/shared/models/applicant/applicant';
-import { CreateApplicant } from 'src/app/shared/models/applicant/create-applicant';
-import { HttpClientService } from 'src/app/shared/services/http-client.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
+import { Component, OnDestroy } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { applicantGroup } from '../../validators/applicant-validator';
+import { Applicant } from 'src/app/shared/models/applicant/applicant';
+import { HttpClientService } from 'src/app/shared/services/http-client.service';
+import { CreateApplicant } from 'src/app/shared/models/applicant/create-applicant';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Component({
   selector: 'app-create-applicant',
@@ -18,9 +18,11 @@ import { applicantGroup } from '../../validators/applicant-validator';
 export class CreateApplicantComponent implements OnDestroy {
   public validationGroup: FormGroup|undefined = undefined;
   public createdApplicant: CreateApplicant = {
+    id: '',
     firstName: '',
     lastName: '',
     middleName: '',
+    birthDate: new Date(),
     email: '',
     phone: '',
     skype: '',

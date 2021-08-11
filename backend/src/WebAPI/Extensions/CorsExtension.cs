@@ -47,6 +47,7 @@ namespace WebAPI.Extensions
                                         .WithHeaders("Content-Type")
                                         .WithMethods("GET", "POST", "PUT", "DELETE")
                                         .WithExposedHeaders("Token-Expired")
+                                        .AllowCredentials()
                                         .WithOrigins("http://localhost:4200");
                                   });
             });

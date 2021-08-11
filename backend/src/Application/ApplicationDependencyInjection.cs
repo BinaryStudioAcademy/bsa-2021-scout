@@ -1,13 +1,14 @@
-﻿using Application.Common.Behaviours;
+﻿using MediatR;
 using FluentValidation;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using entities = Domain.Entities;
+using System.Collections.Generic;
 using Application.Common.Queries;
 using Application.Common.Commands;
 using Application.Applicants.Dtos;
-using Domain.Entities;
-using System.Collections.Generic;
+using Application.Common.Behaviours;
+using Application.ApplicantToTags.Dtos;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
 {
@@ -39,9 +40,11 @@ namespace Application
         private static IServiceCollection RegisterAbstractQueriesEntityTypes(this IServiceCollection services)
         {
             services.AddScoped(typeof(IRequestHandler<GetEntityListQuery<ApplicantDto>, IEnumerable<ApplicantDto>>),
-                typeof(GetEntityListQuery<Applicant, ApplicantDto>));
+                typeof(GetEntityListQuery<entities.Applicant, ApplicantDto>));
             services.AddScoped(typeof(IRequestHandler<GetEntityByIdQuery<ApplicantDto>, ApplicantDto>),
-                typeof(GetEntityByIdQueryHandler<Applicant, ApplicantDto>));
+                typeof(GetEntityByIdQueryHandler<entities.Applicant, ApplicantDto>));
+            services.AddScoped(typeof(IRequestHandler<GetElasticDocumentByIdQuery<ApplicantToTagsDto>, ApplicantToTagsDto>),
+                typeof(GetElasticDocumentByIdQueryHandler<entities.ApplicantToTags, ApplicantToTagsDto>));
 
             return services;
         }
@@ -49,11 +52,11 @@ namespace Application
         private static IServiceCollection RegisterAbstractCommandsEntityTypes(this IServiceCollection services)
         {
             services.AddScoped(typeof(IRequestHandler<CreateEntityCommand<ApplicantDto>, ApplicantDto>),
-                typeof(CreateEntityCommandHandler<Applicant, ApplicantDto>));
+                typeof(CreateEntityCommandHandler<entities.Applicant, ApplicantDto>));
             services.AddScoped(typeof(IRequestHandler<UpdateEntityCommand<ApplicantDto>, ApplicantDto>),
-                typeof(UpdateEntityCommandHandler<Applicant, ApplicantDto>));
+                typeof(UpdateEntityCommandHandler<entities.Applicant, ApplicantDto>));
             services.AddScoped(typeof(IRequestHandler<DeleteEntityCommand, Unit>),
-                typeof(DeleteEntityCommandHandler<Applicant>));
+                typeof(DeleteEntityCommandHandler<entities.Applicant>));
 
             return services;
         }

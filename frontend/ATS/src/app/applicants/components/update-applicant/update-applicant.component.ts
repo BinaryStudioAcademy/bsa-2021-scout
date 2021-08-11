@@ -1,13 +1,13 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Applicant } from 'src/app/shared/models/applicant/applicant';
-import { UpdateApplicant } from 'src/app/shared/models/applicant/update-applicant';
-import { HttpClientService } from 'src/app/shared/services/http-client.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
+import { FormGroup } from '@angular/forms';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { applicantGroup } from '../../validators/applicant-validator';
+import { Applicant } from 'src/app/shared/models/applicant/applicant';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HttpClientService } from 'src/app/shared/services/http-client.service';
+import { UpdateApplicant } from 'src/app/shared/models/applicant/update-applicant';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Component({
   selector: 'app-update-applicant',
@@ -22,6 +22,7 @@ export class UpdateApplicantComponent implements OnDestroy {
     firstName: '',
     lastName: '',
     middleName: '',
+    birthDate: new Date(),
     email: '',
     phone: '',
     skype: '',

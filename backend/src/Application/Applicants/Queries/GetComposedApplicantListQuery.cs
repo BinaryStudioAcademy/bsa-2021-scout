@@ -1,13 +1,10 @@
 using MediatR;
-using System;
-using System.Threading;
 using Domain.Entities;
+using System.Threading;
 using System.Threading.Tasks;
-using Domain.Interfaces;
 using System.Collections.Generic;
 using Application.Applicants.Dtos;
-using Application.Common.Queries;
-using Application.ApplicantToTags.Dtos;
+using Domain.Interfaces.Abstractions;
 
 namespace Application.Applicants.Queries
 {
@@ -30,15 +27,7 @@ namespace Application.Applicants.Queries
 
             foreach (var applicant in applicantList)
             {
-                var applicantQueryTask = _mediator.Send(new GetEntityByIdQuery<ApplicantDto>(applicant.Id));
-                var tagsQueryTask = _mediator.Send(new GetElasticDocumentByIdQuery<ApplicantToTagsDto>(applicant.Id));
-                var vacancyInfoQueryTask = _mediator.Send(new GetVacancyInfoListQuery(applicant.Id));
-
-                var resultApplicant = await applicantQueryTask;
-                resultApplicant.Tags = await tagsQueryTask;
-                resultApplicant.Vacancies = await vacancyInfoQueryTask;
-
-                applicantResultList.Add(resultApplicant);
+                applicantResultList.Add(await _mediator.Send(new GetComposedApplicantQuery(applicant.Id)));
             }
 
             return applicantResultList;

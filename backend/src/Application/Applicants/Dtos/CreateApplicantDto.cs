@@ -1,6 +1,5 @@
-using Application.Common.Models;
-using System;
 using FluentValidation;
+using Application.Common.Models;
 
 namespace Application.Applicants.Dtos
 {

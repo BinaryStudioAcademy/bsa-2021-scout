@@ -1,7 +1,6 @@
 using Application.Common.Models;
 using System.Collections.Generic;
 using Application.ApplicantToTags.Dtos;
-using System;
 
 namespace Application.Applicants.Dtos
 {

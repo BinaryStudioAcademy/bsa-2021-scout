@@ -1,8 +1,8 @@
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Applicants.Dtos;
 using Application.Common.Queries;
+using Application.Applicants.Dtos;
 using Application.ApplicantToTags.Dtos;
 
 namespace Application.Applicants.Queries
@@ -26,13 +26,12 @@ namespace Application.Applicants.Queries
         }
         public async Task<ApplicantDto> Handle(GetComposedApplicantQuery query, CancellationToken _)
         {
-            var applicantQueryTask = _mediator.Send(new GetEntityByIdQuery<ApplicantDto>(query.Id));
+            var vacancyInfoList = await _mediator.Send(new GetVacancyInfoListQuery(query.Id));
+            var applicant = await _mediator.Send(new GetEntityByIdQuery<ApplicantDto>(query.Id));
             var tagsQueryTask = _mediator.Send(new GetElasticDocumentByIdQuery<ApplicantToTagsDto>(query.Id));
-            var vacancyInfoQueryTask = _mediator.Send(new GetVacancyInfoListQuery(query.Id));
 
-            var applicant = await applicantQueryTask;
             applicant.Tags = await tagsQueryTask;
-            applicant.Vacancies = await vacancyInfoQueryTask;
+            applicant.Vacancies = vacancyInfoList;
 
             return applicant;
         }

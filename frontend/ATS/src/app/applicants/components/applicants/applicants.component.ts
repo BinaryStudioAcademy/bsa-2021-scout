@@ -1,17 +1,15 @@
-import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Sort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Sort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { Component, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { Applicant } from 'src/app/shared/models/applicant/applicant';
 import { HttpClientService } from 'src/app/shared/services/http-client.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { applicants } from '../../applicants-test';
 import { CreateApplicantComponent } from '../create-applicant/create-applicant.component';
 import { UpdateApplicantComponent } from '../update-applicant/update-applicant.component';
-
-const isTestMode = true;
+import { SearchFormComponent } from 'src/app/shared/components/search-form/search-form.component';
 
 @Component({
   selector: 'app-applicants',
@@ -20,19 +18,13 @@ const isTestMode = true;
 })
 
 export class ApplicantsComponent {
-  public displayedColumns: string[] = [
-    'name',
-    'rate',
-    'email',
-    'active_vacancies',
-    'jobs_list',
-    'tags',
-    'status',
-    'control_buttons',
+  public displayedColumns: string[] = [ 'name', 'rate', 'email', 'active_vacancies',
+    'jobs_list', 'tags', 'status', 'control_buttons',
   ];
 
-  public searchValue = '';
   public dataSource = new MatTableDataSource<Applicant>();
+
+  public value = '';
 
   private $unsubscribe = new Subject();
 
@@ -41,23 +33,18 @@ export class ApplicantsComponent {
     private readonly notificationsService: NotificationService,
     private readonly httpCLient: HttpClientService,
   ) {
-    if (isTestMode) {
-      this.dataSource.data = applicants;
-    }
-    else {
-      // Will be the code of the controller after applicants backend will be implemented
-      this.httpCLient.getRequest<Applicant[]>('/applicants')
-        .pipe(
-          takeUntil(this.$unsubscribe),
-        )
-        .subscribe((result: Applicant[]) => {
-          this.dataSource.data = result;
-        },
-        (error: Error) => {
-          this.notificationsService.showErrorMessage(error.message,
-            'Cannot download applicants from the host');
-        });
-    }
+    this.httpCLient.getRequest<Applicant[]>('/applicants')
+      .pipe(
+        takeUntil(this.$unsubscribe),
+      )
+      .subscribe((result: Applicant[]) => {
+        this.dataSource.data = result;
+      },
+      (error: Error) => {
+        this.notificationsService.showErrorMessage(error.message,
+          'Cannot download applicants from the host');
+      },
+      );
   }
 
   public showApplicantCreateDialog(): void {
@@ -115,14 +102,8 @@ export class ApplicantsComponent {
       });
   }
 
-  public clearInput(): void {
-    this.searchValue = '';
-    this.dataSource.filter = '';
-  }
-
-  public applyFilter(event: Event): void {
-    const fullName = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = fullName.trim().toLowerCase();
+  public applyFilter(searchValue: string): void {
+    this.dataSource.filter = searchValue.trim().toLowerCase();
   }
 
   public sortData(sort: Sort): void {

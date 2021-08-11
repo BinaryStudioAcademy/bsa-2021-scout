@@ -1,12 +1,11 @@
 using MediatR;
-using AutoMapper;
 using System.Linq;
 using Domain.Entities;
 using System.Threading;
-using Domain.Interfaces;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Application.Applicants.Dtos;
+using Domain.Interfaces.Abstractions;
 
 namespace Application.Applicants.Queries
 {
@@ -30,7 +29,11 @@ namespace Application.Applicants.Queries
             IReadRepository<Vacancy> vacancyRepository,
             IReadRepository<VacancyCandidate> candidateRepository,
             IReadRepository<Stage> stageRepository)
-        { }
+        {
+            _vacancyRepository = vacancyRepository;
+            _candidateRepository = candidateRepository;
+            _stageRepository = stageRepository;
+        }
 
         public async Task<IEnumerable<ApplicantVacancyInfoDto>> Handle(GetVacancyInfoListQuery query, CancellationToken _)
         {

@@ -4,11 +4,12 @@ import{VacanciesListComponent}from'../vacancies/components/vacancies-list/vacanc
 import { UserRoutingModule } from '../users/user-routing.module';
 import { VacanciesRoutingModule } from '../vacancies/vacancies-routing.module';
 import { AppRoute } from './AppRoute';
+import { ApplicantsComponent } from '../applicants/components/applicants/applicants.component';
 
 const routes: Routes = [
   { path: AppRoute.Home, component: VacanciesListComponent, pathMatch: 'full' },
   { path: AppRoute.Vacancies, component: VacanciesListComponent, pathMatch: 'full' },
-  { path: AppRoute.Applicants, component: VacanciesListComponent, pathMatch: 'full' },
+  { path: AppRoute.Applicants, component: ApplicantsComponent, pathMatch: 'full' },
   { path: AppRoute.Interviews, component: VacanciesListComponent, pathMatch: 'full' },
   { path: AppRoute.Analytics, component: VacanciesListComponent, pathMatch: 'full' },
   { path: AppRoute.TaskManagement, component: VacanciesListComponent, pathMatch: 'full' },

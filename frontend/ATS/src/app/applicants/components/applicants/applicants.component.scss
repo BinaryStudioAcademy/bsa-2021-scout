@@ -1,53 +1,10 @@
 $row-height: 55px;
 
-:host ::ng-deep .mat-form-field-wrapper {
-    height: 45px;
-    width: 282px;
-    padding: 0;
-    color: #4d4d4d;
-    background-color: #fff;
-
-    .mat-form-field-flex {
-        background: none;
-        padding: 0;
-    }
+.page-content {
+    padding: 45px 51px 0 0;
 }
 
-:host ::ng-deep .mat-form-field-infix {
-    display: flex;
-    padding: 15px 23px;
-    align-items: center;
-
-    .mat-icon,
-    .mat-input-element {
-        height: 15px;
-    }
-
-    .search-close-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .mat-button-wrapper {
-        display: flex;
-        justify-content: center;
-        height: 15px;
-    }
-
-    .mat-icon {
-        font-size: 15px;
-        line-height: 1;
-    }
-}
-
-:host {
-    display: block;
-    background-color: #F6F7F9;
-    padding: 45px 51px 294px 0;
-}
-
-.applicants-header-bar {
+:host ::ng-deep .applicants-header-bar {
     display: flex;
     background: none;
     justify-content: space-between;
@@ -55,6 +12,14 @@ $row-height: 55px;
 
     .create-button {
         width: 153px;
+    }
+
+    .mat-form-field-wrapper {
+        background-color: #fff !important;
+    
+        .mat-form-field-flex {
+            background: none;
+        }
     }
 }
 
@@ -66,7 +31,7 @@ $row-height: 55px;
     }
 
     .mat-row {
-        height: 55px;
+        height: $row-height;
     }
 
     .mat-cell {
@@ -148,12 +113,3 @@ $row-height: 55px;
         }
     }
 }
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 0.5;
-    }
-  }

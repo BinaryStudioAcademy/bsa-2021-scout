@@ -1,16 +1,23 @@
 .mat-dialog-title {
     margin: 0 16px 20px;
+    font-size: 1.6em;
+    font-weight: 600;
 }
 
 .mat-dialog-actions {
     padding: 15px 16px 10px;
+
+    .mat-icon {
+        color: #000;
+    }
 }
 
 .mat-dialog-content {
     padding: 0 40px 10px;
 
     p {
-        margin: 0;
+        font-size: 1.3em;
+        margin: 0 0 15px;
     }
 
     &::-webkit-scrollbar {
@@ -29,19 +36,37 @@
 
 :host ::ng-deep .mat-form-field {
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
+
+    .mat-form-field-label {
+        font-size: 1.5em;
+    }
+
+    .mat-form-field-infix:focus-within .mat-form-field-label {
+        font-size: 1.45em;
+    }
+
+    .mat-input-element {
+        height: 2em;
+        font-size: 1.5em;
+    }
 
     .mat-form-field-wrapper {
         max-width: none;
         box-sizing: border-box;
-        margin: 0;
         border-radius: 10px;
         width: 100%;
-    
+        line-height: 1;
+
         .mat-form-field-subscript-wrapper {
             margin-top: 17px;
             width: calc(100% - 60px);
         }
+    }
+
+    .mat-error {
+        margin-top: 3px;
+        font-size: 1.6em;
     }
 }
 
