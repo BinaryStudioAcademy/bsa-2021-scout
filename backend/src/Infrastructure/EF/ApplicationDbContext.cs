@@ -45,7 +45,14 @@ namespace Infrastructure.EF
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(local);Database=ATS_dev;User Id=sa;Password=123Admin!;");
+                string connectionString = System.Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
+
+                if (connectionString == null)
+                {
+                    throw new System.Exception("Database connection string is not specified");
+                }
+
+                optionsBuilder.UseSqlServer(connectionString);
             }
         }
 

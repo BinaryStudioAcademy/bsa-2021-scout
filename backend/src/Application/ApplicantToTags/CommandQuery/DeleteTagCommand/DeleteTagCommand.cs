@@ -3,8 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using AutoMapper;
 using entities = Domain.Entities;
-using Domain.Interfaces;
-using Application.ApplicantToTags.Dtos;
+using Domain.Interfaces.Abstractions;
 using Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +14,7 @@ namespace Application.ApplicantToTags.CommandQuery.DeleteTagCommand
     public class DeleteTagCommand : IRequest
     {
         public string TagId { get; }
-        public string ApplicantId {get; }
+        public string ApplicantId { get; }
 
         public DeleteTagCommand(string applicantId, string tagId)
         {
@@ -40,9 +39,9 @@ namespace Application.ApplicantToTags.CommandQuery.DeleteTagCommand
         public async Task<Unit> Handle(DeleteTagCommand command, CancellationToken _)
         {
             IList<Tag> tagArray = (await _readRepo.GetAsync(command.ApplicantId)).Tags.ToList();
-            Tag deleteTag = tagArray.FirstOrDefault<Tag>(tag=>tag.Id == command.TagId);
+            Tag deleteTag = tagArray.FirstOrDefault<Tag>(tag => tag.Id == command.TagId);
             tagArray.Remove(deleteTag);
-            
+
             dynamic updateObject = new ExpandoObject();
             updateObject.tags = tagArray;
             await _repository.UpdateAsyncPartially(command.ApplicantId, updateObject);

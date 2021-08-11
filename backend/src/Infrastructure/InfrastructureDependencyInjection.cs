@@ -19,7 +19,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Nest;
-using Domain.Interfaces;
 
 namespace Infrastructure
 {
@@ -148,6 +147,8 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
+            services.AddScoped<IReadRepository<CvParsingJob>, ReadRepository<CvParsingJob>>();
+            services.AddScoped<IWriteRepository<CvParsingJob>, WriteRepository<CvParsingJob>>();
 
             return services;
         }

@@ -20,6 +20,7 @@ namespace Domain.Entities
         public ICollection<RefreshToken> RefreshTokens { get; set; }
         public ICollection<UserToRole> UserRoles { get; set; }
         public ICollection<CompanyToUser> UserCompanies { get; set; }
+        public ICollection<CvParsingJob> CvParsingJobs { get; set; }
 
         public IList<DomainEvent> DomainEvents { get; set; }
     }

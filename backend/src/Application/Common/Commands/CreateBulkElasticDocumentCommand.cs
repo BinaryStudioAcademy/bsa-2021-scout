@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using AutoMapper;
 using Domain.Common;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Application.Common.Models;
 using System.Collections.Generic;
 

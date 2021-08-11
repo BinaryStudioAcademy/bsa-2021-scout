@@ -1,5 +1,5 @@
 ﻿using Domain.Common;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -52,8 +52,8 @@ namespace Infrastructure.Repositories.Abstractions
             var indexResponse = await _client.UpdateAsync<T, object>(
                 DocumentPath<T>.Id(id),
                 i => i.Doc(dynamicUpdate));
-            
-            if(!indexResponse.IsValid)
+
+            if (!indexResponse.IsValid)
                 throw new InvalidOperationException("Partial update invalid");
         }
     }

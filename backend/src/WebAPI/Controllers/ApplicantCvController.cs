@@ -10,7 +10,8 @@ namespace WebAPI.Controllers
         [HttpPost("file-to-applicant")]
         public async Task<ActionResult> ParseFileToApplicant([FromForm] ApplicantCvOnlyFileDto dto)
         {
-            ActionResult fileError = ValidateFileType(dto.File);
+            string userId = GetUserIdFromToken();
+            ActionResult fileError = ValidateFileType(dto.File, "application/pdf");
 
             if (fileError != null)
             {
@@ -18,7 +19,7 @@ namespace WebAPI.Controllers
             }
 
             byte[] bytes = GetFileBytes(dto.File);
-            var command = new StartApplicantCvTextDetectionCommand(bytes);
+            var command = new StartApplicantCvTextDetectionCommand(bytes, userId);
             await Mediator.Send(command);
 
             return Ok();

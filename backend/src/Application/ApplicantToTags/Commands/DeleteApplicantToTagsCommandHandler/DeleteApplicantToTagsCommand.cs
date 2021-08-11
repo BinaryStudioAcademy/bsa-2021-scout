@@ -1,13 +1,13 @@
 using Application.ApplicantToTags.Dtos;
 using entities = Domain.Entities;
 using Application.Common.Commands;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using AutoMapper;
 
 namespace Application.ApplicantToTags.Commands.DeleteApplicantToTagsCommandHandler
 {
-    public class DeleteApplicantToTagsCommandHandler: DeleteElasticDocumentCommandHandler<entities::ApplicantToTags, ApplicantToTagsDto>
+    public class DeleteApplicantToTagsCommandHandler : DeleteElasticDocumentCommandHandler<entities::ApplicantToTags, ApplicantToTagsDto>
     {
-         public DeleteApplicantToTagsCommandHandler(IElasticWriteRepository<entities::ApplicantToTags> repository) : base(repository) { }
+        public DeleteApplicantToTagsCommandHandler(IElasticWriteRepository<entities::ApplicantToTags> repository) : base(repository) { }
     }
 }
