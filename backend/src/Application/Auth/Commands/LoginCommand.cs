@@ -50,8 +50,6 @@ namespace Application.Auth.Commands
                 throw new NotFoundException($"Can't find user with email {command.Email}.");
             }
 
-            await _userRepository.LoadRolesAsync(user);
-
             if (!_securityService.ValidatePassword(command.Password, user.Password, user.PasswordSalt))
             {
                 throw new InvalidUsernameOrPasswordException();
