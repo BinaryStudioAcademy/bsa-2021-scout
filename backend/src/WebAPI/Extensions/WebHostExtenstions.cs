@@ -26,8 +26,8 @@ namespace WebAPI.Extensions
             using var scope = host.Services.CreateScope();
             var client = scope.ServiceProvider.GetService<IElasticClient>();
 
-            await client.IndexManyAsync<ApplicantToTags>(
-                ApplicantToTagsSeeds.GetSeed()
+            await client.IndexManyAsync<ElasticEntity>(
+                ApplicantTagsSeeds.GetSeed()
             );
             
             return host;

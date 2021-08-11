@@ -14,7 +14,6 @@ namespace Infrastructure.EF
         public DbSet<Action> Actions { get; set; }
         public DbSet<Applicant> Applicants { get; set; }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<CompanyToUser> CompanyToUsers { get; set; }
         public DbSet<Pool> Pools { get; set; }
         public DbSet<PoolToApplicant> PoolToApplicants { get; set; }
         public DbSet<Project> Projects { get; set; }

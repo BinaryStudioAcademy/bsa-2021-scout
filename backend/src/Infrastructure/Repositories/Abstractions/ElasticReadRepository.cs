@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Nest;
 using System.Collections.Generic;
 using System.Linq;
+using Elasticsearch.Net;
+using System.Threading;
+
 namespace Infrastructure.Repositories.Abstractions
 {
-    public class ElasticReadRepository<T> : IElasticReadRepository<T> where T : Entity
-    {
+    public class ElasticReadRepository<T> : IElasticReadRepository<T> where T : Entity 
+    { 
         private readonly IElasticClient _client;
         private readonly string _indexName;
 
@@ -18,9 +21,9 @@ namespace Infrastructure.Repositories.Abstractions
             _indexName = indexName;
         }
 
-        public async Task<IReadOnlyCollection<T>> SearchByQuery(string querty)
+        public async Task<IReadOnlyCollection<T>> SearchByQuery(string query, CancellationToken _)
         {
-            var searchResponse = await _client.SearchAsync<T>(s => s.QueryOnQueryString(querty));
+            var searchResponse = await _client.SearchAsync<T>(s => s.QueryOnQueryString(query));
             if (!searchResponse.IsValid)
                 throw new ArgumentException("Search query is invalid");
             return searchResponse.Documents;
