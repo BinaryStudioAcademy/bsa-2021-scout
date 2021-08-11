@@ -29,6 +29,26 @@ namespace Infrastructure.AWS
             _uploader = uploader;
         }
 
+        public async Task<string> GetText(string jobId)
+        {
+            GetDocumentTextDetectionRequest request = new GetDocumentTextDetectionRequest();
+            request.JobId = jobId;
+
+            GetDocumentTextDetectionResponse response = await _textract.GetDocumentTextDetectionAsync(request);
+            string text = "";
+
+            foreach (Block block in response.Blocks)
+            {
+                if (block.BlockType == "LINE")
+                {
+                    text += block.Text;
+                    text += "\n";
+                }
+            }
+
+            return text;
+        }
+
         public async Task<string> StartParsingAsync(byte[] fileContent)
         {
             string fileName = $"cv-{Guid.NewGuid().ToString()}";

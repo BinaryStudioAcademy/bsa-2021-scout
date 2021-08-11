@@ -1,37 +1,77 @@
+using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Newtonsoft.Json;
+using Domain.Entities;
+using Domain.Interfaces.Abstractions;
+using Application.Common.Mail;
 using Application.Applicants.Dtos;
 using Application.Interfaces;
 using Application.Interfaces.AWS;
 
 namespace Application.ApplicantCvs.Commands
 {
-    public class ParseCvFileToApplicantCommand : IRequest<ApplicantCreationVariantsDto>
+    public class ParseCvFileToApplicantCommand : IRequest
     {
-        public string Text { get; set; }
+        public string AWSJobId { get; set; }
 
-        public ParseCvFileToApplicantCommand(string text)
+        public ParseCvFileToApplicantCommand(string awsJobId)
         {
-            Text = text;
+            AWSJobId = awsJobId;
         }
     }
 
-    public class ParseCvFileToApplicantCommandHandler
-        : IRequestHandler<ParseCvFileToApplicantCommand, ApplicantCreationVariantsDto>
+    public class ParseCvFileToApplicantCommandHandler : IRequestHandler<ParseCvFileToApplicantCommand>
     {
+        private readonly string _frontendUrl;
         private readonly ICvParser _parser;
+        private readonly ITextParser _textParser;
+        private readonly ISmtpFactory _smtp;
+        private readonly IReadRepository<CvParsingJob> _repository;
+        private readonly IReadRepository<User> _userRepository;
 
-        public ParseCvFileToApplicantCommandHandler(ICvParser parser)
+        public ParseCvFileToApplicantCommandHandler(
+            ICvParser parser,
+            ITextParser textParser,
+            ISmtpFactory smtp,
+            IReadRepository<CvParsingJob> repository,
+            IReadRepository<User> userRepository
+        )
         {
+            _frontendUrl = Environment.GetEnvironmentVariable("FRONTEND_URL");
             _parser = parser;
+            _textParser = textParser;
+            _smtp = smtp;
+            _repository = repository;
+            _userRepository = userRepository;
         }
 
-        public async Task<ApplicantCreationVariantsDto> Handle(ParseCvFileToApplicantCommand command, CancellationToken _)
+        public async Task<Unit> Handle(ParseCvFileToApplicantCommand command, CancellationToken _)
         {
-            ApplicantCreationVariantsDto dto = await _parser.ParseAsync(command.Text);
-            return dto;
+            CvParsingJob job = await _repository.GetByPropertyAsync("AWSJobId", command.AWSJobId);
+            User user = await _userRepository.GetAsync(job.TriggerId);
+
+            string text = await _textParser.GetText(job.AWSJobId);
+            ApplicantCreationVariantsDto dto = await _parser.ParseAsync(text);
+
+            string stringDto = JsonConvert.SerializeObject(dto);
+            byte[] bytesDto = Encoding.UTF8.GetBytes(stringDto);
+            string base64Dto = Convert.ToBase64String(bytesDto);
+            string link = $"{_frontendUrl}/create-variants-applicant?data={base64Dto}";
+            string body = string.Format(MailBodyFactory.CV_PARSED, link);
+
+            using (ISmtp connection = _smtp.Connect())
+            {
+                await connection.SendAsync(
+                    user.Email,
+                    body,
+                    MailBodyFactory.CV_PARSED
+                );
+            }
+
+            return Unit.Value;
         }
     }
 }

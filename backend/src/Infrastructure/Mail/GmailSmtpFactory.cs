@@ -21,6 +21,16 @@ namespace Infrastructure.Mail
             _repository = repository;
             _mailBuilder = mailBuilder;
         }
+
+        public ISmtp Connect()
+        {
+            string address = Environment.GetEnvironmentVariable("MAIL_ADDRESS");
+            string password = Environment.GetEnvironmentVariable("MAIL_PASSWORD");
+            string displayName = Environment.GetEnvironmentVariable("MAIL_DISPLAY_NAME");
+
+            return Connect(address, password, displayName);
+        }
+
         public ISmtp Connect(string address, string password, string displayName)
         {
             return new Smtp(
