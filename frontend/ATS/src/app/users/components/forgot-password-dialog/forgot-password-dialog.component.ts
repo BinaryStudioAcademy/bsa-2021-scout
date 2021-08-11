@@ -1,4 +1,4 @@
-import {Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { EMPTY } from 'rxjs';
@@ -19,13 +19,16 @@ export class ForgotPasswordDialogComponent {
     private dialogRef: MatDialogRef<ForgotPasswordDialogComponent>,
     public loginRegistCommonComponent: LoginRegistCommonComponent,
     private notificationService: NotificationService,
-    private httpClientService: HttpClientService) {}
+    private httpClientService: HttpClientService) { }
 
 
   public emailForm: FormGroup = new FormGroup({
     'userEmail': new FormControl('', [
       Validators.required,
-      Validators.pattern('^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_]+(\.[a-z0-9_-]+)*\.[a-z]{1,6}$'),
+      Validators
+        .pattern(
+          '^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{1,6}$',
+        ),
       this.loginRegistCommonComponent.noUnAllowedCharactersValidation,
     ]),
   });
@@ -35,12 +38,12 @@ export class ForgotPasswordDialogComponent {
     (`/Users/Email/${this.emailForm.get('userEmail')?.value}`).pipe(
       mergeMap(isEmailExist => {
         if (isEmailExist) {
-          const dto: ForgotPasswordDto = 
-          { 
-            email: this.emailForm.get('userEmail')?.value, 
-            clientURI: 'http://localhost:4200/reset-password', 
-          };
-          return this.httpClientService.postFullRequest<void>('/Auth/forgot-password', dto);      
+          const dto: ForgotPasswordDto =
+            {
+              email: this.emailForm.get('userEmail')?.value,
+              clientURI: 'http://localhost:4200/reset-password',
+            };
+          return this.httpClientService.postFullRequest<void>('/Auth/forgot-password', dto);
         }
         this.notificationService.showErrorMessage('There is no user with such email address.');
         return EMPTY;
@@ -51,6 +54,6 @@ export class ForgotPasswordDialogComponent {
           'Please check your email to reset your password');
         this.dialogRef.close();
       },
-      () => this.notificationService.showErrorMessage('Something went wrong') );
+      () => this.notificationService.showErrorMessage('Something went wrong'));
   }
 }

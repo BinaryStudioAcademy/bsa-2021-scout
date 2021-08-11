@@ -36,7 +36,10 @@ export class RegistrationBoxComponent {
     ]),
     'userEmail': new FormControl('', [
       Validators.required,
-      Validators.pattern('^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_]+(\.[a-z0-9_-]+)*\.[a-z]{1,6}$'),
+      Validators
+        .pattern(
+          '^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{1,6}$',
+        ),
       this.loginRegistCommonComponent.noUnAllowedCharactersValidation,
     ], [this.loginRegistCommonComponent.userEmailValidator()]),
     'userPassword': new FormControl('', [

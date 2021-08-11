@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { UserLoginDto } from '../../models/auth/user-login-dto';
 import { AuthenticationService } from '../../services/auth.service';
-import { ForgotPasswordDialogComponent } 
+import { ForgotPasswordDialogComponent }
   from '../forgot-password-dialog/forgot-password-dialog.component';
 import { LoginRegistCommonComponent } from '../login-regist-common/login-regist-common.component';
 
@@ -24,14 +24,17 @@ export class LoginBoxComponent {
     private notificationService: NotificationService,
     private router: Router) { }
 
-  public userLoginDto : UserLoginDto = {} as UserLoginDto;
+  public userLoginDto: UserLoginDto = {} as UserLoginDto;
 
   public isPasswordHide = true;
 
   public loginForm: FormGroup = new FormGroup({
     'userEmail': new FormControl('', [
       Validators.required,
-      Validators.pattern('^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_]+(\.[a-z0-9_-]+)*\.[a-z]{1,6}$'),
+      Validators
+        .pattern(
+          '^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{1,6}$',
+        ),
       this.loginRegistCommonComponent.noUnAllowedCharactersValidation,
     ]),
     'userPassword': new FormControl('', [
@@ -46,13 +49,13 @@ export class LoginBoxComponent {
     });
   }
 
-  public onSubmit(){
-    if(this.loginForm.valid){
+  public onSubmit() {
+    if (this.loginForm.valid) {
       this.authenticationService.login(this.userLoginDto).pipe()
         .subscribe(() => {
           this.router.navigate(['/']);
         },
-        (error) =>this.notificationService.showErrorMessage(error.description));
+        (error) => this.notificationService.showErrorMessage(error.description));
     }
   }
 }
