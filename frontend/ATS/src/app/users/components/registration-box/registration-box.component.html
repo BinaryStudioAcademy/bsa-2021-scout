@@ -1,5 +1,5 @@
 <div class="registration-container">
-    <form [formGroup]="registrationForm">
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
         <div class="registration-text"><span>Sign up</span></div>
         <div class="registration-input-first-name form-group">
             <div class="registration-input-title"><span>First name</span></div>
@@ -117,7 +117,7 @@
             </div>
         </div>
         <div class="registration-button form-group">
-            <button mat-button color="primary">Sign up</button>
+            <button mat-button color="primary" >Sign up</button>
         </div>
     </form>
 </div>

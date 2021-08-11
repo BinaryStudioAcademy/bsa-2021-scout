@@ -13,13 +13,13 @@ import { VacancyCardComponent } from '../vacancies/components/vacancy-card/vacan
 import { VacancyWidgetComponent } from '../vacancies/components/vacancy-widget/vacancy-widget.component';
 import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
-import { MenuComponent } from './components/menu/menu.component';
+
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+
 @NgModule({
   declarations: [
     AppComponent, 
-    MenuComponent,
     VacancyCardComponent,
     VacancyWidgetComponent,
     HomeComponent],
