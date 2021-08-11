@@ -46,7 +46,7 @@ namespace WebAPI.Middleware
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         break;
                     case EmailIsNotConfirmedException e:
-                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;

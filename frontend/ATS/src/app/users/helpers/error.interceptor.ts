@@ -5,6 +5,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/auth.service';
 import { TokenErrorType } from '../models/auth/token-error-type';
+import { EmailIsNotConfirmedErrorType } from '../models/auth/emai-is-not-confirmed-error-type';
 
 
 @Injectable()
@@ -52,7 +53,11 @@ export class ErrorInterceptor implements HttpInterceptor {
                 (error) => console.log(error));
               return throwError(errorInfo);
             }
-          }         
+            if (errorInfo.type === EmailIsNotConfirmedErrorType.EmailIsNotConfirmed) {
+              return throwError(errorInfo);
+            }
+          }
+          
         }
 
         const error = response.error.message
