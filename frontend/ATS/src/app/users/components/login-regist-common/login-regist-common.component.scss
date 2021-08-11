@@ -135,6 +135,10 @@ input:-webkit-autofill {
         height: 45px;
     }
 
+    .mat-button:disabled{
+        background-color: gray;
+    }
+
     .mat-form-field-wrapper.mat-form-field-wrapper {
         width: 287px;
         height: 45px;

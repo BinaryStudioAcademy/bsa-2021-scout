@@ -24,6 +24,8 @@ export class RegistrationBoxComponent {
 
   public isPasswordHide = true;
 
+  public isRequestFinished = true;
+
   public registrationForm: FormGroup = new FormGroup({
 
     'userFirstName': new FormControl('', [
@@ -70,14 +72,20 @@ export class RegistrationBoxComponent {
         userRegisterDto: this.userRegisterDto,
         clientUrl: environment.confirmEmailUrl,
       };
+      this.isRequestFinished = false;
+      console.log(this.isRequestFinished);
       this.authenticationService.register(dto).pipe()
         .subscribe(() => {
-
+          this.isRequestFinished = true;
           this.router.navigate(['/successful-registration'],
             { queryParams: { email: this.userRegisterDto.email } });
         },
-        (error) =>
-          this.notificationService.showErrorMessage(error.description, 'Something went wrong'));
+        (error) => {
+          this.isRequestFinished = true;
+          this.notificationService.showErrorMessage(error.description, 'Something went wrong');
+        },
+        );
+
     }
   }
 }
