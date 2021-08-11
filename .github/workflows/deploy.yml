@@ -30,7 +30,7 @@ jobs:
   build-ats-frontend:
     runs-on: ubuntu-latest
     strategy:
-    - matrix:
+      matrix:
         stages:
           - stage: develop
             shouldRelease: ${{ contains(github.ref, 'fix/backend-url-on-frontend') }}
@@ -56,7 +56,7 @@ jobs:
     needs: [build-ats-api, build-ats-frontend]
     runs-on: ubuntu-latest
     strategy:
-    - matrix:
+      matrix:
         stages:
           - stage: develop
             shouldRelease: ${{ contains(github.ref, 'fix/backend-url-on-frontend') }}
