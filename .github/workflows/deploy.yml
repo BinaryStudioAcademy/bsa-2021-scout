@@ -12,11 +12,17 @@ on:
 jobs:
   build-ats-api:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        stages:
+          - stage: develop
+            shouldRelease: ${{ contains(github.ref, 'fix/backend-url-on-frontend') }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
     
     - name: Build image
+      if: ${{ matrix.stages.shouldRelease }}
       uses: whoan/docker-build-with-cache-action@v5
       with:
         username: ${{ github.actor }}
@@ -34,7 +40,7 @@ jobs:
         stages:
           - stage: develop
             shouldRelease: ${{ contains(github.ref, 'fix/backend-url-on-frontend') }}
-            FRONTEND_CONFIGURATION: 'develop-configuration'
+            FRONTEND_CONFIGURATION: 'develop-deployment'
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -60,7 +66,6 @@ jobs:
         stages:
           - stage: develop
             shouldRelease: ${{ contains(github.ref, 'fix/backend-url-on-frontend') }}
-            FRONTEND_CONFIGURATION: 'develop-configuration'
             DEPLOYMENT_HOST: DEVELOP_DEPLOYMENT_HOST
             DEPLOYMENT_USERNAME: DEVELOP_DEPLOYMENT_USERNAME
             DEPLOYMENT_PASSWORD: DEVELOP_DEPLOYMENT_PASSWORD
