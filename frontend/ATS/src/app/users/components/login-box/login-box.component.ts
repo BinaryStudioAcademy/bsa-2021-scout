@@ -52,7 +52,7 @@ export class LoginBoxComponent {
         .subscribe(() => {
           this.router.navigate(['/']);
         },
-        (error) => this.notificationService.showErrorMessage(error.description));
+        (error) =>this.notificationService.showErrorMessage(error.description));
     }
   }
 }

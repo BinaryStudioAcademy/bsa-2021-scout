@@ -27,8 +27,9 @@ export class ConfirmEmailComponent implements OnInit {
       .subscribe(() => {
         this.IsEmailConfirmed = true;
       },
-      () => { 
-        this.notificationService.showErrorMessage('Something went wrong');
+      (error) => { 
+        this.router.navigate(['/login']);
+        this.notificationService.showErrorMessage(error.description);
       });
   }
 

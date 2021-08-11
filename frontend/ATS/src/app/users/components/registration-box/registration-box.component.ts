@@ -70,9 +70,8 @@ export class RegistrationBoxComponent {
           this.notificationService.showSuccessMessage(
             'Please check your email to confirm your email.');
         },
-        () => this.notificationService.showErrorMessage('Something went wrong'));
+        (error) =>
+          this.notificationService.showErrorMessage(error.description, 'Something went wrong'));
     }
-  }
-  onSubmit(){
   }
 }
