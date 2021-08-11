@@ -14,10 +14,11 @@ namespace Application.Common.Queries
         where TDto : Dto
     {
         public string SearchRequest { get; }
-
-        public GetElasticDocumentsListBySearchRequestQuery(string searchRequest)
+        public CancellationToken Token { get; set; }
+        public GetElasticDocumentsListBySearchRequestQuery(string searchRequest, CancellationToken token)
         {
             SearchRequest = searchRequest;
+            Token = token;
         }
     }
 
@@ -36,7 +37,7 @@ namespace Application.Common.Queries
 
         public async Task<IEnumerable<TDto>> Handle(GetElasticDocumentsListBySearchRequestQuery<TDto> query, CancellationToken _)
         {
-            IEnumerable<TDocument> result = await _repository.SearchByQuery(query.SearchRequest);
+            IEnumerable<TDocument> result = await _repository.SearchByQuery(query.SearchRequest, query.Token);
 
             return _mapper.Map<IEnumerable<TDto>>(result);
         }
