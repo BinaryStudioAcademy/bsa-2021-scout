@@ -73,4 +73,6 @@ export class RegistrationBoxComponent {
         () => this.notificationService.showErrorMessage('Something went wrong'));
     }
   }
+  onSubmit(){
+  }
 }

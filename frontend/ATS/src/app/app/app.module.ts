@@ -13,14 +13,12 @@ import { VacancyCardComponent } from '../vacancy/vacancy-card/vacancy-card.compo
 import { VacancyWidgetComponent } from '../vacancy/vacancy-widget/vacancy-widget.component';
 import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
-import { MenuComponent } from './components/menu/menu.component';
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent, 
-    MenuComponent,
     VacancyCardComponent,
     VacancyWidgetComponent,
     HomeComponent],
