@@ -8,15 +8,17 @@ import { LoginBoxComponent } from './components/login-box/login-box.component';
 import { RegistrationBoxComponent } from './components/registration-box/registration-box.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ResetPasswordGuard } from './guards/reset-password.guard';
-import { ForgotPasswordDialogComponent } 
+import { ForgotPasswordDialogComponent }
   from './components/forgot-password-dialog/forgot-password-dialog.component';
-import { ResetPasswordBoxComponent } 
+import { ResetPasswordBoxComponent }
   from './components/reset-password-box/reset-password-box.component';
 
 // This line can't be shorter
 // eslint-disable-next-line
 import { LoginRegistCommonComponent } from './components/login-regist-common/login-regist-common.component';
 import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
+import { SuccessfulRegistrationComponent }
+  from './components/successful-registration/successful-registration.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.
     ResetPasswordComponent,
     ResetPasswordBoxComponent,
     ConfirmEmailComponent,
+    SuccessfulRegistrationComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
@@ -38,4 +41,4 @@ import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.
     ResetPasswordGuard,
   ],
 })
-export class UsersModule {}
+export class UsersModule { }

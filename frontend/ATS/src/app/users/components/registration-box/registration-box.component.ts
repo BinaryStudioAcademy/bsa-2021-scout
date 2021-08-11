@@ -6,6 +6,7 @@ import { AuthenticationService } from '../../services/auth.service';
 import { UserRegisterDto } from '../../models/auth/user-register-dto';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registration-box',
@@ -16,7 +17,8 @@ import { environment } from 'src/environments/environment';
 export class RegistrationBoxComponent {
   constructor(public loginRegistCommonComponent: LoginRegistCommonComponent,
     public authenticationService: AuthenticationService,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService,
+    private router: Router) { }
 
   public userRegisterDto: UserRegisterDto = {} as UserRegisterDto;
 
@@ -67,8 +69,9 @@ export class RegistrationBoxComponent {
       };
       this.authenticationService.register(dto).pipe()
         .subscribe(() => {
-          this.notificationService.showSuccessMessage(
-            'Please check your email to confirm your email.');
+
+          this.router.navigate(['/successful-registration'],
+            { queryParams: { email: this.userRegisterDto.email } });
         },
         (error) =>
           this.notificationService.showErrorMessage(error.description, 'Something went wrong'));

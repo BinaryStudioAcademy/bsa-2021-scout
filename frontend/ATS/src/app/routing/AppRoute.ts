@@ -8,5 +8,7 @@ export enum AppRoute {
   TaskManagement = 'taskManagement',
   Templates = 'templates',
   Login = 'login',
-  Registration = 'registration'
+  Registration = 'registration',
+  ConfirmEmail = 'confirm-email',
+  SuccessfulRegistration = 'successful-registration'
 }
