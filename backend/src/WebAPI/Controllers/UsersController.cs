@@ -3,7 +3,6 @@ using Application.Common.Queries;
 using Application.Users.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using WebAPI.Extensions;
 
@@ -14,13 +13,6 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UsersController : ApiController
     {
-        private ISmtp smtp;
-
-        public UsersController(ISmtp smtp)
-        {
-            this.smtp = smtp;
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
@@ -28,10 +20,18 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
-        [HttpGet("fromToken")]
+        [HttpGet("from-token")]
         public async Task<ActionResult<UserDto>> GetUserFromToken()
         {
             var query = new GetEntityByIdQuery<UserDto>(this.GetUserIdFromToken());
+            return Ok(await Mediator.Send(query));
+        }
+
+        [AllowAnonymous]
+        [HttpGet, Route("Email/{email}")]
+        public async Task<IActionResult> IsEmailAlreadyUsed(string email)
+        {
+            var query = new IsEntityWithPropertyExistQuery("Email", email);
             return Ok(await Mediator.Send(query));
         }
 

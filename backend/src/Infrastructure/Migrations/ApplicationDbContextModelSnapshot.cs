@@ -84,6 +84,62 @@ namespace Infrastructure.Migrations
                     b.ToTable("Applicants");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CandidateReview", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CandidateId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("Mark")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ReviewId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("StageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CandidateId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("StageId");
+
+                    b.ToTable("CandidateReviews");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CandidateToStage", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CandidateId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateRemoved")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CandidateId");
+
+                    b.HasIndex("StageId");
+
+                    b.ToTable("CandidateToStages");
+                });
+
             modelBuilder.Entity("Domain.Entities.Company", b =>
                 {
                     b.Property<string>("Id")
@@ -102,27 +158,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CompanyToUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CompanyId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CompanyToUsers");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pool", b =>
@@ -227,6 +262,20 @@ namespace Infrastructure.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Review", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("Domain.Entities.Role", b =>
                 {
                     b.Property<string>("Id")
@@ -281,6 +330,12 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -300,6 +355,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("Users");
                 });
@@ -393,11 +450,17 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("ApplicantId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Experience")
                         .HasColumnType("float");
@@ -405,23 +468,25 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("FirstContactDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("HrWhoAddedId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("SalaryExpectation")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("SecondContactDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("StageId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("ThirdContactDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("ApplicantId");
 
-                    b.HasIndex("StageId");
+                    b.HasIndex("HrWhoAddedId");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("VacancyCandidates");
                 });
@@ -448,23 +513,50 @@ namespace Infrastructure.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CompanyToUser", b =>
+            modelBuilder.Entity("Domain.Entities.CandidateReview", b =>
                 {
-                    b.HasOne("Domain.Entities.Company", "Company")
-                        .WithMany("Recruiters")
-                        .HasForeignKey("CompanyId")
-                        .HasConstraintName("company_user__company_FK")
+                    b.HasOne("Domain.Entities.VacancyCandidate", "Candidate")
+                        .WithMany("Reviews")
+                        .HasForeignKey("CandidateId")
+                        .HasConstraintName("candidate_review_candidate_FK")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("UserCompanies")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("company_user__user_FK")
+                    b.HasOne("Domain.Entities.Review", "Review")
+                        .WithMany("CandidateReviews")
+                        .HasForeignKey("ReviewId")
+                        .HasConstraintName("candidate_review_review_FK")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Company");
+                    b.HasOne("Domain.Entities.Stage", "Stage")
+                        .WithMany("Reviews")
+                        .HasForeignKey("StageId")
+                        .HasConstraintName("candidate_review_stage_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("User");
+                    b.Navigation("Candidate");
+
+                    b.Navigation("Review");
+
+                    b.Navigation("Stage");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CandidateToStage", b =>
+                {
+                    b.HasOne("Domain.Entities.VacancyCandidate", "Candidate")
+                        .WithMany("CandidateToStages")
+                        .HasForeignKey("CandidateId")
+                        .HasConstraintName("candidate_to_stage_candidate_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Entities.Stage", "Stage")
+                        .WithMany("CandidateToStages")
+                        .HasForeignKey("StageId")
+                        .HasConstraintName("candidate_to_stage_stage_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Candidate");
+
+                    b.Navigation("Stage");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pool", b =>
@@ -530,6 +622,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Vacancy");
                 });
 
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.HasOne("Domain.Entities.Company", "Company")
+                        .WithMany("Recruiters")
+                        .HasForeignKey("CompanyId")
+                        .HasConstraintName("user_company_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Company");
+                });
+
             modelBuilder.Entity("Domain.Entities.UserToRole", b =>
                 {
                     b.HasOne("Domain.Entities.Role", "Role")
@@ -580,20 +683,19 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Applicant", "Applicant")
                         .WithMany("Candidates")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("ApplicantId")
                         .HasConstraintName("candidate_applicant_FK")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Domain.Entities.Stage", "Stage")
-                        .WithMany("Candidates")
-                        .HasForeignKey("StageId")
-                        .HasConstraintName("candidate_stage_FK")
+                    b.HasOne("Domain.Entities.User", "HrWhoAdded")
+                        .WithMany("AddedCandidates")
+                        .HasForeignKey("HrWhoAddedId")
+                        .HasConstraintName("candidate_hr_who_added_FK")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Applicant");
 
-                    b.Navigation("Stage");
+                    b.Navigation("HrWhoAdded");
                 });
 
             modelBuilder.Entity("Domain.Entities.Applicant", b =>
@@ -626,6 +728,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Vacancies");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Review", b =>
+                {
+                    b.Navigation("CandidateReviews");
+                });
+
             modelBuilder.Entity("Domain.Entities.Role", b =>
                 {
                     b.Navigation("RoleUsers");
@@ -635,14 +742,16 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("Actions");
 
-                    b.Navigation("Candidates");
+                    b.Navigation("CandidateToStages");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.Navigation("RefreshTokens");
+                    b.Navigation("AddedCandidates");
 
-                    b.Navigation("UserCompanies");
+                    b.Navigation("RefreshTokens");
 
                     b.Navigation("UserRoles");
 
@@ -652,6 +761,13 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Vacancy", b =>
                 {
                     b.Navigation("Stages");
+                });
+
+            modelBuilder.Entity("Domain.Entities.VacancyCandidate", b =>
+                {
+                    b.Navigation("CandidateToStages");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

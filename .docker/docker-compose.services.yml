@@ -11,7 +11,20 @@ services:
       - ../.env/ats_database.env
     volumes:
       - ats_database-data:/var/opt/mssql
-
+  ats_elastic_server:
+    image: "docker.elastic.co/elasticsearch/elasticsearch:7.13.4"
+    restart: on-failure
+    container_name: 'ats_elastic_server'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    environment: 
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+    networks:
+      - backend
   ats_mongodb:
     image: mongo
     container_name: ats_mongodb
@@ -21,7 +34,6 @@ services:
       - 27017:27017
     volumes:
       - ats_mongodb-data:/data/db
-
 volumes:
   ats_database-data: {}
   ats_mongodb-data: {}
