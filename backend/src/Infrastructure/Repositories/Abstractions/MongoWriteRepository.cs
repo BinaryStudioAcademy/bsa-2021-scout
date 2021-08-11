@@ -10,17 +10,21 @@ namespace Infrastructure.Repositories.Abstractions
     public class MongoWriteRepository<T> : IWriteRepository<T>
         where T : Entity
     {
-        protected readonly IMongoConnectionFactory _context;
+        protected readonly IMongoConnectionFactory _connectionFactory;
 
         public MongoWriteRepository(IMongoConnectionFactory context)
         {
-            _context = context;
+            _connectionFactory = context;
         }
 
         public async Task<Entity> CreateAsync(T entity)
         {
             entity.Id = Guid.NewGuid().ToString();
-            await _context.GetMongoConnection().GetCollection<T>(typeof(T).Name).InsertOneAsync(entity);
+
+            await _connectionFactory
+                .GetMongoConnection()
+                .GetCollection<T>(typeof(T).Name)
+                .InsertOneAsync(entity);
 
             return entity;
         }
@@ -28,7 +32,11 @@ namespace Infrastructure.Repositories.Abstractions
         public async Task<Entity> UpdateAsync(T entity)
         {
             BsonDocument filter = new BsonDocument(new BsonElement("_id", entity.Id));
-            await _context.GetMongoConnection().GetCollection<T>(typeof(T).Name).ReplaceOneAsync(filter, entity);
+
+            await _connectionFactory
+                .GetMongoConnection()
+                .GetCollection<T>(typeof(T).Name)
+                .ReplaceOneAsync(filter, entity);
 
             return entity;
         }
@@ -38,7 +46,10 @@ namespace Infrastructure.Repositories.Abstractions
             ObjectId oid = ObjectId.Parse(id);
             BsonDocument filter = new BsonDocument(new BsonElement("_id", id));
 
-            await _context.GetMongoConnection().GetCollection<T>(typeof(T).Name).DeleteOneAsync(filter);
+            await _connectionFactory
+                .GetMongoConnection()
+                .GetCollection<T>(typeof(T).Name)
+                .DeleteOneAsync(filter);
         }
     }
 }

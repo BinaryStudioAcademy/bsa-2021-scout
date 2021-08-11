@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces.Read;
+using Domain.Interfaces.Write;
 using Domain.Interfaces.Abstractions;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Dapper.Services;
@@ -8,6 +9,7 @@ using Infrastructure.Mongo.Interfaces;
 using Infrastructure.Mongo.Services;
 using Infrastructure.EF;
 using Infrastructure.Repositories.Read;
+using Infrastructure.Repositories.Write;
 using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Services;
 using Infrastructure.Mail;
@@ -44,12 +46,13 @@ namespace Infrastructure
         private static IServiceCollection AddElasticEngine(this IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("ELASTIC_CONNECTION_STRING");
+            
             if (connectionString is null)
                 throw new Exception("Elastic connection string url is not specified");
             var settings = new ConnectionSettings(new Uri(connectionString))
                 .DefaultIndex("default_index")
-                .DefaultMappingFor<ApplicantToTags>(m => m
-                .IndexName("applicant_to_tags")
+                .DefaultMappingFor<ElasticEntity>(m => m
+                .IndexName("elastic_entity")
             );
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
             
@@ -113,13 +116,15 @@ namespace Infrastructure
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
-            services.AddScoped<IWriteRepository<Applicant>, WriteRepository<Applicant>>();
 
+            services.AddScoped<IWriteRepository<Applicant>, WriteRepository<Applicant>>();
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
 
-            services.AddScoped<IElasticWriteRepository<ApplicantToTags>, ElasticWriteRepository<ApplicantToTags>>();
+            services.AddScoped<IElasticWriteRepository<ElasticEntity>, ElasticWriteRepository<ElasticEntity>>();
 
             services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
+            services.AddScoped<IWriteRepository<CandidateToStage>, CandidateToStageWriteRepository>();
+            services.AddScoped<ICandidateToStageWriteRepository, CandidateToStageWriteRepository>();
 
 
             return services;
@@ -141,11 +146,12 @@ namespace Infrastructure
                 new ReadRepository<VacancyCandidate>("VacancyCandidates", fact.GetRequiredService<IConnectionFactory>()));
 
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
-            services.AddScoped<IElasticReadRepository<ApplicantToTags>, ElasticReadRepository<ApplicantToTags>>();
+            services.AddScoped<IElasticReadRepository<ElasticEntity>, ElasticReadRepository<ElasticEntity>>();
         
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
+            services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
 
             return services;

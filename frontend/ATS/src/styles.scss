@@ -8,28 +8,27 @@ $ATS-accent: mat.define-palette($md-ats-secondary, 500);
 
 $ATS-warn: mat.define-palette(mat.$red-palette);
 $ATS-typography: mat.define-typography-config(
-    $font-family: 'Nunito',
-  );
+  $font-family: "Nunito",
+);
 
-$ATS-theme: mat.define-light-theme((
-  color: (
-    primary: $ATS-primary,
-    accent: $ATS-accent,
-    warn: $ATS-warn,
-  ),
-  typography: $ATS-typography,
-));
-
+$ATS-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $ATS-primary,
+      accent: $ATS-accent,
+      warn: $ATS-warn,
+    ),
+    typography: $ATS-typography,
+  )
+);
 
 @include mat.all-component-themes($ATS-theme);
 @include mat.core($ATS-typography);
 
-@import './common.scss';
-@import './app/shared/directives/paginator.directive.scss';
+@import "./common.scss";
+@import "./app/shared/directives/paginator.directive.scss";
 // fonts
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap");
-
-
 
 * {
   margin: 0;
@@ -46,16 +45,16 @@ body {
   font-family: "Nunito";
 }
 
-.mat-list-item.active,
-.mat-icon{
+mat-list-item .mat-icon {
   color: $primary-color;
   font-weight: 500 !important;
-  .mat-line{
+
+  .mat-line {
     font-weight: 500 !important;
   }
 }
 
-.toast-success-custom.toast-success{
+.toast-success-custom.toast-success {
   background-color: green;
 }
 

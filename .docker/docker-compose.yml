@@ -20,6 +20,8 @@ services:
       memlock:
         soft: -1
         hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data:rw
     environment: 
       - discovery.type=single-node
     ports:
@@ -61,6 +63,8 @@ services:
 volumes:
   ats_database-data: {}
   ats_mongodb-data: {}
+  esdata1:
+    driver: local
 
 networks:
   backend:

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { FullVacancyCandidate } from '../models/vacancy-candidates/full';
 import { VacancyCandidate } from '../models/vacancy-candidates/vacancy-candidate';
 import { HttpClientService } from './http-client.service';
 
@@ -8,6 +9,12 @@ import { HttpClientService } from './http-client.service';
 })
 export class VacancyCandidateService {
   public constructor(private readonly http: HttpClientService) {}
+
+  public getFull(id: string): Observable<FullVacancyCandidate> {
+    return this.http.getRequest<FullVacancyCandidate>(
+      `/vacancyCandidates/${id}/full`,
+    );
+  }
 
   public changeCandidateStage(
     id: string,

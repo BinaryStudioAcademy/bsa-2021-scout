@@ -16,6 +16,7 @@ namespace Domain.Entities
         public string PasswordSalt { get; set; }
 
         public ICollection<Vacancy> Vacancies { get; set; }
+        public ICollection<VacancyCandidate> AddedCandidates { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
         public ICollection<UserToRole> UserRoles { get; set; }
         public ICollection<CompanyToUser> UserCompanies { get; set; }
