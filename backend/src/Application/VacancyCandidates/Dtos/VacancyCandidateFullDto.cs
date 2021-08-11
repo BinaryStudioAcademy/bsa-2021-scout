@@ -14,7 +14,6 @@ namespace Application.VacancyCandidates.Dtos
         public string FullName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string Cv { get; set; }
         public double Experience { get; set; }
         public string Comments { get; set; }
         public DateTime DateAdded { get; set; }
