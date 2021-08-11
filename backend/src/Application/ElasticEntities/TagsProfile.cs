@@ -1,8 +1,8 @@
 using AutoMapper;
 using Domain.Entities;
-using Application.ApplicantToTags.Dtos;
+using Application.ElasticEnities.Dtos;
 
-namespace Application.ApplicantToTags
+namespace Application.ElasticEnities
 {
     public class TagsProfile : Profile
     {
