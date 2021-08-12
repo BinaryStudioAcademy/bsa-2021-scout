@@ -48,8 +48,6 @@ namespace Application.Auth.Commands
                 throw new InvalidUsernameOrPasswordException();
             }
 
-            await _userRepository.LoadRolesAsync(user);
-
             UserDto userDto = _mapper.Map<UserDto>(user);
 
             var generateTokenCommand = new GenerateAccessTokenCommand(userDto);

@@ -27,7 +27,7 @@ namespace WebAPI.Middleware
             {
                 var response = context.Response;
                 response.ContentType = "application/json";
-
+                
                 switch (error)
                 {
                     case ValidationException e:
@@ -37,6 +37,12 @@ namespace WebAPI.Middleware
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
                     case InvalidUsernameOrPasswordException e:
+                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    case InvalidTokenException e:
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
+                    case ExpiredRefreshTokenException e:
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         break;
                     default:

@@ -1,10 +1,12 @@
 <mat-select #select [formControl]="control" multiple>
   <mat-select-trigger>
     <div class="topics">
-      <div class="topic" *ngFor="let opt of selected">
-        <span>{{ opt.label }}</span>
-        <mat-icon class="icon" (click)="remove(opt.id)">close</mat-icon>
-      </div>
+      <app-topic
+        [text]="opt.label"
+        [removable]="true"
+        (remove)="remove(opt.id)"
+        *ngFor="let opt of selected"
+      ></app-topic>
     </div>
   </mat-select-trigger>
   <mat-option *ngFor="let opt of data" [value]="opt">{{ opt.label }}</mat-option>

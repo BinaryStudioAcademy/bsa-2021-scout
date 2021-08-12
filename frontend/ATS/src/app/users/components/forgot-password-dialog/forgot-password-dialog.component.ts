@@ -22,7 +22,6 @@ export class ForgotPasswordDialogComponent {
     private notificationService: NotificationService,
     private authService: AuthenticationService) {}
 
-
   public emailForm: FormGroup = new FormGroup({
     'userEmail': new FormControl('', [
       Validators.required,
@@ -32,25 +31,26 @@ export class ForgotPasswordDialogComponent {
   });
 
   public resetPassword(): void {
-    this.authService.isEmailExist(this.emailForm.get('userEmail')?.value).pipe(
-      mergeMap(isEmailExist => {
-        if (isEmailExist) {
-          const forgotPasswordDto: ForgotPasswordDto = 
-          { 
-            email: this.emailForm.get('userEmail')?.value, 
-            clientURI: environment.resetPasswordClientUri, 
-          };
-          return this.authService.sendPasswordResetRequest(forgotPasswordDto);      
-        }
-        this.notificationService.showErrorMessage('There is no user with such email address.');
-        return EMPTY;
-      }),
+    this.authService.isEmailExist(this.emailForm.get('userEmail')?.value)
+      .pipe(
+        mergeMap(isEmailExist => {
+          if (isEmailExist) {
+            const forgotPasswordDto: ForgotPasswordDto = 
+            { 
+              email: this.emailForm.get('userEmail')?.value, 
+              clientURI: `${environment.clientUrl}/reset-password`, 
+            };
+            return this.authService.sendPasswordResetRequest(forgotPasswordDto);      
+          }
+          this.notificationService.showErrorMessage('There is no user with such email address.');
+          return EMPTY;
+        }),
     )
       .subscribe(() => {
         this.notificationService.showSuccessMessage(
           'Please check your email to reset your password');
         this.dialogRef.close();
       },
-      () => this.notificationService.showErrorMessage('Something went wrong') );
+      () => this.notificationService.showErrorMessage('Something went wrong'));
   }
 }

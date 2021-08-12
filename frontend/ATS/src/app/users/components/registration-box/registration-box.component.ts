@@ -49,4 +49,6 @@ export class RegistrationBoxComponent {
     ]),
   }, { validators: this.loginRegistCommonComponent.passwordsMatch });
 
+  onSubmit(){
+  }
 }
