@@ -1,9 +1,16 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Application.Auth.Exceptions
 {
     public class ExpiredRefreshTokenException : Exception
     {
-        public ExpiredRefreshTokenException() : base("Refresh token expired.") { }
+        public ExpiredRefreshTokenException() :
+            base(JsonConvert.SerializeObject(new
+            {
+                type = "ExpiredRefreshToken",
+                description = "Refresh token expired"
+            }))
+        { }
     }
 }
