@@ -8,6 +8,8 @@ import { AppRoute } from './AppRoute';
 import { MainContentComponent } from
   '../shared/components/main-content/main-content.component';
 import { HomeComponent } from '../users/components/home/home.component';
+// eslint-disable-next-line max-len
+import { ApplicationPoolComponent } from '../users/components/application-pool/application-pool.component';
 
 const routes: Routes = [
   {
@@ -19,6 +21,7 @@ const routes: Routes = [
       { path: AppRoute.Analytics, component: VacanciesListComponent, pathMatch: 'full' },
       { path: AppRoute.TaskManagement, component: VacanciesListComponent, pathMatch: 'full' },
       { path: AppRoute.Templates, component: VacanciesListComponent, pathMatch: 'full' },
+      { path: AppRoute.Pools, component: ApplicationPoolComponent, pathMatch: 'full' },
       { path: '**', redirectTo: AppRoute.Home },
     ],
   },

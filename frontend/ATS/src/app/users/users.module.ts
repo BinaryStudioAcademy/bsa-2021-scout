@@ -12,6 +12,8 @@ import { EditAppPoolModalComponent }
   from './components/edit-app-pool-modal/edit-app-pool-modal.component';
 import { LoginRegistCommonComponent } 
   from './components/login-regist-common/login-regist-common.component';
+import { HomeComponent } from './components/home/home.component';
+import { ApplicationPoolComponent } from './components/application-pool/application-pool.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,7 @@ import { LoginRegistCommonComponent }
     RegistrationComponent,
     RegistrationBoxComponent,
     CreateTalentpoolModalComponent,
-    EditAppPoolModalComponent,
+    EditAppPoolModalComponent,    
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [

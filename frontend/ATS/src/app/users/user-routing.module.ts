@@ -18,16 +18,8 @@ const routes: Routes = [
     pathMatch: 'full', 
     component: RegistrationComponent, 
   },
-  { 
-    path: AppRoute.Home,
-    pathMatch: 'full', 
-    component: HomeComponent, 
-  },
-  { 
-    path: AppRoute.Pools,
-    pathMatch: 'full', 
-    component: ApplicationPoolComponent, 
-  },
+//  { path: 'home', component: HomeComponent },
+//  { path: 'pools', component: ApplicationPoolComponent },
 ];
 
 @NgModule({
