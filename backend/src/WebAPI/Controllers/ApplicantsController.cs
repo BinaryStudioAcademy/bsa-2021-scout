@@ -4,11 +4,13 @@ using Application.Applicants.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System;
-using Application.ApplicantToTags.Dtos;
+using Application.ElasticEnities.Dtos;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
-using Application.ApplicantToTags.CommandQuery.AddTagCommand;
-using Application.ApplicantToTags.CommandQuery.DeleteTagCommand;
+using Application.ElasticEnities.CommandQuery.AddTagCommand;
+using Application.ElasticEnities.CommandQuery.DeleteTagCommand;
+using System.Threading;
+
 namespace WebAPI.Controllers
 {
     public class ApplicantsController : ApiController
@@ -29,9 +31,9 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
         [HttpGet("to_tags/{searchRequest}")]
-        public async Task<IActionResult> SearchElasticAsync(string searchRequest)
+        public async Task<IActionResult> SearchElasticAsync(string searchRequest, CancellationToken token)
         {
-            var query = new GetElasticDocumentsListBySearchRequestQuery<ApplicantToTagsDto>(searchRequest);
+            var query = new GetElasticDocumentsListBySearchRequestQuery<ElasticEnitityDto>(searchRequest, token);
 
             return Ok(await Mediator.Send(query));
         }
@@ -44,24 +46,24 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("to_tags/")]
-        public async Task<IActionResult> PostElasticAsync([FromBody] CreateApplicantToTagsDto createDto)
+        public async Task<IActionResult> PostElasticAsync([FromBody] CreateElasticEntityDto createDto)
         {
-            var query = new CreateElasticDocumentCommand<CreateApplicantToTagsDto>(createDto);
+            var query = new CreateElasticDocumentCommand<CreateElasticEntityDto>(createDto);
 
             return Ok(await Mediator.Send(query));
         }
-        [HttpPost("tags/{applicantId}")]
+        [HttpPost("tags/{entityId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> PostTagAsync(string applicantId, [FromBody] TagDto createDto)
+        public async Task<IActionResult> PostTagAsync(string entityId, [FromBody] TagDto createDto)
         {
-            var query = new AddTagCommand(applicantId, createDto);
+            var query = new AddTagCommand(entityId, createDto);
             return StatusCode(204, await Mediator.Send(query));
         }
         [HttpPost("to_tags/bulk")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> PostElasticBulkAsync([FromBody] IEnumerable<CreateApplicantToTagsDto> createDtoList)
+        public async Task<IActionResult> PostElasticBulkAsync([FromBody] IEnumerable<CreateElasticEntityDto> createDtoList)
         {
-            var query = new CreateBulkElasticDocumentCommand<CreateApplicantToTagsDto>(createDtoList);
+            var query = new CreateBulkElasticDocumentCommand<CreateElasticEntityDto>(createDtoList);
 
             return StatusCode(204, await Mediator.Send(query));
         }
