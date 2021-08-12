@@ -17,12 +17,10 @@ namespace Application.Auth.Commands
 {
     public class ForgotPasswordCommand : IRequest<Unit>
     {
-        public string Email { get; }
-        public string ClientUri { get; }
+        public ForgotPasswordDto ForgotPasswordInfo { get; }
         public ForgotPasswordCommand(ForgotPasswordDto forgotPasswordDto)
         {
-            Email = forgotPasswordDto.Email;
-            ClientUri = forgotPasswordDto.ClientUri;
+            ForgotPasswordInfo = forgotPasswordDto;
         }
     }
 
@@ -44,7 +42,7 @@ namespace Application.Auth.Commands
 
         public async Task<Unit> Handle(ForgotPasswordCommand command, CancellationToken _)
         {
-            var user = await _userReadRepository.GetByEmailAsync(command.Email);
+            var user = await _userReadRepository.GetByEmailAsync(command.ForgotPasswordInfo.Email);
 
             if (user is null)
             {
@@ -58,13 +56,13 @@ namespace Application.Auth.Commands
             var queryParam = new Dictionary<string, string>
             {
                 {"token", resetPasswordToken },
-                {"email", command.Email }
+                {"email", command.ForgotPasswordInfo.Email }
             };
 
-            var callback = QueryHelpers.AddQueryString(command.ClientUri, queryParam);
+            var callback = QueryHelpers.AddQueryString(command.ForgotPasswordInfo.ClientUri, queryParam);
             var body = MailBodyFactory.BODY_FORGOT_PASSWORD;
             body = body.Replace("{{CALLBACK}}", callback);
-            var sendMailCommand = new SendMailCommand(command.Email, MailSubjectFactory.SUBJECT_FORGOT_PASSWORD, body);
+            var sendMailCommand = new SendMailCommand(command.ForgotPasswordInfo.Email, MailSubjectFactory.SUBJECT_FORGOT_PASSWORD, body);
             await _mediator.Send(sendMailCommand);
 
             return Unit.Value;

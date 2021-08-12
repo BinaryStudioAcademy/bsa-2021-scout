@@ -11,12 +11,13 @@ import { VacanciesTableComponent }
 import { MainContentComponent } from
   '../shared/components/main-content/main-content.component';
 import { HomeComponent } from '../users/components/home/home.component';
+import { AuthGuard } from '../users/guards/auth.guard';
 
 
 
 const routes: Routes = [
   {
-    path: '', component: MainContentComponent, children: [
+    path: '', component: MainContentComponent, canActivate:[AuthGuard], children: [
       { path: AppRoute.Home, component: HomeComponent, pathMatch: 'full' },
       { path: AppRoute.Vacancies, component: VacanciesTableComponent, pathMatch: 'full' },
       { path: AppRoute.Applicants, component: VacanciesListComponent, pathMatch: 'full' },

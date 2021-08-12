@@ -1,6 +1,5 @@
 ﻿using Application.Auth.Commands;
 using Application.Auth.Dtos;
-using Application.Users.Dtos;
 using Application.Auth.Queries;
 
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +20,7 @@ namespace WebAPI.Controllers
             var command = new LoginCommand(userLogin);
             return Ok(await Mediator.Send(command));
         }
+
         [AllowAnonymous]
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
@@ -28,6 +28,7 @@ namespace WebAPI.Controllers
             var command = new ForgotPasswordCommand(forgotPasswordDto);
             return Ok(await Mediator.Send(command));
         }
+
         [AllowAnonymous]
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
@@ -35,6 +36,7 @@ namespace WebAPI.Controllers
             var command = new ResetPasswordCommand(resetPasswordDto);
             return Ok(await Mediator.Send(command));
         }
+
         [AllowAnonymous]
         [HttpGet("reset-password")]
         public async Task<ActionResult<bool>> IsResetTokenValid([FromQuery] ResetTokenDto resetTokenDto)
@@ -42,6 +44,5 @@ namespace WebAPI.Controllers
             var query = new IsResetTokenValidQuery(resetTokenDto);
             return Ok(await Mediator.Send(query));
         }
-
     }
 }

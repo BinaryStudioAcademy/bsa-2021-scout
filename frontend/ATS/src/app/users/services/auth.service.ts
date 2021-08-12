@@ -7,8 +7,13 @@ import { Observable, of, throwError } from 'rxjs';
 import { RefreshAccessTokenDto } from '../models/token/refresh-access-token-dto';
 import { User } from 'src/app/users/models/user';
 import { HttpClientService } from 'src/app/shared/services/http-client.service';
+
 import { RegisterDto } from '../models/register-dto';
 import { ConfirmEmailDto } from '../models/confirm-email-dto';
+
+import { ForgotPasswordDto } from '../models/forgot-password-dto';
+import { ResetPasswordDto } from '../models/reset-password-dto';
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -84,6 +89,24 @@ export class AuthenticationService {
           return resp.body;
         }),
       );
+  }
+
+  public isEmailExist(email: string): Observable<boolean> {
+    return this.httpService.getRequest<boolean>
+    (`/Users/Email/${email}`);
+  }
+
+  public sendPasswordResetRequest(forgotPasswordDto: ForgotPasswordDto): Observable<void> {
+    return this.httpService.postRequest<void>('/Auth/forgot-password', forgotPasswordDto);  
+  }
+
+  public isResetTokenPasswordValid(email: string, token: string): Observable<boolean> {
+    return this.httpService.getRequest<boolean>
+    (`/Auth/reset-password?email=${email}&token=${token}`);
+  }
+
+  public resetPassword(resetPasswordDto: ResetPasswordDto): Observable<void> {
+    return this.httpService.postRequest<void>('/Auth/reset-password', resetPasswordDto);
   }
 
   private _handleAuthResponse(observable: Observable<HttpResponse<AuthUser>>) {

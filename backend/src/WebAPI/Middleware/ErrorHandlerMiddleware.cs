@@ -36,13 +36,13 @@ namespace WebAPI.Middleware
                     case NotFoundException e:
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
+                    case InvalidUsernameOrPasswordException e:
+                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
                     case InvalidTokenException e:
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         break;
                     case ExpiredRefreshTokenException e:
-                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                        break;
-                    case InvalidUsernameOrPasswordException e:
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         break;
                     case EmailIsNotConfirmedException e:

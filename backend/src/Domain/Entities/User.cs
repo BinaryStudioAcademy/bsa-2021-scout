@@ -11,7 +11,6 @@ namespace Domain.Entities
         public User()
         {
             DomainEvents = new List<DomainEvent>();
-            CreationDate = DateTime.UtcNow;
         }
 
         public string Password { get; set; }
@@ -22,7 +21,6 @@ namespace Domain.Entities
 
         public string CompanyId { get; set; }
         public Company Company { get; set; }
-
 
         public ICollection<Vacancy> Vacancies { get; set; }
         public ICollection<VacancyCandidate> AddedCandidates { get; set; }

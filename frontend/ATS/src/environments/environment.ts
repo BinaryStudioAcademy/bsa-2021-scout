@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   apiUrl: 'https://localhost:5001/api',
   confirmEmailUrl: 'http://localhost:4200/confirm-email',
+  clientUrl: 'http://localhost:4200',
 };
 
 /*

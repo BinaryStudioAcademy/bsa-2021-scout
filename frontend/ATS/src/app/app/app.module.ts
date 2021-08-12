@@ -21,6 +21,7 @@ import { MatTableModule } from '@angular/material/table';
 
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
+import { AuthGuard } from '../users/guards/auth.guard';
 
 
 
@@ -46,6 +47,7 @@ import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
 
   providers: [
     SidenavService,
+    AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
