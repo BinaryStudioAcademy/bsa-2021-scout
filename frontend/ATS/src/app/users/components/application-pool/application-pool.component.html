@@ -5,7 +5,7 @@
     </mat-form-field>
     <button mat-button (click)="onCreate()"> + New pool</button>
 </div>
-
+<app-spinner *ngIf="loading"></app-spinner>
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
         
