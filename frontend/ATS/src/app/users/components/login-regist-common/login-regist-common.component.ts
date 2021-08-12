@@ -67,7 +67,7 @@ export class LoginRegistCommonComponent {
 
   public firstAndLastNameValidation(control: FormControl) {
     return (control.value as string || '')
-      .match(/^[A-Z]+(([',. -][a-zA-Z])?[a-z]*)*$/) != null ?
+      .match(/^[A-Z](([',. -][A-Z])?[a-z]*)*$/) != null ?
       null : { 'firstandlastname': true };
   }
 
