@@ -11,6 +11,7 @@ using Application.ApplicantToTags.CommandQuery.DeleteTagCommand;
 using Application.Common.Files.Dtos;
 using Newtonsoft.Json;
 using Application.Applicants.Commands.Create;
+using Application.Applicants.Queries;
 
 namespace WebAPI.Controllers
 {
@@ -59,6 +60,14 @@ namespace WebAPI.Controllers
             var query = new DeleteEntityCommand(id);
 
             return StatusCode(204, await Mediator.Send(query));
+        }
+
+        [HttpGet("{id}/cv")]
+        public async Task<IActionResult> GetApplicantCvAsync(string id)
+        {
+            var query = new GetApplicantCvUrlQuery(id);
+
+            return Ok(await Mediator.Send(query));
         }
 
         [HttpGet("to_tags/{searchRequest}")]

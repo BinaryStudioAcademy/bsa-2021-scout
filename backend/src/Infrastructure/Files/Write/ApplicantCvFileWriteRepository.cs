@@ -1,7 +1,5 @@
-﻿using Application.Common.Files.Dtos;
-using Domain.Interfaces.Write;
+﻿using Domain.Interfaces.Write;
 using Infrastructure.Files.Abstraction;
-using Infrastructure.Files.Helpers;
 using System.IO;
 using System.Threading.Tasks;
 using FileInfo = Domain.Entities.FileInfo;
@@ -20,9 +18,19 @@ namespace Infrastructure.Files.Read
         public Task<FileInfo> UploadAsync(string applicantId, Stream cvFileContent)
         {
             return _fileWriteRepository.UploadPrivateFileAsync(
-                ApplicantCvFileHelpers.GetFilePath(),
-                ApplicantCvFileHelpers.GetFileName(applicantId),
+                GetFilePath(),
+                GetFileName(applicantId),
                 cvFileContent);
+        }
+
+        public static string GetFilePath()
+        {
+            return "applicants";
+        }
+
+        public static string GetFileName(string applicantId)
+        {
+            return $"{applicantId}-cv.pdf";
         }
     }
 }
