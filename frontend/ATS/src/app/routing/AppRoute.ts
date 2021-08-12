@@ -8,4 +8,6 @@ export enum AppRoute {
   TaskManagement = 'taskManagement',
   Templates = 'templates',
   Pools = 'pools',
+  Login = 'login',
+  Registration = 'registration'
 }

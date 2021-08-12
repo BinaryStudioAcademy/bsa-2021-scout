@@ -9,6 +9,11 @@ namespace Infrastructure.EF.Configuration
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Ignore(_ => _.DomainEvents);
+            builder.HasOne(u => u.Company)
+                .WithMany(c => c.Recruiters)
+                .HasForeignKey(a => a.CompanyId)
+                .HasConstraintName("user_company_FK")
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
