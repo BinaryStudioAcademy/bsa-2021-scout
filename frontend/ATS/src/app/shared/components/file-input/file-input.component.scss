@@ -1,0 +1,51 @@
+@import "../../../../common.scss";
+
+.file-input {
+  min-height: 150px;
+  width: 100%;
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  border: 3px #333333 dashed;
+
+  &.dragging {
+    background-color: #00ff0088;
+  }
+
+  .text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:not(&:last-child) {
+      margin-bottom: 5px;
+    }
+
+    &.topics {
+      flex-wrap: wrap;
+      margin-bottom: 0;
+    }
+
+    & > * {
+      margin-bottom: 5px;
+
+      &:not(&:last-child) {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .real-input {
+    display: none;
+  }
+
+  .choose {
+    font-weight: 600;
+    color: $accent-color;
+    cursor: pointer;
+  }
+}
