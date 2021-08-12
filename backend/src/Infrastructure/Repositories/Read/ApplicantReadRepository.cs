@@ -10,6 +10,7 @@ using Application.Common.Exceptions;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Repositories.Abstractions;
 using System;
+using Application.Common.Exceptions.Applicants;
 
 namespace Infrastructure.Repositories.Read
 {
@@ -29,7 +30,7 @@ namespace Infrastructure.Repositories.Read
 
             if (fileInfo == null)
             {
-                throw new NotFoundException(typeof(FileInfo), applicantId);
+                throw new ApplicantCvNotFoundException(applicantId);
             }
 
             await connection.CloseAsync();
