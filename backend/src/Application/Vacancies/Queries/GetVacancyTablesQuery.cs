@@ -10,6 +10,8 @@ using Domain.Interfaces.Abstractions;
 using MediatR;
 using System.Linq;
 using Application.Users.Dtos;
+using Application.Interfaces;
+using System;
 
 namespace Application.Vacancies.Queries
 {
@@ -21,21 +23,29 @@ namespace Application.Vacancies.Queries
         protected readonly IReadRepository<Vacancy> _vacancyRepo;
         protected readonly IReadRepository<Project> _projectRepo;
         protected readonly IReadRepository<User> _userRepo;
+        protected readonly ICurrentUserContext _context;
+
         protected readonly IMapper _mapper;
 
-        public GetVacancyTablesQueryHandler(IReadRepository<Vacancy> vacancyRepo,
+        public GetVacancyTablesQueryHandler(ICurrentUserContext context, IReadRepository<Vacancy> vacancyRepo,
          IReadRepository<Project> projectRepo, IReadRepository<User> userRepo,
          IMapper mapper)
         {
             _vacancyRepo = vacancyRepo;
             _projectRepo = projectRepo;
             _userRepo = userRepo;
+            _context = context;
             _mapper = mapper;
         }
 
         public async Task<IEnumerable<VacancyTableDto>> Handle(GetVacancyTablesListQuery query, CancellationToken _)
         {
-            IEnumerable<Vacancy> result = await _vacancyRepo.GetEnumerableAsync();
+            try{
+            var companyId = (await _context.GetCurrentUser()).CompanyId;
+            }catch(Exception e){
+                
+            }
+            IEnumerable<Vacancy> result = (await _vacancyRepo.GetEnumerableAsync());//.Where(x=>x.CompanyId == companyId);
             IEnumerable<VacancyTableDto> dtos = _mapper.Map<IEnumerable<VacancyTableDto>>(result);
             foreach (var dto in dtos){
                 dto.Department = (await _projectRepo.GetAsync(dto.ProjectId)).TeamInfo;
