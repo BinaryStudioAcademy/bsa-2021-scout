@@ -45,7 +45,7 @@ export class ForgotPasswordDialogComponent {
           this.notificationService.showErrorMessage('There is no user with such email address.');
           return EMPTY;
         }),
-    )
+      )
       .subscribe(() => {
         this.notificationService.showSuccessMessage(
           'Please check your email to reset your password');

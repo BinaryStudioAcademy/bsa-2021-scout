@@ -18,7 +18,8 @@ const routes: Routes = [
     pathMatch: 'full', 
     component: RegistrationComponent, 
   },
-  { path: 'reset-password', component: ResetPasswordComponent, canActivate: [ResetPasswordGuard] },
+  { path: AppRoute.ResetPassword, component: ResetPasswordComponent, 
+    canActivate: [ResetPasswordGuard] },
 ];
 
 @NgModule({
