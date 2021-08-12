@@ -6,6 +6,6 @@ namespace Domain.Interfaces.Read
 {
     public interface IMailTemplateReadRepository : IReadRepository<MailTemplate>
     {
-        Task<MailTemplate> GetBySlug(string slug);
+        Task<MailTemplate> GetBySlugAsync(string slug);
     }
 }

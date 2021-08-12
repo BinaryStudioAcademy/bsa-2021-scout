@@ -1,24 +1,26 @@
-<div class="draggable card" [id]="candidate.id" cdkDrag *ngIf="isDraggable">
+<div
+  class="card"
+  [ngClass]="{'draggable': isDraggable, 'clickable': isClickable}"
+  [id]="candidate.id"
+  cdkDrag
+  [cdkDragDisabled]="!isDraggable"
+  (click)="emitClick()"
+>
   <div class="user-data">
     <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />
     <div class="texts">
       <div>{{ candidate.applicant.firstName }} {{ candidate.applicant.lastName }}</div>
-      <a routerLink="/vacancy-candidate/{{ candidate.id }}">View profile</a>
+      <a routerLink="/profile/{{ candidate.id }}">View profile</a>
     </div>
   </div>
-  <div class="meta data" *ngIf="date">
-    {{ fromNow(date!) }}
+  <div class="meta data" *ngIf="!candidate.averageMark && candidate.averageMark !== 0">
+    {{ fromNow(candidate.dateAdded) }}
   </div>
-</div>
-<div class="card" [id]="candidate.id" *ngIf="!isDraggable">
-  <div class="user-data">
-    <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />
-    <div class="texts">
-      <div>{{ candidate.applicant.firstName }} {{ candidate.applicant.lastName }}</div>
-      <a routerLink="/vacancy-candidate/{{ candidate.id }}">View profile</a>
-    </div>
-  </div>
-  <div class="meta data" *ngIf="date">
-    {{ fromNow(date!) }}
+  <div class="mark data" *ngIf="candidate.averageMark || candidate.averageMark === 0">
+    <mat-progress-bar
+      color="accent"
+      mode="determinate"
+      [value]="candidate.averageMark * 10"
+    ></mat-progress-bar>
   </div>
 </div>

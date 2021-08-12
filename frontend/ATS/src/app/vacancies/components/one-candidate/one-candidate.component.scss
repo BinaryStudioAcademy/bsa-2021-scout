@@ -1,0 +1,90 @@
+@import "../../../../common.scss";
+
+.container {
+  padding-left: 20px;
+  padding-top: 15px;
+  box-sizing: border-box;
+  display: flex;
+  position: relative;
+  min-height: 200px;
+
+  h2,
+  h4 {
+    margin: 0;
+    padding: 0;
+  }
+
+  h2,
+  h3,
+  h4 {
+    font-weight: bold;
+  }
+
+  .avatar-col {
+    $dim: 175px;
+    padding-right: 20px;
+    width: $dim;
+
+    .avatar {
+      width: $dim;
+      height: $dim;
+      max-width: $dim;
+      max-height: $dim;
+    }
+  }
+
+  .content-col {
+    flex-grow: 1;
+    padding-top: 40px;
+
+    .block {
+      padding: 20px 0 20px 10px;
+      box-sizing: border-box;
+
+      &.top {
+        padding: 0 0 40px 0;
+      }
+
+      .activity,
+      .reviews {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .activity {
+        & > * {
+          background-color: $primary-color-lightgrey;
+          padding: 15px;
+          border-radius: 10px;
+          box-sizing: border-box;
+        }
+      }
+
+      .reviews {
+        & > * {
+          width: 50%;
+          max-width: 200px;
+        }
+      }
+
+      .list {
+        &,
+        & li {
+          list-style: none;
+          list-style-type: none;
+        }
+
+        li {
+          display: flex;
+          align-items: center;
+          margin-top: 10px;
+
+          mat-icon {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}

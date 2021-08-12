@@ -9,6 +9,7 @@ namespace Domain.Entities
     {
         public VacancyCandidate()
         {
+            DateAdded = DateTime.UtcNow;
             DomainEvents = new List<DomainEvent>();
         }
 
@@ -19,11 +20,14 @@ namespace Domain.Entities
         public string ContactedBy { get; set; }
         public string Comments { get; set; }
         public double Experience { get; set; }
-        public string StageId { get; set; }
         public string ApplicantId { get; set; }
+        public string HrWhoAddedId { get; set; }
+        public DateTime DateAdded { get; set; }
 
         public Applicant Applicant { get; set; }
-        public Stage Stage { get; set; }
+        public User HrWhoAdded { get; set; }
+        public ICollection<CandidateToStage> CandidateToStages { get; set; }
+        public ICollection<CandidateReview> Reviews { get; set; }
         public IList<DomainEvent> DomainEvents { get; set; }
     }
 }

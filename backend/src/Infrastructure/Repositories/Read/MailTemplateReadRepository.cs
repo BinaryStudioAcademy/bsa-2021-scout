@@ -12,11 +12,11 @@ namespace Infrastructure.Repositories.Read
     {
         public MailTemplateReadRepository(IMongoConnectionFactory context) : base(context) { }
 
-        public async Task<MailTemplate> GetBySlug(string slug)
+        public async Task<MailTemplate> GetBySlugAsync(string slug)
         {
             BsonDocument filter = new BsonDocument(new BsonElement("Slug", slug));
 
-            IAsyncCursor<MailTemplate> cursor = await _context
+            IAsyncCursor<MailTemplate> cursor = await _connectionFactory
                 .GetMongoConnection()
                 .GetCollection<MailTemplate>(typeof(MailTemplate).Name)
                 .FindAsync<MailTemplate>(filter);

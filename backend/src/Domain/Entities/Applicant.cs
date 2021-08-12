@@ -11,7 +11,6 @@ namespace Domain.Entities
         public double Experience { get; set; }
         public DateTime ToBeContacted { get; set; }
         public string CompanyId { get; set; }
-
         public Company Company { get; set; }
         public ICollection<PoolToApplicant> ApplicantPools { get; set; }
         public ICollection<VacancyCandidate> Candidates { get; set; }
