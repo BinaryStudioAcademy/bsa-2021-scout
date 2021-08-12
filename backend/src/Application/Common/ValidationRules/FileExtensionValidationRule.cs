@@ -1,20 +1,19 @@
-﻿using Application.Common.Files.Dtos;
+﻿using Application.Common.Files;
+using Application.Common.Files.Dtos;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Common.Validators
 {
     public static class FileExtensionValidationRule
     {
-        public static IRuleBuilderOptions<T, FileDto> ExtensionMustBeInList<T>(this IRuleBuilder<T, FileDto> rule, string[] extensions)
+        public static IRuleBuilderOptions<T, FileDto> ExtensionMustBeInList<T>(this IRuleBuilder<T, FileDto> rule, IEnumerable<FileExtension> extensions)
         {
             return rule
-                .Must(file => extensions.Contains(Path.GetExtension(file.FileName).ToLower()))
+                .Must(file => extensions.Select(e => e.Value).Contains(Path.GetExtension(file.FileName).ToLower()))
                 .WithMessage("File extension is not valid");
         }
     }

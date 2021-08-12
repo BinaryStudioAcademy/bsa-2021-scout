@@ -1,7 +1,5 @@
-﻿using Application.Applicants.Dtos;
-using Application.Common.Commands;
+﻿using Application.Common.Files;
 using Application.Common.Validators;
-using Application.Users.Dtos;
 using FluentValidation;
 
 namespace Application.Applicants.Commands.Create
@@ -10,7 +8,7 @@ namespace Application.Applicants.Commands.Create
     {
         public CreateApplicantCommandValidator()
         {
-            RuleFor(_ => _.CvFileDto).ExtensionMustBeInList(new string[] { ".pdf" });
+            RuleFor(_ => _.CvFileDto).ExtensionMustBeInList(new FileExtension[] { FileExtension.Pdf });
             //RuleFor(_ => _.ApplicantDto).SetValidator(new CreateApplicantDtoValidator());
         }
     }

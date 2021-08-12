@@ -1,4 +1,5 @@
-﻿using Application.Common.Validators;
+﻿using Application.Common.Files;
+using Application.Common.Validators;
 using FluentValidation;
 
 namespace Application.Applicants.Commands.UpdateApplicantCv
@@ -7,7 +8,7 @@ namespace Application.Applicants.Commands.UpdateApplicantCv
     {
         public UpdateApplicantCvCommandValidator()
         {
-            RuleFor(_ => _.NewCvFileDto).ExtensionMustBeInList(new string[] { ".pdf" });
+            RuleFor(_ => _.NewCvFileDto).ExtensionMustBeInList(new FileExtension[] { FileExtension.Pdf });
         }
     }
 }
