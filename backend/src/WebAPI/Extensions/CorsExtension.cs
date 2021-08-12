@@ -46,7 +46,7 @@ namespace WebAPI.Extensions
                                   builder =>
                                   {
                                       builder
-                                        .WithHeaders("Content-Type")
+                                        .AllowAnyHeader()//CHANGE_BACK
                                         .WithMethods("GET", "POST", "PUT", "DELETE")
                                         .WithExposedHeaders("Token-Expired")
                                         .WithOrigins(frontendUrl);
