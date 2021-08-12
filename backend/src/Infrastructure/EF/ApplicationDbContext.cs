@@ -46,7 +46,9 @@ namespace Infrastructure.EF
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(local);Database=ATS_dev;User Id=sa;Password=123Admin!;");
+                var connectionString = System.Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
+
+                optionsBuilder.UseSqlServer(connectionString ?? "Server=(local);Database=ATS_dev;User Id=sa;Password=123Admin!;");
             }
         }
 
