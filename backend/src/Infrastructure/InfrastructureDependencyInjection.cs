@@ -46,7 +46,7 @@ namespace Infrastructure
         private static IServiceCollection AddElasticEngine(this IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("ELASTIC_CONNECTION_STRING");
-            
+
             // if (connectionString is null)
             //     throw new Exception("Elastic connection string url is not specified");
             var settings = new ConnectionSettings(new Uri(connectionString))
@@ -55,7 +55,7 @@ namespace Infrastructure
                 .IndexName("elastic_entity")
             );
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
-            
+
             return services;
         }
         private static IServiceCollection AddDatabaseContext(this IServiceCollection services)
@@ -136,13 +136,14 @@ namespace Infrastructure
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
             services.AddScoped<IElasticReadRepository<ElasticEntity>, ElasticReadRepository<ElasticEntity>>();
-        
+
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
             services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
+            services.AddScoped<IReadRepository<MailTemplate>, MongoReadRespoitory<MailTemplate>>();
 
             return services;
         }
