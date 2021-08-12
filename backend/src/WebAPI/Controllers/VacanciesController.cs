@@ -7,6 +7,7 @@ using Application.Common.Queries;
 using Application.Vacancies.Commands.Create;
 using Application.Vacancies.Commands.Edit;
 using Application.Vacancies.Dtos;
+using Application.Vacancies.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -16,7 +17,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllVacancies()
         {
-            var command = new GetEntityListQuery<VacancyTableDto>();
+            var command = new GetVacancyTablesListQuery();
             return Ok(await Mediator.Send(command));
         }
         [HttpPost]

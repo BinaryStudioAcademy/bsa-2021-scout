@@ -1,3 +1,4 @@
+import { MatSortModule } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -39,6 +40,7 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     CommonModule,
     RoutingModule,
     MatIconModule,
+    MatSortModule,
     MatButtonModule,
     MatPaginatorModule,
     MatTableModule,

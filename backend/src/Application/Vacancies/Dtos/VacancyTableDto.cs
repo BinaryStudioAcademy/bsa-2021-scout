@@ -11,6 +11,7 @@ namespace Application.Vacancies.Dtos
         public int CurrentApplicantsAmount { get; set; }
         public int RequiredCandidatesAmount { get; set; }
         public string ProjectId { get; set; }
+        public string ResponsibleHrId { get; set; }
         public DateTime CreationDate { get; set; }
         public UserDto ResponsibleHr { get; set; }
         public string Department { get; set; } 

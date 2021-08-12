@@ -1,5 +1,5 @@
 import { AfterViewInit, Component,
-  ViewChild, ElementRef } from '@angular/core';
+  ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -43,14 +43,26 @@ export class VacanciesTableComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild('input') serachField!: ElementRef;
-
-  constructor(private dialog: MatDialog, private service: VacancyDataService) {
+  private randomRequiredCandidatesAmounts: number[] = [60, 30, 6, 29, 44, 34, 55, 30, 6, 32];
+  private randomCurrentApplicantsAmounts: number[] = [130, 34, 56, 34];
+  constructor(private cd: ChangeDetectorRef,
+    private dialog: MatDialog, private service: VacancyDataService) {
     // const vacancies =  Array.from({ length: 99 }, (_, k) => createNewVacancy());
-    service.getList().subscribe(data=>
-      this.dataSource = new MatTableDataSource(data),
+    service.getList().subscribe(data=>{
+      data.forEach(d=>{
+        d.requiredCandidatesAmount = this.randomRequiredCandidatesAmounts[
+          Math.round(Math.random() * (this.randomRequiredCandidatesAmounts.length - 1))
+        ];
+        d.currentApplicantsAmount = this.randomCurrentApplicantsAmounts[
+          Math.round(Math.random() * (this.randomCurrentApplicantsAmounts.length - 1))
+        ];
+      });
+      this.dataSource.data = data;
+      this.directive.ngAfterViewInit();
+    },
     );
     // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource();
+    this.dataSource = new MatTableDataSource<VacancyData>();
   }
   public getStatus(index:number): string{
     return VacancyStatus[index];
@@ -66,6 +78,7 @@ export class VacanciesTableComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+   
   }
   ​
 ​
@@ -82,16 +95,16 @@ export class VacanciesTableComponent implements AfterViewInit {
 }
 ​
 /** Builds and returns a new User. */
-function createNewVacancy(): VacancyData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))];
-​
-  return {
-    title: name,
-    requiredCandidatesAmount: Math.round(Math.random()*4+1),
-    currentApplicantsAmount: Math.round(Math.random()*10 +1),
-    responsible: HRs[Math.round(Math.random() * (HRs.length - 1))],
-    department: 'Lorem ipsum dorot sit',
-    creationDate: new Date(),
-    status: STATUES[Math.round(Math.random()*(STATUES.length - 1))],
-  };
-}
+// function createNewVacancy(): VacancyData {
+//   const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))];
+// ​
+//   return {
+//     title: name,
+//     requiredCandidatesAmount: Math.round(Math.random()*4+1),
+//     currentApplicantsAmount: Math.round(Math.random()*10 +1),
+//     responsible: HRs[Math.round(Math.random() * (HRs.length - 1))],
+//     department: 'Lorem ipsum dorot sit',
+//     creationDate: new Date(),
+//     status: STATUES[Math.round(Math.random()*(STATUES.length - 1))],
+//   };
+// }

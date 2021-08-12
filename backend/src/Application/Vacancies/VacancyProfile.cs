@@ -16,12 +16,7 @@ namespace Application.Vacancies
             CreateMap<Vacancy, VacancyDto>();
             CreateMap<Vacancy, VacancyCreateDto>();
             
-            CreateMap<Vacancy, VacancyTableDto>()
-            .ForMember(dest => dest.Department, opt => opt.MapFrom(v => v.Project.TeamInfo))
-            .ForMember(dest => dest.CurrentApplicantsAmount, opt => opt.MapFrom(
-                v => v.Stages.Sum<Stage>(s => s.CandidateToStages.Count())))
-            .ForMember(dest => dest.RequiredCandidatesAmount, opt => opt.MapFrom(
-                v => v.Stages.Sum<Stage>(s => s.Reviews.Count())));
+            CreateMap<Vacancy, VacancyTableDto>();
 
             CreateMap<VacancyUpdateDto, Vacancy>();
             CreateMap<Vacancy, VacancyDto>();

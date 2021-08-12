@@ -16,7 +16,7 @@
     <table #mytable mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+            <th mat-header-cell *matHeaderCellDef> # </th>
             <td mat-cell *matCellDef="let i = index"> {{ (i+1) + (paginator.pageIndex * paginator.pageSize)}} </td>
         </ng-container>
 
@@ -36,7 +36,7 @@
 
         <ng-container matColumnDef="responsible">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Responsible </th>
-            <td mat-cell *matCellDef="let row"> {{row.responsible}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.responsibleHr.firstName}} {{row.responsibleHr.lastName}}</td>
         </ng-container>
 
         <ng-container matColumnDef="creationDate">
@@ -50,7 +50,7 @@
         </ng-container>
 
         <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+            <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let row">
                 <div class="icons">
                     <mat-icon>bookmark</mat-icon>

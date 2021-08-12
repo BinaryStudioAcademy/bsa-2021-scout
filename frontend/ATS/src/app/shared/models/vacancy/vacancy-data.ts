@@ -1,3 +1,4 @@
+import { User } from 'src/app/users/models/user';
 import { VacancyStatus } from './vacancy-status';
 
 export interface VacancyData {
@@ -5,7 +6,7 @@ export interface VacancyData {
   currentApplicantsAmount: number;
   requiredCandidatesAmount: number;
   department: string;
-  responsible: string;
+  responsibleHr: User;
   creationDate: Date;
   status: VacancyStatus;
 }
