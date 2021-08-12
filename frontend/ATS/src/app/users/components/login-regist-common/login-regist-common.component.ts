@@ -23,7 +23,7 @@ export class LoginRegistCommonComponent {
   }
 
   public checkIsPasswordValid(form: FormGroup, cotrolName: string) {
-    return (form.controls[cotrolName].value as string).length > 0
+    return (form.controls[cotrolName].value as string)?.length > 0
       && (form.controls[cotrolName].errors?.uppercase
         || form.controls[cotrolName].errors?.lowercase
         || form.controls[cotrolName].errors?.digit
@@ -67,16 +67,16 @@ export class LoginRegistCommonComponent {
 
   public firstAndLastNameValidation(control: FormControl) {
     return (control.value as string || '')
-      .match(/^[A-Z]+(([',. -][a-zA-Z])?[a-zA-Z]*)*$/) != null ?
+      .match(/^[A-Z]+(([',. -][a-zA-Z])?[a-z]*)*$/) != null ?
       null : { 'firstandlastname': true };
   }
 
   public minPasswordLenghtValidation(control: FormControl) {
-    return (control.value as string || '').length >= 8 ? null : { 'minpasswordlenght': true };
+    return (control.value as string || '')?.length >= 8 ? null : { 'minpasswordlenght': true };
   }
 
   public maxPasswordLenghtValidation(control: FormControl) {
-    return (control.value as string || '').length <= 32 ? null : { 'maxpasswordlenght': true };
+    return (control.value as string || '')?.length <= 32 ? null : { 'maxpasswordlenght': true };
   }
 
   public passwordsMatch(control: AbstractControl): { invalid: boolean, mismatch: boolean } | null {

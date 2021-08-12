@@ -28,6 +28,8 @@ export class LoginBoxComponent {
 
   public isPasswordHide = true;
 
+  public isRequestFinished = true;
+
   public loginForm: FormGroup = new FormGroup({
     'userEmail': new FormControl('', [
       Validators.required,
@@ -51,13 +53,16 @@ export class LoginBoxComponent {
   }
 
   public onSubmit() {
-    this.loginRegistCommonComponent.markFormControlsAsDirty(this.loginForm);
     if (this.loginForm.valid) {
       this.authenticationService.login(this.userLoginDto).pipe()
         .subscribe(() => {
+          this.isRequestFinished = false;
           this.router.navigate(['/']);
         },
-        (error) => this.notificationService.showErrorMessage(error.description));
+        (error) => {
+          this.isRequestFinished = true;
+          this.notificationService.showErrorMessage(error.description);
+        });
     }
   }
 }

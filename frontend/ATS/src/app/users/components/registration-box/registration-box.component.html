@@ -70,8 +70,7 @@
                 </div>
                 <div class="logo-validation-message"
                     *ngIf="loginRegistCommonComponent.checkIsPasswordValid(registrationForm,'userPassword')">
-                    <span>Password length must be 8-32 symbols (only digits, latin letters and special characters
-                        allowed).</span>
+                    <span>Password length must be min. 8 symbols.</span>
                 </div>
                 <div class="logo-validation-message"
                     *ngIf="registrationForm.controls['userPassword'].errors?.whitespace">
@@ -85,10 +84,10 @@
             </div>
             <mat-form-field floatLabel="never" [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userPasswordConfirmation')
                 || registrationForm.errors?.mismatch ? 'logo-invalid-input' : ''">
-                <input matInput [type]="isPasswordHide ? 'password' : 'text'" formControlName="userPasswordConfirmation"
-                    [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'" autocomplete="on">
-                <mat-icon class="registration-show-password" matSuffix (click)="isPasswordHide = !isPasswordHide">
-                    {{isPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <input matInput [type]="isPasswordConfirmHide ? 'password' : 'text'" formControlName="userPasswordConfirmation"
+                    [placeholder]="isPasswordConfirmHide ? '••••••••' : 'Enter your password'" autocomplete="on">
+                <mat-icon class="registration-show-password" matSuffix (click)="isPasswordConfirmHide = !isPasswordConfirmHide">
+                    {{isPasswordConfirmHide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userPasswordConfirmation')">
                 <div class="logo-validation-message"
@@ -118,12 +117,12 @@
                 </div>
                 <div class="logo-validation-message"
                     *ngIf="registrationForm.controls['userBirthdate'].errors?.datevalidate">
-                    Your age must be over 16 and under 100.
+                    The user cannot be younger than 16 years old
                 </div>
             </div>
         </div>
         <div class="registration-button form-group">
-            <button mat-button color="primary" [disabled]="!isRequestFinished">Sign up</button>
+            <button mat-button color="primary" [disabled]="!(isRequestFinished && registrationForm?.valid)">Sign up</button>
         </div>
     </form>
 </div>

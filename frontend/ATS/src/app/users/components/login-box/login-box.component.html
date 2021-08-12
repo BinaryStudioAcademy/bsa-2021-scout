@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="login-button form-group">
-            <button mat-button color="primary">Log In</button>
+            <button mat-button color="primary" [disabled]="!(isRequestFinished && loginForm?.valid)">Log In</button>
         </div>
     </form>
 </div>

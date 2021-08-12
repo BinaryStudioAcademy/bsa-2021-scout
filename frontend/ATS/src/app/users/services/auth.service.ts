@@ -42,7 +42,6 @@ export class AuthenticationService {
   }
 
   public confirmEmail(confirmEmailDto: ConfirmEmailDto): Observable<User> {
-    console.log(confirmEmailDto);
     return this._handleAuthResponse(
       this.httpService.postFullRequest<AuthUser>('/register/confirm-email', confirmEmailDto));
   }

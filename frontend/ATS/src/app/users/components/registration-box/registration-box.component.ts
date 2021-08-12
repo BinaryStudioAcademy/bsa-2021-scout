@@ -7,11 +7,11 @@ import { UserRegisterDto } from '../../models/auth/user-register-dto';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
 import { default as _rollupMoment } from 'moment';
-const moment = _rollupMoment||_moment;
+const moment = _rollupMoment || _moment;
 export const DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -30,8 +30,8 @@ export const DATE_FORMATS = {
   styleUrls: ['./registration-box.component.scss',
     '../login-regist-common/login-regist-common.component.scss'],
   providers: [
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS},
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS },
   ],
 })
 export class RegistrationBoxComponent {
@@ -43,6 +43,8 @@ export class RegistrationBoxComponent {
   public userRegisterDto: UserRegisterDto = {} as UserRegisterDto;
 
   public isPasswordHide = true;
+
+  public isPasswordConfirmHide = true;
 
   public isRequestFinished = true;
 
@@ -67,13 +69,7 @@ export class RegistrationBoxComponent {
     'userPassword': new FormControl('', [
       Validators.required,
       this.loginRegistCommonComponent.minPasswordLenghtValidation,
-      this.loginRegistCommonComponent.maxPasswordLenghtValidation,
       this.loginRegistCommonComponent.noWhitespaceValidation,
-      this.loginRegistCommonComponent.upperCaseValidation,
-      this.loginRegistCommonComponent.lowerCaseValidation,
-      this.loginRegistCommonComponent.digitValidation,
-      this.loginRegistCommonComponent.specialCharacterValidation,
-      this.loginRegistCommonComponent.noUnAllowedCharactersValidation,
     ]),
     'userPasswordConfirmation': new FormControl('', [
       Validators.required,
@@ -85,7 +81,6 @@ export class RegistrationBoxComponent {
   }, { validators: this.loginRegistCommonComponent.passwordsMatch });
 
   public onSubmit() {
-    this.loginRegistCommonComponent.markFormControlsAsDirty(this.registrationForm);
     if (this.registrationForm.valid) {
       const dto: RegisterDto =
       {
@@ -93,7 +88,6 @@ export class RegistrationBoxComponent {
         clientUrl: environment.confirmEmailUrl,
       };
       this.isRequestFinished = false;
-      console.log(this.isRequestFinished);
       this.authenticationService.register(dto).pipe()
         .subscribe(() => {
           this.isRequestFinished = true;
@@ -105,7 +99,6 @@ export class RegistrationBoxComponent {
           this.notificationService.showErrorMessage(error.description, 'Something went wrong');
         },
         );
-
     }
   }
 }
