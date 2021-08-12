@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Common.Models;
 using Application.Stages.Dtos;
-using Application.Tags.Dtos;
 using Domain.Enums;
 using FluentValidation;
 
@@ -24,7 +23,6 @@ namespace Application.Vacancies.Dtos
         public string Sources { get; set; }
         public bool IsHot { get; set; }
         public bool IsRemote { get; set; }
-        //public ICollection<TagDto> Tags { get; set; }
         public ICollection<StageWithCandidatesDto> Stages { get; set; }
         public string CompanyId { get; set; }
         public string ResponsibleHrId { get; set; }

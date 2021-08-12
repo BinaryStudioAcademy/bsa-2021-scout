@@ -75,15 +75,31 @@ namespace WebAPI.Extensions
             var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Vacancy>>();
             var repo2 = scope.ServiceProvider.GetService<IWriteRepository<Project>>();
             var repo3 = scope.ServiceProvider.GetService<IWriteRepository<User>>();
+            var repo4 = scope.ServiceProvider.GetService<IWriteRepository<User>>();
             foreach(var id in (await otherRepo.GetEnumerableAsync()).Select(v=>v.Id)){
                 await repo.DeleteAsync(id);
             }
+
             foreach(var id in ProjectSeeds.Projects.Select(x=>x.Id)){
                 await repo2.DeleteAsync(id);
             }
             foreach(var id in UserSeeds.Users.Select(x=>x.Id)){
                 await repo3.DeleteAsync(id);
             }
+            foreach(var id in CompanySeeds.Companies.Select(x=>x.Id)){
+                await repo3.DeleteAsync(id);
+            }
+            return host;
+        }
+        public async static Task<IHost> ApplyCompanySeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var repo = scope.ServiceProvider.GetService<IWriteRepository<Company>>();
+            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Company>>();
+            foreach(var company in CompanySeeds.Companies){
+                await repo.CreateAsync(company);
+            }
+            
             return host;
         }
         public async static Task<IHost> ApplyProjectSeeding(this IHost host)

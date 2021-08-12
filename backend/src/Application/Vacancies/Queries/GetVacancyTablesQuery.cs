@@ -41,11 +41,9 @@ namespace Application.Vacancies.Queries
         public async Task<IEnumerable<VacancyTableDto>> Handle(GetVacancyTablesListQuery query, CancellationToken _)
         {
             string companyId = "";
-            try{
-                companyId = (await _context.GetCurrentUser()).CompanyId;
-            }catch(Exception e){
-                
-            }
+
+            companyId = (await _context.GetCurrentUser())?.CompanyId ?? "";
+          
             IEnumerable<Vacancy> result = (await _vacancyRepo.GetEnumerableAsync()).Where(x=>x.CompanyId == companyId);
             IEnumerable<VacancyTableDto> dtos = _mapper.Map<IEnumerable<VacancyTableDto>>(result);
             foreach (var dto in dtos){

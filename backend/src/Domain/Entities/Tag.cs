@@ -12,7 +12,5 @@ namespace Domain.Entities
     public class Tag: Entity
     {
         public string TagName { get; set; }
-    //    public string Name { get; set; }
-    //    public ICollection<TagToVacancy> TagVacancies { get; set; }
     }
 }
