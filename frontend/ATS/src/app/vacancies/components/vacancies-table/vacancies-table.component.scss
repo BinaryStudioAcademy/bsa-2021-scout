@@ -33,8 +33,9 @@ th {
 ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: transparent; 
 }
+
 ::ng-deep {
-    .mat-icon:hover{
+    .mat-icon{
         cursor: pointer;
     }
     .mat-form-field-wrapper.mat-form-field-wrapper{
@@ -50,7 +51,12 @@ th {
     tr:nth-child(2n) {
         background-color:#F0F3F9;
     }
-
+    .mat-paginator-container .mat-paginator-page-size {
+        margin-right: auto;
+        .mat-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-form-field-flex {
+            width: 40px;
+        }
+    }
     .mat-button.mat-button{
         width: 200px;
     }

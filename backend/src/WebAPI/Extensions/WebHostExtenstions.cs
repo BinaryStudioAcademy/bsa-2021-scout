@@ -52,16 +52,14 @@ namespace WebAPI.Extensions
             var repo = scope.ServiceProvider.GetService<IWriteRepository<Vacancy>>();
             var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Vacancy>>();
             var repo2 = scope.ServiceProvider.GetService<IWriteRepository<Project>>();
-            var otherRepo2 = scope.ServiceProvider.GetService<IReadRepository<Project>>();
             var repo3 = scope.ServiceProvider.GetService<IWriteRepository<User>>();
-            var otherRepo3 = scope.ServiceProvider.GetService<IReadRepository<User>>();
             foreach(var id in (await otherRepo.GetEnumerableAsync()).Select(v=>v.Id)){
                 await repo.DeleteAsync(id);
             }
-            foreach(var id in (await otherRepo2.GetEnumerableAsync()).Select(v=>v.Id)){
+            foreach(var id in ProjectSeeds.Projects.Select(x=>x.Id)){
                 await repo2.DeleteAsync(id);
             }
-            foreach(var id in (await otherRepo3.GetEnumerableAsync()).Select(v=>v.Id)){
+            foreach(var id in UserSeeds.Users.Select(x=>x.Id)){
                 await repo3.DeleteAsync(id);
             }
             return host;
