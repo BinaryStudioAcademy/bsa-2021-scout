@@ -69,7 +69,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatTableModule,
     MatPaginatorModule,
     MatAutocompleteModule,
-    MatChipsModule,    
+    MatChipsModule,
+    RouterModule,   
   ],
   imports: [
     MatButtonModule,
@@ -97,7 +98,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatPaginatorModule,
     MatAutocompleteModule,
     MatChipsModule,
-    
+    RouterModule,
   ],
   providers: [HttpClientService],
   declarations: [

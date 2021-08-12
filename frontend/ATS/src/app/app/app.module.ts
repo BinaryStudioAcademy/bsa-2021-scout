@@ -13,7 +13,6 @@ import { VacancyCardComponent } from '../vacancy/vacancy-card/vacancy-card.compo
 import { VacancyWidgetComponent } from '../vacancy/vacancy-widget/vacancy-widget.component';
 import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
-//import { MenuComponent } from './components/menu/menu.component';
 import { ApplicationPoolComponent } from '../users/components/application-pool/application-pool.component';
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
@@ -24,7 +23,7 @@ import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
     VacancyCardComponent,
     VacancyWidgetComponent,
     HomeComponent,
-    ApplicationPoolComponent,
+    ApplicationPoolComponent,    
   ],
   imports: [
     BrowserModule,

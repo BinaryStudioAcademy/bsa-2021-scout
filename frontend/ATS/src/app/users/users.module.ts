@@ -6,14 +6,12 @@ import { LogoBlockComponent } from './components/logo-block/logo-block.component
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginBoxComponent } from './components/login-box/login-box.component';
 import { RegistrationBoxComponent } from './components/registration-box/registration-box.component';
-// eslint-disable-next-line max-len
-import { CreateTalentpoolModalComponent } from './components/create-talentpool-modal/create-talentpool-modal.component';
-// eslint-disable-next-line max-len
-import { EditAppPoolModalComponent } from './components/edit-app-pool-modal/edit-app-pool-modal.component';
-
-// This line can't be shorter
-// eslint-disable-next-line
-import { LoginRegistCommonComponent } from './components/login-regist-common/login-regist-common.component';
+import { CreateTalentpoolModalComponent } 
+  from './components/create-talentpool-modal/create-talentpool-modal.component';
+import { EditAppPoolModalComponent } 
+  from './components/edit-app-pool-modal/edit-app-pool-modal.component';
+import { LoginRegistCommonComponent } 
+  from './components/login-regist-common/login-regist-common.component';
 
 @NgModule({
   declarations: [
