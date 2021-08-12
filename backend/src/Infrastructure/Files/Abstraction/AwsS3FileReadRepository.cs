@@ -9,22 +9,18 @@ namespace Infrastructure.Files.Abstraction
 {
     public class AwsS3FileReadRepository : IFileReadRepository
     {
-        private readonly IAmazonS3 _clientAmazonS3;
-        private readonly string _bucketName;
-        private readonly string _bucketRegion;
+        private readonly IAwsS3ConnectionFactory _awsS3Connection;
 
-        public AwsS3FileReadRepository(IAmazonS3 clientAmazonS3)
+        public AwsS3FileReadRepository(IAwsS3ConnectionFactory awsS3Connection)
         {
-            _clientAmazonS3 = clientAmazonS3;
-            _bucketName = Environment.GetEnvironmentVariable("AWS_S3_BUCKET_NAME");
-            _bucketRegion = Environment.GetEnvironmentVariable("AWS_REGION");
+            _awsS3Connection = awsS3Connection;
         }
 
         public Task<string> GetPublicUrlAsync(string filePath, string fileName)
         {
             var fileKey = AwsS3Helpers.GetFileKey(filePath, fileName);
 
-            var publicUrl = $"https://{_bucketName}.s3-{_bucketRegion}.amazonaws.com/{fileKey}";
+            var publicUrl = $"https://{_awsS3Connection.GetBucketName()}.s3-{_awsS3Connection.GetBucketRegion()}.amazonaws.com/{fileKey}";
 
             return Task.FromResult(publicUrl);
         }
@@ -33,12 +29,12 @@ namespace Infrastructure.Files.Abstraction
         {
             var preSignedUrlRequest = new GetPreSignedUrlRequest
             {
-                BucketName = _bucketName,
+                BucketName = _awsS3Connection.GetBucketName(),
                 Key = AwsS3Helpers.GetFileKey(filePath, fileName),
                 Expires = DateTime.Now.Add(timeSpan),
             };
 
-            var preSignedUrl = _clientAmazonS3.GetPreSignedURL(preSignedUrlRequest);
+            var preSignedUrl = _awsS3Connection.GetAwsS3().GetPreSignedURL(preSignedUrlRequest);
             return Task.FromResult(preSignedUrl);
         }
     }

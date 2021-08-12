@@ -1,4 +1,7 @@
-﻿namespace Infrastructure.Files.Helpers
+﻿using System;
+using System.IO;
+
+namespace Infrastructure.Files.Helpers
 {
     public static class AwsS3Helpers
     {

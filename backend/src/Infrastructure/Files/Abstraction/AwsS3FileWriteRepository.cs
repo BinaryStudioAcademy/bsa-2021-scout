@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Transfer;
 using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Infrastructure.Files.Helpers;
 using System;
 using System.IO;
@@ -11,21 +12,18 @@ namespace Infrastructure.Files.Abstraction
 {
     public class AwsS3FileWriteRepository : IFileWriteRepository
     {
-        private readonly IAmazonS3 _clientAmazonS3;
+        private readonly IAwsS3ConnectionFactory _awsS3Connection;
         private readonly IWriteRepository<FileInfo> _fileInfoRepository;
         private readonly IFileReadRepository _fileReadRepository;
-        private readonly string _bucketName;
 
-        public AwsS3FileWriteRepository(IAmazonS3 clientAmazonS3, IFileReadRepository fileReadRepository, IWriteRepository<FileInfo> fileInfoRepository)
+        public AwsS3FileWriteRepository(IAwsS3ConnectionFactory awsS3Connection, IFileReadRepository fileReadRepository, IWriteRepository<FileInfo> fileInfoRepository)
         {
-            _clientAmazonS3 = clientAmazonS3;
+            _awsS3Connection = awsS3Connection;
             _fileInfoRepository = fileInfoRepository;
             _fileReadRepository = fileReadRepository;
-
-            _bucketName = Environment.GetEnvironmentVariable("AWS_S3_BUCKET_NAME");
         }
 
-        public async Task<FileInfo> UploadPrivateFileAsync(string filePath, string fileName, byte[] content)
+        public async Task<FileInfo> UploadPrivateFileAsync(string filePath, string fileName, Stream content)
         {
             await UploadAsync(filePath, fileName, content);
 
@@ -40,7 +38,7 @@ namespace Infrastructure.Files.Abstraction
             return fileInfo;
         }
 
-        public async Task<FileInfo> UploadPublicFileAsync(string filePath, string fileName, byte[] content)
+        public async Task<FileInfo> UploadPublicFileAsync(string filePath, string fileName, Stream content)
         {
             await UploadAsync(filePath, fileName, content);
 
@@ -56,18 +54,16 @@ namespace Infrastructure.Files.Abstraction
             return fileInfo;
         }
 
-        private async Task UploadAsync(string filePath, string fileName, byte[] content)
+        private async Task UploadAsync(string filePath, string fileName, Stream content)
         {
-            var stream = new MemoryStream(content);
-
             var uploadRequest = new TransferUtilityUploadRequest
             {
-                InputStream = stream,
+                InputStream = content,
                 Key = AwsS3Helpers.GetFileKey(filePath, fileName),
-                BucketName = _bucketName
+                BucketName = _awsS3Connection.GetBucketName()
             };
 
-            using var transferUtility = new TransferUtility(_clientAmazonS3);
+            using var transferUtility = new TransferUtility(_awsS3Connection.GetAwsS3());
 
             await transferUtility.UploadAsync(uploadRequest);
         }
