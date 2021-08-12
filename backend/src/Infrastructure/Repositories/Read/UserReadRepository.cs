@@ -64,11 +64,6 @@ namespace Infrastructure.Repositories.Read
 
             User user = resultAsArray.Distinct().FirstOrDefault();
 
-            if (user == null)
-            {
-                throw new NotFoundException(typeof(User), email);
-            }
-
             await connection.CloseAsync();
             return user;
         }
