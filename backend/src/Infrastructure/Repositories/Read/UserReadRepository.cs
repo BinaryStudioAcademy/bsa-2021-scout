@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories.Read
             await connection.OpenAsync();
             string sql = $"SELECT * FROM {_tableName} WHERE Email = @email";
 
-            var user = await connection.QueryFirstAsync<User>(sql, new { email = email });
+            var user = await connection.QueryFirstOrDefaultAsync<User>(sql, new { email = email });
 
             await connection.CloseAsync();
             return user;
