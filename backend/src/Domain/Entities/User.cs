@@ -11,11 +11,11 @@ namespace Domain.Entities
         public User()
         {
             DomainEvents = new List<DomainEvent>();
-            CreationDate = DateTime.UtcNow;
         }
 
         public string Password { get; set; }
         public string PasswordSalt { get; set; }
+        public string ResetPasswordToken { get; set; }
         public DateTime CreationDate { get; set; }
 
         public string CompanyId { get; set; }

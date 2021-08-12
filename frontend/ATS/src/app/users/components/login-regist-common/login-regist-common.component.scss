@@ -2,7 +2,8 @@ $primary-font : Nunito;
 $primary-color: #291965;
 
 .login-side-block,
-.registration-side-block {
+.registration-side-block,
+.reset-password-side-block {
     width   : 100%;
     height  : 100%;
     display : flex;
@@ -11,17 +12,20 @@ $primary-color: #291965;
 }
 
 .login-container,
-.registration-container  {
+.registration-container,
+.reset-password-container {
     margin: auto;
 }
 
 .login-text,
-.registration-text {
+.registration-text,
+.reset-password-text {
     margin-bottom: 10px;
 }
 
 .login-text span,
-.registration-text span {
+.registration-text span,
+.reset-password-text span {
     font-family   : $primary-font;
     font-size     : 24px;
     font-weight   : 600;
@@ -31,12 +35,14 @@ $primary-color: #291965;
 }
 
 .login-container a,
-.registration-container a {
+.registration-container a,
+.reset-password-container a {
     text-decoration: none;
 }
 
 .login-container a span,
-.registration-container a span {
+.registration-container a span,
+.reset-password-container a span {
     font-family: $primary-font;
     font-weight: normal;
     font-size  : 14px;
@@ -50,25 +56,37 @@ $primary-color: #291965;
 }
 
 .login-input-password,
-.registration-input-password {
+.registration-input-password,
+.reset-password-input-password {
     margin-bottom: 18px;
 }
 
 .login-input-password-title-block,
-.registration-input-password-title-block {
+.registration-input-password-title-block,
+.reset-password-input-password-title-block {
     display        : flex;
     justify-content: space-between;
 }
 
 .login-input-password-title-block:first-child a,
-.registration-input-password-title-block:first-child a {
+.registration-input-password-title-block:first-child a,
+.reset-password-input-password-title-block:first-child a {
     text-decoration: none;
     margin-right   : 5px;
     color          : $primary-color;
 }
 
+.login-input-password-title-block:first-child a {
+    cursor: pointer;
+}
+
+.login-input-password-title-block:first-child a:hover {
+    color:#808080;
+}
+
 .login-input-title,
-.registration-input-title {
+.registration-input-title,
+.reset-password-input-title {
     font-family   : $primary-font;
     font-size     : 12px;
     font-weight   : 400;
@@ -79,7 +97,8 @@ $primary-color: #291965;
 }
 
 .login-show-password,
-.registration-show-password {
+.registration-show-password,
+.reset-password-show-password  {
     color : #C6C8CD;
     height: 17px;
     cursor: pointer;

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, Router, ActivatedRouteSnapshot, 
   RouterStateSnapshot } from '@angular/router';
+import { AppRoute } from 'src/app/routing/AppRoute';
 import { AuthenticationService } from '../services/auth.service';
 
 
@@ -21,7 +22,7 @@ export class AuthGuard implements CanActivateChild, CanActivate {
       return true;
     }
 
-    this.router.navigate(['/']);
+    this.router.navigate([`/${AppRoute.Login}`]);
 
     return false;
   }

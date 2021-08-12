@@ -23,7 +23,7 @@
         <div class="login-input-password form-group">
             <div class="login-input-password-title-block">
                 <div class="login-input-title"><span>Password</span></div>
-                <div class="login-input-title"><a href="#">Forgot password</a></div>
+                <div class="login-input-title"><a (click)="openDialog()">Forgot password</a></div>
             </div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userPassword') ? 'logo-invalid-input' : ''">
