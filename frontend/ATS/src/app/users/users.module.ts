@@ -37,7 +37,6 @@ import { SuccessfulRegistrationComponent }
   imports: [UserRoutingModule, SharedModule],
   providers: [
     LoginRegistCommonComponent,
-    { provide: LOCALE_ID, useValue: 'en-GB' },
     ResetPasswordGuard,
   ],
 })

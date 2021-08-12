@@ -8,7 +8,8 @@
                 <input matInput type="email" formControlName="userEmail" placeholder="Enter your Email" [(ngModel)]="userLoginDto.email">
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userEmail')">
-                <div class="logo-validation-message" *ngIf="loginForm.controls['userEmail'].errors?.pattern">
+                <div class="logo-validation-message" *ngIf="loginForm.controls['userEmail'].errors?.pattern
+                || loginForm.controls['userEmail'].errors?.onlyoneatsign">
                     Please enter a valid email address.
                 </div>
                 <div class="logo-validation-message" *ngIf="this.loginForm.controls['userEmail'].errors?.required">

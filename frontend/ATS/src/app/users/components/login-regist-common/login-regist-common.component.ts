@@ -6,6 +6,7 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 import { catchError, map } from 'rxjs/operators';
 import { HttpClientService } from 'src/app/shared/services/http-client.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-login-regist-common',
@@ -23,14 +24,19 @@ export class LoginRegistCommonComponent {
 
   public checkIsPasswordValid(form: FormGroup, cotrolName: string) {
     return (form.controls[cotrolName].value as string).length > 0
-      && (form.controls[cotrolName].errors?.whitespace
-        || form.controls[cotrolName].errors?.uppercase
+      && (form.controls[cotrolName].errors?.uppercase
         || form.controls[cotrolName].errors?.lowercase
         || form.controls[cotrolName].errors?.digit
         || form.controls[cotrolName].errors?.specialcharacters
         || form.controls[cotrolName].errors?.unallowedcharacters
         || form.controls[cotrolName].errors?.minpasswordlenght
         || form.controls[cotrolName].errors?.maxpasswordlenght);
+  }
+
+  public onlyOneAtSign(control: FormControl) {
+    return (control.value as string || '').match(/@/g)?.length as number <= 1 
+      || (control.value as string || '').match(/@/g)?.length == undefined 
+      ? null : { 'onlyoneatsign': true };
   }
 
   public noWhitespaceValidation(control: FormControl) {
@@ -73,11 +79,11 @@ export class LoginRegistCommonComponent {
     return (control.value as string || '').length <= 32 ? null : { 'maxpasswordlenght': true };
   }
 
-  public passwordsMatch(c: AbstractControl): { invalid: boolean, mismatch: boolean } | null {
-    if (c.get('userPassword')?.dirty
-      && c.get('userPasswordConfirmation')?.dirty
-      && (c.get('userPassword')?.value
-        != c.get('userPasswordConfirmation')?.value)) {
+  public passwordsMatch(control: AbstractControl): { invalid: boolean, mismatch: boolean } | null {
+    if (control.get('userPassword')?.dirty
+      && control.get('userPasswordConfirmation')?.dirty
+      && (control.get('userPassword')?.value
+        != control.get('userPasswordConfirmation')?.value)) {
       return { invalid: true, mismatch: true };
     }
     return null;
@@ -86,11 +92,17 @@ export class LoginRegistCommonComponent {
   public birthDateValidation(control: FormControl) {
     if (control.value != null) {
       let enterdDate: Date = new Date(control.value);
-      return enterdDate < new Date()
-        && enterdDate > new Date('01-01-1900')
+      return moment(enterdDate) < moment(new Date()).subtract(16, 'year')
+        && moment(enterdDate) > moment(new Date()).subtract(100, 'year')
         ? null : { 'datevalidate': true };
     }
     return null;
+  }
+
+  public markFormControlsAsDirty(formGroup: FormGroup) {
+    (Object).values(formGroup.controls).forEach(control => {
+      control.markAsDirty();
+    });
   }
 
   userEmailValidator(): AsyncValidatorFn {

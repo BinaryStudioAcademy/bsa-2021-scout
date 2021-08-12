@@ -36,6 +36,7 @@ export class LoginBoxComponent {
           '^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{1,6}$',
         ),
       this.loginRegistCommonComponent.noUnAllowedCharactersValidation,
+      this.loginRegistCommonComponent.onlyOneAtSign,
     ]),
     'userPassword': new FormControl('', [
       Validators.required,
@@ -50,6 +51,7 @@ export class LoginBoxComponent {
   }
 
   public onSubmit() {
+    this.loginRegistCommonComponent.markFormControlsAsDirty(this.loginForm);
     if (this.loginForm.valid) {
       this.authenticationService.login(this.userLoginDto).pipe()
         .subscribe(() => {

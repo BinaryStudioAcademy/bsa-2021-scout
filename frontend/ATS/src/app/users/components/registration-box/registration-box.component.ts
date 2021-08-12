@@ -7,12 +7,32 @@ import { UserRegisterDto } from '../../models/auth/user-register-dto';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import {MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import * as _moment from 'moment';
+import { default as _rollupMoment } from 'moment';
+const moment = _rollupMoment||_moment;
+export const DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-registration-box',
   templateUrl: './registration-box.component.html',
   styleUrls: ['./registration-box.component.scss',
     '../login-regist-common/login-regist-common.component.scss'],
+  providers: [
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS},
+  ],
 })
 export class RegistrationBoxComponent {
   constructor(public loginRegistCommonComponent: LoginRegistCommonComponent,
@@ -64,8 +84,8 @@ export class RegistrationBoxComponent {
     ]),
   }, { validators: this.loginRegistCommonComponent.passwordsMatch });
 
-
   public onSubmit() {
+    this.loginRegistCommonComponent.markFormControlsAsDirty(this.registrationForm);
     if (this.registrationForm.valid) {
       const dto: RegisterDto =
       {
