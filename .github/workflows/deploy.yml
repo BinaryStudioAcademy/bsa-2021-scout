@@ -4,72 +4,100 @@ on:
   push:
     branches:
       - develop
+      - prod
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   build-ats-api:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        stages:
+          - stage: develop-deployment
+            shouldRelease: ${{ contains(github.ref, 'develop') }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
     
     - name: Build image
+      if: ${{ matrix.stages.shouldRelease }}
       uses: whoan/docker-build-with-cache-action@v5
       with:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        image_name: ats-api
+        image_name: ats-api-${{ matrix.stages.stage }}
         registry: docker.pkg.github.com
         image_tag: latest
         context: ./backend/src
+        
 
   build-ats-frontend:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        stages:
+          - stage: develop-deployment
+            shouldRelease: ${{ contains(github.ref, 'develop') }}
+            FRONTEND_CONFIGURATION: 'develop-deployment'
     steps:
     - name: Checkout
       uses: actions/checkout@v2
     
     - name: Build image
+      if: ${{ matrix.stages.shouldRelease }}
       uses: whoan/docker-build-with-cache-action@v5
       with:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        image_name: ats-frontend
+        image_name: ats-frontend-${{ matrix.stages.stage }}
         registry: docker.pkg.github.com
         image_tag: latest
         context: ./frontend/ATS
+        build_extra_args: "--build-arg FRONTEND_CONFIGURATION=${{ matrix.stages.FRONTEND_CONFIGURATION }}"
+
 
   deploy:
     needs: [build-ats-api, build-ats-frontend]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        stages:
+          - stage: develop-deployment
+            shouldRelease: ${{ contains(github.ref, 'develop') }}
+            DEPLOYMENT_HOST: DEVELOP_DEPLOYMENT_HOST
+            DEPLOYMENT_USERNAME: DEVELOP_DEPLOYMENT_USERNAME
+            DEPLOYMENT_PASSWORD: DEVELOP_DEPLOYMENT_PASSWORD
     steps:
     - name: Checkout
       uses: actions/checkout@v2
 
     - name: Copy docker-compose.prod.yml to deployment server
+      if: ${{ matrix.stages.shouldRelease }}
       uses: appleboy/scp-action@master
       with:
-        host: ${{ secrets.DEPLOYMENT_HOST }}
-        username: ${{ secrets.DEPLOYMENT_USERNAME }}
-        password: ${{ secrets.DEPLOYMENT_PASSWORD }}
-        source: ".docker/docker-compose.prod.yml"
+        host: ${{ secrets[matrix.stages.DEPLOYMENT_HOST] }}
+        username: ${{ secrets[matrix.stages.DEPLOYMENT_USERNAME] }}
+        password: ${{ secrets[matrix.stages.DEPLOYMENT_PASSWORD] }}
+        source: ".docker/docker-compose.${{ matrix.stages.stage }}.yml"
         target: "app"
 
     - name: Run docker-compose.prod.yml to deployment server
+      if: ${{ matrix.stages.shouldRelease }}
       uses: appleboy/ssh-action@master
       env:
           GITHUB_USERNAME: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        host: ${{ secrets.DEPLOYMENT_HOST }}
-        username: ${{ secrets.DEPLOYMENT_USERNAME }}
-        password: ${{ secrets.DEPLOYMENT_PASSWORD }}
+        host: ${{ secrets[matrix.stages.DEPLOYMENT_HOST] }}
+        username: ${{ secrets[matrix.stages.DEPLOYMENT_USERNAME] }}
+        password: ${{ secrets[matrix.stages.DEPLOYMENT_PASSWORD] }}
         envs: GITHUB_USERNAME,GITHUB_TOKEN
         script: |
           export GITHUB_USERNAME=$GITHUB_USERNAME
           export GITHUB_TOKEN=$GITHUB_TOKEN
           echo "$GITHUB_TOKEN" | docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
           cd app/.docker
-          docker-compose -f docker-compose.prod.yml pull
-          docker-compose -f docker-compose.prod.yml up -d --build
+          docker-compose -f docker-compose.${{ matrix.stages.stage }}.yml pull
+          docker-compose -f docker-compose.${{ matrix.stages.stage }}.yml stop
+          docker-compose -f docker-compose.${{ matrix.stages.stage }}.yml up -d --build

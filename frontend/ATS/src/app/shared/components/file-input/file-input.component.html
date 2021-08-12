@@ -1,0 +1,43 @@
+<div
+  class="file-input"
+  [ngClass]="{'dragging': dragging}"
+  (drag)="cancelEvent($event)"
+  (dragstart)="cancelEvent($event)"
+  (dragover)="setDragging($event)"
+  (dragenter)="setDragging($event)"
+  (dragend)="setNotDragging($event)"
+  (dragleave)="setNotDragging($event)"
+  (drop)="setFiles($event)"
+>
+  <div class="only-color meta text">
+    <mat-icon>{{ iconName }}</mat-icon>
+    <div>Drag and drop {{ dragObjectName }} here or</div>
+    <div class="choose" (click)="focusRealInput()">choose {{ dragObjectName }}</div>
+  </div>
+  <div class="only-color meta topics text" *ngIf="chosen.length || arrayDefault.length">
+    <div>Chosen:</div>
+    <app-topic
+      [text]="item"
+      [removable]="true"
+      (remove)="emitRemoveDefault(i)"
+      *ngFor="let item of arrayDefault; index as i;"
+    ></app-topic>
+    <app-topic
+      [text]="file.name"
+      [removable]="true"
+      (remove)="removeFile(i)"
+      *ngFor="let file of chosen; index as i;"
+    ></app-topic>
+  </div>
+  <input
+    type="file"
+    class="real-input"
+    #realInput
+    [multiple]="!single"
+    [accept]="inputAccept"
+    (change)="onChangeRealInput($event)"
+  />
+  <div class="only-color meta text" *ngIf="chosen.length || arrayDefault.length">
+    <div class="choose" (click)="clear()">clear all</div>
+  </div>
+</div>
