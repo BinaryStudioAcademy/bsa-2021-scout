@@ -182,51 +182,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CompanyToUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CompanyId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CompanyToUsers");
-                });
-
-            modelBuilder.Entity("Domain.Entities.FileInfo", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PublicUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FileInfos");
-                });
-
             modelBuilder.Entity("Domain.Entities.Pool", b =>
                 {
                     b.Property<string>("Id")
@@ -413,6 +368,12 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -437,7 +398,12 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ResetPasswordToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("Users");
                 });
@@ -666,27 +632,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Stage");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CompanyToUser", b =>
-                {
-                    b.HasOne("Domain.Entities.Company", "Company")
-                        .WithMany("Recruiters")
-                        .HasForeignKey("CompanyId")
-                        .HasConstraintName("company_user__company_FK")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("UserCompanies")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("company_user__user_FK")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Domain.Entities.Pool", b =>
                 {
                     b.HasOne("Domain.Entities.Company", "Company")
@@ -754,6 +699,17 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Vacancy");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.HasOne("Domain.Entities.Company", "Company")
+                        .WithMany("Recruiters")
+                        .HasForeignKey("CompanyId")
+                        .HasConstraintName("user_company_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserToRole", b =>
@@ -882,8 +838,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("AddedCandidates");
 
                     b.Navigation("RefreshTokens");
-
-                    b.Navigation("UserCompanies");
 
                     b.Navigation("UserRoles");
 

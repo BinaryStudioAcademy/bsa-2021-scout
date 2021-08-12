@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ResetPasswordGuard } from './guards/reset-password.guard';
 import { AppRoute } from '../routing/AppRoute';
 
 const routes: Routes = [
@@ -16,6 +18,8 @@ const routes: Routes = [
     pathMatch: 'full', 
     component: RegistrationComponent, 
   },
+  { path: AppRoute.ResetPassword, component: ResetPasswordComponent, 
+    canActivate: [ResetPasswordGuard] },
 ];
 
 @NgModule({

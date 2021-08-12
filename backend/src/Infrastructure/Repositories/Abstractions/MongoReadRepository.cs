@@ -50,7 +50,7 @@ namespace Infrastructure.Repositories.Abstractions
 
         public async Task<T> GetByPropertyAsync(string property, string propertyValue)
         {
-            BsonDocument filter = new BsonDocument(new BsonElement($"{property}", propertyValue));
+            BsonDocument filter = new BsonDocument(new BsonElement(property, propertyValue));
 
             IAsyncCursor<T> cursor = await _connectionFactory
                 .GetMongoConnection()
