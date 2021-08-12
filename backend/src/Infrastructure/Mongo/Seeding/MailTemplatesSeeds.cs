@@ -1,6 +1,16 @@
-<!-- WARNING: This file is not used in program. Copy it's contents into MongoDB template. -->
+using Domain.Entities;
 
-<!DOCTYPE html>
+namespace Infrastructure.Mongo.Seeding
+{
+    public static class MailTemplatesSeeds
+    {
+        public static MailTemplate GetSeed()
+        {
+            return new MailTemplate
+            {
+                Id = "9afbc102-4153-4944-9dd9-b2789d5fc023",
+                Slug = "default",
+                Html = @"<!DOCTYPE html>
 <html lang='en'>
     <head>
         <meta charset='UTF-8'>
@@ -53,4 +63,8 @@
             </div>
         </div>
     </body>
-</html>
+</html>",
+            };
+        }
+    }
+}

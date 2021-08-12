@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Domain.Interfaces.Read;
 using Application.Interfaces;
 
 namespace Infrastructure.Mail
@@ -12,7 +11,6 @@ namespace Infrastructure.Mail
     {
         private readonly SmtpClient _client;
         private readonly MailAddress _from;
-        private readonly IMailTemplateReadRepository _repository;
         private readonly IMailBuilderService _mailBuilder;
 
         public Smtp(
@@ -22,11 +20,9 @@ namespace Infrastructure.Mail
             string host,
             int port,
             bool useSsl,
-            IMailTemplateReadRepository repository,
             IMailBuilderService mailBuilder
         )
         {
-            _repository = repository;
             _mailBuilder = mailBuilder;
             _from = new MailAddress(address, displayName);
 
