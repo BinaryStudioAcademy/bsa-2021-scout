@@ -123,6 +123,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
             services.AddScoped<IWriteRepository<CandidateToStage>, CandidateToStageWriteRepository>();
             services.AddScoped<ICandidateToStageWriteRepository, CandidateToStageWriteRepository>();
+            services.AddScoped<IWriteRepository<Pool>, WriteRepository<Pool>>();
 
 
             return services;
@@ -141,6 +142,11 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
+            services.AddScoped<IReadRepository<Pool>, PoolReadRepository>();
+            services.AddScoped<IPoolReadRepository, PoolReadRepository>();
+            services.AddScoped<IReadRepository<Applicant>, ApplicantReadRepository>();
+            services.AddScoped<IApplicantReadRepository, ApplicantReadRepository>();
+
             return services;
         }
     }

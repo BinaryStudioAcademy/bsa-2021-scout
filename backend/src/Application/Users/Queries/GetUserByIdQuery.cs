@@ -6,7 +6,7 @@ using Domain.Interfaces.Abstractions;
 
 namespace Application.Users.Queries.GetUserById
 {
-    public class GetUserByIdQueryHandler : GetEntityByIdQueryHandler<User, UserDto>
+    public class GetUserByIdQueryHandler : GetEntitiesQueryHandler<User, UserDto>
     {
         public GetUserByIdQueryHandler(IReadRepository<User> repository, IMapper mapper) : base(repository, mapper) { }
     }

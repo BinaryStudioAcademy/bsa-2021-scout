@@ -7,4 +7,5 @@ export enum AppRoute {
   Analytics = 'analytics',
   TaskManagement = 'taskManagement',
   Templates = 'templates',
+  Pools = 'pools',
 }

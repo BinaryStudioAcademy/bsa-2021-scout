@@ -23,7 +23,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MultiselectComponent } from './components/multiselect/multiselect.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
+
+
 
 @NgModule({
   exports: [
@@ -45,13 +51,17 @@ import { MatDialogModule } from '@angular/material/dialog';
     BrowserAnimationsModule,
     HeaderComponent,
     MatListModule,
-    MatDialogModule,
     MatSelectModule,
     MultiselectComponent,
     MatDatepickerModule,
+    MatDialogModule,
     MatNativeDateModule,
     MatProgressBarModule,
     SpinnerComponent,
+    MatTableModule,
+    MatPaginatorModule,
+    MatAutocompleteModule,
+    MatChipsModule,    
   ],
   imports: [
     MatButtonModule,
@@ -68,13 +78,18 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressBarModule,
     MatDialogModule,
+    MatProgressBarModule,
     MatListModule,
     BrowserAnimationsModule,
     BrowserModule,
     MatSelectModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    
   ],
   providers: [HttpClientService],
   declarations: [

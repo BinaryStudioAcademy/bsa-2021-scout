@@ -14,6 +14,7 @@ import { VacancyWidgetComponent } from '../vacancy/vacancy-widget/vacancy-widget
 import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
 import { MenuComponent } from './components/menu/menu.component';
+import { ApplicationPoolComponent } from '../users/components/application-pool/application-pool.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,9 @@ import { MenuComponent } from './components/menu/menu.component';
     MenuComponent,
     VacancyCardComponent,
     VacancyWidgetComponent,
-    HomeComponent],
+    HomeComponent,
+    ApplicationPoolComponent,
+  ],
   imports: [
     BrowserModule,
     RoutingModule,
@@ -30,10 +33,10 @@ import { MenuComponent } from './components/menu/menu.component';
     ToastrModule.forRoot(),    
     SharedModule,
     VacanciesModule,
-    UsersModule,
+    UsersModule,    
   ],
   providers: [SidenavService],
   bootstrap: [AppComponent],
-  exports: [],
+  exports: [SharedModule],
 })
 export class AppModule {}

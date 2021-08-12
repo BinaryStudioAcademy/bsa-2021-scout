@@ -20,14 +20,14 @@ namespace Application.Common.Queries
         }
     }
 
-    public class GetEntityByIdQueryHandler<TEntity, TDto> : IRequestHandler<GetEntityByIdQuery<TDto>, TDto>
+    public class GetEntitiesQueryHandler<TEntity, TDto> : IRequestHandler<GetEntityByIdQuery<TDto>, TDto>
         where TEntity : Entity
         where TDto : Dto
     {
         protected readonly IReadRepository<TEntity> _repository;
         protected readonly IMapper _mapper;
 
-        public GetEntityByIdQueryHandler(IReadRepository<TEntity> repository, IMapper mapper)
+        public GetEntitiesQueryHandler(IReadRepository<TEntity> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
