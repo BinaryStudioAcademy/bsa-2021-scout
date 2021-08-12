@@ -1,13 +1,10 @@
-﻿using Application.Common.Commands;
+﻿using Application.Interfaces;
 using Application.Projects.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,11 +23,13 @@ namespace Application.Projects.Commands.Create
     public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand, ProjectDto>
     {
         protected readonly IWriteRepository<Project> _repository;
+        protected readonly ICurrentUserContext _currentUserContext;
         protected readonly IMapper _mapper;
 
-        public CreateProjectCommandHandler(IWriteRepository<Project> repository, IMapper mapper)
+        public CreateProjectCommandHandler(IWriteRepository<Project> repository, ICurrentUserContext currentUserContext, IMapper mapper)
         {
             _repository = repository;
+            _currentUserContext = currentUserContext;
             _mapper = mapper;
         }
 
@@ -40,6 +39,7 @@ namespace Application.Projects.Commands.Create
 
             entity.Id = Guid.NewGuid().ToString();
             entity.CreationDate = DateTime.Now;
+            entity.CompanyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
 
             var created = await _repository.CreateAsync(entity);
 

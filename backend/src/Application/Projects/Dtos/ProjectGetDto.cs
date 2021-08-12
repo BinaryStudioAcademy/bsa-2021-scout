@@ -10,6 +10,7 @@ namespace Application.Projects.Dtos
 {
     public class ProjectGetDto : ProjectDto
     {
+        public string CompanyId { get; set; }
         public DateTime CreationDate { get; set; }
         public ICollection<ShortVacancyWithStagesDto> Vacancies { get; set; }
     }

@@ -43,6 +43,7 @@ namespace Application.Projects.CommandQuery.Update
             Project entity = _mapper.Map<Project>(command.Project);
 
             entity.CreationDate = projectToUpdate.CreationDate;
+            entity.CompanyId = projectToUpdate.CompanyId;
 
             var updated = await _writeRepository.UpdateAsync(entity);
 
