@@ -55,8 +55,6 @@ namespace Application.Auth.Commands
                 throw new EmailIsNotConfirmedException();
             }
 
-            await _userRepository.LoadRolesAsync(user);
-
             if (!_securityService.ValidatePassword(command.Password, user.Password, user.PasswordSalt))
             {
                 throw new InvalidUsernameOrPasswordException();

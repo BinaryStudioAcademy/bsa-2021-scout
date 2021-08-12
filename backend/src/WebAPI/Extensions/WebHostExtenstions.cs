@@ -4,8 +4,9 @@ using Domain.Entities;
 using Domain.Interfaces.Abstractions;
 using Infrastructure.EF;
 using Infrastructure.EF.Seeds;
+using Infrastructure.Mongo.Interfaces;
+using Infrastructure.Mongo.Seeding;
 using Infrastructure.Elastic.Seeding;
-using Infrastructure.Repositories.Read;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,15 +25,36 @@ namespace WebAPI.Extensions
 
             return host;
         }
-        public async static Task<IHost> ApplyElasticSeeding(this IHost host)
+        public static IHost ApplyElasticSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
             var client = scope.ServiceProvider.GetService<IElasticClient>();
 
-            await client.IndexManyAsync<ApplicantToTags>(
-                ApplicantToTagsSeeds.GetSeed()
+            client.IndexMany<ElasticEntity>(
+                ApplicantTagsSeeds.GetSeed()
             );
-            
+
+            return host;
+        }
+
+        public static IHost ApplyMongoSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+
+            var connectionFactory = scope.ServiceProvider.GetService<IMongoConnectionFactory>();
+            var repository = scope.ServiceProvider.GetService<IReadRepository<MailTemplate>>();
+            var connection = connectionFactory.GetMongoConnection();
+            var collection = connection.GetCollection<MailTemplate>(typeof(MailTemplate).Name);
+
+            try
+            {
+                MailTemplate check = repository.GetByPropertyAsync("Slug", "default").Result;
+            }
+            catch
+            {
+                collection.InsertOne(MailTemplatesSeeds.GetSeed());
+            }
+
             return host;
         }
         public async static Task<IHost> ApplyVacancySeeding(this IHost host)

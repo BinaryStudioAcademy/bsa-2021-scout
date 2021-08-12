@@ -11,7 +11,7 @@ using Domain.Interfaces.Abstractions;
 namespace Application.Vacancies.Queries
 {
     public class GetVacanciesQueryHandler
-        : GetEntityListQuery<Vacancy, VacancyDto>
+        : GetEntityListQueryHandler<Vacancy, VacancyDto>
     {
         public GetVacanciesQueryHandler(IReadRepository<Vacancy> repo, IMapper mapper): base(repo, mapper)
         { }

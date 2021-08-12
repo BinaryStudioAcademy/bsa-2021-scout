@@ -9,6 +9,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { SharedModule } from '../shared/shared.module';
 import { VacanciesModule } from '../vacancies/vacancies.module';
 import { UsersModule } from '../users/users.module';
+
 import { VacancyCardComponent } from '../vacancies/components/vacancy-card/vacancy-card.component';
 import { VacancyWidgetComponent } from '../vacancies/components/vacancy-widget/vacancy-widget.component';
 import { HomeComponent } from '../users/components/home/home.component';
@@ -20,6 +21,8 @@ import { MatTableModule } from '@angular/material/table';
 
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
+
+
 
 
 @NgModule({
@@ -40,7 +43,9 @@ import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
     VacanciesModule,
     UsersModule,
   ],
-  providers: [SidenavService, 
+
+  providers: [
+    SidenavService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

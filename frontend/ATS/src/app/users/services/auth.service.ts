@@ -19,7 +19,7 @@ export class AuthenticationService {
   public getUser(): Observable<User | null> {
     return this.user
       ? of(this.user)
-      : this.httpService.getFullRequest<User>('users/fromToken').pipe(
+      : this.httpService.getFullRequest<User>('users/from-token').pipe(
         map((resp) => {
           if (!resp.body) {
             throw throwError(resp);  

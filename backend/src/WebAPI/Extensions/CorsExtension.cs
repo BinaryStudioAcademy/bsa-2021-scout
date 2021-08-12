@@ -38,6 +38,8 @@ namespace WebAPI.Extensions
 
         private static IServiceCollection AddDevelopmentCorsPolicies(this IServiceCollection services)
         {
+            var frontendUrl = Environment.GetEnvironmentVariable("FRONTEND_URL");
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: DevelopmentPolicy,
@@ -47,7 +49,7 @@ namespace WebAPI.Extensions
                                         .WithHeaders("Content-Type")
                                         .WithMethods("GET", "POST", "PUT", "DELETE")
                                         .WithExposedHeaders("Token-Expired")
-                                        .WithOrigins("http://localhost:4200");
+                                        .WithOrigins(frontendUrl);
                                   });
             });
 
@@ -56,6 +58,8 @@ namespace WebAPI.Extensions
 
         private static IServiceCollection AddProductionCorsPolicies(this IServiceCollection services)
         {
+            var frontendUrl = Environment.GetEnvironmentVariable("FRONTEND_URL");
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: ProductionPolicy,
@@ -67,7 +71,7 @@ namespace WebAPI.Extensions
                                         .WithHeaders("Content-Type")
                                         .WithMethods("GET", "POST", "PUT", "DELETE")
                                         .WithExposedHeaders("Token-Expired")
-                                        .WithOrigins("");
+                                        .WithOrigins(frontendUrl);
                                   });
             });
 

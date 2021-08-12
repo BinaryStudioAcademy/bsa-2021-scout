@@ -16,6 +16,7 @@ namespace Application.Users.Dtos
         public string MiddleName { get; set; }
         public DateTime BirthDate { get; set; }
         public string Email { get; set; }
+        public string CompanyId { get; set; }
 
         public ICollection<RoleDto> Roles { get; set; }
 

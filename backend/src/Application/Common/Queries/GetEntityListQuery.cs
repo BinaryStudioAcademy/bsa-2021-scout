@@ -13,14 +13,14 @@ namespace Application.Common.Queries
         where TDto : Dto
     { }
 
-    public class GetEntityListQuery<TEntity, TDto> : IRequestHandler<GetEntityListQuery<TDto>, IEnumerable<TDto>>
+    public class GetEntityListQueryHandler<TEntity, TDto> : IRequestHandler<GetEntityListQuery<TDto>, IEnumerable<TDto>>
         where TEntity : Entity
         where TDto : Dto
     {
         protected readonly IReadRepository<TEntity> _repository;
         protected readonly IMapper _mapper;
 
-        public GetEntityListQuery(IReadRepository<TEntity> repository, IMapper mapper)
+        public GetEntityListQueryHandler(IReadRepository<TEntity> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
