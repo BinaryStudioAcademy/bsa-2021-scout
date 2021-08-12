@@ -32,8 +32,6 @@ namespace Infrastructure.Repositories.Read
                 throw new NotFoundException(typeof(FileInfo), applicantId);
             }
 
-            Console.WriteLine($"{fileInfo.Id} {fileInfo.Name}");
-
             await connection.CloseAsync();
 
             return fileInfo;
