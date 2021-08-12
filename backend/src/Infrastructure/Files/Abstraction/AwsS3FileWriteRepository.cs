@@ -1,4 +1,5 @@
 ﻿using Amazon.S3;
+using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using Domain.Interfaces;
 using Domain.Interfaces.Abstractions;
@@ -66,6 +67,26 @@ namespace Infrastructure.Files.Abstraction
             using var transferUtility = new TransferUtility(_awsS3Connection.GetAwsS3());
 
             await transferUtility.UploadAsync(uploadRequest);
+        }
+
+        public async Task DeleteFileAsync(FileInfo fileInfo)
+        {
+            var deleteRequest = new DeleteObjectRequest
+            {
+                Key = AwsS3Helpers.GetFileKey(fileInfo),
+                BucketName = _awsS3Connection.GetBucketName(),
+            };
+
+            await _awsS3Connection.GetAwsS3().DeleteObjectAsync(deleteRequest);
+
+            await _fileInfoRepository.DeleteAsync(fileInfo.Id);
+        }
+
+        public async Task<FileInfo> UpdateFileAsync(FileInfo oldFileInfo, Stream content)
+        {
+            await UploadAsync(oldFileInfo.Path, oldFileInfo.Name, content);
+
+            return oldFileInfo;
         }
     }
 }

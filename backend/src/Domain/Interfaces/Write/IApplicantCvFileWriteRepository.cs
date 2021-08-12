@@ -7,5 +7,6 @@ namespace Domain.Interfaces.Write
     public interface IApplicantCvFileWriteRepository
     {
         Task<FileInfo> UploadAsync(string applicantId, Stream cvFileContent);
+        Task UpdateAsync(string applicantId, Stream cvFileContent);
     }
 }

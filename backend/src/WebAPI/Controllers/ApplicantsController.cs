@@ -12,6 +12,7 @@ using Application.Common.Files.Dtos;
 using Newtonsoft.Json;
 using Application.Applicants.Commands.Create;
 using Application.Applicants.Queries;
+using Application.Applicants.Commands.UpdateApplicantCv;
 
 namespace WebAPI.Controllers
 {
@@ -66,6 +67,17 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetApplicantCvAsync(string id)
         {
             var query = new GetApplicantCvUrlQuery(id);
+
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpPut("{id}/cv")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateApplicantCvAsync(string id, [FromForm] IFormFile cvFile)
+        {
+            var cvFileDto = new FileDto(cvFile.OpenReadStream(), cvFile.FileName);
+
+            var query = new UpdateApplicantCvCommand(id, cvFileDto);
 
             return Ok(await Mediator.Send(query));
         }

@@ -8,5 +8,7 @@ namespace Infrastructure.Files.Abstraction
     {
         public Task<FileInfo> UploadPublicFileAsync(string filePath, string fileName, Stream content);
         public Task<FileInfo> UploadPrivateFileAsync(string filePath, string fileName, Stream content);
+        public Task<FileInfo> UpdateFileAsync(FileInfo oldFileInfo, Stream content);
+        public Task DeleteFileAsync(FileInfo fileInfo);
     }
 }
