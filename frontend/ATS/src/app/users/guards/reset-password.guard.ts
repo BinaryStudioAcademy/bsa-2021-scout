@@ -3,11 +3,11 @@ import { CanActivate, Router, ActivatedRouteSnapshot,
   RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { HttpClientService } from 'src/app/shared/services/http-client.service';
+import { AuthenticationService } from '../services/auth.service';
 
 @Injectable()
 export class ResetPasswordGuard implements CanActivate {
-  constructor(private router: Router, private httpClientService: HttpClientService) {}
+  constructor(private router: Router, private authService: AuthenticationService) {}
 
   public canActivate(
     route: ActivatedRouteSnapshot, 
@@ -16,8 +16,7 @@ export class ResetPasswordGuard implements CanActivate {
 
     const email: string = route.queryParams['email'];
     const token: string = route.queryParams['token'];
-    return this.httpClientService.getRequest<boolean>
-    (`/Auth/reset-password?email=${email}&token=${token}`).pipe(
+    return this.authService.isResetTokenPasswordValid(email, token).pipe(
       map(isTokenValid => {
         if (isTokenValid) {
           return true;

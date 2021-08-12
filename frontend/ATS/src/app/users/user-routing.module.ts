@@ -16,7 +16,6 @@ const routes: Routes = [
     pathMatch: 'full',
     component: LoginComponent,
   },
-  { path: 'reset-password', component: ResetPasswordComponent, canActivate: [ResetPasswordGuard] },
   {
     path: AppRoute.ConfirmEmail,
     pathMatch: 'full',
@@ -32,6 +31,8 @@ const routes: Routes = [
     pathMatch: 'full',
     component: RegistrationComponent,
   },
+  { path: AppRoute.ResetPassword, component: ResetPasswordComponent, 
+    canActivate: [ResetPasswordGuard] },
 ];
 
 @NgModule({
@@ -39,4 +40,4 @@ const routes: Routes = [
   exports: [RouterModule],
   imports: [CommonModule, RouterModule.forChild(routes)],
 })
-export class UserRoutingModule { }
+export class UserRoutingModule {}

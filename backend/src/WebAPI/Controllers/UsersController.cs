@@ -3,9 +3,11 @@ using Application.Common.Queries;
 using Application.Users.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using WebAPI.Extensions;
+using Application.Interfaces;
+using Application.Common.Exceptions;
+using Domain.Entities;
 
 namespace WebAPI.Controllers
 {
@@ -21,18 +23,22 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
+        [HttpGet("from-token")]
+        public async Task<ActionResult<UserDto>> GetUserFromToken([FromServices] ICurrentUserContext currentUserContext)
+        {
+            var user = await currentUserContext.GetCurrentUser();
+            if (user is null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
         [AllowAnonymous]
         [HttpGet, Route("Email/{email}")]
         public async Task<IActionResult> IsEmailAlreadyUsed(string email)
         {
             var query = new IsEntityWithPropertyExistQuery("Email", email);
-            return Ok(await Mediator.Send(query));
-        }
-
-        [HttpGet("fromToken")]
-        public async Task<ActionResult<UserDto>> GetUserFromToken()
-        {
-            var query = new GetEntityByIdQuery<UserDto>(this.GetUserIdFromToken());
             return Ok(await Mediator.Send(query));
         }
 

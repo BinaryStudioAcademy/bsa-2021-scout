@@ -19,7 +19,7 @@ export class SuccessfulRegistrationComponent {
   public resendEmail(): void {
     const dto : ResendConfirmEmailDto =  {
       email : this.route.snapshot.queryParamMap.get('email') as string,
-      clientUrl : environment.confirmEmailUrl,
+      clientUrl : `${environment.clientUrl}/confirm-email`,
     };
     this.authenticationService.resendConfirmationEmail(dto).pipe()
       .subscribe(() => {

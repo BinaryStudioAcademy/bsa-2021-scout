@@ -15,6 +15,7 @@ import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
+import { AuthGuard } from '../users/guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,9 @@ import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
     VacanciesModule,
     UsersModule,
   ],
-  providers: [SidenavService, 
+  providers: [
+    SidenavService,
+    AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

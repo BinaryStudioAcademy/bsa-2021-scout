@@ -10,5 +10,6 @@ export enum AppRoute {
   Login = 'login',
   Registration = 'registration',
   ConfirmEmail = 'confirm-email',
-  SuccessfulRegistration = 'successful-registration'
+  SuccessfulRegistration = 'successful-registration',
+  ResetPassword = 'reset-password',
 }

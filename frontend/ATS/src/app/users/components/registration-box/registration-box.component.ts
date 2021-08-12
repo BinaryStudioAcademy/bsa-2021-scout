@@ -85,7 +85,7 @@ export class RegistrationBoxComponent {
       const dto: RegisterDto =
       {
         userRegisterDto: this.userRegisterDto,
-        clientUrl: environment.confirmEmailUrl,
+        clientUrl: `${environment.clientUrl}/confirm-email`,
       };
       this.isRequestFinished = false;
       this.authenticationService.register(dto).pipe()
