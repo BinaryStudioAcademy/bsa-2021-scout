@@ -9,7 +9,7 @@
 
         public static string GetFileName(string applicantId)
         {
-            return $"{applicantId}-cv";
+            return $"{applicantId}-cv.pdf";
         }
     }
 }

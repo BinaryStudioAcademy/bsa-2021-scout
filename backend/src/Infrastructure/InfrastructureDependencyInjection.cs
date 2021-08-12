@@ -18,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Nest;
 using Domain.Interfaces;
+using Infrastructure.Files.Abstraction;
+using Infrastructure.Files.Read;
 
 namespace Infrastructure
 {
@@ -39,6 +41,7 @@ namespace Infrastructure
             services.AddEvents();
             services.AddMail();
             services.AddJWT();
+            services.AddFilesManagement();
 
             services.AddScoped<IDomainEventService, DomainEventService>();
             return services;
@@ -112,16 +115,31 @@ namespace Infrastructure
             return services;
         }
 
+        private static IServiceCollection AddFilesManagement(this IServiceCollection services)
+        {
+            services.AddScoped<IAwsS3ConnectionFactory, AwsS3ConnectionFactory>();
+
+            services.AddScoped<IFileReadRepository, AwsS3FileReadRepository>();
+            services.AddScoped<IFileWriteRepository, AwsS3FileWriteRepository>();
+
+            services.AddScoped<IApplicantCvFileReadRepository, ApplicantCvFileReadRepository>();
+            services.AddScoped<IApplicantCvFileWriteRepository, ApplicantCvFileWriteRepository>();
+
+            return services;
+        }
+
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
 
             services.AddScoped<IElasticWriteRepository<ApplicantToTags>, ElasticWriteRepository<ApplicantToTags>>();
+            services.AddScoped<IWriteRepository<FileInfo>, WriteRepository<FileInfo>>();
 
             services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
             services.AddScoped<IWriteRepository<CandidateToStage>, CandidateToStageWriteRepository>();
             services.AddScoped<ICandidateToStageWriteRepository, CandidateToStageWriteRepository>();
+            services.AddScoped<IWriteRepository<Applicant>, WriteRepository<Applicant>>();
 
 
             return services;
@@ -139,6 +157,7 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
+
             return services;
         }
     }

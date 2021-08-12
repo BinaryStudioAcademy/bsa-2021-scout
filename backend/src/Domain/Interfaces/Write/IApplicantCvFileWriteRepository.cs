@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
-using Domain.Entities;
+﻿using System.IO;
+using System.Threading.Tasks;
+using FileInfo = Domain.Entities.FileInfo;
 
-namespace Domain.Interfaces.Read
+namespace Domain.Interfaces.Write
 {
     public interface IApplicantCvFileWriteRepository
     {
-        Task<FileInfo> UploadAsync(string applicantId, byte[] cvFileContent);
+        Task<FileInfo> UploadAsync(string applicantId, Stream cvFileContent);
     }
 }
