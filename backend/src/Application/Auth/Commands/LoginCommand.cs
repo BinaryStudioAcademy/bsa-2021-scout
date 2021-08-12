@@ -52,7 +52,7 @@ namespace Application.Auth.Commands
 
             if (!user.IsEmailConfirmed)
             {
-                throw new EmailIsNotConfirmedException();
+                //throw new EmailIsNotConfirmedException();
             }
 
             if (!_securityService.ValidatePassword(command.Password, user.Password, user.PasswordSalt))
