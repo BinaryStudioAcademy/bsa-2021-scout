@@ -22,7 +22,7 @@ namespace WebAPI
                                     .ApplyDatabaseMigrations()
                                     .CleanUp()
                             )
-                            //.ApplyMongoSeeding()
+                            .ApplyMongoSeeding()
                             .ApplyElasticSeeding()
                             .ApplyProjectSeeding()
                         )
