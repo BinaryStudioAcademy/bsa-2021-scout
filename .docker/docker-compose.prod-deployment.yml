@@ -1,10 +1,8 @@
 version: "3.8"
 services:
   ats_api:
-    build:
-      context: ../backend/src/
-      dockerfile: Dockerfile
-    container_name: "ats_api"
+    container_name: 'ats_api'
+    image: docker.pkg.github.com/binarystudioacademy/bsa-2021-ats/ats-api-prod-deployment:latest
     restart: on-failure
     ports:
       - "5050:80"
@@ -22,8 +20,6 @@ services:
         soft: -1
         hard: -1
     mem_limit: 2g
-    volumes:
-      - esdata1:/usr/share/elasticsearch/data:rw
     environment: 
       - discovery.type=single-node
     ports:
@@ -54,14 +50,11 @@ services:
       - ats_mongodb-data:/data/db
 
   ats_frontend:
-    build:
-      context: ../frontend/ATS
-      args:
-        FRONTEND_CONFIGURATION: 'development'
-    container_name: "ats_frontend"
+    container_name: 'ats_frontend'
+    image: docker.pkg.github.com/binarystudioacademy/bsa-2021-ats/ats-frontend-prod-deployment:latest
     restart: on-failure
     ports:
-      - 4200:80
+      - 80:80
     networks:
       - backend
       - frontend
@@ -69,8 +62,6 @@ services:
 volumes:
   ats_database-data: {}
   ats_mongodb-data: {}
-  esdata1:
-    driver: local
 
 networks:
   backend:
