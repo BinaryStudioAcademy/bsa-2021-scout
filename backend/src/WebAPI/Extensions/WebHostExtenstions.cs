@@ -1,6 +1,7 @@
-﻿using Domain.Entities;
-using Domain.Interfaces.Abstractions;
+using Domain.Entities;
 using Infrastructure.EF;
+using Infrastructure.EF.Seeding;
+using Domain.Interfaces.Abstractions;
 using Infrastructure.Mongo.Interfaces;
 using Infrastructure.Mongo.Seeding;
 using Infrastructure.Elastic.Seeding;
@@ -51,6 +52,13 @@ namespace WebAPI.Extensions
             {
                 collection.InsertOne(MailTemplatesSeeds.GetSeed());
             }
+
+            return host;
+        }
+        public static IHost ApplyDatabaseSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            ApplicationDbContextSeeding.Seed(scope);
 
             return host;
         }

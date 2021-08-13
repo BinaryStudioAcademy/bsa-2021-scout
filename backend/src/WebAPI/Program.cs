@@ -12,6 +12,7 @@ namespace WebAPI
                 .Build()
                 .ApplyDatabaseMigrations()
                 .ApplyElasticSeeding()
+                .ApplyDatabaseSeeding()
                 .ApplyMongoSeeding()
                 .Run();
         }

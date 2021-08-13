@@ -7,7 +7,8 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 @Component({
   selector: 'app-confirm-email',
   templateUrl: './confirm-email.component.html',
-  styleUrls: ['./confirm-email.component.scss'],
+  styleUrls: ['./confirm-email.component.scss' ,
+    '../login-regist-common/login-regist-common.component.scss'],
 })
 export class ConfirmEmailComponent implements OnInit {
 
@@ -33,4 +34,7 @@ export class ConfirmEmailComponent implements OnInit {
       });
   }
 
+  public toHome(){
+    this.router.navigate(['/home']);
+  }
 }
