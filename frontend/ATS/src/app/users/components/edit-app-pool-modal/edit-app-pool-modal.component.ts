@@ -137,7 +137,7 @@ export class EditAppPoolModalComponent implements OnInit{
   save() {
     const data = this.editPool.value;
     data.id = this.id;
-    data.applicants = this.applicants;    
+    data.applicantsIds = this.applicants.map(x=>x.id).join();    
     this.submitClicked.emit(data);
     this.dialogRef.close();
   }

@@ -22,8 +22,7 @@ import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
     AppComponent, 
     VacancyCardComponent,
     VacancyWidgetComponent,
-    HomeComponent,
-    ApplicationPoolComponent,    
+    HomeComponent,    
   ],
   imports: [
     BrowserModule,

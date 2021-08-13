@@ -14,6 +14,7 @@ import { LoginRegistCommonComponent }
   from './components/login-regist-common/login-regist-common.component';
 import { HomeComponent } from './components/home/home.component';
 import { ApplicationPoolComponent } from './components/application-pool/application-pool.component';
+import { StylePaginatorDirective } from '../shared/directives/style-paginator.directive';
 
 @NgModule({
   declarations: [
@@ -23,8 +24,11 @@ import { ApplicationPoolComponent } from './components/application-pool/applicat
     LogoBlockComponent,
     RegistrationComponent,
     RegistrationBoxComponent,
+    StylePaginatorDirective,
     CreateTalentpoolModalComponent,
-    EditAppPoolModalComponent,    
+    EditAppPoolModalComponent,
+    ApplicationPoolComponent,
+    
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [

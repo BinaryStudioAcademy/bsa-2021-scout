@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild, Inject, OnInit} from '@angular/core';
+import {Component, ViewChild, OnInit, ChangeDetectorRef} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -9,34 +9,15 @@ import { CreateTalentpoolModalComponent } from '../create-talentpool-modal/creat
 import { EditAppPoolModalComponent } from '../edit-app-pool-modal/edit-app-pool-modal.component';
 import { ApplicantsPool } from 'src/app/shared/models/applicants-pool/applicants-pool';
 import { Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { PoolService } from 'src/app/shared/services/poolService';
 import { CreatePool } from 'src/app/shared/models/applicants-pool/create-pool';
 import { UpdatePool } from 'src/app/shared/models/applicants-pool/update-pool';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 
 
 const DATA: ApplicantsPool[] = [];
-// = [
-//{id:'11',position:1,name:'Good',createdBy:'Alex',dateCreated:new Date(),description:'good for us',
-//     applicants : [ 
-//       {id: '3',firstName : 'Sergey', lastName: 'Ingurskiy', email:'ivan@email.com'},
-//       {id: '5',firstName : 'Alex', lastName: 'Sergeev', email:'ivan@email.com'},
-//     ]},
-//{id:'21',position: 2, name: 'Best', createdBy: 'John', dateCreated: new Date(), applicants : []},
-//   {id:'22',position: 3, name: 'Bad', createdBy: 'Dan', dateCreated: new Date(), applicants : []},
-//{id:'31',position:4,name:'Ready to work',createdBy:'Lesly',dateCreated: new Date(),applicants : [ 
-//     {id: '3',firstName : 'Sergey', lastName: 'Ingurskiy', email:'ivan@email.com'},
-//     {id: '4',firstName : 'Vladimir', lastName: 'Lenin', email:'ivan@email.com'},
-//     {id: '5',firstName : 'Alex', lastName: 'Sergeev', email:'ivan@email.com'},
-//     {id: '6',firstName : 'Ivan', lastName: 'Notch', email:'ivan@email.com'},    
-//   ]},
-//{id:'115',position:5,name:'1st class',createdBy:'Olaf', dateCreated: new Date(), applicants : []},
-//   {id:'99',position: 6, name: 'Not Enouth expirience', createdBy: 'Alex', dateCreated: new Date()
-//     , applicants : [ 
-//       {id: '1',firstName : 'Ivan', lastName: 'Petrov', email:'ivan@email.com'},
-//     ]},
-// ];
 
 @Component({
   selector: 'app-application-pool',
@@ -46,7 +27,11 @@ const DATA: ApplicantsPool[] = [];
 
 export class ApplicationPoolComponent implements OnInit {
 
-  constructor(private readonly dialogService: MatDialog, private poolService : PoolService) {}
+  constructor(
+    private readonly dialogService: MatDialog, 
+    private poolService : PoolService,
+    private notificationService: NotificationService,
+    private changeDetectorRefs: ChangeDetectorRef) {}
 
   displayedColumns: string[] = [
     'position',
@@ -62,12 +47,13 @@ export class ApplicationPoolComponent implements OnInit {
   dataSource = new MatTableDataSource(DATA);
   private unsubscribe$ = new Subject<void>();
   
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
-  @ViewChild(MatSort) sort: MatSort | undefined;
-  @ViewChild(StylePaginatorDirective) directive : StylePaginatorDirective | undefined;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator!;
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(event: Event) {
@@ -92,9 +78,12 @@ export class ApplicationPoolComponent implements OnInit {
       .subscribe(
         (resp) => {
           this.loading = false;
-          this.dataSource.data = resp;
+          this.dataSource.data = resp;          
         },
-        (error) => (this.loading = false),
+        (error) => {
+          this.loading = false; 
+          this.notificationService.showErrorMessage(error);
+        },
       );
   }
 
@@ -107,6 +96,8 @@ export class ApplicationPoolComponent implements OnInit {
         (resp) => {
           this.loading = false;
           this.dataSource.data.push(resp);
+          this.changeDetectorRefs.detectChanges();
+          this.notificationService.showSuccessMessage('Pool successfully added');
         },
         (error) => (this.loading = false),
       );

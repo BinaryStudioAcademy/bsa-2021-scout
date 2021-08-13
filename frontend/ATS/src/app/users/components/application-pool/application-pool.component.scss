@@ -14,3 +14,8 @@
     color : $primary-color-darkgrey;
     cursor: pointer;
 }
+
+.mat-row:nth-child(even){
+    background-color:$primary-color-white;
+}
+        
