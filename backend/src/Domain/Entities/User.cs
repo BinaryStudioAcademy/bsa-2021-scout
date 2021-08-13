@@ -15,6 +15,7 @@ namespace Domain.Entities
 
         public string Password { get; set; }
         public string PasswordSalt { get; set; }
+        public string ResetPasswordToken { get; set; }
         public DateTime CreationDate { get; set; }
 
         public string CompanyId { get; set; }
@@ -26,5 +27,10 @@ namespace Domain.Entities
         public ICollection<UserToRole> UserRoles { get; set; }
 
         public IList<DomainEvent> DomainEvents { get; set; }
+
+        public bool IsEmailConfirmed { get; set; }
+
+        public EmailToken EmailToken { get; set; }
+
     }
 }

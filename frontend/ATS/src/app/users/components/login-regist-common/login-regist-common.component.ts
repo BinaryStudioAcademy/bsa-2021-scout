@@ -3,9 +3,10 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { AsyncValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { HttpClientService } from 'src/app/shared/services/http-client.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-login-regist-common',
@@ -22,15 +23,20 @@ export class LoginRegistCommonComponent {
   }
 
   public checkIsPasswordValid(form: FormGroup, cotrolName: string) {
-    return (form.controls[cotrolName].value as string).length > 0
-      && (form.controls[cotrolName].errors?.whitespace
-        || form.controls[cotrolName].errors?.uppercase
+    return (form.controls[cotrolName].value as string)?.length > 0
+      && (form.controls[cotrolName].errors?.uppercase
         || form.controls[cotrolName].errors?.lowercase
         || form.controls[cotrolName].errors?.digit
         || form.controls[cotrolName].errors?.specialcharacters
         || form.controls[cotrolName].errors?.unallowedcharacters
         || form.controls[cotrolName].errors?.minpasswordlenght
         || form.controls[cotrolName].errors?.maxpasswordlenght);
+  }
+
+  public onlyOneAtSign(control: FormControl) {
+    return (control.value as string || '').match(/@/g)?.length as number <= 1 
+      || (control.value as string || '').match(/@/g)?.length == undefined 
+      ? null : { 'onlyoneatsign': true };
   }
 
   public noWhitespaceValidation(control: FormControl) {
@@ -61,23 +67,23 @@ export class LoginRegistCommonComponent {
 
   public firstAndLastNameValidation(control: FormControl) {
     return (control.value as string || '')
-      .match(/^[A-Z]+(([',. -][a-zA-Z])?[a-zA-Z]*)*$/) != null ? 
+      .match(/^[A-Z](([',. -][A-Z])?[a-z]*)*$/) != null ?
       null : { 'firstandlastname': true };
   }
 
   public minPasswordLenghtValidation(control: FormControl) {
-    return (control.value as string || '').length >= 8 ? null : { 'minpasswordlenght': true };
+    return (control.value as string || '')?.length >= 8 ? null : { 'minpasswordlenght': true };
   }
 
   public maxPasswordLenghtValidation(control: FormControl) {
-    return (control.value as string || '').length <= 32 ? null : { 'maxpasswordlenght': true };
+    return (control.value as string || '')?.length <= 32 ? null : { 'maxpasswordlenght': true };
   }
 
-  public passwordsMatch(c: AbstractControl): { invalid: boolean, mismatch: boolean } | null {
-    if (c.get('userPassword')?.dirty
-      && c.get('userPasswordConfirmation')?.dirty
-      && (c.get('userPassword')?.value
-        != c.get('userPasswordConfirmation')?.value)) {
+  public passwordsMatch(control: AbstractControl): { invalid: boolean, mismatch: boolean } | null {
+    if (control.get('userPassword')?.dirty
+      && control.get('userPasswordConfirmation')?.dirty
+      && (control.get('userPassword')?.value
+        != control.get('userPasswordConfirmation')?.value)) {
       return { invalid: true, mismatch: true };
     }
     return null;
@@ -86,11 +92,17 @@ export class LoginRegistCommonComponent {
   public birthDateValidation(control: FormControl) {
     if (control.value != null) {
       let enterdDate: Date = new Date(control.value);
-      return enterdDate < new Date()
-        && enterdDate > new Date('01-01-1900')
+      return moment(enterdDate) < moment(new Date()).subtract(16, 'year')
+        && moment(enterdDate) > moment(new Date()).subtract(100, 'year')
         ? null : { 'datevalidate': true };
     }
     return null;
+  }
+
+  public markFormControlsAsDirty(formGroup: FormGroup) {
+    (Object).values(formGroup.controls).forEach(control => {
+      control.markAsDirty();
+    });
   }
 
   userEmailValidator(): AsyncValidatorFn {
@@ -102,6 +114,9 @@ export class LoginRegistCommonComponent {
             return { userEmailExists: true };
           }
           return null;
+        }), catchError(err => {
+          this.notificationService.showErrorMessage('Email uniqueness check error.');
+          return of([{ userEmailExists: true }]);
         }),
       );
     };
