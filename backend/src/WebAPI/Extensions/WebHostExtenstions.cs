@@ -6,9 +6,6 @@ using Domain.Interfaces.Abstractions;
 using Infrastructure.EF;
 using Infrastructure.EF.Seeds;
 
-using Infrastructure.EF.Seeding;
-
-
 using Infrastructure.Mongo.Interfaces;
 using Infrastructure.Mongo.Seeding;
 using Infrastructure.Elastic.Seeding;
@@ -76,7 +73,7 @@ namespace WebAPI.Extensions
                 try
                 {
                     await otherRepo.GetAsync(vacancy.Id);
-                    // await repo.UpdateAsync(vacancy);
+                    await repo.UpdateAsync(vacancy);
                 }
                 catch
                 {
@@ -84,10 +81,6 @@ namespace WebAPI.Extensions
                 }
             }
 
-            return host;
-        }
-        public async static Task<IHost> CleanUp(this IHost host)
-        {
             return host;
         }
         public async static Task<IHost> ApplyCompanySeeding(this IHost host)
@@ -174,7 +167,6 @@ namespace WebAPI.Extensions
         public async static Task<IHost> ApplyDatabaseSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            ApplicationDbContextSeeding.Seed(scope);
             var roleWriteRepo = scope.ServiceProvider.GetService<IWriteRepository<Role>>();
             var roleReadRepo = scope.ServiceProvider.GetService<IReadRepository<Role>>();
             var roles = new List<Role>
