@@ -29,6 +29,7 @@ import { MainContentComponent } from './components/main-content/main-content.com
 import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { StylePaginatorDirective } from './directives/style-paginator.directive';
 
 @NgModule({
   exports: [
@@ -60,6 +61,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MenuComponent,
     MatProgressBarModule,
     SpinnerComponent,
+    StylePaginatorDirective,
   ],
   imports: [
     MatButtonModule,
@@ -96,6 +98,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MenuComponent,
     MainContentComponent,
     SpinnerComponent,
+    StylePaginatorDirective,
   ],
 })
 export class SharedModule {}

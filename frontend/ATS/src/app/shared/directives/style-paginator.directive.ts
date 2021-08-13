@@ -7,13 +7,14 @@ import {
   ViewContainerRef,
   Input,
   EventEmitter,
+  AfterViewInit,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 
 @Directive({
   selector: '[appStylePaginator]',
 })
-export class StylePaginatorDirective {
+export class StylePaginatorDirective implements AfterViewInit{
   private _currentPage: number = 0;
   private _pageGapTxt: string = '...';
   private _pageGapTxtIndex: number = -1;

@@ -14,6 +14,7 @@ import { VacancyCardComponent } from '../vacancy/vacancy-card/vacancy-card.compo
 import { VacancyWidgetComponent } from '../vacancy/vacancy-widget/vacancy-widget.component';
 import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
+import { ProjectsModule } from '../projects/projects.module';
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
 import { AuthGuard } from '../users/guards/auth.guard';
@@ -34,6 +35,7 @@ import { AuthGuard } from '../users/guards/auth.guard';
     ApplicantsModule,
     VacanciesModule,
     UsersModule,
+    ProjectsModule,
   ],
   providers: [
     SidenavService,
