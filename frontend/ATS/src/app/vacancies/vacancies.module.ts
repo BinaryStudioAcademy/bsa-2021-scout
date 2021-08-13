@@ -33,7 +33,6 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     OneCandidateComponent,
     OneCandidateModalComponent,
     VacanciesTableComponent,
-    StylePaginatorDirective,
   ],
   imports: [
     MatDialogModule,
