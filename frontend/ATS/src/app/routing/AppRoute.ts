@@ -3,11 +3,14 @@ export enum AppRoute {
   Home = 'home',
   Vacancies = 'vacancies',
   Applicants = 'applicants',
+  Projects = 'projects',
   Interviews = 'interviews',
   Analytics = 'analytics',
   TaskManagement = 'taskManagement',
   Templates = 'templates',
   Login = 'login',
   Registration = 'registration',
-  ResetPassword = 'reset-password'
+  ConfirmEmail = 'confirm-email',
+  SuccessfulRegistration = 'successful-registration',
+  ResetPassword = 'reset-password',
 }

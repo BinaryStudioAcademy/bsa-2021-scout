@@ -39,6 +39,12 @@ $primary-font: Nunito;
   color: $primary-color;
 }
 
+// disabled button
+.mat-button.mat-button-disabled{
+  background: $primary-color-darkgrey;
+  color: $primary-color-white !important;
+}
+
 //input
 .mat-form-field-wrapper.mat-form-field-wrapper {
     display: flex;

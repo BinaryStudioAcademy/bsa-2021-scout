@@ -25,6 +25,7 @@ namespace WebAPI
                                     .CleanUp()
                                 )
                                 .ApplyMongoSeeding()
+                                .ApplyDatabaseSeeding()
                                 .ApplyElasticSeeding()
                                 .ApplyProjectSeeding()
                             )
@@ -34,10 +35,7 @@ namespace WebAPI
                 ).ApplyStageSeeding()
             )
            .Run();
-
-
         }
-
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)

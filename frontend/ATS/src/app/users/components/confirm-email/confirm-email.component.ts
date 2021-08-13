@@ -7,7 +7,8 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 @Component({
   selector: 'app-confirm-email',
   templateUrl: './confirm-email.component.html',
-  styleUrls: ['./confirm-email.component.scss'],
+  styleUrls: ['./confirm-email.component.scss' ,
+    '../login-regist-common/login-regist-common.component.scss'],
 })
 export class ConfirmEmailComponent implements OnInit {
 
@@ -27,9 +28,13 @@ export class ConfirmEmailComponent implements OnInit {
       .subscribe(() => {
         this.IsEmailConfirmed = true;
       },
-      () => { 
-        this.notificationService.showErrorMessage('Something went wrong');
+      (error) => { 
+        this.router.navigate(['/login']);
+        this.notificationService.showErrorMessage(error.description);
       });
   }
 
+  public toHome(){
+    this.router.navigate(['/home']);
+  }
 }

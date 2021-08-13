@@ -1,9 +1,14 @@
+
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
 using Infrastructure.EF;
 using Infrastructure.EF.Seeds;
+
+using Infrastructure.EF.Seeding;
+
+
 using Infrastructure.Mongo.Interfaces;
 using Infrastructure.Mongo.Seeding;
 using Infrastructure.Elastic.Seeding;
@@ -11,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Nest;
+
 
 namespace WebAPI.Extensions
 {
@@ -57,6 +63,7 @@ namespace WebAPI.Extensions
 
             return host;
         }
+
         public async static Task<IHost> ApplyVacancySeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
@@ -133,7 +140,13 @@ namespace WebAPI.Extensions
             foreach(var user in UserSeeds.Users){
                 await repo.CreateAsync(user);
             }
-            
+            return host;
+        }
+        public static IHost ApplyDatabaseSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            ApplicationDbContextSeeding.Seed(scope);
+
             return host;
         }
     }

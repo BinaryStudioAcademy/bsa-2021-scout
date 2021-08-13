@@ -21,7 +21,6 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(command));
         }
 
-        [AllowAnonymous]
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
@@ -29,7 +28,6 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(command));
         }
 
-        [AllowAnonymous]
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
@@ -37,7 +35,6 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(command));
         }
 
-        [AllowAnonymous]
         [HttpGet("reset-password")]
         public async Task<ActionResult<bool>> IsResetTokenValid([FromQuery] ResetTokenDto resetTokenDto)
         {

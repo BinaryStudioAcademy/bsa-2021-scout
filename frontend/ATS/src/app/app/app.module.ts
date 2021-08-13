@@ -6,8 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RoutingModule } from '../routing/routing.module';
 import { AppComponent } from './components/app/app.component';
 import { ToastrModule } from 'ngx-toastr';
-import { SharedModule } from '../shared/shared.module';
 import { VacanciesModule } from '../vacancies/vacancies.module';
+import { ApplicantsModule } from '../applicants/applicants.module';
+import { SharedModule } from '../shared/shared.module';
 import { UsersModule } from '../users/users.module';
 
 import { VacancyCardComponent } from '../vacancies/components/vacancy-card/vacancy-card.component';
@@ -23,8 +24,7 @@ import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
 import { AuthGuard } from '../users/guards/auth.guard';
 
-
-
+import { ProjectsModule } from '../projects/projects.module';
 
 @NgModule({
   declarations: [
@@ -41,10 +41,11 @@ import { AuthGuard } from '../users/guards/auth.guard';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),    
     SharedModule,
+    ApplicantsModule,
     VacanciesModule,
     UsersModule,
+    ProjectsModule,
   ],
-
   providers: [
     SidenavService,
     AuthGuard,

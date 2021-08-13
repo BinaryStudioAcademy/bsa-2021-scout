@@ -1,4 +1,5 @@
 using System;
+
 using Application.Common.Models;
 using Application.Users.Dtos;
 using Domain.Enums;
@@ -14,6 +15,7 @@ namespace Application.Vacancies.Dtos
         public string ResponsibleHrId { get; set; }
         public DateTime CreationDate { get; set; }
         public UserDto ResponsibleHr { get; set; }
+
         public string Department { get; set; } 
         public VacancyStatus Status { get; set; }
     }

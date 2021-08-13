@@ -1,16 +1,13 @@
 ﻿using Application.Auth.Dtos;
 using Application.Auth.Exceptions;
-using Application.Common.Exceptions;
 using Application.Interfaces;
 using Application.Users.Dtos;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces.Read;
 using Domain.Interfaces.Abstractions;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Commands;
 using Application.Common.Queries;
 
 namespace Application.Auth.Commands
@@ -63,7 +60,10 @@ namespace Application.Auth.Commands
         public async Task<AuthUserDto> Handle(ComfirmUserEmailCommand command, CancellationToken _)
         {
             var user = await _userReadRepository.GetByPropertyAsync("Email", command.EmailToken.Email);
-
+            if (user.IsEmailConfirmed)
+            {
+                throw new EmailIsAlreadyConfirmed();
+            }
             var getEmailTokenByPropertyQuery = new GetEntityByPropertyQuery<EmailTokenDto>("UserId", user.Id);
             var token = _mapper.Map<EmailTokenDto>(await _mediator.Send(getEmailTokenByPropertyQuery));
             if (token?.Token == command.EmailToken.Token)
@@ -83,7 +83,10 @@ namespace Application.Auth.Commands
                     Token = generateToken
                 };
             }
-            return null;
+            else
+            {
+                throw new InvalidTokenException("email confirmation");
+            }
         }
     }
 }

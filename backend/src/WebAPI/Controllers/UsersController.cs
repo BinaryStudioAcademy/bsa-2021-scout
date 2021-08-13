@@ -23,7 +23,6 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
-
         [HttpGet("from-token")]
         public async Task<ActionResult<UserDto>> GetUserFromToken([FromServices] ICurrentUserContext currentUserContext)
         {
@@ -36,12 +35,12 @@ namespace WebAPI.Controllers
         }
 
 
+
         [AllowAnonymous]
         [HttpGet, Route("Email/{email}")]
         public async Task<IActionResult> IsEmailAlreadyUsed(string email)
         {
             var query = new IsEntityWithPropertyExistQuery("Email", email);
-
             return Ok(await Mediator.Send(query));
         }
 

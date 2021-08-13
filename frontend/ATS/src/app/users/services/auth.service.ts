@@ -10,7 +10,7 @@ import { HttpClientService } from 'src/app/shared/services/http-client.service';
 
 import { RegisterDto } from '../models/register-dto';
 import { ConfirmEmailDto } from '../models/confirm-email-dto';
-
+import { ResendConfirmEmailDto } from '../models/resend-confirm-email-dto';
 import { ForgotPasswordDto } from '../models/forgot-password-dto';
 import { ResetPasswordDto } from '../models/reset-password-dto';
 
@@ -19,7 +19,7 @@ import { ResetPasswordDto } from '../models/reset-password-dto';
 export class AuthenticationService {
   private user: User | null = null;
 
-  constructor(private httpService: HttpClientService) {}
+  constructor(private httpService: HttpClientService) { }
 
   public getUser(): Observable<User | null> {
     return this.user
@@ -27,16 +27,22 @@ export class AuthenticationService {
       : this.httpService.getFullRequest<User>('users/from-token').pipe(
         map((resp) => {
           if (!resp.body) {
-            throw throwError(resp);  
-          }  
+            throw throwError(resp);
+          }
           this.user = resp.body;
           return this.user;
         }),
       );
   }
 
-  public register(registerDto: RegisterDto): Observable<HttpResponse<void>>{
+  public register(registerDto: RegisterDto): Observable<HttpResponse<void>> {
     return this.httpService.postFullRequest<void>('/register', registerDto);
+  }
+
+  public resendConfirmationEmail(resendConfirmEmailDto: ResendConfirmEmailDto):
+  Observable<HttpResponse<void>> {
+    return this.httpService.postFullRequest<void>('/register/resend-confirm-email',
+      resendConfirmEmailDto);
   }
 
   public confirmEmail(confirmEmailDto: ConfirmEmailDto): Observable<User> {
@@ -59,8 +65,8 @@ export class AuthenticationService {
   }
 
   public areTokensExist(): boolean {
-    return localStorage.getItem('accessToken') !== null && 
-           localStorage.getItem('refreshToken') !== null;
+    return localStorage.getItem('accessToken') !== null &&
+      localStorage.getItem('refreshToken') !== null;
   }
 
   public revokeRefreshToken(): Observable<HttpResponse<void>> {
@@ -83,7 +89,7 @@ export class AuthenticationService {
       .pipe(
         map((resp) => {
           if (!resp.body) {
-            throw throwError(resp);  
+            throw throwError(resp);
           }
           this._setTokens(resp.body);
           return resp.body;
@@ -113,7 +119,7 @@ export class AuthenticationService {
     return observable.pipe(
       map((resp) => {
         if (!resp.body) {
-          throw throwError(resp); 
+          throw throwError(resp);
         }
         this._setTokens(resp.body.token);
         this.user = resp.body.user;

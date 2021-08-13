@@ -48,6 +48,11 @@ namespace Application.Auth.Commands
                 throw new InvalidUsernameOrPasswordException();
             }
 
+            if (!user.IsEmailConfirmed)
+            {
+                throw new EmailIsNotConfirmedException();
+            }
+
             UserDto userDto = _mapper.Map<UserDto>(user);
 
             var generateTokenCommand = new GenerateAccessTokenCommand(userDto);

@@ -23,18 +23,10 @@ namespace Application.Vacancies
             CreateMap<Vacancy, VacancyUpdateDto>();
 
             CreateMap<Vacancy, ShortVacancyWithStagesDto>();
-            //+update
 
-            //CreateMap<User, UserDto>()
-            //    .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(p => p.Role)));
 
-            //CreateMap<UserDto, User>()
-            //    .ForMember(dest => dest.DomainEvents, opt => opt.Ignore())
-            //    .ForMember(dest => dest.UserRoles, opt => opt.MapFrom((src, dest, i, context) =>
-            //        src.Roles.Select(role => new UserToRole()
-            //        {
-            //            RoleId = role.Id
-            //        })));
+            CreateMap<Vacancy, VacancyTableDto>();
+
         }
     }
 }
