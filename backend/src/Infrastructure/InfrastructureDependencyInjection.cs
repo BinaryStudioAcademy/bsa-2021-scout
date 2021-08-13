@@ -119,6 +119,8 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<Company>, WriteRepository<Company>>();
             services.AddScoped<IWriteRepository<Stage>, WriteRepository<Stage>>();
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
+            services.AddScoped<IWriteRepository<Role>, WriteRepository<Role>>();
+            services.AddScoped<IWriteRepository<UserToRole>, WriteRepository<UserToRole>>();
 
             services.AddScoped<IWriteRepository<Applicant>, ApplicantsWriteRepository>();
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
@@ -141,6 +143,8 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<Vacancy>, VacancyReadRepository>();
             services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
             services.AddScoped<IReadRepository<Company>, CompanyReadRepository>();
+            services.AddScoped<IReadRepository<Role>, RoleReadRepository>();
+            services.AddScoped<IReadRepository<UserToRole>, UserToRoleReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
             
