@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Domain.Entities;
 using Domain.Enums;
@@ -47,7 +48,7 @@ namespace Infrastructure.EF.Seeds
                 Sources = "¯\\_(ツ)_/¯",
                 ProjectId = ProjectIds[_random.Next(ProjectIds.Count)],
                 ResponsibleHrId = ResponsibleHrIds[_random.Next(ResponsibleHrIds.Count)],
-                CompanyId = "5fc2b47f-4e39-4d14-9026-15f9a259a9d9"
+                CompanyId = "5fc2b47f-4e39-4d14-9026-15f9a259a9d9",
             };
         }
         public IEnumerable<Vacancy> Vacancies (){
@@ -81,7 +82,7 @@ namespace Infrastructure.EF.Seeds
             "f8afcbaa-54bd-4103-b3f0-0dd17a5226ca",
             "8be08dba-5dac-408a-ab6e-8d162af74024",
         };
-        private  IList<string> VacancyIds = new List<string>{
+        public  IList<string> VacancyIds = new List<string>{
             "c17322f5-1d00-42ce-b1d8-b2cad9a72f32",
 
             "d701f2d8-11ca-49c4-85aa-c4593cace3a9",

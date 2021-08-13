@@ -75,7 +75,11 @@ namespace WebAPI.Extensions
             var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Vacancy>>();
             var repo2 = scope.ServiceProvider.GetService<IWriteRepository<Project>>();
             var repo3 = scope.ServiceProvider.GetService<IWriteRepository<User>>();
-            var repo4 = scope.ServiceProvider.GetService<IWriteRepository<User>>();
+            var repo4 = scope.ServiceProvider.GetService<IWriteRepository<Company>>();
+            var repo5 = scope.ServiceProvider.GetService<IWriteRepository<Stage>>();
+            foreach(var id in StageSeeds.Stages().Select(x=>x.Id)){
+                await repo5.DeleteAsync(id);
+            }
             foreach(var id in (await otherRepo.GetEnumerableAsync()).Select(v=>v.Id)){
                 await repo.DeleteAsync(id);
             }
@@ -86,9 +90,10 @@ namespace WebAPI.Extensions
             foreach(var id in UserSeeds.Users.Select(x=>x.Id)){
                 await repo3.DeleteAsync(id);
             }
-            foreach(var id in CompanySeeds.Companies.Select(x=>x.Id)){
-                await repo3.DeleteAsync(id);
-            }
+            // foreach(var id in CompanySeeds.Companies.Select(x=>x.Id)){
+            //     await repo4.DeleteAsync(id);
+            // }
+           
             return host;
         }
         public async static Task<IHost> ApplyCompanySeeding(this IHost host)
@@ -109,6 +114,18 @@ namespace WebAPI.Extensions
             var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Project>>();
             foreach(var project in ProjectSeeds.Projects){
                 await repo.CreateAsync(project);
+            }
+            
+            return host;
+        }
+        public async static Task<IHost> ApplyStageSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var repo = scope.ServiceProvider.GetService<IWriteRepository<Stage>>();
+            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Stage>>();
+            foreach(var stage in  StageSeeds.Stages()){
+                if(otherRepo.GetAsync(stage.Id) == null)
+                    await repo.CreateAsync(stage);
             }
             
             return host;
