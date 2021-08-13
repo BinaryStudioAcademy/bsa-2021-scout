@@ -12,7 +12,7 @@ namespace Application.Projects.Dtos
     {
         public string CompanyId { get; set; }
         public DateTime CreationDate { get; set; }
-        public ICollection<ShortVacancyWithStagesDto> Vacancies { get; set; }
+        public ICollection<VacancyTableDto> Vacancies { get; set; }
     }
     public class ProjectGetDtoValidator : AbstractValidator<ProjectGetDto>
     {
