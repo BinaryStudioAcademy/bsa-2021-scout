@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { VacanciesListComponent } from
   '../vacancies/components/vacancies-list/vacancies-list.component';
 import { UserRoutingModule } from '../users/user-routing.module';
+import { ProjectRoutingModule } from '../projects/project-routing.module';
 import { VacanciesRoutingModule } from '../vacancies/vacancies-routing.module';
 import { AppRoute } from './AppRoute';
 import { MainContentComponent } from
@@ -31,6 +32,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     UserRoutingModule,
     VacanciesRoutingModule,
+    ProjectRoutingModule,
   ],
   exports: [RouterModule],
 })
