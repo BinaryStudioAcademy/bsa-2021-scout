@@ -8,8 +8,8 @@ namespace Application.Pools.Dtos
     public class UpdatePoolDto : Dto
     {
         public string Name { get; set; }
-        public string Description { get; set; }
-        public List<string> ApplicantsIds { get; set; }
+        public string Description { get; set; }        
+        public string ApplicantsIds { get; set; }
     }
 
     public class UpdatePoolDtoValidator : AbstractValidator<UpdatePoolDto>

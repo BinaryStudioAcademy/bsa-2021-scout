@@ -6,6 +6,9 @@ using Application.Pools.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Infrastructure.Services;
+using Application.Interfaces;
+using Application.Users.Dtos;
 
 namespace WebAPI.Controllers
 {
@@ -30,16 +33,15 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostPoolAsync([FromBody] CreatePoolDto createDto)
         {
-            var creatorId = GetUserFromToken();            
-
+                        
             var query = new CreatePoolCommand(createDto);
 
             return Ok(await Mediator.Send(query));
         }
 
-        private object GetUserFromToken()
+        private async Task<UserDto> GetUserFromTokenAsync(ICurrentUserContext currentUserContext)
         {
-            return "111";
+            return await currentUserContext.GetCurrentUser();
         }
 
         [HttpPut]

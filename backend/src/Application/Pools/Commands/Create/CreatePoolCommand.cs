@@ -2,6 +2,7 @@
 using Application.Common.Queries;
 using Application.Interfaces;
 using Application.Pools.Dtos;
+using Application.Users.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
@@ -29,14 +30,15 @@ namespace Application.Pools.Commands
         protected readonly ISender _mediator;
         protected readonly IWriteRepository<Pool> _poolWriteRepository;
         protected readonly IReadRepository<Applicant> _applicantReadRepository;
-
+        protected readonly ICurrentUserContext _userContext;
         protected readonly ISecurityService _securityService;
         protected readonly IMapper _mapper;
 
-        public CreatePoolCommandHandler(ISender mediator, IWriteRepository<Pool> poolWriteRepository, ISecurityService securityService, IMapper mapper)
+        public CreatePoolCommandHandler(ISender mediator, IWriteRepository<Pool> poolWriteRepository, ICurrentUserContext userContext, ISecurityService securityService, IMapper mapper)
         {
             _mediator = mediator;
             _poolWriteRepository = poolWriteRepository;
+            _userContext = userContext;
             _securityService = securityService;
             _mapper = mapper;
         }
@@ -45,7 +47,15 @@ namespace Application.Pools.Commands
         {
             var newPool = _mapper.Map<Pool>(command.NewPool);
 
-            newPool.DateCreated = DateTime.Now;            
+            var currentUser = await _userContext.GetCurrentUser();
+
+            if(currentUser!= null)
+            {
+                newPool.CompanyId = currentUser.CompanyId;
+                newPool.CreatedById = currentUser.Id;
+            }
+
+            newPool.DateCreated = DateTime.Now;    
             
             var createdPool = (Pool)await _poolWriteRepository.CreateAsync(newPool);
 

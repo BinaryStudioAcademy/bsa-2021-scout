@@ -5,6 +5,7 @@ using Application.Pools.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
+using Domain.Interfaces.Read;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -29,13 +30,13 @@ namespace Application.Pools.Commands
         protected readonly ISender _mediator;
         protected readonly IWriteRepository<Pool> _poolWriteRepository;
         protected readonly IReadRepository<Applicant> _applicantReadRepository;
-        protected readonly IReadRepository<Pool> _poolReadRepository;
+        protected readonly IPoolReadRepository _poolReadRepository;
 
 
         protected readonly ISecurityService _securityService;
         protected readonly IMapper _mapper;
 
-        public UpdatePoolCommandHandler(ISender mediator, IWriteRepository<Pool> poolWriteRepository, IReadRepository<Pool> poolReadRepository, ISecurityService securityService, IMapper mapper)
+        public UpdatePoolCommandHandler(ISender mediator, IWriteRepository<Pool> poolWriteRepository, IPoolReadRepository poolReadRepository, ISecurityService securityService, IMapper mapper)
         {
             _mediator = mediator;
             _poolWriteRepository = poolWriteRepository;
@@ -46,13 +47,26 @@ namespace Application.Pools.Commands
 
         public async Task<PoolDto> Handle(UpdatePoolCommand command, CancellationToken _)
         {
-            var poolToUpdate = await _poolReadRepository.GetAsync(command.UpdatePool.Id);
+            var poolToUpdate = await _poolReadRepository.GetPoolWithApplicantsByIdAsync(command.UpdatePool.Id);
 
             poolToUpdate.Name = command.UpdatePool.Name;
             poolToUpdate.Description = command.UpdatePool.Description;
 
-            
-            //poolToUpdate.PoolApplicants.Where(x=> x.ApplicantId )
+            var applicantsInIdsDB = poolToUpdate.PoolApplicants.Select(x => x.Applicant);
+
+            var ids = command.UpdatePool.ApplicantsIds.Split(',');
+
+
+            foreach (var applicant in poolToUpdate.PoolApplicants
+                        .Where(at => ids.Contains(at.ApplicantId)).ToList())
+            {
+                poolToUpdate.PoolApplicants.Remove(applicant);
+            }
+
+            ////foreach (var id in toBeAdded)
+            ////{
+            ////    poolToUpdate.PoolApplicants.Add(new PoolToApplicant() { ApplicantId = id, PoolId = poolToUpdate.Id });
+            ////}
 
             var resultPool = (Pool)await _poolWriteRepository.UpdateAsync(poolToUpdate);
 
