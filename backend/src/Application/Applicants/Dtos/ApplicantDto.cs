@@ -8,6 +8,7 @@ namespace Application.Applicants.Dtos
     {
         public string Phone { get; set; }
         public string Skype { get; set; }
+        public string LinkedInUrl { get; set; }
         public double Experience { get; set; }
         public IEnumerable<ApplicantVacancyInfoDto> Vacancies { get; set; }
         public ElasticEnitityDto Tags { get; set; }
