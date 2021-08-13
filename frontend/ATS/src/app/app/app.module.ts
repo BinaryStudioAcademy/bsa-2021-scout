@@ -6,8 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RoutingModule } from '../routing/routing.module';
 import { AppComponent } from './components/app/app.component';
 import { ToastrModule } from 'ngx-toastr';
-import { SharedModule } from '../shared/shared.module';
 import { VacanciesModule } from '../vacancies/vacancies.module';
+import { ApplicantsModule } from '../applicants/applicants.module';
+import { SharedModule } from '../shared/shared.module';
 import { UsersModule } from '../users/users.module';
 import { VacancyCardComponent } from '../vacancy/vacancy-card/vacancy-card.component';
 import { VacancyWidgetComponent } from '../vacancy/vacancy-widget/vacancy-widget.component';
@@ -16,6 +17,7 @@ import { SidenavService } from '../shared/services/sidenav.service';
 import { ProjectsModule } from '../projects/projects.module';
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
+import { AuthGuard } from '../users/guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -30,12 +32,14 @@ import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),    
     SharedModule,
+    ApplicantsModule,
     VacanciesModule,
     UsersModule,
     ProjectsModule,
   ],
   providers: [
     SidenavService,
+    AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

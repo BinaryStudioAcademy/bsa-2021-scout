@@ -42,10 +42,12 @@ services:
   ats_mongodb:
     image: mongo
     container_name: ats_mongodb
-    env_file:
-      - ../.env/ats_mongodb.env
     ports:
       - 27017:27017
+    networks:
+      - backend
+    env_file:
+      - ../.env/ats_mongodb.env
     volumes:
       - ats_mongodb-data:/data/db
 
