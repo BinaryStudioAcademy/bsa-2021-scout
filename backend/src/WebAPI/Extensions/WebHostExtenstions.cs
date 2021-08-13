@@ -49,11 +49,10 @@ namespace WebAPI.Extensions
             try
             {
                 MailTemplate check = repository.GetByPropertyAsync("Slug", "default").Result;
-                collection.InsertOne(MailTemplatesSeeds.GetSeed());
             }
             catch
             {
-                
+                collection.InsertOne(MailTemplatesSeeds.GetSeed());
             }
 
             return host;
