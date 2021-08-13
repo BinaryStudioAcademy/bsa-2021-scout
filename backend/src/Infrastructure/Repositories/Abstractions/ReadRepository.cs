@@ -53,9 +53,12 @@ namespace Infrastructure.Repositories.Abstractions
 
         public async Task<T> GetByPropertyAsync(string property, string propertyValue)
         {
-            using var connection = _connectionFactory.GetSqlConnection();
+            var connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
             string sql = $"SELECT * FROM {_tableName} WHERE [{property}] = @propertyValue";
-            return await connection.QueryFirstOrDefaultAsync<T>(sql, new { propertyValue });
+            var entities = await connection.QueryFirstOrDefaultAsync<T>(sql, new { propertyValue });
+            await connection.CloseAsync();
+            return entities;
         }
     }
 }

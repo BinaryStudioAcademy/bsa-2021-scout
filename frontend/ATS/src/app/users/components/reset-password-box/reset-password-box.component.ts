@@ -23,17 +23,13 @@ export class ResetPasswordBoxComponent {
 
   public isPasswordHide = true;
 
+  public isPasswordConfirmHide = true;
+
   public resetPasswordForm: FormGroup = new FormGroup({
     'userPassword': new FormControl('', [
       Validators.required,
       this.loginRegistCommonComponent.minPasswordLenghtValidation,
-      this.loginRegistCommonComponent.maxPasswordLenghtValidation,
       this.loginRegistCommonComponent.noWhitespaceValidation,
-      this.loginRegistCommonComponent.upperCaseValidation,
-      this.loginRegistCommonComponent.lowerCaseValidation,
-      this.loginRegistCommonComponent.digitValidation,
-      this.loginRegistCommonComponent.specialCharacterValidation,
-      this.loginRegistCommonComponent.noUnAllowedCharactersValidation,
     ]),
     'userPasswordConfirmation': new FormControl('', [
       Validators.required,

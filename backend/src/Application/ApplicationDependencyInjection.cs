@@ -1,8 +1,14 @@
-﻿using Application.Common.Behaviours;
+﻿using MediatR;
 using FluentValidation;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using entities = Domain.Entities;
+using System.Collections.Generic;
+using Application.Common.Queries;
+using Application.Common.Commands;
+using Application.Applicants.Dtos;
+using Application.Common.Behaviours;
+using Application.ElasticEnities.Dtos;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
 {

@@ -9,6 +9,8 @@ namespace Application.Vacancies
         public VacancyProfile()
         {
             CreateMap<Vacancy, ShortVacancyWithStagesDto>();
+
+            CreateMap<Vacancy, VacancyTableDto>();
         }
     }
 }

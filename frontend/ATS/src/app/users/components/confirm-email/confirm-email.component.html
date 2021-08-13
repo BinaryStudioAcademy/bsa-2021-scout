@@ -1,0 +1,7 @@
+<app-logo-block></app-logo-block>
+<div class="login-side-block">
+    <div class="confirm-message" *ngIf="IsEmailConfirmed">
+        <H2>Thank you. Your email has been confirmed.</H2>
+        <button mat-button color="primary" (click)="toHome()">Home</button>
+    </div>
+</div>

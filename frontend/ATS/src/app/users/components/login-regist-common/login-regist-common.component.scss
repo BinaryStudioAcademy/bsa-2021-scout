@@ -1,14 +1,14 @@
-$primary-font : Nunito;
+$primary-font: Nunito;
 $primary-color: #291965;
 
 .login-side-block,
 .registration-side-block,
 .reset-password-side-block {
-    width   : 100%;
-    height  : 100%;
-    display : flex;
+    width: 100%;
+    height: 100%;
+    display: flex;
     overflow: auto;
-    height  : 100%;
+    height: 100%;
 }
 
 .login-container,
@@ -26,12 +26,12 @@ $primary-color: #291965;
 .login-text span,
 .registration-text span,
 .reset-password-text span {
-    font-family   : $primary-font;
-    font-size     : 24px;
-    font-weight   : 600;
-    line-height   : 33px;
+    font-family: $primary-font;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 33px;
     letter-spacing: 0em;
-    color         : $primary-color;
+    color: $primary-color;
 }
 
 .login-container a,
@@ -45,9 +45,9 @@ $primary-color: #291965;
 .reset-password-container a span {
     font-family: $primary-font;
     font-weight: normal;
-    font-size  : 14px;
+    font-size: 14px;
     line-height: 19px;
-    color      : $primary-color;
+    color: $primary-color;
 }
 
 .login-input-email,
@@ -64,7 +64,7 @@ $primary-color: #291965;
 .login-input-password-title-block,
 .registration-input-password-title-block,
 .reset-password-input-password-title-block {
-    display        : flex;
+    display: flex;
     justify-content: space-between;
 }
 
@@ -72,8 +72,12 @@ $primary-color: #291965;
 .registration-input-password-title-block:first-child a,
 .reset-password-input-password-title-block:first-child a {
     text-decoration: none;
-    margin-right   : 5px;
-    color          : $primary-color;
+    margin-right: 5px;
+    color: $primary-color;
+}
+
+input:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px #ececed inset;
 }
 
 .login-input-password-title-block:first-child a {
@@ -81,58 +85,67 @@ $primary-color: #291965;
 }
 
 .login-input-password-title-block:first-child a:hover {
-    color:#808080;
+    color: #808080;
 }
 
 .login-input-title,
 .registration-input-title,
 .reset-password-input-title {
-    font-family   : $primary-font;
-    font-size     : 12px;
-    font-weight   : 400;
-    line-height   : 16px;
+    font-family: $primary-font;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
     letter-spacing: 0em;
-    color         : #1D1D1D;
-    margin-bottom : 3px;
+    color: #1d1d1d;
+    margin-bottom: 3px;
 }
 
 .login-show-password,
 .registration-show-password,
-.reset-password-show-password  {
-    color : #C6C8CD;
+.reset-password-show-password{
+    color: #c6c8cd;
     height: 17px;
     cursor: pointer;
 }
 
 .mat-button {
-    width : 327px;
+    width: 327px;
     height: 45px;
 }
 
 .logo-validation-message {
     font-family: $primary-font;
     font-weight: normal;
-    font-size  : 12px;
+    font-size: 12px;
     line-height: 19px;
-    margin-top : 5px;
-    color      : red;
-    max-width:fit-content;
+    margin-top: 5px;
+    color: red;
+    max-width: fit-content;
+}
+
+.logo-invalid-input {
+    border: 1px solid red;
+    border-radius: 10px;
 }
 
 ::ng-deep {
     .mat-form-field-suffix {
-        width     : 17px;
-        height    : 17px;
+        width: 17px;
+        height: 17px;
         align-self: center;
     }
 
     .mat-button {
-        width : 327px;
+        width: 327px;
         height: 45px;
     }
 
+    .mat-button:disabled {
+        background-color: lightgray;
+    }
+
     .mat-form-field-wrapper.mat-form-field-wrapper {
-        width : 287px;
+        width: 287px;
         height: 45px;
     }
 
@@ -145,38 +158,49 @@ $primary-color: #291965;
     }
 
     .mat-form-field-appearance-fill .mat-form-field-flex {
-        padding         : 0;
+        padding: 0;
         background-color: rgba($color: #000000, $alpha: 0);
     }
-
-
-}
-
-.logo-invalid-input {
-    border       : 1px solid red;
-    border-radius: 10px;
 }
 
 :host ::ng-deep {
+    .mat-form-field.mat-focused .mat-form-field-label,
+    .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+        color: gray;
+    }
     .mat-form-field-appearance-fill .mat-form-field-flex {
-        padding    : 0;
+        padding: 0;
         align-items: center;
     }
 
+    .mat-form-field-wrapper.mat-form-field-wrapper {
+        color: #000;
+    }
     .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-prefix .mat-icon-button,
     .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button {
         display: inline-flex;
-        width          : 0;
-        height         : 0;
+        width: 0;
+        height: 0;
         justify-content: left;
-        align-items    : flex-start;
+        align-items: flex-start;
     }
 
-    .mat-form-field-appearance-legacy .mat-form-field-prefix .mat-datepicker-toggle-default-icon, .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-datepicker-toggle-default-icon{
+    .mat-form-field-appearance-legacy .mat-form-field-prefix .mat-datepicker-toggle-default-icon,
+    .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-datepicker-toggle-default-icon {
         width: 17px;
     }
-    .mat-form-field-appearance-legacy .mat-form-field-prefix .mat-icon-button, .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-icon-button{
+    .mat-form-field-appearance-legacy .mat-form-field-prefix .mat-icon-button,
+    .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-icon-button {
         display: flex;
         align-items: center;
+    }
+
+    .mat-form-field.mat-warn .mat-input-element,
+    .mat-form-field-invalid .mat-input-element {
+        caret-color: gray;
+    }
+
+    .mat-input-element{
+        caret-color: gray;
     }
 }
