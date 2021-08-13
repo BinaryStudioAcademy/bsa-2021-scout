@@ -4,25 +4,13 @@
     background-size: cover;
     height: 100%;
 }
-.logo {
-    display: flex;
+
+.logo-wrapper {
+    margin: auto;
+}
+
+.logo-image{
     width: 422px;
     height: 212px;
-    margin: auto;
-    background-color:rgba($color: #ABABAB, $alpha: 0.2);
-    border-radius: 60px;
-}
-
-.logo-text{
-    margin: auto;
-}
-
-.logo-text span{
-    font-family: Nunito;
-    font-size: 71px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 97px;
-    letter-spacing: 0em;
-    color: #898989;
+    margin-right: -30px;
 }
