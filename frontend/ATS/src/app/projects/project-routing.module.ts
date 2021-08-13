@@ -4,9 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component';
 
 
-const routes: Routes = [
-  { path: 'projects', component: ProjectsListComponent, pathMatch: 'full' },
-];
+const routes: Routes = [];
 
 @NgModule({
   declarations: [],

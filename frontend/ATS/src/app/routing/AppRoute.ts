@@ -3,6 +3,7 @@ export enum AppRoute {
   Home = 'home',
   Vacancies = 'vacancies',
   Applicants = 'applicants',
+  Projects = 'projects',
   Interviews = 'interviews',
   Analytics = 'analytics',
   TaskManagement = 'taskManagement',
