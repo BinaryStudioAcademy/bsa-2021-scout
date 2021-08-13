@@ -143,8 +143,9 @@ export class StylePaginatorDirective {
       }, 0);
     });
 
-    this.matPag.page.subscribe((v) => {
-      this.switchPage(v.pageIndex);
+    this.matPag.page.subscribe(_ => {
+      this._currentPage = this.matPag.pageIndex;
+      this.initPageRange();
     });
   }
 }

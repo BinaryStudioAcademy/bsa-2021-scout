@@ -22,6 +22,11 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MultiselectComponent } from './components/multiselect/multiselect.component';
+import { TopicComponent } from './components/topic/topic.component';
+import { FileInputComponent } from './components/file-input/file-input.component';
+import { MenuComponent } from './components/menu/menu.component';
+import { MainContentComponent } from './components/main-content/main-content.component';
+import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -50,6 +55,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MultiselectComponent,
     MatDatepickerModule,
     MatNativeDateModule,
+    TopicComponent,
+    FileInputComponent,
+    MenuComponent,
     MatProgressBarModule,
     SpinnerComponent,
   ],
@@ -75,6 +83,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     BrowserModule,
     MatSelectModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
   providers: [HttpClientService],
   declarations: [
@@ -82,6 +91,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     ButtonComponent,
     SearchFormComponent,
     HeaderComponent,
+    TopicComponent,
+    FileInputComponent,
+    MenuComponent,
+    MainContentComponent,
     SpinnerComponent,
   ],
 })

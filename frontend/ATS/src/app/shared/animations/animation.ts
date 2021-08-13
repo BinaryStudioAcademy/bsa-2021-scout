@@ -1,4 +1,4 @@
-import {trigger,state,style,transition,animate,animateChild,query} from '@angular/animations';
+import {trigger,state,style,transition,animate} from '@angular/animations';
 
 
 export const onSideNavChange = trigger('onSideNavChange', [

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RoutingModule } from '../routing/routing.module';
 import { AppComponent } from './components/app/app.component';
@@ -14,12 +14,13 @@ import { VacancyCardComponent } from '../vacancy/vacancy-card/vacancy-card.compo
 import { VacancyWidgetComponent } from '../vacancy/vacancy-widget/vacancy-widget.component';
 import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
-import { MenuComponent } from './components/menu/menu.component';
+import { ErrorInterceptor } from '../users/helpers/error.interceptor';
+import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
+import { AuthGuard } from '../users/guards/auth.guard';
 
 @NgModule({
   declarations: [
     AppComponent, 
-    MenuComponent,
     VacancyCardComponent,
     VacancyWidgetComponent,
     HomeComponent],
@@ -34,7 +35,12 @@ import { MenuComponent } from './components/menu/menu.component';
     VacanciesModule,
     UsersModule,
   ],
-  providers: [SidenavService],
+  providers: [
+    SidenavService,
+    AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
   exports: [],
 })
