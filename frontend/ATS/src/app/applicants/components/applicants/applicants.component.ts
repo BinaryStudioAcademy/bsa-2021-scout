@@ -33,8 +33,9 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
   public isShowAllTags = false;
 
   public searchValue = '';
-  @ViewChild(MatPaginator) public paginator: MatPaginator|undefined;
-  @ViewChild(StylePaginatorDirective) public directive: StylePaginatorDirective|undefined;
+  @ViewChild(MatPaginator) public paginator: MatPaginator|undefined = undefined;
+  @ViewChild(StylePaginatorDirective) public directive: StylePaginatorDirective|undefined 
+  = undefined;
 
   private $unsubscribe = new Subject();
 
