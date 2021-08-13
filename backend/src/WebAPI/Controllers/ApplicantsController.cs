@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
-using Application.ApplicantToTags.CommandQuery.AddTagCommand;
-using Application.ApplicantToTags.CommandQuery.DeleteTagCommand;
+using Application.ElasticEnities.CommandQuery.AddTagCommand;
+using Application.ElasticEnities.CommandQuery.DeleteTagCommand;
 using Application.Applicants.Queries;
-using System;
 using Application.ElasticEnities.Dtos;
 using System.Threading;
+using Domain.Entities;
+using Application.Applicants.Commands;
 
 namespace WebAPI.Controllers
 {
@@ -46,11 +47,11 @@ namespace WebAPI.Controllers
 
             return Ok(await Mediator.Send(query));
         }
+
         [HttpPost]
         public async Task<IActionResult> PostApplicantAsync([FromBody] CreateApplicantDto createDto)
         {
-            var newApplicant = _mapper.Map<ApplicantDto>(createDto);
-            var query = new CreateEntityCommand<ApplicantDto>(newApplicant);
+           var query = new CreateComposedApplicantCommand(createDto);
 
             return Ok(await Mediator.Send(query));
         }
@@ -81,8 +82,7 @@ namespace WebAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> PutApplicantAsync([FromBody] UpdateApplicantDto updateDto)
         {
-            var updatedApplicant = _mapper.Map<ApplicantDto>(updateDto);
-            var query = new UpdateEntityCommand<ApplicantDto>(updatedApplicant);
+            var query = new UpdateComposedApplicantCommand(updateDto);
 
             return Ok(await Mediator.Send(query));
         }
@@ -100,6 +100,9 @@ namespace WebAPI.Controllers
         {
             var query = new DeleteEntityCommand(id);
             await Mediator.Send(query);
+
+            var elasticQuery = new DeleteElasticDocumentCommand(id);
+            await Mediator.Send(elasticQuery);
 
             return StatusCode(204);
         }

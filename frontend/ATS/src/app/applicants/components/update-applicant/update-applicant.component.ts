@@ -5,14 +5,17 @@ import { Component, Inject, OnDestroy } from '@angular/core';
 import { applicantGroup } from '../../validators/applicant-validator';
 import { Applicant } from 'src/app/shared/models/applicant/applicant';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { HttpClientService } from 'src/app/shared/services/http-client.service';
 import { UpdateApplicant } from 'src/app/shared/models/applicant/update-applicant';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 
 @Component({
   selector: 'app-update-applicant',
   templateUrl: 'update-applicant.component.html',
-  styleUrls: [ 'update-applicant.component.scss' ],
+  styleUrls: [
+    'update-applicant.component.scss',
+    '../../common/common.scss',  
+  ],
 })
 
 export class UpdateApplicantComponent implements OnDestroy {
@@ -22,7 +25,6 @@ export class UpdateApplicantComponent implements OnDestroy {
     firstName: '',
     lastName: '',
     middleName: '',
-    birthDate: new Date(),
     email: '',
     phone: '',
     skype: '',
@@ -33,7 +35,7 @@ export class UpdateApplicantComponent implements OnDestroy {
 
   constructor(
   @Inject(MAT_DIALOG_DATA) applicant: Applicant,
-    private readonly httpClient: HttpClientService,
+    private readonly applicantsService: ApplicantsService,
     private readonly dialogRef: MatDialogRef<UpdateApplicantComponent>,
     private readonly notificationsService: NotificationService,
   ) {
@@ -50,7 +52,7 @@ export class UpdateApplicantComponent implements OnDestroy {
   }
 
   public updateApplicant(): void {
-    this.httpClient.putRequest<Applicant>('/applicants', this.updateApplicant)
+    this.applicantsService.updateApplicant(this.updatedApplicant)
       .pipe(
         takeUntil(this.$unsubscribe),
       )
@@ -65,5 +67,7 @@ export class UpdateApplicantComponent implements OnDestroy {
   public ngOnDestroy(): void {
     this.$unsubscribe.next();
     this.$unsubscribe.complete();
+
+    this.validationGroup?.reset();
   }
 }

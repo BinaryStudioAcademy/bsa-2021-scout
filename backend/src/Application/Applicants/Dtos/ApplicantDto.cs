@@ -1,6 +1,6 @@
 using Application.Common.Models;
 using System.Collections.Generic;
-using Application.ApplicantToTags.Dtos;
+using Application.ElasticEnities.Dtos;
 
 namespace Application.Applicants.Dtos
 {
@@ -10,6 +10,6 @@ namespace Application.Applicants.Dtos
         public string Skype { get; set; }
         public double Experience { get; set; }
         public IEnumerable<ApplicantVacancyInfoDto> Vacancies { get; set; }
-        public ApplicantToTagsDto Tags { get; set; }
+        public ElasticEnitityDto Tags { get; set; }
     }
 }

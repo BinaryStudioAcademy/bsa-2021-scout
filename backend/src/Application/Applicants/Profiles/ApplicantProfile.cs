@@ -14,6 +14,7 @@ namespace Application.Applicants.Profiles
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<UpdateApplicantDto, ApplicantDto>();
+            CreateMap<ApplicantVacancyInfo, ApplicantVacancyInfoDto>();
         }
     }
 }

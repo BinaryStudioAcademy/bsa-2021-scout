@@ -1,3 +1,4 @@
+import { ElasticEntity } from '../elastic-entity/elastic-entity';
 import { ApplicantVacancyInfo } from './applicant-vacancy-info';
 
 export interface Applicant {
@@ -10,6 +11,6 @@ export interface Applicant {
   skype: string
   experience: number
 
-  tags: string[]
+  tags: ElasticEntity
   vacancies: ApplicantVacancyInfo[]
 }

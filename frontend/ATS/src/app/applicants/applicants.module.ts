@@ -6,12 +6,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApplicantsComponent } from './components/applicants/applicants.component';
 import { CreateApplicantComponent } from './components/create-applicant/create-applicant.component';
 import { UpdateApplicantComponent } from './components/update-applicant/update-applicant.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { StylePaginatorDirective } from '../shared/directives/style-paginator.directive';
 
 @NgModule({
   declarations: [
     ApplicantsComponent,
     CreateApplicantComponent,
     UpdateApplicantComponent,
+    StylePaginatorDirective,
   ],
   imports: [
     BrowserModule,
@@ -19,6 +24,9 @@ import { UpdateApplicantComponent } from './components/update-applicant/update-a
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [ApplicantsComponent],

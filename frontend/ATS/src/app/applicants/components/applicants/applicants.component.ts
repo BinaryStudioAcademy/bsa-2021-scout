@@ -1,50 +1,69 @@
 import { Subject } from 'rxjs';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Applicant } from 'src/app/shared/models/applicant/applicant';
-import { HttpClientService } from 'src/app/shared/services/http-client.service';
+import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { CreateApplicantComponent } from '../create-applicant/create-applicant.component';
 import { UpdateApplicantComponent } from '../update-applicant/update-applicant.component';
-import { SearchFormComponent } from 'src/app/shared/components/search-form/search-form.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
+import { Tag } from 'src/app/shared/models/tags/tag';
 
 @Component({
   selector: 'app-applicants',
   templateUrl: 'applicants.component.html',
-  styleUrls: [ 'applicants.component.scss' ],
+  styleUrls: [
+    'applicants.component.scss',
+    '../../common/scroll.scss',
+  ],
 })
 
-export class ApplicantsComponent {
+export class ApplicantsComponent implements OnInit, AfterViewInit {
   public displayedColumns: string[] = [ 'name', 'rate', 'email', 'active_vacancies',
-    'jobs_list', 'tags', 'status', 'control_buttons',
+    'jobs_list', 'status', 'tags', 'control_buttons',
   ];
 
   public dataSource = new MatTableDataSource<Applicant>();
+  public cashedData: Applicant[] = [];
 
-  public value = '';
+  public isShowAllTags = false;
+
+  public searchValue = '';
+  @ViewChild(MatPaginator) public paginator: MatPaginator|undefined;
+  @ViewChild(StylePaginatorDirective) public directive: StylePaginatorDirective|undefined;
 
   private $unsubscribe = new Subject();
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly notificationsService: NotificationService,
-    private readonly httpCLient: HttpClientService,
-  ) {
-    this.httpCLient.getRequest<Applicant[]>('/applicants')
+    private readonly applicantsService: ApplicantsService,
+  ) 
+  { }
+
+  public ngOnInit(): void {
+    this.applicantsService.getApplicants()
       .pipe(
         takeUntil(this.$unsubscribe),
       )
       .subscribe((result: Applicant[]) => {
         this.dataSource.data = result;
+        this.cashedData = result;
       },
       (error: Error) => {
         this.notificationsService.showErrorMessage(error.message,
           'Cannot download applicants from the host');
       },
       );
+  }
+  
+  public ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator!;
+    this.dataSource.filter = this.searchValue.trim().toLowerCase();
   }
 
   public showApplicantCreateDialog(): void {
@@ -57,7 +76,9 @@ export class ApplicantsComponent {
     dialogRef.afterClosed()
       .subscribe((result: Applicant) => {
         if (result) {
-          this.dataSource.data.unshift(result);
+          this.cashedData.unshift(result);
+          this.dataSource.data = this.cashedData;
+
           this.notificationsService.showSuccessMessage('An applicant was succesfully created',
             'Success!');
         }
@@ -75,8 +96,9 @@ export class ApplicantsComponent {
     dialogRef.afterClosed()
       .subscribe((result: Applicant) => {
         if (result) {
-          let applicantIndex = this.dataSource.data.findIndex(a => a.id === result.id);
-          this.dataSource.data[applicantIndex] = result;
+          let applicantIndex = this.cashedData.findIndex(a => a.id === result.id);
+          this.cashedData[applicantIndex] = result;
+          this.dataSource.data = this.cashedData;
 
           this.notificationsService.showSuccessMessage('An applicant was succesfully updated',
             'Success!');
@@ -85,15 +107,16 @@ export class ApplicantsComponent {
   }
 
   public deleteApplicant(applicantId: string): void {
-    this.httpCLient.deleteRequest('/applicants/' + applicantId)
+    this.applicantsService.deleteApplicant(applicantId)
       .pipe(
         takeUntil(this.$unsubscribe),
       )
       .subscribe(() => {
         let applicantIndex = this.dataSource.data.findIndex(a => a.id === applicantId);
-        this.dataSource.data.slice(applicantIndex, 1);
-
-        this.notificationsService.showSuccessMessage('The applicant was succesfully deleted',
+        
+        this.cashedData.splice(applicantIndex, 1);
+        this.dataSource.data = this.cashedData;
+        this.notificationsService.showSuccessMessage('The applicant was successfully deleted',
           'Success!');
       },
       (error: Error) => {
@@ -102,8 +125,37 @@ export class ApplicantsComponent {
       });
   }
 
-  public applyFilter(searchValue: string): void {
-    this.dataSource.filter = searchValue.trim().toLowerCase();
+  public getFirstTags(applicant: Applicant): Tag[] {
+    console.log(applicant);
+    return applicant.tags.tagDtos.length > 6
+      ? applicant.tags.tagDtos.slice(0, 5)
+      : applicant.tags.tagDtos;
+  }
+
+  public toggleAllTags(): void {
+    this.isShowAllTags = this.isShowAllTags
+      ? false
+      : true;
+  }
+
+  public applyFilter(): void {
+    this.searchValue = this.searchValue;
+    this.dataSource.filter = this.searchValue.trim().toLowerCase();
+
+    if(this.dataSource.paginator) {
+      this.directive?.applyFilter$.emit();
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  public clearSearchInput(): void {
+    this.dataSource.filter = '';
+    this.searchValue = '';
+
+    if(this.dataSource.paginator) {
+      this.directive?.applyFilter$.emit();
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   public sortData(sort: Sort): void {
@@ -121,7 +173,7 @@ export class ApplicantsComponent {
         case 'jobs_list':
           return this.compareRows(a.vacancies.length, b.vacancies.length, isAsc);
         case 'tags':
-          return this.compareRows(a.tags.length, b.tags.length, isAsc);
+          return this.compareRows(a.tags.tagDtos.length, b.tags.tagDtos.length, isAsc);
         default:
           return 0;
       }

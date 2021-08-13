@@ -7,74 +7,89 @@
 <mat-dialog-content>
     <form [formGroup]="validationGroup!" novalidate>
         <p>First name</p>
-        <mat-form-field>
-            <input type="text" formControlName="firstName" matInput placeholder="Enter first name" [(ngModel)]="updatedApplicant.firstName">   
-            <mat-error *ngIf="validationGroup!.controls['firstName'].hasError('required')">
+        <mat-form-field appearance="fill">
+            <input formControlName="firstName" type="text" matInput placeholder="Enter first name" [(ngModel)]="updatedApplicant.firstName">
+            <mat-error *ngIf="validationGroup!.controls['firstName'].hasError('required'); then firstNamePatternError">
                 Please enter a first name
             </mat-error>
-            <mat-error *ngIf="validationGroup!.controls['firstName'].hasError('pattern')">
-                A first name can only contain latin letters
-            </mat-error>
+            <ng-template #firstNamePatternError>
+                <mat-error *ngIf="validationGroup!.controls['firstName'].hasError('pattern')">
+                    A first name can only contain latin letters
+                </mat-error>
+            </ng-template>
         </mat-form-field>
 
         <p>Last name</p>
-        <mat-form-field>
-            <input type="text" formControlName="lastName" matInput placeholder="Enter last name" [(ngModel)]="updatedApplicant.lastName">   
-            <mat-error *ngIf="validationGroup!.controls['lastName'].hasError('required')">
+        <mat-form-field appearance="fill">
+            <input formControlName="lastName" type="text" matInput placeholder="Enter last name" [(ngModel)]="updatedApplicant.lastName">
+            <mat-error *ngIf="validationGroup!.controls['lastName'].hasError('required'); then lastNamePatternError">
                 Please enter a last name
             </mat-error>
-            <mat-error *ngIf="validationGroup!.controls['lastName'].hasError('pattern')">
-                A last name can only contain latin letters
-            </mat-error>
+            <ng-template #lastNamePatternError>
+                <mat-error *ngIf="validationGroup!.controls['lastName'].hasError('pattern')">
+                    A last name can only contain latin letters
+                </mat-error>
+            </ng-template>
         </mat-form-field>
 
         <p>Middle name</p>
-        <mat-form-field>
-            <input type="text" formControlName="middleName" matInput placeholder="Enter middle name" [(ngModel)]="updatedApplicant.middleName">   
-            <mat-error *ngIf="validationGroup!.controls['middleName'].hasError('required')">
+        <mat-form-field appearance="fill">
+            <input formControlName="middleName" type="text" matInput placeholder="Enter middle name" [(ngModel)]="updatedApplicant.middleName">
+            <mat-error *ngIf="validationGroup!.controls['middleName'].hasError('required'); then middleNamePatternError">
                 Please enter a middle name
             </mat-error>
-            <mat-error *ngIf="validationGroup!.controls['middleName'].hasError('pattern')">
-                A middle name can only contain latin letters
-            </mat-error>
+            <ng-template #middleNamePatternError>
+                <mat-error *ngIf="validationGroup!.controls['middleName'].hasError('pattern')">
+                    A middle name can only contain latin letters
+                </mat-error>
+            </ng-template>
         </mat-form-field>
 
         <p>Email</p>
-        <mat-form-field>
-            <input type="email" formControlName="email" matInput placeholder="Enter email" [(ngModel)]="updatedApplicant.email">   
-            <mat-error *ngIf="validationGroup!.controls['email'].hasError('required')">
+        <mat-form-field appearance="fill">
+            <input formControlName="email" type="email" matInput placeholder="Enter email" [(ngModel)]="updatedApplicant.email">
+            <mat-error *ngIf="validationGroup!.controls['email'].hasError('required'); then emailPatternError">
                 Please enter an email address.
             </mat-error>
-            <mat-error *ngIf="validationGroup!.controls['email'].invalid || validationGroup!.controls['email'].hasError('pattern')">
-                Please enter a valid email address.
-            </mat-error> 
+            <ng-template #emailPatternError>
+                <mat-error *ngIf="validationGroup!.controls['email'].invalid || validationGroup!.controls['email'].hasError('pattern')">
+                    Please enter a valid email address.
+                </mat-error>
+            </ng-template>
         </mat-form-field>
 
         <p>Experience</p>
-        <mat-form-field>
-            <input type="number" formControlName="experience" matInput placeholder="Enter experience" [(ngModel)]="updatedApplicant.experience"  step=".1" min="0" max="60">     
+        <mat-form-field appearance="fill">
+            <input formControlName="experience" type="number" matInput step=".1" min="0" max="60" [(ngModel)]="updatedApplicant.experience">
+            <mat-error>
+                Please enter a valid experience number in range from 0 to 60
+            </mat-error>
         </mat-form-field>
         
         <p>Phone</p>
-        <mat-form-field>
-            <input type="tel" formControlName="phone" matInput placeholder="Enter phone number">
-            <mat-error *ngIf="validationGroup!.controls['phone'].hasError('required')">
+        <mat-form-field appearance="fill">
+            <input formControlName="phone" type="tel" matInput placeholder="Enter phone number" [(ngModel)]="updatedApplicant.phone">
+            <mat-error *ngIf="validationGroup!.controls['phone'].hasError('required'); then phonePatternError">
                 Please enter a phone number
             </mat-error>
-            <mat-error *ngIf="validationGroup!.controls['phone'].hasError('pattern')">
-                A phone number can only contain integers and has a length from 8 to 16
-            </mat-error>   
+            <ng-template #phonePatternError>
+                <mat-error *ngIf="validationGroup!.controls['phone'].hasError('pattern')">
+                    A phone number can only contain integers and has a length from 8 to 16
+                </mat-error>
+            </ng-template>
         </mat-form-field>
 
         <p>Skype</p>
-        <mat-form-field>
-            <input type="text" formControlName="skype" matInput placeholder="Enter skype">
-            <mat-error *ngIf="validationGroup!.controls['skype'].hasError('required')">
+        <mat-form-field appearance="fill">
+            <input formControlName="skype" type="text" matInput placeholder="Enter skype" [(ngModel)]="updatedApplicant.skype">
+            <mat-error *ngIf="validationGroup!.controls['skype'].hasError('required'); then skypePatternError">
                 Please enter a skype
             </mat-error>
-            <mat-error *ngIf="validationGroup!.controls['skype'].hasError('pattern')">
-                A skype has to has a length from 6 to 32 not space characters
-            </mat-error>  
+            <ng-template #skypePatternError>
+                <mat-error *ngIf="validationGroup!.controls['skype'].hasError('pattern')">
+                    A skype has to has a length from 6 to 32 not space characters
+                </mat-error>
+            </ng-template>
         </mat-form-field>
     </form>
 </mat-dialog-content>

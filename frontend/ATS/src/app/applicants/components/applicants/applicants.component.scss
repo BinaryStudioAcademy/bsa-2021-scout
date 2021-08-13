@@ -1,7 +1,19 @@
-$row-height: 55px;
+$row-height: 65px;
+$header-height: 30px;
 
 .page-content {
     padding: 45px 51px 0 0;
+    background-color: #f6f7f9;
+    height: calc(100% - 120px);
+}
+
+.outside-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100vh;
 }
 
 :host ::ng-deep .applicants-header-bar {
@@ -10,12 +22,36 @@ $row-height: 55px;
     justify-content: space-between;
     padding: 0 0 30px 51px;
 
+    .mat-form-field-wrapper.mat-form-field-wrapper{
+        height: 45px;
+    }
+    
+    .mat-form-field-appearance-fill .mat-form-field-infix{
+        display:flex;
+        align-items: center;
+        padding: 0.75em 0.25em;
+    }
+    
+    .mat-form-field-appearance-fill .mat-form-field-flex{
+        padding: .75em .75em .75em .75em;
+    }
+    
+    .mat-icon{
+        color: #4d4d4d;
+        font-size: 15px;
+        height:16px;
+    }
+    
+    .mat-icon-button .mat-icon {
+        line-height: 1;
+    }
+
     .create-button {
         width: 153px;
     }
 
     .mat-form-field-wrapper {
-        background-color: #fff !important;
+        background-color: #fff;
     
         .mat-form-field-flex {
             background: none;
@@ -23,11 +59,11 @@ $row-height: 55px;
     }
 }
 
-.mat-table {
+:host ::ng-deep .mat-table {
     width: 100%;
 
     .mat-header-row {
-        height: 30px;
+        height: $header-height;
     }
 
     .mat-row {
@@ -36,38 +72,52 @@ $row-height: 55px;
 
     .mat-cell {
         border: none;
-        padding-right: 15px;
+        font-size: 1.2em;
+        position: relative;
 
         &:not(.control-buttons-cell) {
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            
+        }
+
+        &:not(.active-vac-cell, .jobs-list-cell, .tags-list-cell) {
             min-width: 50px;
-            max-width: 250px;
+            max-width: 200px;
+        }
+
+        &.active-vac-cell {
+            min-width: 20px;
+            max-width: 100px;
+        }
+
+        &.jobs-list-cell {
+            overflow: visible;
+            width: 200px;
+        }
+        
+        &.tags-list-cell {
+            overflow: visible;
+            width: 300px;
+        }
+
+        &.jobs-list-cell {
+            overflow: visible;
+            width: 200;
+        }
+
+        .mat-list-base {
+            padding: 0;
         }
 
         .mat-list::-webkit-scrollbar {
-            width: 2px;
-            height: 2px;
-        }
-
-        .mat-list::-webkit-scrollbar-track {
-            background: none;
-        }
-
-        .mat-list::-webkit-scrollbar-thumb {
-            background-color: rgba($color: (#291965), $alpha: 0.5);
-            border-radius: 5px;
+            width: 4px;
         }
 
         .jobs-list {
-            display: flex;
-            font-size: 12px;
-            padding: 0;
-            flex-direction: column;
-            height: 40px;
-            overflow-y: scroll;
+            overflow-y: hidden;
+            height: $row-height - 10px;
+            margin-left: -16px;
 
             .mat-list-item {
                 font-size: 13px;
@@ -75,26 +125,80 @@ $row-height: 55px;
             }
         }
 
-        .tags-list {
-            height: $row-height;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, 1fr);
-            grid-gap: 10px;
-            max-width: 70%;
-            overflow-x: scroll;
-            display: flex;
-            align-items: center;
-            background: none;
+        .jobs-pop-up-list:hover {
+            position: absolute;
+            min-height: 250px;
+            max-height: 350px;
+            animation: fadeIn 0.5s;
+            padding: 10px;
+            width: 200px;
 
-            mat-list-item {
-                grid-row: 1 / 2;
-                width: max-content;
+            .mat-list-item {
+                height: 30px;
+                margin-bottom: 15px;
+            }
+        }
+
+        .jobs-pop-up-list:hover,
+        .absolute-tags-list-container {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px 5px #c9c9c9;
+            overflow-y: scroll;
+            top: 0;
+            left: 0;
+            z-index: 5;
+        }
+
+        .absolute-tags-list-container {
+            position: absolute;
+            width: 350px;
+            max-height: 300px;
+            animation: appearance 0.5s;
+            padding: 3px 0 15px 20px;
+
+            .mat-list-item {
+                font-size: 1.1em;
+                margin: 5px 5px;
+            }
+
+            .tags-pop-up-actions {
+                display: flex;
+                justify-content: flex-end;
+                height: 25px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .tags-list {
+            margin-left: -3px;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+
+            .mat-list-item {
+                width: min-content;
                 height: min-content;
-                padding: 2px 0;
+                padding: 4px 0;
+                line-height: 1;
+                font-size: 0.9em;
+                color: rgba($color: (#291965), $alpha: 0.8);
+                background-color: rgba($color: (#291965), $alpha: 0.1);
+                font-weight: 700;
                 border-radius: 15px;
-                background-color: #EE2A64;
-                color: #fff;
+                margin: 3px;
+            
+                &.more-button {
+                    background: none;
+                    cursor: pointer;
+                    padding: 1px 0;
+                    border: 2px solid rgba($color: (#291965), $alpha: 0.8);
+
+                    &:hover {
+                        box-shadow: 0 0 4px rgba($color: (#291965), $alpha: 0.5);
+                        text-shadow: 0 0 1px 1px rgba($color: (#291965), $alpha: 0.8);
+                    }
+                }
             }
         }
     }
@@ -111,5 +215,29 @@ $row-height: 55px;
         .applicant-control-btn {
             color: #8E8E8E;
         }
+    }
+}
+
+:host ::ng-deep .mat-paginator {
+    background: none;
+}
+
+@keyframes appearance {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
     }
 }
