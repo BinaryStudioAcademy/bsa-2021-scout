@@ -8,6 +8,7 @@ import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginat
 import { VacancyStatus } from 'src/app/shared/models/vacancy/vacancy-status';
 import { VacancyData } from 'src/app/shared/models/vacancy/vacancy-data';
 import { VacancyDataService } from 'src/app/shared/services/vacancy-data.service';
+import { Router } from '@angular/router';
 
 ​
 const HRs: string[] = [
@@ -45,7 +46,7 @@ export class VacanciesTableComponent implements AfterViewInit {
   @ViewChild('input') serachField!: ElementRef;
   private randomRequiredCandidatesAmounts: number[] = [60, 30, 6, 29, 44, 34, 55, 30, 6, 32];
   private randomCurrentApplicantsAmounts: number[] = [130, 34, 56, 34];
-  constructor(private cd: ChangeDetectorRef,
+  constructor(private router:Router, private cd: ChangeDetectorRef,
     private dialog: MatDialog, private service: VacancyDataService) {
     // const vacancies =  Array.from({ length: 99 }, (_, k) => createNewVacancy());
     service.getList().subscribe(data=>{
@@ -66,6 +67,9 @@ export class VacanciesTableComponent implements AfterViewInit {
   }
   public getStatus(index:number): string{
     return VacancyStatus[index];
+  }
+  public toStagedReRoute(id:string){
+    this.router.navigateByUrl(`candidates/${id}`);
   }
   public clearSearchField(){
     this.serachField.nativeElement.value = '';
