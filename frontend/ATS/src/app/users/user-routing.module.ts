@@ -9,27 +9,32 @@ import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.
 import { AppRoute } from '../routing/AppRoute';
 import { SuccessfulRegistrationComponent } from
   './components/successful-registration/successful-registration.component';
+import { LoggedInUserGuard } from './guards/logged-in-user.guard';
 
 const routes: Routes = [
   {
     path: AppRoute.Login,
     pathMatch: 'full',
     component: LoginComponent,
+    canActivate: [ LoggedInUserGuard ],
   },
   {
     path: AppRoute.ConfirmEmail,
     pathMatch: 'full',
     component: ConfirmEmailComponent,
+    canActivate: [ LoggedInUserGuard ],
   },
   {
     path: AppRoute.SuccessfulRegistration,
     pathMatch: 'full',
     component: SuccessfulRegistrationComponent,
+    canActivate: [ LoggedInUserGuard ],
   },
   {
     path: AppRoute.Registration,
     pathMatch: 'full',
     component: RegistrationComponent,
+    canActivate: [ LoggedInUserGuard ],
   },
   { path: AppRoute.ResetPassword, component: ResetPasswordComponent, 
     canActivate: [ResetPasswordGuard] },

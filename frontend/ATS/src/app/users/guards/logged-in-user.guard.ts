@@ -18,9 +18,9 @@ export class LoggedInUserGuard implements CanActivate {
       this.router.navigate([`/${AppRoute.Home}`]);
       this.notificationsService.showInfoMessage('You are already logged in',
         'Reminding');
-
       return false;
     }
+
     return true;
   }
 }

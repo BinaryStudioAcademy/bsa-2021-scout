@@ -11,17 +11,10 @@ import { MainContentComponent } from
 import { HomeComponent } from '../users/components/home/home.component';
 import { AuthGuard } from '../users/guards/auth.guard';
 import { ApplicantsComponent } from '../applicants/components/applicants/applicants.component';
-import { LoginComponent } from '../users/components/login/login.component';
-import { LoggedInUserGuard } from '../users/guards/logged-in-user.guard';
-import { RegistrationComponent } from '../users/components/registration/registration.component';
 
 const routes: Routes = [
-  {
+  { 
     path: '', component: MainContentComponent, canActivate:[AuthGuard], children: [
-      { path: AppRoute.Login, component: LoginComponent, pathMatch: 'full', 
-        canActivate: [ LoggedInUserGuard ] },
-      { path: AppRoute.Registration, component: RegistrationComponent, pathMatch: 'full',
-        canActivate: [ LoggedInUserGuard ] },
       { path: AppRoute.Home, component: HomeComponent, pathMatch: 'full' },
       { path: AppRoute.Vacancies, component: VacanciesListComponent, pathMatch: 'full' },
       { path: AppRoute.Applicants, component: ApplicantsComponent, pathMatch: 'full' },
