@@ -25,7 +25,6 @@ namespace Domain.Entities
         public ICollection<VacancyCandidate> AddedCandidates { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
         public ICollection<UserToRole> UserRoles { get; set; }
-        public ICollection<CompanyToUser> UserCompanies { get; set; }
 
         public IList<DomainEvent> DomainEvents { get; set; }
     }
