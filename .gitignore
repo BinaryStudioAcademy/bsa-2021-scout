@@ -5,6 +5,7 @@
 
 .env/
 launchSettings.json
+.vscode
 
 # User-specific files
 *.rsuser
