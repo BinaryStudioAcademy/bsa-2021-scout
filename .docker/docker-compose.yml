@@ -36,7 +36,7 @@ services:
       - backend
 
   ats_database:
-    image: mcr.microsoft.com/azure-sql-edge
+    image: mcr.microsoft.com/mssql/server:2017-latest
     container_name: "ats_database"
     ports:
       - 1433:1433
