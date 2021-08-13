@@ -8,7 +8,8 @@ import { AuthenticationService } from '../../services/auth.service';
 @Component({
   selector: 'app-successful-registration',
   templateUrl: './successful-registration.component.html',
-  styleUrls: ['./successful-registration.component.scss'],
+  styleUrls: ['./successful-registration.component.scss' ,
+    '../login-regist-common/login-regist-common.component.scss'],
 })
 export class SuccessfulRegistrationComponent {
 
