@@ -107,11 +107,12 @@ namespace WebAPI.Extensions
             foreach(var company in CompanySeeds.Companies){
                 try{
                     await otherRepo.GetAsync(company.Id);
+                    break;
                 }catch
                 {
-                    break;
+                    await repo.CreateAsync(company);
                 }
-                await repo.CreateAsync(company);
+                
             }
             
             return host;
