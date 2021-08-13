@@ -26,12 +26,12 @@ namespace WebAPI
                                 )
                                 .ApplyMongoSeeding()
                                 .ApplyElasticSeeding()
-                                .ApplyStageSeeding()
+                                .ApplyProjectSeeding()
                             )
-                            .ApplyProjectSeeding()
+                            .ApplyUserSeeding()
                         )
-                    ).ApplyUserSeeding()
-                ).ApplyVacancySeeding()
+                    ).ApplyVacancySeeding()
+                ).ApplyStageSeeding()
             )
            .Run();
 

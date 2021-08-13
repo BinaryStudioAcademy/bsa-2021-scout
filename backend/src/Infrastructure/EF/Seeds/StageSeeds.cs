@@ -12,12 +12,12 @@ namespace Infrastructure.EF.Seeds
         public static IEnumerable<Stage> Stages ()
         { 
            var stages = new List<Stage>();
-           foreach(var vacancyId in (new VacancySeeds()).VacancyIds){
+           foreach(var id in (new VacancySeeds()).VacancyIds){
                stages.Add( 
                 new Stage{
-                    Id = Guid.NewGuid().ToString(),
+                    Id = id,
                     Name = "Interview",
-                    VacancyId = vacancyId
+                    VacancyId = id
                 }
             );
            }
