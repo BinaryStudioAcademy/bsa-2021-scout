@@ -17,16 +17,20 @@ namespace WebAPI
                         await 
                         (
                             (
-                                await 
+                                await
                                 (
-                                    await CreateHostBuilder(args)
-                                    .Build()
-                                    .ApplyDatabaseMigrations()
-                                    .CleanUp()
+                                    await 
+                                    (
+                                        await CreateHostBuilder(args)
+                                        .Build()
+                                        .ApplyDatabaseMigrations()
+                                        .CleanUp()
+                                    )
+                                    .ApplyMongoSeeding()
+                                    .ApplyDatabaseSeeding()
+                                    .ApplyElasticSeeding()
+                                .ApplyCompanySeeding()
                                 )
-                                .ApplyMongoSeeding()
-                                .ApplyDatabaseSeeding()
-                                .ApplyElasticSeeding()
                                 .ApplyProjectSeeding()
                             )
                             .ApplyUserSeeding()

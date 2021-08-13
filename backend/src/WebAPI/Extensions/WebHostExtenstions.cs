@@ -105,6 +105,12 @@ namespace WebAPI.Extensions
             var repo = scope.ServiceProvider.GetService<IWriteRepository<Company>>();
             var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Company>>();
             foreach(var company in CompanySeeds.Companies){
+                try{
+                    await otherRepo.GetAsync(company.Id);
+                }catch
+                {
+                    break;
+                }
                 await repo.CreateAsync(company);
             }
             
