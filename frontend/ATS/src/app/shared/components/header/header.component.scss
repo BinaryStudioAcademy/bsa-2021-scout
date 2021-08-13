@@ -1,47 +1,66 @@
-.mat-toolbar{
-    display:flex;
-    width: inherit;
-    align-items: center;
-    justify-content: flex-end;
+@import "../../../../common.scss";
+
+.mat-toolbar {
+  display: flex;
+  width: inherit;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-.mat-toolbar .mat-icon{
-    color:white;
-    font-size:27px;
+.mat-toolbar .mat-icon {
+  color: white;
+  font-size: 27px;
 }
 
-:host ::ng-deep .mat-badge-content 
-{
-    right: 2px !important;
-    top: 2px !important;
-    width: 8px;
-    height: 8px;
+:host ::ng-deep .mat-badge-content {
+  right: 2px !important;
+  top: 2px !important;
+  width: 8px;
+  height: 8px;
 }
 
-.mat-toolbar > *{
-    margin-left: 20px;
+.mat-toolbar > * {
+  margin-left: 20px;
 }
 
-.avatar-info{
-    display:flex;
-    flex-direction: row;
-    align-items: center;
-    .mat-icon-button{
-        width: auto;
-        height: auto;
+.avatar-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+
+  .mat-icon-button {
+    width: auto;
+    height: auto;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 150px;
+
+    .element {
+      width: 100%;
+      padding: 10px;
+
+      &:hover {
+        background-color: $primary-color-white;
+      }
     }
+  }
 }
 
 .mat-badge-content {
-    width: 10px;
-    height: 10px;
-    top: 0px;
-    right: 0px;
+  width: 10px;
+  height: 10px;
+  top: 0px;
+  right: 0px;
 }
 
 img {
-    object-fit: cover;
-    width:45px;
-    height:45px;
-    border-radius: 50%;
+  object-fit: cover;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
 }
