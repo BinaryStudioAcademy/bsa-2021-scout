@@ -128,4 +128,4 @@ jobs:
           SLACK_USERNAME: Deployment
           SLACK_TITLE: Status
           SLACK_MESSAGE: ${{ env.WORKFLOW_CONCLUSION }} # neutral, success, skipped, cancelled, timed_out, action_required, failure
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
