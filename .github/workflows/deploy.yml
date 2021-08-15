@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - prod
+      - prod-deploy
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -16,6 +17,8 @@ jobs:
         stages:
           - stage: develop-deployment
             shouldRelease: ${{ contains(github.ref, 'develop') }}
+          - stage: prod-deployment
+            shouldRelease: ${{ contains(github.ref, 'prod-deploy') }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -40,6 +43,9 @@ jobs:
           - stage: develop-deployment
             shouldRelease: ${{ contains(github.ref, 'develop') }}
             FRONTEND_CONFIGURATION: 'develop-deployment'
+          - stage: prod-deployment
+            shouldRelease: ${{ contains(github.ref, 'prod-deploy') }}
+            FRONTEND_CONFIGURATION: 'prod-deployment'
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -68,6 +74,11 @@ jobs:
             DEPLOYMENT_HOST: DEVELOP_DEPLOYMENT_HOST
             DEPLOYMENT_USERNAME: DEVELOP_DEPLOYMENT_USERNAME
             DEPLOYMENT_PASSWORD: DEVELOP_DEPLOYMENT_PASSWORD
+          - stage: prod-deployment
+            shouldRelease: ${{ contains(github.ref, 'prod-deploy') }}
+            DEPLOYMENT_HOST: PROD_DEPLOYMENT_HOST
+            DEPLOYMENT_USERNAME: PROD_DEPLOYMENT_USERNAME
+            DEPLOYMENT_PASSWORD: PROD_DEPLOYMENT_PASSWORD
     steps:
     - name: Checkout
       uses: actions/checkout@v2
