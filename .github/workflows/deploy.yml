@@ -118,10 +118,14 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - uses: technote-space/workflow-conclusion-action@v2
-      - uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ env.WORKFLOW_CONCLUSION }} # neutral, success, skipped, cancelled, timed_out, action_required, failure
+      - name: Trigger this job at the end of workflow
+        uses: technote-space/workflow-conclusion-action@v2
+      
+      - name: Slack Notification
+        if: always()
+        uses: rtCamp/action-slack-notify@v2.2.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_USERNAME: Deployment
+          SLACK_TITLE: Status
+          SLACK_MESSAGE: ${{ env.WORKFLOW_CONCLUSION }} # neutral, success, skipped, cancelled, timed_out, action_required, failure
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
