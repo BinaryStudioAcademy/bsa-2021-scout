@@ -128,5 +128,5 @@ jobs:
           SLACK_USERNAME: Deployment
           SLACK_TITLE: Status
           # WORKFLOW_CONCLUSION: neutral, success, skipped, cancelled, timed_out, action_required, failure
-          SLACK_MESSAGE: "Deployment is ${{ env.WORKFLOW_CONCLUSION }} ${{ env.WORKFLOW_CONCLUSION == 'success' && 'Success 🟢' || env.WORKFLOW_CONCLUSION == 'cancelled' && 'Cancelled 🟡' || env.WORKFLOW_CONCLUSION == 'skipped' && 'Skipped 🔵' || 'Error 🔴' }}"
+          SLACK_MESSAGE: "Deployment is ${{ env.WORKFLOW_CONCLUSION == 'success' && 'Success 🟢' || env.WORKFLOW_CONCLUSION == 'cancelled' && 'Cancelled 🟡' || env.WORKFLOW_CONCLUSION == 'skipped' && 'Skipped 🔵' || 'Error 🔴' }}"
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
