@@ -19,6 +19,8 @@ import { LoginRegistCommonComponent } from './components/login-regist-common/log
 import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
 import { SuccessfulRegistrationComponent }
   from './components/successful-registration/successful-registration.component';
+import { UserDataService } from './services/user-data.service';
+import { UsersTableComponent } from './components/hr-lead/users-table/users-table.component';
 
 @NgModule({
   declarations: [
@@ -33,11 +35,13 @@ import { SuccessfulRegistrationComponent }
     ResetPasswordBoxComponent,
     ConfirmEmailComponent,
     SuccessfulRegistrationComponent,
+    UsersTableComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
     LoginRegistCommonComponent,
     ResetPasswordGuard,
+    UserDataService,
   ],
 })
 export class UsersModule { }

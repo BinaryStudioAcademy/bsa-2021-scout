@@ -7,6 +7,7 @@ export enum AppRoute {
   Interviews = 'interviews',
   Analytics = 'analytics',
   TaskManagement = 'taskManagement',
+  UserManagement = 'user-management',
   Templates = 'templates',
   Login = 'login',
   Registration = 'registration',

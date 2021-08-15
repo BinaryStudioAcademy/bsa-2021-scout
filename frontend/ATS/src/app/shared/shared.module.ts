@@ -30,6 +30,9 @@ import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   exports: [
@@ -62,6 +65,9 @@ import { StylePaginatorDirective } from './directives/style-paginator.directive'
     MatProgressBarModule,
     SpinnerComponent,
     StylePaginatorDirective,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   imports: [
     MatButtonModule,
@@ -86,6 +92,9 @@ import { StylePaginatorDirective } from './directives/style-paginator.directive'
     MatSelectModule,
     ReactiveFormsModule,
     RouterModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [HttpClientService],
   declarations: [
