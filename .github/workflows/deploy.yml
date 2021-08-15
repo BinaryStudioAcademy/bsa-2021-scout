@@ -40,7 +40,7 @@ jobs:
       matrix:
         stages:
           - stage: develop-deployment
-            shouldRelease: ${{ contains(github.ref, 'feature/deployment-notifications') }}
+            shouldRelease: ${{ contains(github.ref, 'develop') }}
             FRONTEND_CONFIGURATION: 'develop-deployment'
           - stage: prod-deployment
             shouldRelease: ${{ contains(github.ref, 'prod') }}
@@ -58,7 +58,7 @@ jobs:
         image_name: ats-frontend-${{ matrix.stages.stage }}
         registry: docker.pkg.github.com
         image_tag: latest
-        context: ./frontend/ATS1111
+        context: ./frontend/ATS
         build_extra_args: "--build-arg FRONTEND_CONFIGURATION=${{ matrix.stages.FRONTEND_CONFIGURATION }}"
 
 
