@@ -1,4 +1,5 @@
-import {Component, ViewChild, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
+import { MatTable } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -30,8 +31,7 @@ export class ApplicationPoolComponent implements OnInit {
   constructor(
     private readonly dialogService: MatDialog, 
     private poolService : PoolService,
-    private notificationService: NotificationService,
-    private changeDetectorRefs: ChangeDetectorRef) {}
+    private notificationService: NotificationService) {}
 
   displayedColumns: string[] = [
     'position',
@@ -50,6 +50,7 @@ export class ApplicationPoolComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
+  @ViewChild(MatTable) table: MatTable<ApplicantsPool>;
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -95,11 +96,16 @@ export class ApplicationPoolComponent implements OnInit {
       .subscribe(
         (resp) => {
           this.loading = false;
-          this.dataSource.data.push(resp);
-          this.changeDetectorRefs.detectChanges();
+          this.dataSource.data.push(resp);          
+          this.directive?.applyFilter$.emit();
+          this.table.renderRows();
+          this.dataSource.paginator = this.paginator;
           this.notificationService.showSuccessMessage('Pool successfully added');
         },
-        (error) => (this.loading = false),
+        (error) => {
+          this.loading = false;
+          this.notificationService.showSuccessMessage(`Create pool error: ${error}`);
+        },
       );
   }
 
