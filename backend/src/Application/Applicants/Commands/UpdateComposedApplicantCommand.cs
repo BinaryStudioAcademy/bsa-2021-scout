@@ -7,6 +7,8 @@ using Application.Applicants.Dtos;
 using Application.Common.Commands;
 using Application.ElasticEnities.Dtos;
 using Application.Common.Queries;
+using Domain.Entities;
+using Domain.Interfaces.Read;
 
 namespace Application.Applicants.Commands
 {
@@ -24,10 +26,12 @@ namespace Application.Applicants.Commands
     {
         private readonly ISender _mediator;
         private readonly IMapper _mapper;
-        public UpdateComposedApplicantCommandHandler(ISender mediator, IMapper mapper)
+        private readonly IApplicantsReadRepository _repository;
+        public UpdateComposedApplicantCommandHandler(IApplicantsReadRepository repository, ISender mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _repository = repository;
         }
 
         public async Task<ApplicantDto> Handle(UpdateComposedApplicantCommand command, CancellationToken _)
@@ -38,7 +42,8 @@ namespace Application.Applicants.Commands
 
             var elasticQuery = new GetElasticDocumentByIdQuery<ElasticEnitityDto>(updatedApplicant.Id);
             updatedApplicant.Tags = await _mediator.Send(elasticQuery);
-            updatedApplicant.Vacancies = new List<ApplicantVacancyInfoDto>();
+            updatedApplicant.Vacancies = _mapper.Map<IEnumerable<ApplicantVacancyInfoDto>>
+                (await _repository.GetApplicantVacancyInfoListAsync(updatedApplicant.Id));
 
             return updatedApplicant;
         }

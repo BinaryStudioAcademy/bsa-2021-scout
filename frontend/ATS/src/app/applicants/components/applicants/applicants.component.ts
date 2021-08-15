@@ -1,17 +1,17 @@
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Applicant } from 'src/app/shared/models/applicant/applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { CreateApplicantComponent } from '../create-applicant/create-applicant.component';
 import { UpdateApplicantComponent } from '../update-applicant/update-applicant.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
 import { Tag } from 'src/app/shared/models/tags/tag';
+import { ViewableApplicant } from 'src/app/shared/models/applicant/viewable-applicant';
 
 @Component({
   selector: 'app-applicants',
@@ -27,12 +27,10 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
     'jobs_list', 'status', 'tags', 'control_buttons',
   ];
 
-  public dataSource = new MatTableDataSource<Applicant>();
-  public cashedData: Applicant[] = [];
-
-  public isShowAllTags = false;
-
+  public dataSource = new MatTableDataSource<ViewableApplicant>();
+  public cashedData: ViewableApplicant[] = [];
   public searchValue = '';
+
   @ViewChild(MatPaginator) public paginator: MatPaginator|undefined = undefined;
   @ViewChild(StylePaginatorDirective) public directive: StylePaginatorDirective|undefined 
   = undefined;
@@ -50,8 +48,14 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
     this.applicantsService.getApplicants()
       .pipe(
         takeUntil(this.$unsubscribe),
+        map(arr => arr.map(a => {
+          let viewableApplicant = (a as unknown) as ViewableApplicant;
+          viewableApplicant.isShowAllTags = false;
+  
+          return viewableApplicant;
+        })),
       )
-      .subscribe((result: Applicant[]) => {
+      .subscribe((result: ViewableApplicant[]) => {
         this.dataSource.data = result;
         this.cashedData = result;
       },
@@ -61,21 +65,33 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
       },
       );
   }
+
+  public applySearchValue(searchValue: string) {
+    this.searchValue = searchValue;
+    this.dataSource.filter = searchValue;
+
+    if (this.dataSource.paginator) {
+      this.directive?.applyFilter$.emit();
+      this.dataSource.paginator.firstPage();
+    }
+  }
   
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator!;
     this.dataSource.filter = this.searchValue.trim().toLowerCase();
   }
 
-  public showApplicantCreateDialog(): void {
-    const dialogRef = this.dialog.open(CreateApplicantComponent, {
-      width: '914px',
-      height: 'min-content',
-      autoFocus: false,
-    });
+  public createApplicant(createdApplicant: Observable<Applicant>): void {
+    createdApplicant
+      .pipe(
+        map((a: Applicant) => {
+          let viewableApplicant = (a as unknown) as ViewableApplicant;
+          viewableApplicant.isShowAllTags = false;
 
-    dialogRef.afterClosed()
-      .subscribe((result: Applicant) => {
+          return viewableApplicant;
+        }),
+      )
+      .subscribe((result: ViewableApplicant) => {
         if (result) {
           this.cashedData.unshift(result);
           this.dataSource.data = this.cashedData;
@@ -95,7 +111,15 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed()
-      .subscribe((result: Applicant) => {
+      .pipe(
+        map((a: Applicant) => {
+          let viewableApplicant = (a as unknown) as ViewableApplicant;
+          viewableApplicant.isShowAllTags = false;
+  
+          return viewableApplicant;
+        }),
+      )
+      .subscribe((result: ViewableApplicant) => {
         if (result) {
           let applicantIndex = this.cashedData.findIndex(a => a.id === result.id);
           this.cashedData[applicantIndex] = result;
@@ -126,43 +150,22 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
       });
   }
 
-  public getFirstTags(applicant: Applicant): Tag[] {
-    console.log(applicant);
+  public getFirstTags(applicant: ViewableApplicant): Tag[] {
     return applicant.tags.tagDtos.length > 6
       ? applicant.tags.tagDtos.slice(0, 5)
       : applicant.tags.tagDtos;
   }
 
-  public toggleAllTags(): void {
-    this.isShowAllTags = this.isShowAllTags
+  public toggleTags(applicant: ViewableApplicant): void {
+    applicant.isShowAllTags = applicant.isShowAllTags
       ? false
       : true;
   }
 
-  public applyFilter(): void {
-    this.searchValue = this.searchValue;
-    this.dataSource.filter = this.searchValue.trim().toLowerCase();
-
-    if(this.dataSource.paginator) {
-      this.directive?.applyFilter$.emit();
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  public clearSearchInput(): void {
-    this.dataSource.filter = '';
-    this.searchValue = '';
-
-    if(this.dataSource.paginator) {
-      this.directive?.applyFilter$.emit();
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
   public sortData(sort: Sort): void {
-    this.dataSource.data = (this.dataSource.data as Applicant[]).sort((a, b) => {
+    this.dataSource.data = (this.dataSource.data as ViewableApplicant[]).sort((a, b) => {
       const isAsc = sort.direction === 'asc';
-                  
+
       switch (sort.active) {
         case 'name':
           return this.compareRows(a.firstName + ' ' + a.lastName + ' ' + a.middleName,

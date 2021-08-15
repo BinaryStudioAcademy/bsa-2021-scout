@@ -9,12 +9,14 @@ import { UpdateApplicantComponent } from './components/update-applicant/update-a
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ApplicantsHeadComponent } from './components/applicants-head/applicants-head.component';
 
 @NgModule({
   declarations: [
     ApplicantsComponent,
     CreateApplicantComponent,
     UpdateApplicantComponent,
+    ApplicantsHeadComponent,
   ],
   imports: [
     BrowserModule,

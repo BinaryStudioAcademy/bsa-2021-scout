@@ -9,7 +9,7 @@
         <p>First name</p>
         <mat-form-field appearance="fill">
             <input formControlName="firstName" type="text" matInput placeholder="Enter first name" [(ngModel)]="updatedApplicant.firstName">
-            <mat-error *ngIf="validationGroup!.controls['firstName'].hasError('required'); then firstNamePatternError">
+            <mat-error *ngIf="validationGroup!.controls['firstName'].hasError('required'); else firstNamePatternError">
                 Please enter a first name
             </mat-error>
             <ng-template #firstNamePatternError>
@@ -22,7 +22,7 @@
         <p>Last name</p>
         <mat-form-field appearance="fill">
             <input formControlName="lastName" type="text" matInput placeholder="Enter last name" [(ngModel)]="updatedApplicant.lastName">
-            <mat-error *ngIf="validationGroup!.controls['lastName'].hasError('required'); then lastNamePatternError">
+            <mat-error *ngIf="validationGroup!.controls['lastName'].hasError('required'); else lastNamePatternError">
                 Please enter a last name
             </mat-error>
             <ng-template #lastNamePatternError>
@@ -35,7 +35,7 @@
         <p>Middle name</p>
         <mat-form-field appearance="fill">
             <input formControlName="middleName" type="text" matInput placeholder="Enter middle name" [(ngModel)]="updatedApplicant.middleName">
-            <mat-error *ngIf="validationGroup!.controls['middleName'].hasError('required'); then middleNamePatternError">
+            <mat-error *ngIf="validationGroup!.controls['middleName'].hasError('required'); else middleNamePatternError">
                 Please enter a middle name
             </mat-error>
             <ng-template #middleNamePatternError>
@@ -48,7 +48,7 @@
         <p>Email</p>
         <mat-form-field appearance="fill">
             <input formControlName="email" type="email" matInput placeholder="Enter email" [(ngModel)]="updatedApplicant.email">
-            <mat-error *ngIf="validationGroup!.controls['email'].hasError('required'); then emailPatternError">
+            <mat-error *ngIf="validationGroup!.controls['email'].hasError('required'); else emailPatternError">
                 Please enter an email address.
             </mat-error>
             <ng-template #emailPatternError>
@@ -69,7 +69,7 @@
         <p>Phone</p>
         <mat-form-field appearance="fill">
             <input formControlName="phone" type="tel" matInput placeholder="Enter phone number" [(ngModel)]="updatedApplicant.phone">
-            <mat-error *ngIf="validationGroup!.controls['phone'].hasError('required'); then phonePatternError">
+            <mat-error *ngIf="validationGroup!.controls['phone'].hasError('required'); else phonePatternError">
                 Please enter a phone number
             </mat-error>
             <ng-template #phonePatternError>
@@ -82,7 +82,7 @@
         <p>Skype</p>
         <mat-form-field appearance="fill">
             <input formControlName="skype" type="text" matInput placeholder="Enter skype" [(ngModel)]="updatedApplicant.skype">
-            <mat-error *ngIf="validationGroup!.controls['skype'].hasError('required'); then skypePatternError">
+            <mat-error *ngIf="validationGroup!.controls['skype'].hasError('required'); else skypePatternError">
                 Please enter a skype
             </mat-error>
             <ng-template #skypePatternError>

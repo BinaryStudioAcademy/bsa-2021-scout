@@ -8,55 +8,12 @@ $header-height: 30px;
 }
 
 .outside-wrapper {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 5;
     width: 100%;
     height: 100vh;
-}
-
-:host ::ng-deep .applicants-header-bar {
-    display: flex;
-    background: none;
-    justify-content: space-between;
-    padding: 0 0 30px 51px;
-
-    .mat-form-field-wrapper.mat-form-field-wrapper{
-        height: 45px;
-    }
-    
-    .mat-form-field-appearance-fill .mat-form-field-infix{
-        display:flex;
-        align-items: center;
-        padding: 0.75em 0.25em;
-    }
-    
-    .mat-form-field-appearance-fill .mat-form-field-flex{
-        padding: .75em .75em .75em .75em;
-    }
-    
-    .mat-icon{
-        color: #4d4d4d;
-        font-size: 15px;
-        height:16px;
-    }
-    
-    .mat-icon-button .mat-icon {
-        line-height: 1;
-    }
-
-    .create-button {
-        width: 153px;
-    }
-
-    .mat-form-field-wrapper {
-        background-color: #fff;
-    
-        .mat-form-field-flex {
-            background: none;
-        }
-    }
 }
 
 :host ::ng-deep .mat-table {
@@ -116,8 +73,9 @@ $header-height: 30px;
 
         .jobs-list {
             overflow-y: hidden;
-            height: $row-height - 10px;
-            margin-left: -16px;
+            height: min-content;
+            max-height: $row-height - 10px;
+            margin: auto;
 
             .mat-list-item {
                 font-size: 13px;
@@ -154,7 +112,7 @@ $header-height: 30px;
             position: absolute;
             width: 350px;
             max-height: 300px;
-            animation: appearance 0.5s;
+            animation: fadeIn 0.5s;
             padding: 3px 0 15px 20px;
 
             .mat-list-item {
@@ -175,6 +133,7 @@ $header-height: 30px;
             display: flex;
             flex-wrap: wrap;
             align-content: center;
+            overflow: hidden;
 
             .mat-list-item {
                 width: min-content;
