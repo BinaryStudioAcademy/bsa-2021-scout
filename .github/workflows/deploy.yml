@@ -111,3 +111,17 @@ jobs:
           docker-compose -f docker-compose.${{ matrix.stages.stage }}.yml pull
           docker-compose -f docker-compose.${{ matrix.stages.stage }}.yml stop
           docker-compose -f docker-compose.${{ matrix.stages.stage }}.yml up -d --build
+
+  
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v2
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ env.WORKFLOW_CONCLUSION }} # neutral, success, skipped, cancelled, timed_out, action_required, failure
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
