@@ -124,6 +124,8 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<CandidateToStage>, CandidateToStageWriteRepository>();
             services.AddScoped<ICandidateToStageWriteRepository, CandidateToStageWriteRepository>();
             services.AddScoped<IWriteRepository<Pool>, WriteRepository<Pool>>();
+            services.AddScoped<IWriteRepository<PoolToApplicant>, PoolToApplicantWriteRepository>();
+            services.AddScoped<IPoolToApplicantWriteRepository, PoolToApplicantWriteRepository>();
 
 
             return services;

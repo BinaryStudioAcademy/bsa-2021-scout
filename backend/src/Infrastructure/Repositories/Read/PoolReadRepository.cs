@@ -94,23 +94,25 @@ namespace Infrastructure.Repositories.Read
                 sql,
                 (pool, poolToApplicant, applicant) =>
                 {
-                    if (cachedPool == null)
-                    {
-                        cachedPool = pool;
-                        cachedPool.PoolApplicants = new List<PoolToApplicant>();
-                    }
+                    //if (cachedPool == null)
+                    //{
+                    //    cachedPool = pool;
+                    //    cachedPool.PoolApplicants = new List<PoolToApplicant>();
+                    //}
 
                     if (!poolDictionary.TryGetValue(pool.Id, out Pool poolEntry))
                     {
+
                         poolEntry = pool;
                         poolEntry.PoolApplicants = new List<PoolToApplicant>();
+
                         poolDictionary.Add(poolEntry.Id, poolEntry);
                     }
 
                     if (poolToApplicant != null && !poolToApplicantDictionary.TryGetValue(poolToApplicant.Id, out PoolToApplicant poolToApplicantEntry))
                     {
                         poolToApplicantEntry = poolToApplicant;
-                        cachedPool.PoolApplicants.Add(poolToApplicantEntry);
+                        poolEntry.PoolApplicants.Add(poolToApplicantEntry);
                         poolToApplicantDictionary.Add(poolToApplicant.Id, poolToApplicantEntry);
                     }
 
@@ -119,7 +121,7 @@ namespace Infrastructure.Repositories.Read
                         poolToApplicant.Applicant = applicant;
                     }
 
-                    return cachedPool;
+                    return poolEntry;
                 }
                 ));
 
@@ -127,6 +129,40 @@ namespace Infrastructure.Repositories.Read
 
             return poolDictionary.Values.ToList();
         }
+
+        public async Task<List<Pool>> GetPoolsWithApplicantsAsync3()
+        {
+            var connection = _connectionFactory.GetSqlConnection();
+
+            await connection.OpenAsync();
+            string sql = $@"
+                            SELECT p.*, pa.*, a.*
+                            FROM [ATS_dev].[dbo].[Pools] p left outer join 
+                            PoolToApplicants pa ON pa.PoolId = p.Id left outer join
+                            Applicants a on a.Id = pa.ApplicantId";
+
+
+            var poolDictionary = new Dictionary<string, Pool>();
+            var poolToApplicantDictionary = new Dictionary<string, PoolToApplicant>();
+            Pool cachedPool = null;
+
+            List<Pool> allPools = new List<Pool>();
+
+            var pools = await connection.QueryAsync<Pool, PoolToApplicant, Applicant, Pool>(sql, MapResults);
+
+            await connection.CloseAsync();
+
+            return poolDictionary.Values.ToList();
+        }
+
+        private Pool MapResults(Pool pool, PoolToApplicant poolToApplicant, Applicant applicant)
+        {
+            pool.PoolApplicants = new List<PoolToApplicant>();
+            pool.PoolApplicants.Add(new PoolToApplicant() { Applicant = applicant, Pool = pool });            
+
+            return pool;
+        }
+
 
     }
 }

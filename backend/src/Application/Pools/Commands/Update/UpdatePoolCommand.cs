@@ -6,6 +6,7 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
 using Domain.Interfaces.Read;
+using Domain.Interfaces.Write;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace Application.Pools.Commands
     {
         protected readonly ISender _mediator;
         protected readonly IWriteRepository<Pool> _poolWriteRepository;
+        protected readonly IPoolToApplicantWriteRepository _poolApplicantWriteRepository;
         protected readonly IReadRepository<Applicant> _applicantReadRepository;
         protected readonly IPoolReadRepository _poolReadRepository;
 
@@ -36,10 +38,11 @@ namespace Application.Pools.Commands
         protected readonly ISecurityService _securityService;
         protected readonly IMapper _mapper;
 
-        public UpdatePoolCommandHandler(ISender mediator, IWriteRepository<Pool> poolWriteRepository, IPoolReadRepository poolReadRepository, ISecurityService securityService, IMapper mapper)
+        public UpdatePoolCommandHandler(ISender mediator, IWriteRepository<Pool> poolWriteRepository, IPoolToApplicantWriteRepository poolToApplicantWriteRepository, IPoolReadRepository poolReadRepository, ISecurityService securityService, IMapper mapper)
         {
             _mediator = mediator;
             _poolWriteRepository = poolWriteRepository;
+            _poolApplicantWriteRepository = poolToApplicantWriteRepository;
             _poolReadRepository = poolReadRepository;
             _securityService = securityService;
             _mapper = mapper;
@@ -47,28 +50,12 @@ namespace Application.Pools.Commands
 
         public async Task<PoolDto> Handle(UpdatePoolCommand command, CancellationToken _)
         {
-            var poolToUpdate = await _poolReadRepository.GetPoolWithApplicantsByIdAsync(command.UpdatePool.Id);
 
-            poolToUpdate.Name = command.UpdatePool.Name;
-            poolToUpdate.Description = command.UpdatePool.Description;
+            var ids = command.UpdatePool.ApplicantsIds.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            
+            await _poolApplicantWriteRepository.UpdatePoolApplicants(ids, command.UpdatePool.Id, command.UpdatePool.Name, command.UpdatePool.Description);
 
-            var applicantsInIdsDB = poolToUpdate.PoolApplicants.Select(x => x.Applicant);
-
-            var ids = command.UpdatePool.ApplicantsIds.Split(',');
-
-
-            foreach (var applicant in poolToUpdate.PoolApplicants
-                        .Where(at => ids.Contains(at.ApplicantId)).ToList())
-            {
-                poolToUpdate.PoolApplicants.Remove(applicant);
-            }
-
-            ////foreach (var id in toBeAdded)
-            ////{
-            ////    poolToUpdate.PoolApplicants.Add(new PoolToApplicant() { ApplicantId = id, PoolId = poolToUpdate.Id });
-            ////}
-
-            var resultPool = (Pool)await _poolWriteRepository.UpdateAsync(poolToUpdate);
+            var resultPool = await _poolReadRepository.GetPoolWithApplicantsByIdAsync(command.UpdatePool.Id);
 
             return  _mapper.Map<PoolDto>(resultPool);
 
