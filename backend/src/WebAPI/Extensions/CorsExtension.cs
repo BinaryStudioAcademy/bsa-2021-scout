@@ -39,6 +39,7 @@ namespace WebAPI.Extensions
         private static IServiceCollection AddDevelopmentCorsPolicies(this IServiceCollection services)
         {
             var frontendUrl = Environment.GetEnvironmentVariable("FRONTEND_URL");
+            System.Console.WriteLine("Url: " + frontendUrl.ToString());
 
             services.AddCors(options =>
             {
