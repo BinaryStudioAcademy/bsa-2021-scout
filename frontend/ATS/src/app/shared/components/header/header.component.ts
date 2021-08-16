@@ -22,10 +22,9 @@ export class HeaderComponent {
   }
 
   public logout(): void {
-    this.service
-      .logout()
-      .subscribe(_.identity, () =>
-        this.notifications.showErrorMessage('Failed to log out.'),
-      );
+    this.service.logout().subscribe(
+      () => window.location.replace('/login'),
+      () => this.notifications.showErrorMessage('Failed to log out.'),
+    );
   }
 }
