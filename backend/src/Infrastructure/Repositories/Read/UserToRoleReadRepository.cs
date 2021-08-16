@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +9,9 @@ using Infrastructure.Repositories.Abstractions;
 
 namespace Infrastructure.Repositories.Read
 {
-    public class ProjectReadRepository : ReadRepository<Project>
+    public class UserToRoleReadRepository : ReadRepository<UserToRole>
     {
-        public ProjectReadRepository(IConnectionFactory connectionFactory) : base("Projects", connectionFactory) { }
+        public UserToRoleReadRepository(IConnectionFactory connectionFactory) : base("UserToRoles", connectionFactory) { }
 
     }
 }

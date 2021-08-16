@@ -10,14 +10,21 @@ import { VacanciesModule } from '../vacancies/vacancies.module';
 import { ApplicantsModule } from '../applicants/applicants.module';
 import { SharedModule } from '../shared/shared.module';
 import { UsersModule } from '../users/users.module';
-import { VacancyCardComponent } from '../vacancy/vacancy-card/vacancy-card.component';
-import { VacancyWidgetComponent } from '../vacancy/vacancy-widget/vacancy-widget.component';
+
+import { VacancyCardComponent } from '../vacancies/components/vacancy-card/vacancy-card.component';
+import { VacancyWidgetComponent } from '../vacancies/components/vacancy-widget/vacancy-widget.component';
 import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
-import { ProjectsModule } from '../projects/projects.module';
+
+
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
 import { AuthGuard } from '../users/guards/auth.guard';
+
+import { ProjectsModule } from '../projects/projects.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +36,8 @@ import { AuthGuard } from '../users/guards/auth.guard';
     BrowserModule,
     RoutingModule,
     HttpClientModule,
+    MatSortModule,
+    MatTableModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),    
     SharedModule,

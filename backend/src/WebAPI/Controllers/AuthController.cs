@@ -1,6 +1,7 @@
 ﻿using Application.Auth.Commands;
 using Application.Auth.Dtos;
 using Application.Auth.Queries;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

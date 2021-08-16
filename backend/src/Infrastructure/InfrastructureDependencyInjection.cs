@@ -114,7 +114,13 @@ namespace Infrastructure
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
+            services.AddScoped<IWriteRepository<Vacancy>, WriteRepository<Vacancy>>();
+            services.AddScoped<IWriteRepository<Project>, WriteRepository<Project>>();
+            services.AddScoped<IWriteRepository<Company>, WriteRepository<Company>>();
+            services.AddScoped<IWriteRepository<Stage>, WriteRepository<Stage>>();
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
+            services.AddScoped<IWriteRepository<Role>, WriteRepository<Role>>();
+            services.AddScoped<IWriteRepository<UserToRole>, WriteRepository<UserToRole>>();
 
             services.AddScoped<IWriteRepository<Applicant>, ApplicantsWriteRepository>();
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
@@ -134,6 +140,11 @@ namespace Infrastructure
         private static IServiceCollection AddReadRepositories(this IServiceCollection services)
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
+            services.AddScoped<IReadRepository<Vacancy>, VacancyReadRepository>();
+            services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
+            services.AddScoped<IReadRepository<Company>, CompanyReadRepository>();
+            services.AddScoped<IReadRepository<Role>, RoleReadRepository>();
+            services.AddScoped<IReadRepository<UserToRole>, UserToRoleReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
             
@@ -147,9 +158,11 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
+
             services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
             services.AddScoped<IReadRepository<MailTemplate>, MongoReadRespoitory<MailTemplate>>();
             services.AddScoped<IReadRepository<EmailToken>, EmailTokenReadRepository>();
+
             return services;
         }
     }

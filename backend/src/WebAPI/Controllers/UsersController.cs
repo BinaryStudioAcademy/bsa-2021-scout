@@ -34,6 +34,8 @@ namespace WebAPI.Controllers
             return Ok(user);
         }
 
+
+
         [AllowAnonymous]
         [HttpGet, Route("Email/{email}")]
         public async Task<IActionResult> IsEmailAlreadyUsed(string email)
