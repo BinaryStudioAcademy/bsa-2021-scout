@@ -10,6 +10,9 @@
         <mat-form-field floatLabel='never' class="al-subscribe-form-field">
           <input matInput type="text" formControlName="name" placeholder="Enter name of pool">
         </mat-form-field>
+        <div class="custom-error" *ngIf="this.editPool.controls['name'].dirty && this.editPool.controls['name'].errors?.required">
+          Please fill name of pool.
+        </div>
         <label>Description</label>
         <mat-form-field floatLabel='never' class="al-subscribe-form-field">
             <textarea matInput type="text" autocomplete="off" formControlName="description" placeholder="Enter description"
@@ -17,7 +20,10 @@
             #autosize="cdkTextareaAutosize"
             cdkAutosizeMinRows="12"
             cdkAutosizeMaxRows="12"></textarea>
-        </mat-form-field>        
+        </mat-form-field>
+        <div class="custom-error" *ngIf="this.editPool.controls['description'].dirty && this.editPool.controls['description'].errors?.required">
+          Please fill description for pool.
+        </div>
         <label>Applicants</label>
         <mat-form-field class="example-chip-list" floatLabel='never' placeholder="New applicant">
             <mat-label>Pool applicnts</mat-label>

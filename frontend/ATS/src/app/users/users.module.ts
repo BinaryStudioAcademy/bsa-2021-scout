@@ -28,7 +28,6 @@ import { StylePaginatorDirective } from '../shared/directives/style-paginator.di
     CreateTalentpoolModalComponent,
     EditAppPoolModalComponent,
     ApplicationPoolComponent,
-    
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [

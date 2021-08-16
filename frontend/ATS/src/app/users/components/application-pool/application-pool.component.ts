@@ -36,7 +36,7 @@ export class ApplicationPoolComponent implements OnInit {
   displayedColumns: string[] = [
     'position',
     'name',
-    'createdBy',
+    //  'createdBy',
     'dateCreated',
     'applicantsCount',
     'description',
@@ -55,6 +55,7 @@ export class ApplicationPoolComponent implements OnInit {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.directive?.applyFilter$.emit();
   }
 
   applyFilter(event: Event) {

@@ -33,12 +33,12 @@ export class EditAppPoolModalComponent implements OnInit{
   
 
   public allapplicants : Applicant [] = [
-    {id: '1',firstName : 'Ivan', lastName: 'Petrov', email:'ivan@email.com'},
-    {id: '2',firstName : 'Petr', lastName: 'White', email:'ivan@email.com'},
-    {id: '3',firstName : 'Sergey', lastName: 'Ingurskiy', email:'ivan@email.com'},
-    {id: '4',firstName : 'Vladimir', lastName: 'Lenin', email:'ivan@email.com'},
-    {id: '5',firstName : 'Alex', lastName: 'Sergeev', email:'ivan@email.com'},
-    {id: '6',firstName : 'Ivan', lastName: 'Notch', email:'ivan@email.com'},    
+    {id: '1',firstName : 'Igor', lastName: 'One', email:'ivan@email.com'},
+    {id: '2',firstName : 'Petr', lastName: 'Two', email:'ivan@email.com'},
+    {id: '3',firstName : 'Sam', lastName: 'Jackson', email:'ivan@email.com'},
+  //  {id: '4',firstName : 'Vladimir', lastName: 'Lenin', email:'ivan@email.com'},
+  //  {id: '5',firstName : 'Alex', lastName: 'Sergeev', email:'ivan@email.com'},
+  //  {id: '6',firstName : 'Ivan', lastName: 'Notch', email:'ivan@email.com'},    
   ];
 
   public applicants : Applicant [] = this.data.applicants;  
@@ -71,7 +71,11 @@ export class EditAppPoolModalComponent implements OnInit{
 
   ngOnInit() {
     this.id = this.data.id;
-    this.applicants.forEach(x=> x.isSelected = true);    
+    this.applicants.forEach(x=> {
+      x.isSelected = true;
+      const all = this.allapplicants.find(y=> y.id == x.id);
+      if(all) all.isSelected = true;    
+    });    
   }
 
 
@@ -80,6 +84,7 @@ export class EditAppPoolModalComponent implements OnInit{
     console.log(value);
     
     let app = this.applicants.find(x=> x.id === value && x.lastName === value);
+
     
     // Add our applicant
     if (app) {
@@ -110,7 +115,7 @@ export class EditAppPoolModalComponent implements OnInit{
     
     let app = this.allapplicants.find(x=> 
       `done ${x.firstName} ${x.lastName}` === value );
-    if(app)
+    if(app && !app.isSelected)
     {
       app.isSelected = true;
       this.applicants.push(app);
