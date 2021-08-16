@@ -91,6 +91,16 @@
                 </mat-error>
             </ng-template>
         </mat-form-field>
+
+        <p>LinkedIn url</p>
+        <mat-form-field appearance="fill">
+            <input formControlName="linkedInUrl" type="text" matInput placeholder="Enter LinkedIn url" [(ngModel)]="createdApplicant.linkedInUrl">
+            <ng-template #linkedInUrlPatternError>
+                <mat-error *ngIf="validationGroup!.controls['linkedInUrl'].hasError('pattern')">
+                    LinkedIn url must match the pattern https://www.linkedin.com/in/&lt;username&gt;
+                </mat-error>
+            </ng-template>
+        </mat-form-field>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions class="publish-action">

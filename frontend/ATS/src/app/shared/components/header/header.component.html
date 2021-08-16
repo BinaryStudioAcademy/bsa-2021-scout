@@ -1,17 +1,25 @@
 <mat-toolbar>
-      <app-button>
-        + New vacancy
-      </app-button>
-      <app-search-form>
-        <ng-content></ng-content>
-      </app-search-form>
-      <button mat-icon-button>
-        <mat-icon matBadge="&#8288;" matBadgeColor="primary" matBadgeSize="small">notifications</mat-icon>
-      </button>
-      <div class="avatar-info">
-        <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg" alt="Avatar">
-        <button mat-icon-button>
-            <mat-icon>arrow_drop_down</mat-icon>
-        </button>
+  <app-button>
+    + New vacancy
+  </app-button>
+  <app-search-form>
+    <ng-content></ng-content>
+  </app-search-form>
+  <button mat-icon-button>
+    <mat-icon matBadge="&#8288;" matBadgeColor="primary" matBadgeSize="small">notifications</mat-icon>
+  </button>
+  <div class="avatar-info">
+    <img
+      src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg"
+      alt="Avatar"
+    />
+    <button mat-icon-button (click)="toggleDropdown()">
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <div class="dropdown-menu" *ngIf="dropdownOpened">
+      <div class="element" (click)="logout()">
+        Log out
       </div>
+    </div>
+  </div>
 </mat-toolbar>

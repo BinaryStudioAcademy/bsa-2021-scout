@@ -12,19 +12,23 @@ import { MatPaginator } from '@angular/material/paginator';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { ViewableApplicant } from 'src/app/shared/models/applicant/viewable-applicant';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-applicants',
   templateUrl: 'applicants.component.html',
-  styleUrls: [
-    'applicants.component.scss',
-    '../../common/scroll.scss',
-  ],
+  styleUrls: ['applicants.component.scss', '../../common/scroll.scss'],
 })
-
 export class ApplicantsComponent implements OnInit, AfterViewInit {
-  public displayedColumns: string[] = [ 'name', 'rate', 'email', 'active_vacancies',
-    'jobs_list', 'status', 'tags', 'control_buttons',
+  public displayedColumns: string[] = [
+    'name',
+    'rate',
+    'email',
+    'active_vacancies',
+    'jobs_list',
+    'status',
+    'tags',
+    'control_buttons',
   ];
 
   public dataSource = new MatTableDataSource<ViewableApplicant>();
@@ -35,14 +39,15 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
   @ViewChild(StylePaginatorDirective) public directive: StylePaginatorDirective|undefined 
   = undefined;
 
+
   private $unsubscribe = new Subject();
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly notificationsService: NotificationService,
     private readonly applicantsService: ApplicantsService,
-  ) 
-  { }
+    private readonly route: ActivatedRoute,
+  ) {}
 
   public ngOnInit(): void {
     this.applicantsService.getApplicants()
@@ -75,7 +80,7 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  
+ 
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator!;
     this.dataSource.filter = this.searchValue.trim().toLowerCase();
@@ -95,10 +100,12 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
         if (result) {
           this.cashedData.unshift(result);
           this.dataSource.data = this.cashedData;
-
-          this.notificationsService.showSuccessMessage('An applicant was succesfully created',
-            'Success!');
         }
+
+        this.notificationsService.showSuccessMessage(
+          'An applicant was succesfully created',
+          'Success!',
+        );
       });
   }
 
@@ -124,30 +131,39 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
           let applicantIndex = this.cashedData.findIndex(a => a.id === result.id);
           this.cashedData[applicantIndex] = result;
           this.dataSource.data = this.cashedData;
-
-          this.notificationsService.showSuccessMessage('An applicant was succesfully updated',
-            'Success!');
         }
+    
+        this.notificationsService.showSuccessMessage(
+          'An applicant was succesfully updated',
+          'Success!',
+        );
       });
   }
 
   public deleteApplicant(applicantId: string): void {
-    this.applicantsService.deleteApplicant(applicantId)
-      .pipe(
-        takeUntil(this.$unsubscribe),
-      )
-      .subscribe(() => {
-        let applicantIndex = this.dataSource.data.findIndex(a => a.id === applicantId);
-        
-        this.cashedData.splice(applicantIndex, 1);
-        this.dataSource.data = this.cashedData;
-        this.notificationsService.showSuccessMessage('The applicant was successfully deleted',
-          'Success!');
-      },
-      (error: Error) => {
-        this.notificationsService.showErrorMessage(error.message,
-          'Cannot delete the applicant');
-      });
+    this.applicantsService
+      .deleteApplicant(applicantId)
+      .pipe(takeUntil(this.$unsubscribe))
+      .subscribe(
+        () => {
+          let applicantIndex = this.dataSource.data.findIndex(
+            (a) => a.id === applicantId,
+          );
+
+          this.cashedData.splice(applicantIndex, 1);
+          this.dataSource.data = this.cashedData;
+          this.notificationsService.showSuccessMessage(
+            'The applicant was successfully deleted',
+            'Success!',
+          );
+        },
+        (error: Error) => {
+          this.notificationsService.showErrorMessage(
+            error.message,
+            'Cannot delete the applicant',
+          );
+        },
+      );
   }
 
   public getFirstTags(applicant: ViewableApplicant): Tag[] {
@@ -184,7 +200,11 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private compareRows(a: number|string, b: number|string, isAsc: boolean): number {
+  private compareRows(
+    a: number | string,
+    b: number | string,
+    isAsc: boolean,
+  ): number {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
