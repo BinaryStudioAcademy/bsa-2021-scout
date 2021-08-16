@@ -1,0 +1,78 @@
+<div class="header">
+    <a>All</a>
+    <a>Followed</a>
+    <mat-form-field appearance="fill">
+        <mat-icon>search</mat-icon>
+            <input matInput type="text" (keyup)="applyFilter($event)" placeholder="Search..." #input>
+            <button *ngIf="input.value!==''" (click)="clearSearchField()" mat-icon-button aria-label="Clear">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+       
+    <button mat-button>+ New Vacancy</button>
+</div>
+
+<div class="mat-elevation-z8">
+    <table #mytable mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> # </th>
+            <td mat-cell *matCellDef="let i = index"> {{ (i+1) + (paginator.pageIndex * paginator.pageSize)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+            <td mat-cell *matCellDef="let row"> {{row.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="candidates">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Candidates </th>
+            <td mat-cell *matCellDef="let row"> {{row.currentApplicantsAmount}} / <span style="color:#EE2A64">{{row.requiredCandidatesAmount}} </span></td>
+        </ng-container>
+        <ng-container matColumnDef="teamInfo">
+            <th mat-header-cell *matHeaderCellDef> Team Info </th>
+            <td mat-cell *matCellDef="let row"> {{row.department}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="responsible">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Responsible </th>
+            <td mat-cell *matCellDef="let row"> {{row.responsibleHr.firstName}} {{row.responsibleHr.lastName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="creationDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>
+            <td mat-cell *matCellDef="let row"> {{row.creationDate | date:'dd.MM.yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+            <td mat-cell *matCellDef="let row"> {{getStatus(row.status)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+                <div class="icons">
+                    <mat-icon>bookmark</mat-icon>
+                    <mat-icon>edit</mat-icon>
+                    <mat-icon>more_horiz</mat-icon>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"  (click)="toStagedReRoute(row.id)"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+
+    </table>
+    <div>Showing 
+        <span style="color:#EE2A64">{{
+            (dataSource.filteredData.length-paginator.pageIndex*paginator.pageSize) < paginator.pageSize
+            ? dataSource.filteredData.length-paginator.pageIndex*paginator.pageSize
+            : paginator.pageSize
+        }}</span>/{{dataSource.filteredData.length}}</div>
+    <mat-paginator #paginator appStylePaginator [pageSizeOptions]="[5, 10, 25, 100]" [showTotalPages]="5" [pageSize]="10"></mat-paginator>
+</div>

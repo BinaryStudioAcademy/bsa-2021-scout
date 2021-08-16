@@ -16,6 +16,7 @@ namespace Domain.Entities
         public string Password { get; set; }
         public string PasswordSalt { get; set; }
         public string ResetPasswordToken { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public string CompanyId { get; set; }
