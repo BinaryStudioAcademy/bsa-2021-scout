@@ -80,6 +80,7 @@ export class RegistrationBoxComponent {
     ]),
   }, { validators: this.loginRegistCommonComponent.passwordsMatch });
 
+
   public onSubmit() {
     if (this.registrationForm.valid) {
       const dto: RegisterDto =

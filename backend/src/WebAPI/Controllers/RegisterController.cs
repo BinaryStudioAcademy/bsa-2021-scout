@@ -16,13 +16,13 @@ namespace WebAPI.Controllers
     public class RegisterController : ApiController
     {
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] RegisterDto registerDto)
+        public async Task<ActionResult<AuthUserDto>> Post([FromBody] UserRegisterDto user)
         {
-            var command = new RegisterUserCommand(registerDto);
-            await Mediator.Send(command);
-            return Ok();
-        }
+            var command = new RegisterUserCommand(user);
+            var createdUserWithToken = await Mediator.Send(command);
 
+            return CreatedAtAction("GetUser", "users", new { id = createdUserWithToken.User.Id }, createdUserWithToken);
+        }
 
         [HttpPost("confirm-email")]
         public async Task<ActionResult<AuthUserDto>> ComfirmEmail([FromBody] ConfirmEmailDto emailTokenDto)

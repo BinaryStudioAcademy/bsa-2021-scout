@@ -57,7 +57,6 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    console.log(this.data);
     if (this.data) {
       this.createdApplicant = {
         ...this.createdApplicant,

@@ -435,6 +435,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsHot")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsRemote")
                         .HasColumnType("bit");
 
@@ -453,13 +456,22 @@ namespace Infrastructure.Migrations
                     b.Property<string>("ResponsibleHrId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("SalaryFrom")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalaryTo")
+                        .HasColumnType("int");
+
                     b.Property<string>("Sources")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Tier")
+                    b.Property<int>("TierFrom")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TierTo")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")

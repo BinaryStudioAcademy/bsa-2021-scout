@@ -86,10 +86,8 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
   }
 
   public showApplicantCreateDialog(): void {
-    console.log(this.creationData);
     const creationData: CreateApplicant | undefined = this.creationData;
     this.creationData = undefined;
-    console.log(creationData);
 
     const dialogRef = this.dialog.open(CreateApplicantComponent, {
       width: '914px',
@@ -162,7 +160,6 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
   }
 
   public getFirstTags(applicant: Applicant): Tag[] {
-    console.log(applicant);
     return applicant.tags.tagDtos.length > 6
       ? applicant.tags.tagDtos.slice(0, 5)
       : applicant.tags.tagDtos;
