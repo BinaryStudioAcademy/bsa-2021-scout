@@ -70,13 +70,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
         }
 
-        if (response.status === 404) {
-          if (errorInfo.type === EmailIsAlreadyConfirmedErrorType.EmailIsAlreadyConfirmed) {
-            return throwError(errorInfo);
-          }
-        }
-
-        if (response.status === 404) {
+        if (response.status === 400) {
           if (errorInfo.type === EmailIsAlreadyConfirmedErrorType.EmailIsAlreadyConfirmed) {
             return throwError(errorInfo);
           }
