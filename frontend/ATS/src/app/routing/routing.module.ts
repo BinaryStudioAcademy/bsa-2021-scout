@@ -16,6 +16,8 @@ import { AuthGuard } from '../users/guards/auth.guard';
 import { ApplicantsComponent } from '../applicants/components/applicants/applicants.component';
 import { ProjectsListComponent } from 
   '../projects/components/projects-list/projects-list.component';
+import { ApplicationPoolComponent } from 
+  '../users/components/application-pool/application-pool.component';
 
 
 
@@ -41,7 +43,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     UserRoutingModule,
     VacanciesRoutingModule,
-    ProjectRoutingModule,
+    ProjectRoutingModule,    
   ],
   exports: [RouterModule],
 })

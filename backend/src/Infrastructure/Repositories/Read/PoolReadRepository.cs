@@ -87,19 +87,13 @@ namespace Infrastructure.Repositories.Read
 
             var poolDictionary = new Dictionary<string, Pool>();
             var poolToApplicantDictionary = new Dictionary<string, PoolToApplicant>();
-            Pool cachedPool = null;
             List<Pool> allPools = new List<Pool>();
 
             var pool = (await connection.QueryAsync<Pool, PoolToApplicant, Applicant, Pool>(
                 sql,
                 (pool, poolToApplicant, applicant) =>
                 {
-                    //if (cachedPool == null)
-                    //{
-                    //    cachedPool = pool;
-                    //    cachedPool.PoolApplicants = new List<PoolToApplicant>();
-                    //}
-
+                    
                     if (!poolDictionary.TryGetValue(pool.Id, out Pool poolEntry))
                     {
 
@@ -128,39 +122,6 @@ namespace Infrastructure.Repositories.Read
             await connection.CloseAsync();
 
             return poolDictionary.Values.ToList();
-        }
-
-        public async Task<List<Pool>> GetPoolsWithApplicantsAsync3()
-        {
-            var connection = _connectionFactory.GetSqlConnection();
-
-            await connection.OpenAsync();
-            string sql = $@"
-                            SELECT p.*, pa.*, a.*
-                            FROM [ATS_dev].[dbo].[Pools] p left outer join 
-                            PoolToApplicants pa ON pa.PoolId = p.Id left outer join
-                            Applicants a on a.Id = pa.ApplicantId";
-
-
-            var poolDictionary = new Dictionary<string, Pool>();
-            var poolToApplicantDictionary = new Dictionary<string, PoolToApplicant>();
-            Pool cachedPool = null;
-
-            List<Pool> allPools = new List<Pool>();
-
-            var pools = await connection.QueryAsync<Pool, PoolToApplicant, Applicant, Pool>(sql, MapResults);
-
-            await connection.CloseAsync();
-
-            return poolDictionary.Values.ToList();
-        }
-
-        private Pool MapResults(Pool pool, PoolToApplicant poolToApplicant, Applicant applicant)
-        {
-            pool.PoolApplicants = new List<PoolToApplicant>();
-            pool.PoolApplicants.Add(new PoolToApplicant() { Applicant = applicant, Pool = pool });            
-
-            return pool;
         }
 
 

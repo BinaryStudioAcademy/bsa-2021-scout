@@ -167,6 +167,10 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<MailTemplate>, MongoReadRespoitory<MailTemplate>>();
             services.AddScoped<IReadRepository<EmailToken>, EmailTokenReadRepository>();
 
+            services.AddScoped<IReadRepository<Pool>, PoolReadRepository>();
+            services.AddScoped<IPoolReadRepository, PoolReadRepository>();
+
+
             return services;
         }
     }

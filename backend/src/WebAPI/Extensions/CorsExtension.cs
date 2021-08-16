@@ -40,7 +40,6 @@ namespace WebAPI.Extensions
         {
             var frontendUrl = Environment.GetEnvironmentVariable("FRONTEND_URL");
             System.Console.WriteLine("Url: " + frontendUrl.ToString());
-                frontendUrl = "http://localhost:4200";
 
             services.AddCors(options =>
             {
@@ -48,15 +47,10 @@ namespace WebAPI.Extensions
                                   builder =>
                                   {
                                       builder
-                                        //.WithHeaders("Authorization")
-                                        //.WithHeaders("Content-Type")
-                                        //.WithMethods("GET", "POST", "PUT", "DELETE")
-                                        //.WithExposedHeaders("Token-Expired")
-                                        .AllowAnyMethod()
-                                        .AllowAnyHeader()
-                                        //.WithHeaders("Content-Type")
-                                        //.WithMethods("GET", "POST", "PUT", "DELETE")
-                                        //.WithExposedHeaders("Token-Expired")
+                                        .WithHeaders("Authorization")
+                                        .WithHeaders("Content-Type")
+                                        .WithMethods("GET", "POST", "PUT", "DELETE")
+                                        .WithExposedHeaders("Token-Expired")
                                         .WithOrigins(frontendUrl);
                                   });
             });

@@ -20,15 +20,12 @@ import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.
 import { SuccessfulRegistrationComponent }
   from './components/successful-registration/successful-registration.component';
 import { LoggedInUserGuard } from './guards/logged-in-user.guard';
+import { ApplicationPoolComponent } from './components/application-pool/application-pool.component';
 import { CreateTalentpoolModalComponent } 
   from './components/create-talentpool-modal/create-talentpool-modal.component';
 import { EditAppPoolModalComponent } 
   from './components/edit-app-pool-modal/edit-app-pool-modal.component';
-import { LoginRegistCommonComponent } 
-  from './components/login-regist-common/login-regist-common.component';
-import { HomeComponent } from './components/home/home.component';
-import { ApplicationPoolComponent } from './components/application-pool/application-pool.component';
-import { StylePaginatorDirective } from '../shared/directives/style-paginator.directive';
+
 
 @NgModule({
   declarations: [
@@ -42,11 +39,10 @@ import { StylePaginatorDirective } from '../shared/directives/style-paginator.di
     ResetPasswordComponent,
     ResetPasswordBoxComponent,
     ConfirmEmailComponent,
-    SuccessfulRegistrationComponent,
-    StylePaginatorDirective,
-    CreateTalentpoolModalComponent,
-    EditAppPoolModalComponent,
+    SuccessfulRegistrationComponent,    
     ApplicationPoolComponent,
+    CreateTalentpoolModalComponent,
+    EditAppPoolModalComponent,    
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
