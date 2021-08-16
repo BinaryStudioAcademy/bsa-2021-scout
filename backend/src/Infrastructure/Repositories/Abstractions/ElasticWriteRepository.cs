@@ -1,14 +1,11 @@
-﻿using Domain.Common;
-using Domain.Interfaces;
-using Infrastructure.EF;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
-using Nest;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Dynamic;
 using Domain.Entities;
+using Domain.Interfaces;
+using System.Threading.Tasks;
+using Nest;
+using System;
+using Domain.Common;
 
 namespace Infrastructure.Repositories.Abstractions
 {
@@ -16,7 +13,6 @@ namespace Infrastructure.Repositories.Abstractions
     {
         private readonly IElasticClient _client;
         private readonly string _indexName;
-
         public ElasticWriteRepository(IElasticClient client)
         {
             _indexName = typeof(T).ToString();

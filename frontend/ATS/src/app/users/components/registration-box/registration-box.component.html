@@ -5,12 +5,12 @@
             <div class="registration-input-title"><span>First name</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userFirstName') ? 'logo-invalid-input' : ''">
-                <input matInput type="text" formControlName="userFirstName" placeholder="Enter your first name">
+                <input matInput type="text" formControlName="userFirstName" placeholder="Enter your first name" [(ngModel)]="userRegisterDto.firstName">
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userFirstName')">
                 <div class="logo-validation-message"
                     *ngIf="registrationForm.controls['userFirstName'].errors?.firstandlastname">
-                    Last name should contain only latin letters, spaces and hyphens.
+                    First name should start with upper letter, contain only latin letters, spaces and hyphens.
                 </div>
                 <div class="logo-validation-message"
                     *ngIf="registrationForm.controls['userFirstName'].errors?.required">
@@ -22,12 +22,12 @@
             <div class="registration-input-title"><span>Last name</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userLastName') ? 'logo-invalid-input' : ''">
-                <input matInput type="text" formControlName="userLastName" placeholder="Enter your last name">
+                <input matInput type="text" formControlName="userLastName" placeholder="Enter your last name" [(ngModel)]="userRegisterDto.lastName">
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userLastName')">
                 <div class="logo-validation-message"
                     *ngIf="registrationForm.controls['userLastName'].errors?.firstandlastname">
-                    Last name should contain only latin letters, spaces and hyphens.
+                    Last name should start with upper letter, contain only latin letters, spaces and hyphens.
                 </div>
                 <div class="logo-validation-message" *ngIf="registrationForm.controls['userLastName'].errors?.required">
                     Please enter your last name.
@@ -38,11 +38,8 @@
             <div class="registration-input-title"><span>Email</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userEmail') ? 'logo-invalid-input' : ''">
-                <input matInput type="email" formControlName="userEmail" placeholder="Enter your email">
+                <input matInput type="email" formControlName="userEmail" placeholder="Enter your Email" [(ngModel)]="userRegisterDto.email">
             </mat-form-field>
-            <div class="logo-validation-message" *ngIf="registrationForm.controls['userEmail'].errors?.useremailexists">
-                This username is already taken!
-            </div>
             <div class="logo-validation-message"
                 *ngIf="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userEmail') && registrationForm.controls['userEmail'].errors?.pattern">
                 Please enter a valid address.
@@ -63,7 +60,7 @@
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userPassword') ? 'logo-invalid-input' : ''">
                 <input matInput [type]="isPasswordHide ? 'password' : 'text'" formControlName="userPassword"
-                    [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'" autocomplete="on">
+                    [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'" autocomplete="on"  [(ngModel)]="userRegisterDto.password">
                 <mat-icon class="registration-show-password" matSuffix (click)="isPasswordHide = !isPasswordHide">
                     {{isPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
@@ -73,8 +70,11 @@
                 </div>
                 <div class="logo-validation-message"
                     *ngIf="loginRegistCommonComponent.checkIsPasswordValid(registrationForm,'userPassword')">
-                    <span>Password length must be 8-32 symbols (only digits, latin letters and special characters
-                        allowed).</span>
+                    <span>Password length must be min. 8 symbols.</span>
+                </div>
+                <div class="logo-validation-message"
+                    *ngIf="registrationForm.controls['userPassword'].errors?.whitespace">
+                    <span>Your password cannot contain spaces.</span>
                 </div>
             </div>
         </div>
@@ -82,22 +82,22 @@
             <div class="registration-input-password-title-block">
                 <div class="registration-input-title"><span>Password confirmation</span></div>
             </div>
-            <mat-form-field floatLabel="never"
-                [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userPasswordConfirmation') ? 'logo-invalid-input' : ''">
-                <input matInput [type]="isPasswordHide ? 'password' : 'text'" formControlName="userPasswordConfirmation"
-                    [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'" autocomplete="on">
-                <mat-icon class="registration-show-password" matSuffix (click)="isPasswordHide = !isPasswordHide">
-                    {{isPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-form-field floatLabel="never" [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userPasswordConfirmation')
+                || registrationForm.errors?.mismatch ? 'logo-invalid-input' : ''">
+                <input matInput [type]="isPasswordConfirmHide ? 'password' : 'text'" formControlName="userPasswordConfirmation"
+                    [placeholder]="isPasswordConfirmHide ? '••••••••' : 'Enter your password'" autocomplete="on">
+                <mat-icon class="registration-show-password" matSuffix (click)="isPasswordConfirmHide = !isPasswordConfirmHide">
+                    {{isPasswordConfirmHide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userPasswordConfirmation')">
                 <div class="logo-validation-message"
                     *ngIf="registrationForm.controls['userPasswordConfirmation'].errors?.required">
-                    Please enter your password secoond time.
+                    Please enter your password second time.
                 </div>
             </div>
             <div class="logo-validation-message"
                 *ngIf="registrationForm.errors?.invalid && registrationForm.errors?.mismatch">
-                Passwords mismatch.
+                Password confirmation doesn’t match password.
             </div>
         </div>
         <div class="registration-input-birthdate form-group">
@@ -105,19 +105,24 @@
             <mat-form-field floatLabel="never" class="birthdate-form-field"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userBirthdate') ? 'logo-invalid-input' : ''">
                 <input matInput [matDatepicker]="picker" name="date" formControlName="userBirthdate"
-                    placeholder="dd/mm/yyyy">
+                    placeholder="dd/mm/yyyy"  [(ngModel)]="userRegisterDto.birthDate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userBirthdate')">
+                <div class="logo-validation-message" *ngIf="registrationForm.controls['userBirthdate'].errors?.matDatepickerParse
+                    || registrationForm.controls['userBirthdate'].errors?.required">
+                    Please enter valid birthdate.
+                    Validate format is DD/MM/YEAR.
+                </div>
                 <div class="logo-validation-message"
                     *ngIf="registrationForm.controls['userBirthdate'].errors?.datevalidate">
-                    Please enter valid birthdate.
+                    The user cannot be younger than 16 years old
                 </div>
             </div>
         </div>
         <div class="registration-button form-group">
-            <button mat-button color="primary" >Sign up</button>
+            <button mat-button color="primary" [disabled]="!(isRequestFinished && registrationForm?.valid)">Sign up</button>
         </div>
     </form>
 </div>

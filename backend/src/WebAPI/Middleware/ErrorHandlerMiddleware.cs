@@ -42,6 +42,15 @@ namespace WebAPI.Middleware
                     case ExpiredRefreshTokenException e:
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         break;
+                    case InvalidUsernameOrPasswordException e:
+                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    case EmailIsNotConfirmedException e:
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
+                    case EmailIsAlreadyConfirmed e:
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;

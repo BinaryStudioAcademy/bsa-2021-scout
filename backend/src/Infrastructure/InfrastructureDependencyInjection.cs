@@ -29,7 +29,6 @@ namespace Infrastructure
 
             services.AddDapper();
             services.AddMongoDb();
-            services.AddElasticEngine();
 
             services.AddWriteRepositories();
             services.AddReadRepositories();
@@ -41,14 +40,14 @@ namespace Infrastructure
             services.AddJWT();
 
             services.AddScoped<IDomainEventService, DomainEventService>();
+            services.AddElasticEngine();
             return services;
         }
         private static IServiceCollection AddElasticEngine(this IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("ELASTIC_CONNECTION_STRING");
-
-            // if (connectionString is null)
-            //     throw new Exception("Elastic connection string url is not specified");
+            if (connectionString is null)
+                throw new Exception("Elastic connection string url is not specified");
             var settings = new ConnectionSettings(new Uri(connectionString))
                 .DefaultIndex("default_index")
                 .DefaultMappingFor<ElasticEntity>(m => m
@@ -115,14 +114,25 @@ namespace Infrastructure
         private static IServiceCollection AddWriteRepositories(this IServiceCollection services)
         {
             services.AddScoped<IWriteRepository<User>, WriteRepository<User>>();
+            services.AddScoped<IWriteRepository<Vacancy>, WriteRepository<Vacancy>>();
+            services.AddScoped<IWriteRepository<Project>, WriteRepository<Project>>();
+            services.AddScoped<IWriteRepository<Company>, WriteRepository<Company>>();
+            services.AddScoped<IWriteRepository<Stage>, WriteRepository<Stage>>();
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
+            services.AddScoped<IWriteRepository<Role>, WriteRepository<Role>>();
+            services.AddScoped<IWriteRepository<UserToRole>, WriteRepository<UserToRole>>();
+
+            services.AddScoped<IWriteRepository<Applicant>, ApplicantsWriteRepository>();
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
+            services.AddScoped<IApplicantsFromCsvWriteRepository, ApplicantsFromCsvWriteRepository>();
 
             services.AddScoped<IElasticWriteRepository<ElasticEntity>, ElasticWriteRepository<ElasticEntity>>();
 
             services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
             services.AddScoped<IWriteRepository<CandidateToStage>, CandidateToStageWriteRepository>();
             services.AddScoped<ICandidateToStageWriteRepository, CandidateToStageWriteRepository>();
+            services.AddScoped<IWriteRepository<EmailToken>, WriteRepository<EmailToken>>();
+            services.AddScoped<IWriteRepository<Project>, WriteRepository<Project>>();
             services.AddScoped<IWriteRepository<Pool>, WriteRepository<Pool>>();
             services.AddScoped<IWriteRepository<PoolToApplicant>, PoolToApplicantWriteRepository>();
             services.AddScoped<IPoolToApplicantWriteRepository, PoolToApplicantWriteRepository>();
@@ -134,21 +144,29 @@ namespace Infrastructure
         private static IServiceCollection AddReadRepositories(this IServiceCollection services)
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
+            services.AddScoped<IReadRepository<Vacancy>, VacancyReadRepository>();
+            services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
+            services.AddScoped<IReadRepository<Company>, CompanyReadRepository>();
+            services.AddScoped<IReadRepository<Role>, RoleReadRepository>();
+            services.AddScoped<IReadRepository<UserToRole>, UserToRoleReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
+            
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
             services.AddScoped<IElasticReadRepository<ElasticEntity>, ElasticReadRepository<ElasticEntity>>();
+
+            services.AddScoped<IReadRepository<Applicant>, ApplicantsReadRepository>();
+            services.AddScoped<IApplicantsReadRepository, ApplicantsReadRepository>();
 
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
-            services.AddScoped<IReadRepository<Pool>, PoolReadRepository>();
-            services.AddScoped<IPoolReadRepository, PoolReadRepository>();
-            services.AddScoped<IReadRepository<Applicant>, ApplicantReadRepository>();
-            services.AddScoped<IApplicantReadRepository, ApplicantReadRepository>();
 
+            services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
             services.AddScoped<IReadRepository<MailTemplate>, MongoReadRespoitory<MailTemplate>>();
+            services.AddScoped<IReadRepository<EmailToken>, EmailTokenReadRepository>();
+
             return services;
         }
     }

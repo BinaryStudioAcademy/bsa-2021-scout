@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using WebAPI.Extensions;
+using Application.Interfaces;
+using Application.Common.Exceptions;
+using Domain.Entities;
 
 namespace WebAPI.Controllers
 {
@@ -21,11 +24,17 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("from-token")]
-        public async Task<ActionResult<UserDto>> GetUserFromToken()
+        public async Task<ActionResult<UserDto>> GetUserFromToken([FromServices] ICurrentUserContext currentUserContext)
         {
-            var query = new GetEntityByIdQuery<UserDto>(this.GetUserIdFromToken());
-            return Ok(await Mediator.Send(query));
+            var user = await currentUserContext.GetCurrentUser();
+            if (user is null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
+
+
 
         [AllowAnonymous]
         [HttpGet, Route("Email/{email}")]

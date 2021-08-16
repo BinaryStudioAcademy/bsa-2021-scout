@@ -15,9 +15,13 @@ namespace Domain.Entities
         public DateTime DateOfOpening { get; set; }
         public DateTime ModificationDate { get; set; }
         public bool IsRemote { get; set; }
+        public bool IsHot { get; set; }
+        public int SalaryFrom { get; set; }
+        public int SalaryTo { get; set; }
         public DateTime CompletionDate { get; set; }
         public DateTime PlannedCompletionDate { get; set; }
-        public Tier Tier { get; set; }
+        public Tier TierFrom { get; set; }
+        public Tier TierTo { get; set; }
         public string Sources { get; set; }
         public string CompanyId { get; set; }
         public string ResponsibleHrId { get; set; }
@@ -27,5 +31,6 @@ namespace Domain.Entities
         public User ResponsibleHr { get; set; }
         public Project Project { get; set; }
         public ICollection<Stage> Stages { get; set; }
+        //public ICollection<TagToVacancy> VacancyTags { get; set; }
     }
 }

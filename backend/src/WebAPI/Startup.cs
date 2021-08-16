@@ -37,10 +37,6 @@ namespace WebAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
-            });
-
-            services.AddSwaggerGen(c =>
-            {
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "Use bearer token to authorize",
@@ -49,7 +45,8 @@ namespace WebAPI
                     BearerFormat = "JWT"
                 });
                 c.OperationFilter<AddAuthHeaderOperationFilter>();
-            });
+            });            
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

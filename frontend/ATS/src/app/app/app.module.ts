@@ -6,40 +6,54 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RoutingModule } from '../routing/routing.module';
 import { AppComponent } from './components/app/app.component';
 import { ToastrModule } from 'ngx-toastr';
-import { SharedModule } from '../shared/shared.module';
 import { VacanciesModule } from '../vacancies/vacancies.module';
+import { ApplicantsModule } from '../applicants/applicants.module';
+import { SharedModule } from '../shared/shared.module';
 import { UsersModule } from '../users/users.module';
-import { VacancyCardComponent } from '../vacancy/vacancy-card/vacancy-card.component';
-import { VacancyWidgetComponent } from '../vacancy/vacancy-widget/vacancy-widget.component';
+
+import { VacancyCardComponent } from '../vacancies/components/vacancy-card/vacancy-card.component';
+import { VacancyWidgetComponent } from '../vacancies/components/vacancy-widget/vacancy-widget.component';
 import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
+
+
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+
 import { ApplicationPoolComponent } from '../users/components/application-pool/application-pool.component';
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
+import { AuthGuard } from '../users/guards/auth.guard';
+
+import { ProjectsModule } from '../projects/projects.module';
 
 @NgModule({
   declarations: [
     AppComponent, 
     VacancyCardComponent,
     VacancyWidgetComponent,
-    HomeComponent,    
-  ],
+    HomeComponent],
   imports: [
     BrowserModule,
     RoutingModule,
     HttpClientModule,
+    MatSortModule,
+    MatTableModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),    
     SharedModule,
+    ApplicantsModule,
     VacanciesModule,
-    UsersModule,    
+    UsersModule,
+    ProjectsModule,
   ],
   providers: [
     SidenavService,
+    AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  exports: [SharedModule],
+  exports: [],
 })
 export class AppModule {}

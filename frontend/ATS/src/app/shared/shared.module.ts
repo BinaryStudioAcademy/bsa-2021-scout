@@ -33,6 +33,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
+import { StylePaginatorDirective } from './directives/style-paginator.directive';
 
 
 
@@ -66,11 +67,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MenuComponent,
     MatProgressBarModule,
     SpinnerComponent,
-    MatTableModule,
-    MatPaginatorModule,
-    MatAutocompleteModule,
-    MatChipsModule,
-    RouterModule,   
+    StylePaginatorDirective,
   ],
   imports: [
     MatButtonModule,
@@ -111,6 +108,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MenuComponent,
     MainContentComponent,
     SpinnerComponent,
+    StylePaginatorDirective,
   ],
 })
 export class SharedModule {}
