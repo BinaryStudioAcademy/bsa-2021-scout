@@ -84,5 +84,5 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let myRowData; columns: displayedColumns"></tr>
     </table>
-    <mat-paginator [pageSize]="10" [showTotalPages]="5" appStylePaginator hidePageSize></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 15]" [showTotalPages]="5" appStylePaginator></mat-paginator>
 </div>
