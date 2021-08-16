@@ -23,7 +23,7 @@ export class HeaderComponent {
 
   public logout(): void {
     this.service.logout().subscribe(
-      () => window.location.replace('/'),
+      () => window.location.replace('/login'),
       () => this.notifications.showErrorMessage('Failed to log out.'),
     );
   }
