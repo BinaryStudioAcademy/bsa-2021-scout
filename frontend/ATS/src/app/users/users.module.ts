@@ -19,6 +19,7 @@ import { LoginRegistCommonComponent } from './components/login-regist-common/log
 import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
 import { SuccessfulRegistrationComponent }
   from './components/successful-registration/successful-registration.component';
+import { LoggedInUserGuard } from './guards/logged-in-user.guard';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { SuccessfulRegistrationComponent }
   providers: [
     LoginRegistCommonComponent,
     ResetPasswordGuard,
+    LoggedInUserGuard,
   ],
 })
 export class UsersModule { }
