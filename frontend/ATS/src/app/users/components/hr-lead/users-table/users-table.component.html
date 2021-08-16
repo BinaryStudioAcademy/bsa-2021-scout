@@ -12,7 +12,7 @@
 <app-spinner *ngIf="loading"></app-spinner>
 <div class="user-list">
     <div class="mat-elevation-z8">
-        <table #mytable mat-table [dataSource]="dataSource" matSort>
+        <table #mytable mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
 
             <ng-container matColumnDef="position">
                 <th mat-header-cell *matHeaderCellDef > # </th>
@@ -20,7 +20,7 @@
             </ng-container>
 
             <ng-container matColumnDef="full-name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Full name </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="full-name"> Full name </th>
                 <td mat-cell *matCellDef="let row">
                     <div class="name-logo">
                         <img src="{{row.logo}}"
@@ -31,28 +31,27 @@
             </ng-container>
 
             <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
                 <td mat-cell *matCellDef="let row"> {{row.email}}</td>
             </ng-container>
 
             <ng-container matColumnDef="birth-date">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Birth date </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="birth-date"> Birth date </th>
                 <td mat-cell *matCellDef="let row"> {{row.birthDate | date:'dd.MM.yyyy'}} </td>
             </ng-container>
 
             <ng-container matColumnDef="creation-date">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Creation date </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="creation-date"> Creation date </th>
                 <td mat-cell *matCellDef="let row"> {{row.creationDate | date:'dd.MM.yyyy'}} </td>
             </ng-container>
 
-
             <ng-container matColumnDef="email-confirmed">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Email confirmed </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="email-confirmed"> Email confirmed </th>
                 <td mat-cell *matCellDef="let row"> {{row.isEmailConfirmed ? '&#10003;' : '&#10005;'}} </td>
             </ng-container>
 
             <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let row">
                     <div class="icons">
                         <mat-icon>bookmark</mat-icon>
