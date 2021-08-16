@@ -113,12 +113,11 @@ namespace WebAPI.Extensions
             {
                 try
                 {
-                    await otherRepo.GetAsync(project.Id);
-                    await repo.UpdateAsync(project);
+                    await repo.CreateAsync(project);
                 }
                 catch
                 {
-                    await repo.CreateAsync(project);
+                    await repo.UpdateAsync(project);
                 }
             }
 
