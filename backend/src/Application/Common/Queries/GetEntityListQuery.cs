@@ -13,14 +13,14 @@ namespace Application.Common.Queries
         where TDto : Dto
     { }
 
-    public class GetEntityListQuery<TEntity, TDto> : IRequestHandler<GetEntityListQuery<TDto>, IEnumerable<TDto>>
+    public class GetEntityListQueryHandler<TEntity, TDto> : IRequestHandler<GetEntityListQuery<TDto>, IEnumerable<TDto>>
         where TEntity : Entity
         where TDto : Dto
     {
         protected readonly IReadRepository<TEntity> _repository;
         protected readonly IMapper _mapper;
 
-        public GetEntityListQuery(IReadRepository<TEntity> repository, IMapper mapper)
+        public GetEntityListQueryHandler(IReadRepository<TEntity> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -29,7 +29,7 @@ namespace Application.Common.Queries
         public async Task<IEnumerable<TDto>> Handle(GetEntityListQuery<TDto> query, CancellationToken _)
         {
             IEnumerable<TEntity> result = await _repository.GetEnumerableAsync();
-
+            //TODO Get by company Id
             return _mapper.Map<IEnumerable<TDto>>(result);
         }
     }

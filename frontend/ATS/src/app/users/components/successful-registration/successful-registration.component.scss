@@ -1,0 +1,11 @@
+:host{
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 720px;
+}
+
+.login-side-block>div{
+    margin: auto;
+    width: 327px;
+    text-align: center;
+}

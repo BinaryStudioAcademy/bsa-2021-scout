@@ -28,7 +28,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DATABASE_CONNECTION_STRING": "Server=localhost;Database=ATS_dev;Trusted_Connection=True;",
         "ELASTIC_CONNECTION_STRING": "http://localhost:9200",
-        "MONGODB_CONNECTION_URI": "mongodb://mongo:123Admin!@localhost:27017",
+        "MONGODB_CONNECTION_URI": "mongodb://mongo:MyBadPass123!@localhost:27017",
         "MONGODB_DATABASE_NAME": "ats_database",
         "MAIL_ADDRESS": "notifications.scout@gmail.com",
         "MAIL_PASSWORD": "yourpassword",
@@ -41,7 +41,7 @@
         "AWS_DEFAULT_BUCKET": "yourbucket",
         "AWS_TEXTRACT_SNS_ROLE": "arn:aws:iam::<user id>:role/<name>",
         "AWS_TEXTRACT_SNS_TOPIC": "arn:aws:sns:eu-west-2:<user id>:<name>",
-        "FRONTEND_URL": "http://localhost:4200/"
+        "FRONTEND_URL": "http://localhost:4200"
       }
     }
   }

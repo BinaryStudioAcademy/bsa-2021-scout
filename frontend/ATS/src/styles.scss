@@ -55,13 +55,13 @@ mat-list-item .mat-icon {
 }
 
 .toast-success-custom.toast-success {
-  background-color: green;
+  background-color: rgba($color: #00ff00, $alpha: 0.5);
 }
 
 .toast-error-custom.toast-error {
-  background-color: red;
+  background-color: rgba($color: #ff0000, $alpha: 0.5);
 }
 
 .toast-info-custom.toast-info {
-  background-color: blue;
+  background-color: rgba($color: #0000ff, $alpha: 0.5);
 }

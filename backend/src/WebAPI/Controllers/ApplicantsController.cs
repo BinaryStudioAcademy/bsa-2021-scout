@@ -3,22 +3,31 @@ using Application.Common.Queries;
 using Application.Applicants.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using System;
-using Application.ElasticEnities.Dtos;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Application.ElasticEnities.CommandQuery.AddTagCommand;
 using Application.ElasticEnities.CommandQuery.DeleteTagCommand;
+using Application.Applicants.Queries;
+using Application.ElasticEnities.Dtos;
 using System.Threading;
+using Domain.Entities;
+using Application.Applicants.Commands;
 
 namespace WebAPI.Controllers
 {
     public class ApplicantsController : ApiController
     {
+        protected IMapper _mapper;
+        public ApplicantsController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetApplicantAsync(string id)
         {
-            var query = new GetEntityByIdQuery<ApplicantDto>(id);
+            var query = new GetComposedApplicantQuery(id);
 
             return Ok(await Mediator.Send(query));
         }
@@ -26,10 +35,11 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetApplicantsAsync()
         {
-            var query = new GetEntityListQuery<ApplicantDto>();
+            var query = new GetComposedApplicantListQuery();
 
             return Ok(await Mediator.Send(query));
         }
+
         [HttpGet("to_tags/{searchRequest}")]
         public async Task<IActionResult> SearchElasticAsync(string searchRequest, CancellationToken token)
         {
@@ -37,10 +47,11 @@ namespace WebAPI.Controllers
 
             return Ok(await Mediator.Send(query));
         }
+
         [HttpPost]
         public async Task<IActionResult> PostApplicantAsync([FromBody] CreateApplicantDto createDto)
         {
-            var query = new CreateEntityCommand<CreateApplicantDto>(createDto);
+           var query = new CreateComposedApplicantCommand(createDto);
 
             return Ok(await Mediator.Send(query));
         }
@@ -73,7 +84,7 @@ namespace WebAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> PutApplicantAsync([FromBody] UpdateApplicantDto updateDto)
         {
-            var query = new UpdateEntityCommand<UpdateApplicantDto>(updateDto);
+            var query = new UpdateComposedApplicantCommand(updateDto);
 
             return Ok(await Mediator.Send(query));
         }
@@ -90,8 +101,12 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteApplicantAsync(string id)
         {
             var query = new DeleteEntityCommand(id);
+            await Mediator.Send(query);
 
-            return StatusCode(204, await Mediator.Send(query));
+            var elasticQuery = new DeleteElasticDocumentCommand(id);
+            await Mediator.Send(elasticQuery);
+
+            return StatusCode(204);
         }
 
         [HttpDelete("to_tags/{id}")]

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Domain.Entities;
-using Domain.Interfaces.Read;
+using Domain.Interfaces.Abstractions;
 using Application.Interfaces;
 using Application.Common.Exceptions;
 
@@ -8,9 +8,9 @@ namespace Infrastructure.Services
 {
     public class MailBuilderService : IMailBuilderService
     {
-        private readonly IMailTemplateReadRepository _repository;
+        private readonly IReadRepository<MailTemplate> _repository;
 
-        public MailBuilderService(IMailTemplateReadRepository repository)
+        public MailBuilderService(IReadRepository<MailTemplate> repository)
         {
             _repository = repository;
         }
@@ -21,7 +21,7 @@ namespace Infrastructure.Services
 
             try
             {
-                template = await _repository.GetBySlugAsync(templateSlug);
+                template = await _repository.GetByPropertyAsync("Slug", templateSlug);
             }
             catch
             {

@@ -22,10 +22,8 @@ namespace WebAPI.Controllers
         [HttpPost("revoke")]
         public async Task<IActionResult> RevokeRefreshToken([FromBody] RevokeRefreshTokenDto revokeRefreshToken)
         {
-            var userId = this.GetUserIdFromToken();
-            var command = new LogoutCommand(revokeRefreshToken.RefreshToken, userId);
+            var command = new LogoutCommand(revokeRefreshToken.RefreshToken);
             await Mediator.Send(command);
-
             return Ok();
         }
     }

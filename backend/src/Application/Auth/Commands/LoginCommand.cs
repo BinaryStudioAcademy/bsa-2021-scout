@@ -14,13 +14,11 @@ namespace Application.Auth.Commands
 {
     public class LoginCommand : IRequest<AuthUserDto>
     {
-        public string Email { get; }
-        public string Password { get; }
+        public UserLoginDto LoginUser { get; }
 
         public LoginCommand(UserLoginDto loginUser)
         {
-            Email = loginUser.Email;
-            Password = loginUser.Password;
+            LoginUser = loginUser;
         }
     }
 
@@ -43,16 +41,16 @@ namespace Application.Auth.Commands
 
         public async Task<AuthUserDto> Handle(LoginCommand command, CancellationToken _)
         {
-            User user = await _userRepository.GetByEmailAsync(command.Email);
+            User user = await _userRepository.GetByEmailAsync(command.LoginUser.Email);
 
-            if (user == null)
-            {
-                throw new NotFoundException($"Can't find user with email {command.Email}.");
-            }
-
-            if (!_securityService.ValidatePassword(command.Password, user.Password, user.PasswordSalt))
+            if (user == null || !_securityService.ValidatePassword(command.LoginUser.Password, user.Password, user.PasswordSalt))
             {
                 throw new InvalidUsernameOrPasswordException();
+            }
+
+            if (!user.IsEmailConfirmed)
+            {
+                throw new EmailIsNotConfirmedException();
             }
 
             UserDto userDto = _mapper.Map<UserDto>(user);

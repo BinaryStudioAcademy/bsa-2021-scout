@@ -3,7 +3,8 @@ COPY package.json package-lock.json ./
 RUN npm install && mkdir /builder && mv ./node_modules ./builder
 WORKDIR /builder
 COPY . .
-RUN npm run build
+ARG FRONTEND_CONFIGURATION=development
+RUN npm run build -- --configuration=$FRONTEND_CONFIGURATION
 
 FROM nginx:alpine
 COPY nginx.conf /etc/nginx/nginx.conf
