@@ -40,7 +40,6 @@ namespace WebAPI.Controllers
                 return Ok();
             }
 
-            Console.WriteLine(data.Message);
             TextractNotificationDto message = JsonConvert.DeserializeObject<TextractNotificationDto>(data.Message);
             var command = new ParseCvFileToApplicantCommand(message.JobId);
             await Mediator.Send(command);

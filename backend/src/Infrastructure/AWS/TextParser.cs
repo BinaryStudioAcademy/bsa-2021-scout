@@ -63,7 +63,6 @@ namespace Infrastructure.AWS
             request.NotificationChannel = new NotificationChannel();
             request.NotificationChannel.RoleArn = _role;
             request.NotificationChannel.SNSTopicArn = _topic;
-            Console.WriteLine(_role + " " + _topic + " " + _defaultBucket);
 
             StartDocumentTextDetectionResponse response = await _textract.StartDocumentTextDetectionAsync(request);
             return response.JobId;
