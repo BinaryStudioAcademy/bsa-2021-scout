@@ -32,6 +32,7 @@ namespace WebAPI.Extensions
             host = await ApplyUserSeeding(host);
             host = await ApplyUserToRoleSeeding(host);
             host = await ApplyVacancySeeding(host);
+            host = await ApplyApplicantSeeding(host);
             host = await ApplyStageSeeding(host);
             return host;
         }
