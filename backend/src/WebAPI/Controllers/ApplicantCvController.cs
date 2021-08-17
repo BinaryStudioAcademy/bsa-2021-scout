@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using Application.SNS.Dtos;
 using Application.ApplicantCvs.Dtos;
@@ -29,6 +30,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("webhook/parsed")]
+        [AllowAnonymous]
         public async Task<ActionResult> ParseFileToApplicant([FromBody] SnsNotificationDto data)
         {
             if (data.SubscribeURL != null)

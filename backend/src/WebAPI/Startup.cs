@@ -27,7 +27,7 @@ namespace WebAPI
             services.AddApplication();
             services.AddInfrastructure();
 
-            
+
             services.ConfigureJwt(Configuration);
             services.AddScoped<ICurrentUserContext, CurrentUserContext>();
             services.AddHttpContextAccessor();
@@ -45,7 +45,7 @@ namespace WebAPI
                     BearerFormat = "JWT"
                 });
                 c.OperationFilter<AddAuthHeaderOperationFilter>();
-            });            
+            });
 
         }
 

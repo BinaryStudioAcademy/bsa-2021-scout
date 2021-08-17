@@ -4,14 +4,16 @@ using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210813192533_AddLinkedInUrlToApplicant")]
+    partial class AddLinkedInUrlToApplicant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -435,9 +437,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsHot")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsRemote")
                         .HasColumnType("bit");
 
@@ -456,22 +455,13 @@ namespace Infrastructure.Migrations
                     b.Property<string>("ResponsibleHrId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("SalaryFrom")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SalaryTo")
-                        .HasColumnType("int");
-
                     b.Property<string>("Sources")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("TierFrom")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TierTo")
+                    b.Property<int>("Tier")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -805,8 +795,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("AddedCandidates");
-
-                    b.Navigation("CvParsingJobs");
 
                     b.Navigation("EmailToken");
 

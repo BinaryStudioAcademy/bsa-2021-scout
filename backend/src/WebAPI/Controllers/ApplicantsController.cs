@@ -51,7 +51,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostApplicantAsync([FromBody] CreateApplicantDto createDto)
         {
-           var query = new CreateComposedApplicantCommand(createDto);
+            var query = new CreateComposedApplicantCommand(createDto);
 
             return Ok(await Mediator.Send(query));
         }
@@ -62,6 +62,19 @@ namespace WebAPI.Controllers
             var query = new CreateElasticDocumentCommand<CreateElasticEntityDto>(createDto);
 
             return Ok(await Mediator.Send(query));
+        }
+
+        [HttpPost("csv/")]
+        public async Task<IActionResult> PostApplicantFromCsv()
+        {
+            var file = Request.Form.Files[0];
+
+            using (var fileReadStream = file.OpenReadStream())
+            {
+                var command = new CreateApplicantsFromCsvCommand(fileReadStream);
+
+                return Ok(await Mediator.Send(command));
+            }
         }
 
         [HttpPost("tags/{entityId}")]

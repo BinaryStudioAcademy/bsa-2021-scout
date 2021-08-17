@@ -7,6 +7,7 @@ namespace Application.Applicants.Dtos
     {
         public string Phone { get; set; }
         public string Skype { get; set; }
+        public string LinkedInUrl { get; set; }
         public double Experience { get; set; }
     }
 
@@ -14,8 +15,6 @@ namespace Application.Applicants.Dtos
     {
         public CreateApplicantDtoValidator()
         {
-            RuleFor(a => a.Phone).NotNull().NotEmpty();
-            RuleFor(a => a.Skype).NotNull().NotEmpty();
             RuleFor(a => a.Experience).GreaterThanOrEqualTo(0);
         }
     }
