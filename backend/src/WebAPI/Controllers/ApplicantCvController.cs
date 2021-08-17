@@ -12,9 +12,10 @@ namespace WebAPI.Controllers
     public class ApplicantCvController : ApiController
     {
         [HttpPost("file-to-applicant")]
+        [AllowAnonymous]
         public async Task<ActionResult> StartParsingFileToApplicant([FromForm] ApplicantCvOnlyFileDto dto)
         {
-            string userId = GetUserIdFromToken();
+            string userId = "65cf0eb1-6d09-4711-add6-3628d369645a";
             ActionResult fileError = ValidateFileType(dto.File, "application/pdf");
 
             if (fileError != null)
@@ -39,6 +40,7 @@ namespace WebAPI.Controllers
                 return Ok();
             }
 
+            Console.WriteLine(data.Message);
             TextractNotificationDto message = JsonConvert.DeserializeObject<TextractNotificationDto>(data.Message);
             var command = new ParseCvFileToApplicantCommand(message.JobId);
             await Mediator.Send(command);

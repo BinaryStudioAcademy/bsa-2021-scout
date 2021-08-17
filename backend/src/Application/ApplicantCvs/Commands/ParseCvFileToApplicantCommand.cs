@@ -66,8 +66,8 @@ namespace Application.ApplicantCvs.Commands
             {
                 await connection.SendAsync(
                     user.Email,
-                    body,
-                    MailBodyFactory.CV_PARSED
+                    MailSubjectFactory.CV_PARSED,
+                    body
                 );
             }
 

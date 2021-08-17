@@ -40,6 +40,8 @@ namespace Application.ApplicantCvs.Commands
                 AWSJobId = awsId,
             };
 
+            await _repository.CreateAsync(job);
+
             return Unit.Value;
         }
     }
