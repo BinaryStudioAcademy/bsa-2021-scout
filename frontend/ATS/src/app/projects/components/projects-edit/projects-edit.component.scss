@@ -30,23 +30,6 @@ $primary-font: Nunito;
         margin-top: 20px;
         margin-bottom: 20px;
     }
-    
-    
-    /* Validation errors */
-    
-    .error-border {
-        border: 1px solid red;
-        border-radius: 10px;
-    }
-    
-    .custom-error {
-        font-family: $primary-font;
-        font-weight: normal;
-        font-size: 12px;
-        line-height: 19px;
-        color: red;
-        max-width: fit-content;
-    }
 }
 
 ::ng-deep {
@@ -69,13 +52,14 @@ $primary-font: Nunito;
         width: 450px;
         max-width: 100%;
         padding-left: 15px;
+        height: 45px;
     }
     /* Text Area */
     .wide .mat-form-field-wrapper.mat-form-field-wrapper {
         height: 185px;
     }
     .wide .mat-form-field-flex {
-        height: 100%;
+        height: 90%;
         margin-top: 20px;
         padding: 0;
         background-color: transparent;

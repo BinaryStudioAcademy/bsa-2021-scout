@@ -113,21 +113,6 @@ input:-webkit-autofill {
     height: 45px;
 }
 
-.logo-validation-message {
-    font-family: $primary-font;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 19px;
-    margin-top: 5px;
-    color: red;
-    max-width: fit-content;
-}
-
-.logo-invalid-input {
-    border: 1px solid red;
-    border-radius: 10px;
-}
-
 ::ng-deep {
     .mat-form-field-suffix {
         width: 17px;
