@@ -73,7 +73,7 @@ namespace Infrastructure.EF.Seeds
                 FirstName = "Clarence", 
                 LastName = "Hoffman",
                 LinkedInUrl = "http://linkedin.com/piwik",
-                Email = "dervasla@ne.eu",
+                Email = "zikawitid@ki.bb",
                 Phone = "5336301179",
                 ToBeContacted = new DateTime(2021, 11, 09),
                 CompanyId = "1",
