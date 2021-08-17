@@ -6,12 +6,12 @@ import { ResendConfirmEmailDto } from '../../models/resend-confirm-email-dto';
 import { AuthenticationService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-successful-registration',
-  templateUrl: './successful-registration.component.html',
-  styleUrls: ['./successful-registration.component.scss',
+  selector: 'app-resend-email-after-login',
+  templateUrl: './resend-email-after-login.component.html',
+  styleUrls: ['./resend-email-after-login.component.scss',
     '../login-regist-common/login-regist-common.component.scss'],
 })
-export class SuccessfulRegistrationComponent {
+export class ResendEmailAfterLoginComponent {
 
   constructor(public authenticationService: AuthenticationService,
     private route: ActivatedRoute,
