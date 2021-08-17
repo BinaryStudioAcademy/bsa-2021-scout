@@ -17,17 +17,26 @@ export class ErrorInterceptor implements HttpInterceptor {
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((response) => {
-
         if (response.status === 404) {
-          const errorInfo: { description: string; }
-            = { description: response.error.message };
-          return throwError(errorInfo);
+
+          if (response.error.message != null) {
+            const errorInfo: { description: string; }
+              = { description: response.error.message };
+            return throwError(errorInfo);
+          }
+
+          const errorInfo: { type: string; description: string }
+            = JSON.parse(response.error.message);
+
+          if (errorInfo.type === EmailIsAlreadyConfirmedErrorType.EmailIsAlreadyConfirmed) {
+            return throwError(errorInfo);
+          }
         }
 
-        const errorInfo: { type: string; description: string }
-          = JSON.parse(response.error.message);
-
         if (response.status === 401) {
+
+          const errorInfo: { type: string; description: string }
+            = JSON.parse(response.error.message);
 
           if (response.headers.has('Token-Expired')) {
             return this.authService.refreshTokens().pipe(
@@ -70,13 +79,9 @@ export class ErrorInterceptor implements HttpInterceptor {
 
         }
 
-        if (response.status === 404) {
-          if (errorInfo.type === EmailIsAlreadyConfirmedErrorType.EmailIsAlreadyConfirmed) {
-            return throwError(errorInfo);
-          }
-        }
-
-        if (response.status === 404) {
+        if (response.status === 400) {
+          const errorInfo: { type: string; description: string }
+            = JSON.parse(response.error.message);
           if (errorInfo.type === EmailIsAlreadyConfirmedErrorType.EmailIsAlreadyConfirmed) {
             return throwError(errorInfo);
           }
@@ -84,7 +89,6 @@ export class ErrorInterceptor implements HttpInterceptor {
         const error = response.error.message
           ? response.error.message
           : response.message || `${response.status} ${response.statusText}`;
-        console.log(error);
         return throwError(error);
       }),
     );

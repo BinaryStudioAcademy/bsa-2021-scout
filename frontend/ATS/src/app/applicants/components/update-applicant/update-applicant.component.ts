@@ -12,14 +12,10 @@ import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 @Component({
   selector: 'app-update-applicant',
   templateUrl: 'update-applicant.component.html',
-  styleUrls: [
-    'update-applicant.component.scss',
-    '../../common/common.scss',  
-  ],
+  styleUrls: ['update-applicant.component.scss', '../../common/common.scss'],
 })
-
 export class UpdateApplicantComponent implements OnDestroy {
-  public validationGroup: FormGroup|undefined = undefined;
+  public validationGroup: FormGroup | undefined = undefined;
   public updatedApplicant: UpdateApplicant = {
     id: '',
     firstName: '',
@@ -28,9 +24,10 @@ export class UpdateApplicantComponent implements OnDestroy {
     email: '',
     phone: '',
     skype: '',
+    linkedInUrl: '',
     experience: 0,
-  }
-    
+  };
+
   private $unsubscribe = new Subject();
 
   constructor(
@@ -52,16 +49,20 @@ export class UpdateApplicantComponent implements OnDestroy {
   }
 
   public updateApplicant(): void {
-    this.applicantsService.updateApplicant(this.updatedApplicant)
-      .pipe(
-        takeUntil(this.$unsubscribe),
-      )
-      .subscribe((result: Applicant) => {
-        this.dialogRef.close(result);
-      },
-      (error: Error) => {
-        this.notificationsService.showErrorMessage(error.message, 'Cannot update the applicant');
-      });
+    this.applicantsService
+      .updateApplicant(this.updatedApplicant)
+      .pipe(takeUntil(this.$unsubscribe))
+      .subscribe(
+        (result: Applicant) => {
+          this.dialogRef.close(result);
+        },
+        (error: Error) => {
+          this.notificationsService.showErrorMessage(
+            error.message,
+            'Cannot update the applicant',
+          );
+        },
+      );
   }
 
   public ngOnDestroy(): void {

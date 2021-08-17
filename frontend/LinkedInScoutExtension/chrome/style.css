@@ -14,17 +14,15 @@ main {
 }
 
 .button {
-	background-color: #00aaff;
+	background-color: #ee2a64;
 	padding: 10px 20px;
 	border: none;
+	border-radius: 20px;
+	color: white;
 }
 
 .button:hover {
-	box-shadow: 0 3px 3px 0 #aaaaaa;
-}
-
-.button:active {
-	background-color: #0077ff;
+	cursor: pointer;
 }
 
 .error {

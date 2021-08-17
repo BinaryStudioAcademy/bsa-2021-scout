@@ -23,7 +23,6 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-
         [HttpPost("confirm-email")]
         public async Task<ActionResult<AuthUserDto>> ComfirmEmail([FromBody] ConfirmEmailDto emailTokenDto)
         {

@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Application.Users.Commands.Create
 {
-    public class CreateUserCommandValidatior : AbstractValidator<CreateEntityCommand<UserDto>>
+    public class CreateUserCommandValidator : AbstractValidator<CreateEntityCommand<UserDto>>
     {
-        public CreateUserCommandValidatior()
+        public CreateUserCommandValidator()
         {
             RuleFor(_ => _.Entity).NotNull();
             RuleFor(_ => _.Entity).SetValidator(new UserDtoValidator());

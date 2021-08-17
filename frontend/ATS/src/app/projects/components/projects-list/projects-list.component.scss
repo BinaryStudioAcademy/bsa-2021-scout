@@ -4,7 +4,7 @@ $primary-color-white: #f6f7f9;
 $primary-color-blue: #291965;
 $primary-font: Nunito;
 
-
+.projects-page{
 /* Header */
 
 .mat-form-field {
@@ -33,7 +33,7 @@ button.tub:focus {
     text-underline-offset: 5px;
 }
 
-.header {
+.projects-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -57,8 +57,8 @@ table {
 th.mat-header-cell,
 td.mat-cell {
     width: 20%;
-    padding-right: 10px;
-    padding-left: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
 }
 
 th:first-child,
@@ -196,7 +196,8 @@ img {
     td.mat-cell:last-of-type {
         padding-left: 100px;
     }
-    .mat-icon {
+    .icons > .mat-icon,
+    .projects-header .mat-icon {
         margin-left: 10px;
         margin-right: 10px;
         color: gray;
@@ -205,4 +206,6 @@ img {
         line-height: 25px;
         font-size: 16px;
     }
+}
+
 }

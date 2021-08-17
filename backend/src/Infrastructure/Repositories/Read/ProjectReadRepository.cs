@@ -1,4 +1,4 @@
-﻿using Application.Common.Exceptions;
+using Application.Common.Exceptions;
 using Application.Interfaces;
 using Dapper;
 using Domain.Entities;

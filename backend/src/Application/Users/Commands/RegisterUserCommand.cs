@@ -59,7 +59,7 @@ namespace Application.Users.Commands
             var sendConfirmEmailMailCommand = new SendConfirmEmailMailCommand(
                 registeredUser,
                 command.RegisterDto.ClientUrl,
-                MailSubjectFactory.confirmEmailMailSubject, 
+                MailSubjectFactory.confirmEmailMailSubject,
                 MailBodyFactory.confirmEmailMailBody);
             await _mediator.Send(sendConfirmEmailMailCommand);
 

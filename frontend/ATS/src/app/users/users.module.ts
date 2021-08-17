@@ -21,6 +21,9 @@ import { SuccessfulRegistrationComponent }
   from './components/successful-registration/successful-registration.component';
 import { UserDataService } from './services/user-data.service';
 import { UsersTableComponent } from './components/hr-lead/users-table/users-table.component';
+import { LoggedInUserGuard } from './guards/logged-in-user.guard';
+import { ResendEmailAfterLoginComponent } from
+  './components/resend-email-after-login/resend-email-after-login.component';
 
 @NgModule({
   declarations: [
@@ -36,12 +39,14 @@ import { UsersTableComponent } from './components/hr-lead/users-table/users-tabl
     ConfirmEmailComponent,
     SuccessfulRegistrationComponent,
     UsersTableComponent,
+    ResendEmailAfterLoginComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
     LoginRegistCommonComponent,
     ResetPasswordGuard,
     UserDataService,
+    LoggedInUserGuard,
   ],
 })
 export class UsersModule { }

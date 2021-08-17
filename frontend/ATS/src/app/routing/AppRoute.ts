@@ -14,4 +14,5 @@ export enum AppRoute {
   ConfirmEmail = 'confirm-email',
   SuccessfulRegistration = 'successful-registration',
   ResetPassword = 'reset-password',
+  ResendEmail = 'resend-email',
 }
