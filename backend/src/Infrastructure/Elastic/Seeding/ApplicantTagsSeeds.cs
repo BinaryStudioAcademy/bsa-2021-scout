@@ -101,7 +101,7 @@ namespace Infrastructure.Elastic.Seeding
                     ElasticType = ElasticType.ApplicantTags
                 },
                 new ElasticEntity{
-                    Id = "8be38dd0-8767-54c5-8f78-aa33e11997e96",
+                    Id = "8be38dd0-8767-54c5-8f78-aa33e11997e9",
                     Tags = new List<Tag>{
                         Tags[3],
                         Tags[4]
