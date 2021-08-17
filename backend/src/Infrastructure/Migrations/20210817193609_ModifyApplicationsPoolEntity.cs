@@ -3,14 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class ModifyPoolEntity : Migration
+    public partial class ModifyApplicationsPoolEntity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Email",
-                table: "Users");
-
             migrationBuilder.DropColumn(
                 name: "Type",
                 table: "Pools");
@@ -58,12 +54,6 @@ namespace Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "Name",
                 table: "Pools");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Email",
-                table: "Users",
-                type: "nvarchar(max)",
-                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "Type",
