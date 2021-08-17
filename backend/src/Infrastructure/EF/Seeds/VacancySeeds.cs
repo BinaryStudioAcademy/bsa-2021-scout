@@ -9,12 +9,6 @@ namespace Infrastructure.EF.Seeds
     public class VacancySeeds
     {
         private Random _random = new Random();
-        public  DateTime GetRandomDateTime(int daysOffset = 0)
-        {
-            DateTime start = new DateTime(1995, 1, 1);
-            int range = (DateTime.Today - start).Days - daysOffset;
-            return start.AddDays(_random.Next(range));
-        }
         private  IList<VacancyStatus> Statuses = new List<VacancyStatus>{
             VacancyStatus.Invited,
             VacancyStatus.Active,
@@ -32,20 +26,20 @@ namespace Infrastructure.EF.Seeds
             {
                 Id = id,
                 Title = Titles[_random.Next(Titles.Count)],
-                Requirements = "¯\\_(ツ)_/¯",
+                Requirements = RequirementsList[_random.Next(RequirementsList.Count())],
                 Status = Statuses[_random.Next(Statuses.Count)],
-                CreationDate = GetRandomDateTime(30),
-                DateOfOpening = GetRandomDateTime(-10),
-                ModificationDate = GetRandomDateTime(2),
+                CreationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, -10),
+                DateOfOpening = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 5),
+                ModificationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, -2),
                 IsRemote = _random.Next() % 2 == 0,
                 IsHot = _random.Next() % 2 == 0,
                 SalaryFrom = _random.Next(1200, 1300),
                 SalaryTo = _random.Next(1300, 56000),
-                CompletionDate = GetRandomDateTime(-29),
-                PlannedCompletionDate = GetRandomDateTime(-30),
+                CompletionDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 20),
+                PlannedCompletionDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 21),
                 TierFrom = Tiers[_random.Next(Tiers.Count)],
                 TierTo = Tiers[_random.Next(Tiers.Count)],
-                Sources = "¯\\_(ツ)_/¯",
+                Sources = SourcesList[_random.Next(SourcesList.Count)],
                 ProjectId = ProjectIds[_random.Next(ProjectIds.Count)],
                 ResponsibleHrId = ResponsibleHrIds[_random.Next(ResponsibleHrIds.Count)],
                 CompanyId = "1",
@@ -58,6 +52,19 @@ namespace Infrastructure.EF.Seeds
             }
             return list;
         }
+        private List<string> SourcesList = new List<string>{
+            "https://www.work.ua/",
+            "https://djinni.co/jobs/",
+            "https://jobs.ua/",
+            "https://www.linkedin.com/jobs/"
+        };
+        private List<string> RequirementsList = new List<string>{
+            "English Advanced level",
+            "Be a cat lover",
+            "Be a dog lover",
+            "Speak German",
+            "No work/life balace"
+        };
         private IList<string> Titles = new List<string>{
             "Devops",
             "QA",

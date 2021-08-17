@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Infrastructure.Elastic.Seeding
 {
-    public static class ApplicantTagsSeeds
+    public static class ElasticTagsSeeds
     {
         #region Tags
         private readonly static IList<Tag> Tags = new List<Tag>
@@ -20,7 +20,7 @@ namespace Infrastructure.Elastic.Seeding
             },
             new Tag
             {
-                Id = "f926cc1a-d5e5-4753-b1ff-6af2baacfe13",
+                Id = "f926cc1a-d5e5-4753-b1ff-6af2baacf213",
                 TagName = "Angular/Dotnet"
             },
             new Tag
@@ -52,7 +52,7 @@ namespace Infrastructure.Elastic.Seeding
             {
                 new ElasticEntity
                 {
-                    Id = "f0efedc7-a5c4-4e8c-a1d7-d071c9a474a1",
+                    Id = "732f84f8-0625-5098-adbf-4aabcabb5b0c",
                     Tags = new List<Tag>
                     {
                         Tags[0],
@@ -62,26 +62,7 @@ namespace Infrastructure.Elastic.Seeding
                 },
                 new ElasticEntity
                 {
-                    Id = "16a4547b-cde7-40c2-8249-ec8e331c22e1",
-                    Tags = new List<Tag>
-                    {
-                        Tags[1],
-                        Tags[3]
-                    },
-                    ElasticType = ElasticType.VacancyTags
-                },
-                new ElasticEntity
-                {
-                    Id = "0de2cfc2-0121-4e0d-8417-2bd5d466cbd1",
-                    Tags = new List<Tag>
-                    {
-                        Tags[4]
-                    },
-                    ElasticType = ElasticType.VacancyTags
-                },
-                new ElasticEntity
-                {
-                    Id = "ed6ab1ee-a95a-45b4-ab8c-c0c23fcc41f1",
+                    Id = "bffcc629-77ef-5304-9d4a-d9b44b5739d6",
                     Tags = new List<Tag>
                     {
                         Tags[2],
@@ -92,7 +73,7 @@ namespace Infrastructure.Elastic.Seeding
                 },
                 new ElasticEntity
                 {
-                    Id = "8e182e40-78d2-4ff5-a3b4-670dfe5cad31",
+                    Id = "4e5d00dc-f1ab-5a74-9e6f-4edae70fca02",
                     Tags = new List<Tag>
                     {
                         Tags[3],
@@ -101,9 +82,35 @@ namespace Infrastructure.Elastic.Seeding
                     },
                     ElasticType = ElasticType.ApplicantTags
                 },
+
+                new ElasticEntity{
+                    Id = "3e84df9f-f6c3-50d8-8787-d0e2a94af2b6",
+                    Tags = new List<Tag>{
+                        Tags[1]
+                    },
+                    ElasticType = ElasticType.ApplicantTags
+                },
                 new ElasticEntity
                 {
-                    Id = "6cfe6a66-714f-46a5-aa85-8755a3a110f1",
+                    Id = "8bf07b5b-af46-58be-b536-58eeca69f661",
+                    Tags = new List<Tag>
+                    {
+                        Tags[3],
+                        Tags[2]
+                    },
+                    ElasticType = ElasticType.ApplicantTags
+                },
+                new ElasticEntity{
+                    Id = "8be38dd0-8767-54c5-8f78-aa33e11997e96",
+                    Tags = new List<Tag>{
+                        Tags[3],
+                        Tags[4]
+                    },
+                    ElasticType = ElasticType.ApplicantTags
+                },
+                new ElasticEntity
+                {
+                    Id = "c17322f5-1d00-42ce-b1d8-b2cad9a72f32",
                     Tags = new List<Tag>
                     {
                         Tags[1],
@@ -111,13 +118,28 @@ namespace Infrastructure.Elastic.Seeding
                     },
                     ElasticType = ElasticType.VacancyTags
                 },
-                new ElasticEntity{
-                    Id = "15edec87-538a-41af-971f-919712ad0fb1",
-                    Tags = new List<Tag>{
+                new ElasticEntity
+                {
+                    Id = "d701f2d8-11ca-49c4-85aa-c4593cace3a9",
+                    Tags = new List<Tag>
+                    {
+                        Tags[1],
+                        Tags[3]
+                    },
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "db1646f4-1c00-4d72-832f-9fd1093ae6dc",
+                    Tags = new List<Tag>
+                    {
+                        Tags[4],
+                        Tags[3],
+                        Tags[2],
                         Tags[0]
                     },
-                    ElasticType = ElasticType.ApplicantTags
-                }
+                    ElasticType = ElasticType.VacancyTags
+                },
             };
         }
     }
