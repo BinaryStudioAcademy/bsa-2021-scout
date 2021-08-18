@@ -132,6 +132,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<CandidateToStage>, CandidateToStageWriteRepository>();
             services.AddScoped<ICandidateToStageWriteRepository, CandidateToStageWriteRepository>();
             services.AddScoped<IWriteRepository<EmailToken>, WriteRepository<EmailToken>>();
+            services.AddScoped<IWriteRepository<MailTemplate>, MongoWriteRepository<MailTemplate>>();
             services.AddScoped<IWriteRepository<Project>, WriteRepository<Project>>();
             services.AddScoped<IWriteRepository<Pool>, WriteRepository<Pool>>();
             services.AddScoped<IWriteRepository<PoolToApplicant>, PoolToApplicantWriteRepository>();

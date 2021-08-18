@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Infrastructure.Services;
 using Application.Interfaces;
 using Application.Users.Dtos;
+using Domain.Entities;
 
 namespace WebAPI.Controllers
 {
