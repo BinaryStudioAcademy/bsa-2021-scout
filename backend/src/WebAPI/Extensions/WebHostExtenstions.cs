@@ -5,7 +5,6 @@ using Domain.Entities;
 using Domain.Interfaces.Abstractions;
 using Infrastructure.EF;
 using Infrastructure.EF.Seeds;
-
 using Infrastructure.Mongo.Interfaces;
 using Infrastructure.Mongo.Seeding;
 using Infrastructure.Elastic.Seeding;
@@ -30,6 +29,7 @@ namespace WebAPI.Extensions
 
             return host;
         }
+
         public static IHost ApplyElasticSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
@@ -47,13 +47,13 @@ namespace WebAPI.Extensions
             using var scope = host.Services.CreateScope();
 
             var connectionFactory = scope.ServiceProvider.GetService<IMongoConnectionFactory>();
-            var repository = scope.ServiceProvider.GetService<IReadRepository<MailTemplate>>();
+            var writeRepository = scope.ServiceProvider.GetService<IReadRepository<MailTemplate>>();
             var connection = connectionFactory.GetMongoConnection();
             var collection = connection.GetCollection<MailTemplate>(typeof(MailTemplate).Name);
 
             try
             {
-                MailTemplate check = repository.GetByPropertyAsync("Slug", "default").Result;
+                MailTemplate check = writeRepository.GetByPropertyAsync("Slug", "default").Result;
             }
             catch
             {
@@ -66,104 +66,158 @@ namespace WebAPI.Extensions
         public async static Task<IHost> ApplyVacancySeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var repo = scope.ServiceProvider.GetService<IWriteRepository<Vacancy>>();
-            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Vacancy>>();
-            foreach (var vacancy in (new VacancySeeds()).Vacancies())
+            var writeRepo = scope.ServiceProvider.GetService<IWriteRepository<Vacancy>>();
+            var readRepo = scope.ServiceProvider.GetService<IReadRepository<Vacancy>>();
+
+            foreach (var vacancy in VacancySeeds.GetVacancies())
             {
                 try
                 {
-                    await otherRepo.GetAsync(vacancy.Id);
-                    await repo.UpdateAsync(vacancy);
+                    await readRepo.GetAsync(vacancy.Id);
+                    await writeRepo.UpdateAsync(vacancy);
                 }
                 catch
                 {
-                    await repo.CreateAsync(vacancy);
+                    await writeRepo.CreateAsync(vacancy);
                 }
             }
 
             return host;
         }
+
         public async static Task<IHost> ApplyCompanySeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var repo = scope.ServiceProvider.GetService<IWriteRepository<Company>>();
-            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Company>>();
-            foreach (var company in CompanySeeds.Companies)
+            var writeRepo = scope.ServiceProvider.GetService<IWriteRepository<Company>>();
+            var readRepo = scope.ServiceProvider.GetService<IReadRepository<Company>>();
+
+            foreach (var company in CompanySeeds.GetCompanies())
             {
                 try
                 {
-                    await otherRepo.GetAsync(company.Id);
-                    await repo.UpdateAsync(company);
+                    await readRepo.GetAsync(company.Id);
+                    await writeRepo.UpdateAsync(company);
                 }
                 catch
                 {
-                    await repo.CreateAsync(company);
+                    await writeRepo.CreateAsync(company);
                 }
 
             }
 
             return host;
         }
+
         public async static Task<IHost> ApplyProjectSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var repo = scope.ServiceProvider.GetService<IWriteRepository<Project>>();
-            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Project>>();
-            foreach (var project in ProjectSeeds.Projects)
+            var writeRepo = scope.ServiceProvider.GetService<IWriteRepository<Project>>();
+            var readRepo = scope.ServiceProvider.GetService<IReadRepository<Project>>();
+
+            foreach (var project in ProjectSeeds.GetProjects())
             {
                 try
                 {
-                    await repo.CreateAsync(project);
+                    await writeRepo.CreateAsync(project);
                 }
                 catch
                 {
-                    await repo.UpdateAsync(project);
+                    await writeRepo.UpdateAsync(project);
                 }
             }
 
             return host;
         }
+
         public async static Task<IHost> ApplyStageSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var repo = scope.ServiceProvider.GetService<IWriteRepository<Stage>>();
-            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Stage>>();
-            foreach (var stage in StageSeeds.Stages())
+            var writeRepo = scope.ServiceProvider.GetService<IWriteRepository<Stage>>();
+            var readRepo = scope.ServiceProvider.GetService<IReadRepository<Stage>>();
+
+            foreach (var stage in StageSeeds.GetStages())
             {
                 try
                 {
-                    await otherRepo.GetAsync(stage.Id);
-                    await repo.UpdateAsync(stage);
+                    await readRepo.GetAsync(stage.Id);
+                    await writeRepo.UpdateAsync(stage);
                 }
                 catch
                 {
-                    await repo.CreateAsync(stage);
+                    await writeRepo.CreateAsync(stage);
                 }
             }
 
             return host;
         }
+
         public async static Task<IHost> ApplyUserSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var repo = scope.ServiceProvider.GetService<IWriteRepository<User>>();
-            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<User>>();
-            foreach (var user in UserSeeds.Users)
+            var writeRepo = scope.ServiceProvider.GetService<IWriteRepository<User>>();
+            var readRepo = scope.ServiceProvider.GetService<IReadRepository<User>>();
+
+            foreach (var user in UserSeeds.GetUsers())
             {
                 try
                 {
-                    await otherRepo.GetAsync(user.Id);
-                    await repo.UpdateAsync(user);
+                    await readRepo.GetAsync(user.Id);
+                    await writeRepo.UpdateAsync(user);
                 }
                 catch
                 {
-                    await repo.CreateAsync(user);
+                    await writeRepo.CreateAsync(user);
                 }
             }
+
             return host;
         }
 
-        public async static Task<IHost> ApplyDatabaseSeeding(this IHost host)
+        public async static Task<IHost> ApplyReviewSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var writeRepo = scope.ServiceProvider.GetService<IWriteRepository<Review>>();
+            var readRepo = scope.ServiceProvider.GetService<IReadRepository<Review>>();
+
+            foreach (var review in ReviewSeeds.GetReviews())
+            {
+                try
+                {
+                    await readRepo.GetAsync(review.Id);
+                    await writeRepo.UpdateAsync(review);
+                }
+                catch
+                {
+                    await writeRepo.CreateAsync(review);
+                }
+            }
+
+            return host;
+        }
+
+        public async static Task<IHost> ApplyReviewToStageSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var writeRepo = scope.ServiceProvider.GetService<IWriteRepository<ReviewToStage>>();
+            var readRepo = scope.ServiceProvider.GetService<IReadRepository<ReviewToStage>>();
+
+            foreach (var reviewToStage in ReviewToStageSeeds.GetReviewToStages())
+            {
+                try
+                {
+                    await readRepo.GetAsync(reviewToStage.Id);
+                    await writeRepo.UpdateAsync(reviewToStage);
+                }
+                catch
+                {
+                    await writeRepo.CreateAsync(reviewToStage);
+                }
+            }
+
+            return host;
+        }
+
+        public async static Task<IHost> ApplyGeneralDatabaseSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
             var roleWriteRepo = scope.ServiceProvider.GetService<IWriteRepository<Role>>();
@@ -173,6 +227,7 @@ namespace WebAPI.Extensions
                     new Role { Id = "1", Key = 1, Name = "HrLead" },
                     new Role { Id = "2", Key = 2, Name = "HrUser"}
                 };
+
             foreach (var role in roles)
             {
                 try
@@ -184,21 +239,26 @@ namespace WebAPI.Extensions
                     await roleWriteRepo.CreateAsync(role);
                 }
             }
+
             using var scope2 = host.Services.CreateScope();
             var userWriteRepo = scope2.ServiceProvider.GetService<IWriteRepository<User>>();
             var userReadRepo = scope2.ServiceProvider.GetService<IReadRepository<User>>();
+
             var users = new List<User>
             {
                 new User { Id = "1", FirstName = "Hr", LastName = "Lead", Email = "hrlead@gmail.com", CompanyId = "1", IsEmailConfirmed = true, BirthDate = new DateTime(1990, 1, 11) },
                 new User { Id = "2", FirstName = "Dominic", LastName = "Torreto", Email = "family@gmail.com", CompanyId = "1", IsEmailConfirmed = true, BirthDate = new DateTime(1976,8, 29) }
             };
+
             var securityService = scope.ServiceProvider.GetService<ISecurityService>();
             var passwords = new string[] { "hrlead", "family" };
+
             for (int i = 0; i < users.Count; i++)
             {
                 var salt = securityService.GetRandomBytes();
                 users[i].PasswordSalt = Convert.ToBase64String(salt);
                 users[i].Password = securityService.HashPassword(passwords[i], salt);
+
                 try
                 {
                     await userReadRepo.GetAsync(users[i].Id);
@@ -216,9 +276,11 @@ namespace WebAPI.Extensions
                 new UserToRole { UserId = "1", RoleId = "2"},
                 new UserToRole { UserId = "2", RoleId = "2"}
             };
+
             using var scope3 = host.Services.CreateScope();
             var userRoleWriteRepo = scope3.ServiceProvider.GetService<IWriteRepository<UserToRole>>();
             var userRoleReadRepo = scope3.ServiceProvider.GetService<IReadRepository<UserToRole>>();
+
             foreach (var userRole in usersRoles)
             {
                 try
@@ -230,6 +292,30 @@ namespace WebAPI.Extensions
                     await userRoleWriteRepo.CreateAsync(userRole);
                 }
             }
+
+            return host;
+        }
+
+        public static async Task<IHost> ApplySqlSeeding(this IHost host)
+        {
+            await ApplyCompanySeeding(host);
+            await ApplyGeneralDatabaseSeeding(host);
+            await ApplyProjectSeeding(host);
+            await ApplyUserSeeding(host);
+            await ApplyVacancySeeding(host);
+            await ApplyStageSeeding(host);
+            await ApplyReviewSeeding(host);
+            await ApplyReviewToStageSeeding(host);
+
+            return host;
+        }
+
+        public static IHost ApplyAllSeedingSync(this IHost host)
+        {
+            ApplyMongoSeeding(host);
+            ApplyElasticSeeding(host);
+            ApplySqlSeeding(host).Wait();
+
             return host;
         }
     }

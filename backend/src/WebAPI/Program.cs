@@ -7,37 +7,13 @@ namespace WebAPI
 {
     public class Program
     {
-        public async static Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            (
-                await 
-                (     
-                    await 
-                    (
-                        await 
-                        (
-                            (
-                                await
-                                (
-                                    await 
-                                    (
-                                       
-                                        await CreateHostBuilder(args)
-                                        .Build()
-                                        .ApplyDatabaseMigrations()
-                                        .ApplyMongoSeeding()
-                                    .ApplyCompanySeeding()
-                                ).ApplyElasticSeeding()
-                                .ApplyDatabaseSeeding()
-                                )
-                                .ApplyProjectSeeding()
-                            )
-                            .ApplyUserSeeding()
-                        )
-                    ).ApplyVacancySeeding()
-                ).ApplyStageSeeding()
-            )
-           .Run();
+            CreateHostBuilder(args)
+                .Build()
+                .ApplyDatabaseMigrations()
+                .ApplyAllSeedingSync()
+                .Run();
         }
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
