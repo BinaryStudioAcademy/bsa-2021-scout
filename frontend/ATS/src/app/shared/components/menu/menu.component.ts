@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { animateText, onSideNavChange } from 'src/app/shared/animations/animation';
 import { SidenavService } from 'src/app/shared/services/sidenav.service';
+import { User } from 'src/app/users/models/user';
+import { AuthUserEventService } from 'src/app/users/services/auth-user-event.service';
+import { AuthenticationService } from 'src/app/users/services/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -16,8 +21,30 @@ export class MenuComponent {
 
   public linkText: boolean = true;
 
-  constructor(private _sidenavService: SidenavService) { 
-    //
+  public isHrLead: boolean = false;
+  
+  private unsubscribe$ = new Subject<void>();
+
+  constructor(
+    private _sidenavService: SidenavService,
+    private authService: AuthenticationService,
+    private authUserEventService: AuthUserEventService) {
+  }
+
+  public ngOnInit() {
+    this.authService
+      .getUser()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(user => this.checkIsHrLead(user));
+
+    this.authUserEventService.userChangedEvent$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(user => this.checkIsHrLead(user));
+  }
+
+  public ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   onSinenavToggle() {
@@ -27,5 +54,9 @@ export class MenuComponent {
       this.linkText = this.sideNavState;
     }, 200);
     this._sidenavService.sideNavState$.next(this.sideNavState);
+  }
+
+  public checkIsHrLead(user: User | null): void {
+    this.isHrLead = user?.roles?.find(role => role.name === 'HrLead') ? true : false;
   }
 }

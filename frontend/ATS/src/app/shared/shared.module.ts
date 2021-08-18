@@ -30,6 +30,13 @@ import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+
 
 @NgModule({
   exports: [
@@ -51,10 +58,10 @@ import { StylePaginatorDirective } from './directives/style-paginator.directive'
     BrowserAnimationsModule,
     HeaderComponent,
     MatListModule,
-    MatDialogModule,
     MatSelectModule,
     MultiselectComponent,
     MatDatepickerModule,
+    MatDialogModule,
     MatNativeDateModule,
     TopicComponent,
     FileInputComponent,
@@ -62,6 +69,11 @@ import { StylePaginatorDirective } from './directives/style-paginator.directive'
     MatProgressBarModule,
     SpinnerComponent,
     StylePaginatorDirective,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatChipsModule,
+    MatAutocompleteModule,
   ],
   imports: [
     MatButtonModule,
@@ -78,14 +90,19 @@ import { StylePaginatorDirective } from './directives/style-paginator.directive'
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressBarModule,
     MatDialogModule,
+    MatProgressBarModule,
     MatListModule,
     BrowserAnimationsModule,
     BrowserModule,
     MatSelectModule,
     ReactiveFormsModule,
     RouterModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatChipsModule,
+    MatAutocompleteModule,
   ],
   providers: [HttpClientService],
   declarations: [
