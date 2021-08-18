@@ -1,7 +1,7 @@
 import { MatSortModule } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RoutingModule } from '../routing/routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -24,6 +24,10 @@ import { MatButtonModule } from '@angular/material/button';
 // This line can't be shorter
 // eslint-disable-next-line max-len
 import { VacanciesStagesBoardComponent } from './components/vacancies-stages-board/vacancies-stages-board.component';
+// This line can't be shorter
+// eslint-disable-next-line max-len
+import { RateCandidateModalComponent } from './components/rate-candidate-modal/rate-candidate-modal.component';
+
 @NgModule({
   declarations: [
     CandidateCardComponent,
@@ -33,6 +37,7 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     OneCandidateComponent,
     OneCandidateModalComponent,
     VacanciesTableComponent,
+    RateCandidateModalComponent,
   ],
   imports: [
     MatDialogModule,
@@ -60,7 +65,7 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     VacanciesTableComponent,
     OneCandidateComponent,
     OneCandidateModalComponent,
-
+    RateCandidateModalComponent,
   ],
 })
-export class VacanciesModule { }
+export class VacanciesModule {}

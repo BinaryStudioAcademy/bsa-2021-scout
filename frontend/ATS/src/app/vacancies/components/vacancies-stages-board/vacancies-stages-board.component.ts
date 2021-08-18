@@ -20,6 +20,10 @@ import { ShortVacancyCandidateWithApplicant } from 'src/app/shared/models/vacanc
 import { OneCandidateModalComponent } from '../one-candidate-modal/one-candidate-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 
+// This line can't be shorter
+// eslint-disable-next-line max-len
+import { RateCandidateModalComponent } from '../rate-candidate-modal/rate-candidate-modal.component';
+
 interface CandidatePos {
   index: number;
   stageIndex: number;
@@ -73,12 +77,38 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
         event.currentIndex,
       );
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+      const forward = () =>
+        transferArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex,
+        );
+
+      const backward = () =>
+        transferArrayItem(
+          event.container.data,
+          event.previousContainer.data,
+          event.currentIndex,
+          event.previousIndex,
+        );
+
+      const stage = this.data.find(
+        (s) => s.id === event.container.id,
+      ) as StageWithCandidates;
+
+      forward();
+
+      if (stage.isReviewable) {
+        this.modalService.open(RateCandidateModalComponent, {
+          maxWidth: '700px',
+          data: {
+            fixedCriterias: stage.reviews,
+            stageId: stage.id,
+            candidateId: event.item.element.nativeElement.id,
+          },
+        });
+      }
 
       this.vacancyCandidateService
         .changeCandidateStage(
@@ -97,12 +127,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
               'Error',
             );
 
-            transferArrayItem(
-              event.container.data,
-              event.previousContainer.data,
-              event.currentIndex,
-              event.previousIndex,
-            );
+            backward();
           },
         );
     }
