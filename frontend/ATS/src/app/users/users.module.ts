@@ -20,6 +20,8 @@ import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.
 import { SuccessfulRegistrationComponent }
   from './components/successful-registration/successful-registration.component';
 import { LoggedInUserGuard } from './guards/logged-in-user.guard';
+import { ResendEmailAfterLoginComponent } from
+  './components/resend-email-after-login/resend-email-after-login.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { LoggedInUserGuard } from './guards/logged-in-user.guard';
     ResetPasswordBoxComponent,
     ConfirmEmailComponent,
     SuccessfulRegistrationComponent,
+    ResendEmailAfterLoginComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
