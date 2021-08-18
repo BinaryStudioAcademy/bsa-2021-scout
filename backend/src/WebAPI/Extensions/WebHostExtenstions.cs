@@ -24,16 +24,16 @@ namespace WebAPI.Extensions
 
         public static async Task<IHost> SeedingManager(this IHost host)
         {
-            host = ApplyMongoSeeding(host);
-            host = await ApplyCompanySeeding(host);
-            host = await ApplyElasticSeeding(host);
-            host = await ApplyRoleSeeding(host);
-            host = await ApplyProjectSeeding(host);
-            host = await ApplyUserSeeding(host);
-            host = await ApplyUserToRoleSeeding(host);
-            host = await ApplyVacancySeeding(host);
-            host = await ApplyApplicantSeeding(host);
-            host = await ApplyStageSeeding(host);
+            ApplyMongoSeeding(host);
+            await ApplyCompanySeeding(host);
+            await ApplyElasticSeeding(host);
+            await ApplyRoleSeeding(host);
+            await ApplyProjectSeeding(host);
+            await ApplyUserSeeding(host);
+            await ApplyUserToRoleSeeding(host);
+            await ApplyVacancySeeding(host);
+            await ApplyApplicantSeeding(host);
+            await ApplyStageSeeding(host);
             return host;
         }
         public static IHost ApplyDatabaseMigrations(this IHost host)
