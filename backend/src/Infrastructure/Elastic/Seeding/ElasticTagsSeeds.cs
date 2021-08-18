@@ -101,7 +101,6 @@ namespace Infrastructure.Elastic.Seeding
                     Tags = GetRandomTags(),
                     ElasticType = ElasticType.ApplicantTags
                 },
-                //
                 new ElasticEntity{
                     Id = "c8698455-0a05-503f-a6a6-b8557093a67e",
                     Tags = GetRandomTags(),
@@ -318,6 +317,75 @@ namespace Infrastructure.Elastic.Seeding
                     Tags = GetRandomTags(),
                     ElasticType = ElasticType.VacancyTags
                 },
+                //
+                new ElasticEntity
+                {
+                    Id = "p9e10160-0522-4c2f-bfcf-a07e9faf0c04",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.ProjectTags
+                },
+                new ElasticEntity
+                {
+                    Id = "p8b0e8ca-54ff-4186-8cc0-5f71e1ec1d3c",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.ProjectTags
+                },
+                new ElasticEntity
+                {
+                    Id = "p0679037-9b5e-45df-b24d-edc5bbbaaec4",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.ProjectTags
+                },
+                new ElasticEntity
+                {
+                    Id = "paa3320f-866a-4b02-9076-5e8d12796710",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.ProjectTags
+                },
+                new ElasticEntity
+                {
+                    Id = "pd45e3b4-cdf6-4f67-99de-795780c70b8f",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.ProjectTags
+                },
+                new ElasticEntity
+                {
+                    Id = "new10160-0522-4c2f-bfcf-a07e9faf0c04",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.ProjectTags
+                },
+                new ElasticEntity
+                {
+                    Id = "new0e8ca-54ff-4186-8cc0-5f71e1ec1d3c",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.ProjectTags
+                },
+
+                new ElasticEntity
+                {
+                    Id = "new79037-9b5e-45df-b24d-edc5bbbaaec4",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.ProjectTags
+                },
+                new ElasticEntity
+                {
+                    Id = "new3320f-866a-4b02-9076-5e8d12796710",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.ProjectTags
+                },
+                new ElasticEntity
+                {
+                    Id = "new5e3b4-cdf6-4f67-99de-795780c70b8f",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.ProjectTags
+                },
+                new ElasticEntity
+                {
+                    Id = "snew3b4-cdf6-4f67-99de-795780c70b8f",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.ProjectTags
+                }
+               
             };
         }
     }
