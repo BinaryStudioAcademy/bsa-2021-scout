@@ -1,7 +1,7 @@
 <div class="sidenav_container"  [@onSideNavChange]="sideNavState ? 'open' : 'close'">
     <div fxLayout="column" fxLayoutGap="10px" style="height: 100%;">
         <div class="logo-container">
-            <button class="logo">Logo</button>
+            <img class="logo" src="../../../../assets/images/logo_scout_purple.png">
         </div>
         <mat-nav-list>
             <button mat-icon-button color="primary" (click)="onSinenavToggle()">
@@ -11,6 +11,10 @@
                 <mat-icon matListIcon>home</mat-icon>
                 <a [@animateText]="linkText ? 'show' : 'hide'" matLine>Home</a>
             </mat-list-item>
+            <mat-list-item *ngIf="isHrLead" routerLink='/user-management' routerLinkActive='active'>
+                <mat-icon matListIcon>people</mat-icon>
+                <a [@animateText]="linkText ? 'show' : 'hide'" matLine>User Management</a>
+            </mat-list-item>
             <mat-list-item routerLink='/vacancies' routerLinkActive='active'>
                 <mat-icon matListIcon>work</mat-icon>
                 <a [@animateText]="linkText ? 'show' : 'hide'" matLine>Vacancies</a>
@@ -18,6 +22,10 @@
             <mat-list-item routerLink='/applicants' routerLinkActive='active'>
                 <mat-icon matListIcon>person</mat-icon>
                 <a [@animateText]="linkText ? 'show' : 'hide'" matLine>Applicants</a>
+            </mat-list-item>
+            <mat-list-item routerLink='/projects' routerLinkActive='active'>
+                <mat-icon matListIcon>tab</mat-icon>
+                <a [@animateText]="linkText ? 'show' : 'hide'" matLine>Projects</a>
             </mat-list-item>
             <mat-list-item routerLink='/interviews' routerLinkActive='active'>
                 <mat-icon matListIcon>event_available</mat-icon>

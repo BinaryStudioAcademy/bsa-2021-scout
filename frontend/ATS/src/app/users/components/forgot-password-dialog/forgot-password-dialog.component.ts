@@ -1,4 +1,4 @@
-import {Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { EMPTY } from 'rxjs';
@@ -25,7 +25,10 @@ export class ForgotPasswordDialogComponent {
   public emailForm: FormGroup = new FormGroup({
     'userEmail': new FormControl('', [
       Validators.required,
-      Validators.pattern('^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_]+(\.[a-z0-9_-]+)*\.[a-z]{1,6}$'),
+      Validators
+        .pattern(
+          '^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{1,6}$',
+        ),
       this.loginRegistCommonComponent.noUnAllowedCharactersValidation,
     ]),
   });

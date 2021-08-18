@@ -74,6 +74,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LinkedInUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MiddleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -180,6 +183,27 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("Domain.Entities.EmailToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.ToTable("EmailToken");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pool", b =>
@@ -372,7 +396,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -381,6 +407,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEmailConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -454,6 +483,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsHot")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsRemote")
                         .HasColumnType("bit");
 
@@ -475,6 +507,12 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("SalaryFrom")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalaryTo")
+                        .HasColumnType("int");
+
                     b.Property<string>("Sources")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -482,7 +520,10 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Tier")
+                    b.Property<int>("TierFrom")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TierTo")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -630,6 +671,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Candidate");
 
                     b.Navigation("Stage");
+                });
+
+            modelBuilder.Entity("Domain.Entities.EmailToken", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithOne("EmailToken")
+                        .HasForeignKey("Domain.Entities.EmailToken", "UserId")
+                        .HasConstraintName("email_token__user_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pool", b =>
@@ -836,6 +888,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("AddedCandidates");
+
+                    b.Navigation("EmailToken");
 
                     b.Navigation("RefreshTokens");
 

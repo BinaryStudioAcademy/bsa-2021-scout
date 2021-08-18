@@ -1,39 +1,62 @@
 import { Injectable } from '@angular/core';
 import { finalize, map, retry } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
-import { UserRegisterDto } from '../models/auth/user-register-dto';
 import { AuthUser } from '../models/auth/auth-user';
 import { UserLoginDto } from '../models/auth/user-login-dto';
 import { Observable, of, throwError } from 'rxjs';
 import { RefreshAccessTokenDto } from '../models/token/refresh-access-token-dto';
 import { User } from 'src/app/users/models/user';
 import { HttpClientService } from 'src/app/shared/services/http-client.service';
+
+import { RegisterDto } from '../models/register-dto';
+import { ConfirmEmailDto } from '../models/confirm-email-dto';
+import { ResendConfirmEmailDto } from '../models/resend-confirm-email-dto';
 import { ForgotPasswordDto } from '../models/forgot-password-dto';
 import { ResetPasswordDto } from '../models/reset-password-dto';
+import { AuthUserEventService } from './auth-user-event.service';
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private user: User | null = null;
 
-  constructor(private httpService: HttpClientService) {}
+  constructor(
+    private httpService: HttpClientService,
+    private authUserEventService: AuthUserEventService) { }
 
   public getUser(): Observable<User | null> {
     return this.user
       ? of(this.user)
-      : this.httpService.getFullRequest<User>('users/from-token').pipe(
+      : this.httpService.getFullRequest<User>('/users/from-token').pipe(
         map((resp) => {
           if (!resp.body) {
-            throw throwError(resp);  
-          }  
+            throw throwError(resp);
+          }
           this.user = resp.body;
+          this.authUserEventService.userChanged(this.user);
           return this.user;
         }),
       );
   }
 
-  public register(user: UserRegisterDto): Observable<User> {
+  public setUser(user: User) {
+    this.user = user;
+    this.authUserEventService.userChanged(user);
+  }
+
+  public register(registerDto: RegisterDto): Observable<HttpResponse<void>> {
+    return this.httpService.postFullRequest<void>('/register', registerDto);
+  }
+
+  public resendConfirmationEmail(resendConfirmEmailDto: ResendConfirmEmailDto):
+  Observable<HttpResponse<void>> {
+    return this.httpService.postFullRequest<void>('/register/resend-confirm-email',
+      resendConfirmEmailDto);
+  }
+
+  public confirmEmail(confirmEmailDto: ConfirmEmailDto): Observable<User> {
     return this._handleAuthResponse(
-      this.httpService.postFullRequest<AuthUser>('/register', user));
+      this.httpService.postFullRequest<AuthUser>('/register/confirm-email', confirmEmailDto));
   }
 
   public login(user: UserLoginDto): Observable<User> {
@@ -46,22 +69,23 @@ export class AuthenticationService {
       finalize(() => {
         this.removeTokensFromStorage();
         this.user = null;
+        this.authUserEventService.userChanged(null);
       }),
     );
   }
 
   public areTokensExist(): boolean {
-    return localStorage.getItem('accessToken') !== null && 
-           localStorage.getItem('refreshToken') !== null;
+    return localStorage.getItem('accessToken') !== null &&
+      localStorage.getItem('refreshToken') !== null;
   }
 
-  public revokeRefreshToken(): Observable<HttpResponse<void>> {
+  private revokeRefreshToken(): Observable<HttpResponse<void>> {
     return this.httpService.postFullRequest('/token/revoke', {
       refreshToken: JSON.parse(localStorage.getItem('refreshToken') as string),
     });
   }
 
-  public removeTokensFromStorage(): void {
+  private removeTokensFromStorage(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   }
@@ -75,7 +99,7 @@ export class AuthenticationService {
       .pipe(
         map((resp) => {
           if (!resp.body) {
-            throw throwError(resp);  
+            throw throwError(resp);
           }
           this._setTokens(resp.body);
           return resp.body;
@@ -89,7 +113,7 @@ export class AuthenticationService {
   }
 
   public sendPasswordResetRequest(forgotPasswordDto: ForgotPasswordDto): Observable<void> {
-    return this.httpService.postRequest<void>('/Auth/forgot-password', forgotPasswordDto);  
+    return this.httpService.postRequest<void>('/Auth/forgot-password', forgotPasswordDto);
   }
 
   public isResetTokenPasswordValid(email: string, token: string): Observable<boolean> {
@@ -105,10 +129,11 @@ export class AuthenticationService {
     return observable.pipe(
       map((resp) => {
         if (!resp.body) {
-          throw throwError(resp); 
+          throw throwError(resp);
         }
         this._setTokens(resp.body.token);
         this.user = resp.body.user;
+        this.authUserEventService.userChanged(resp.body.user);
         return resp.body.user;
       }),
     );

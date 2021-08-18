@@ -8,6 +8,7 @@ namespace Domain.Entities
     {
         public string Phone { get; set; }
         public string Skype { get; set; }
+        public string LinkedInUrl { get; set; }
         public double Experience { get; set; }
         public DateTime ToBeContacted { get; set; }
         public string CompanyId { get; set; }

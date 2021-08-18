@@ -29,7 +29,7 @@ namespace Application.Common.Queries
         public async Task<IEnumerable<TDto>> Handle(GetEntityListQuery<TDto> query, CancellationToken _)
         {
             IEnumerable<TEntity> result = await _repository.GetEnumerableAsync();
-
+            //TODO Get by company Id
             return _mapper.Map<IEnumerable<TDto>>(result);
         }
     }

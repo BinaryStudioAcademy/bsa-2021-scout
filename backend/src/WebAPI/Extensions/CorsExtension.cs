@@ -39,6 +39,7 @@ namespace WebAPI.Extensions
         private static IServiceCollection AddDevelopmentCorsPolicies(this IServiceCollection services)
         {
             var frontendUrl = Environment.GetEnvironmentVariable("FRONTEND_URL");
+            System.Console.WriteLine("Url: " + frontendUrl.ToString());
 
             services.AddCors(options =>
             {
@@ -46,6 +47,7 @@ namespace WebAPI.Extensions
                                   builder =>
                                   {
                                       builder
+                                        .WithHeaders("Authorization")
                                         .WithHeaders("Content-Type")
                                         .WithMethods("GET", "POST", "PUT", "DELETE")
                                         .WithExposedHeaders("Token-Expired")
@@ -68,6 +70,7 @@ namespace WebAPI.Extensions
                                       // If you want to test prod environmanet locally 
                                       // relpace next line with this: builder.WithOrigins("http://localhost");
                                       builder
+                                        .WithHeaders("Authorization")
                                         .WithHeaders("Content-Type")
                                         .WithMethods("GET", "POST", "PUT", "DELETE")
                                         .WithExposedHeaders("Token-Expired")

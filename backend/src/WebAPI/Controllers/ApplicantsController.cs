@@ -1,29 +1,34 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using System;
+using Application.Applicants.Commands;
+using Application.Applicants.Dtos;
+using Application.Applicants.Queries;
+using Application.Common.Commands;
+using Application.Common.Files.Dtos;
+using Application.Common.Queries;
+using Application.ElasticEnities.CommandQuery.AddTagCommand;
+using Application.ElasticEnities.CommandQuery.DeleteTagCommand;
+using Application.ElasticEnities.Dtos;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading;
-using Newtonsoft.Json;
-using Application.Common.Queries;
-using Application.Applicants.Dtos;
-using Application.Common.Files.Dtos;
-using Application.Applicants.Commands.Create;
-using Application.Common.Commands;
-using Application.ElasticEnities.Dtos;
-using Application.ElasticEnities.CommandQuery.DeleteTagCommand;
-using Application.ElasticEnities.CommandQuery.AddTagCommand;
-using Application.Applicants.Queries;
-using Application.Applicants.Commands.UpdateApplicantCv;
+using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
     public class ApplicantsController : ApiController
     {
+        protected IMapper _mapper;
+        public ApplicantsController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetApplicantAsync(string id)
         {
-            var query = new GetEntityByIdQuery<ApplicantDto>(id);
+            var query = new GetComposedApplicantQuery(id);
 
             return Ok(await Mediator.Send(query));
         }
@@ -31,7 +36,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetApplicantsAsync()
         {
-            var query = new GetEntityListQuery<ApplicantDto>();
+            var query = new GetComposedApplicantListQuery();
 
             return Ok(await Mediator.Send(query));
         }
@@ -49,9 +54,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutApplicantAsync([FromBody] UpdateApplicantDto updateDto)
+        public async Task<IActionResult> PutApplicantAsync([FromForm] string body, [FromForm] IFormFile cvFile)
         {
-            var query = new UpdateEntityCommand<UpdateApplicantDto>(updateDto);
+            var updateApplicantDto = JsonConvert.DeserializeObject<UpdateApplicantDto>(body);
+
+            var cvFileDto = new FileDto(cvFile.OpenReadStream(), cvFile.FileName);
+
+            var query = new UpdateApplicantCommand(updateApplicantDto, cvFileDto);
 
             return Ok(await Mediator.Send(query));
         }
@@ -61,8 +70,12 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteApplicantAsync(string id)
         {
             var query = new DeleteEntityCommand(id);
+            await Mediator.Send(query);
 
-            return StatusCode(204, await Mediator.Send(query));
+            var elasticQuery = new DeleteElasticDocumentCommand(id);
+            await Mediator.Send(elasticQuery);
+
+            return StatusCode(204);
         }
 
         [HttpGet("{id}/cv")]
@@ -99,6 +112,20 @@ namespace WebAPI.Controllers
 
             return Ok(await Mediator.Send(query));
         }
+
+        [HttpPost("csv/")]
+        public async Task<IActionResult> PostApplicantFromCsv()
+        {
+            var file = Request.Form.Files[0];
+
+            using (var fileReadStream = file.OpenReadStream())
+            {
+                var command = new CreateApplicantsFromCsvCommand(fileReadStream);
+
+                return Ok(await Mediator.Send(command));
+            }
+        }
+
         [HttpPost("tags/{entityId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> PostTagAsync(string entityId, [FromBody] TagDto createDto)

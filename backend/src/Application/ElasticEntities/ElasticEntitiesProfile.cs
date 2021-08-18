@@ -1,6 +1,7 @@
 using AutoMapper;
 using entities = Domain.Entities;
 using Application.ElasticEnities.Dtos;
+using System.Collections.Generic;
 using Domain.Entities;
 
 namespace Application.ElasticEnities
@@ -23,6 +24,11 @@ namespace Application.ElasticEnities
 
             CreateMap<CreateElasticEntityDto, entities::ElasticEntity>()
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.TagsDtos));
+
+            CreateMap<CreateElasticEntityDto, ElasticEnitityDto>()
+            .ForMember(dest => dest.TagDtos, opt => opt.MapFrom(src => src.TagsDtos == null
+                ? new List<TagDto>()
+                : src.TagsDtos));
 
             CreateMap<UpdateApplicantToTagsDto, entities::ElasticEntity>()
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.TagsDtos));
