@@ -1,4 +1,6 @@
 using MediatR;
+using System;
+using System.Linq;
 using AutoMapper;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,6 +45,7 @@ namespace Application.Applicants.Commands
             var elasticQuery = new UpdateElasticDocumentCommand<UpdateApplicantToTagsDto>(
                 _mapper.Map<UpdateApplicantToTagsDto>(command.Entity.Tags)
             );
+            
             updatedApplicant.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));
             updatedApplicant.Vacancies = _mapper.Map<IEnumerable<ApplicantVacancyInfoDto>>
                 (await _repository.GetApplicantVacancyInfoListAsync(updatedApplicant.Id));

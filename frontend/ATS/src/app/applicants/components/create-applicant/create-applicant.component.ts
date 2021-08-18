@@ -31,6 +31,7 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
     linkedInUrl: '',
     experience: 0,
     tags: {
+      id: '',
       elasticType: 1,
       tagDtos: [],
     },

@@ -26,6 +26,12 @@ namespace Infrastructure.Repositories.Write
             return await base.CreateAsync(entity);
         }
 
+        public override async Task<Entity> UpdateAsync(Applicant entity)
+        {
+            entity.CompanyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
+            return await base.UpdateAsync(entity);
+        }
+
         public override async Task DeleteAsync(string id)
         {
             var entity = await _context.Set<Applicant>().FirstOrDefaultAsync(_ => _.Id == id);

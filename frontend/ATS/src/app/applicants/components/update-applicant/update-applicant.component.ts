@@ -31,6 +31,7 @@ export class UpdateApplicantComponent implements OnDestroy {
     linkedInUrl: '',
     experience: 0,
     tags: {
+      id: '',
       elasticType: 1,
       tagDtos: [],
     },
@@ -56,6 +57,7 @@ export class UpdateApplicantComponent implements OnDestroy {
     this.updatedApplicant.linkedInUrl = applicant.linkedInUrl;
     this.updatedApplicant.skype = applicant.skype;
     this.updatedApplicant.experience = applicant.experience;
+    this.updatedApplicant.tags.id = applicant.tags.id;
     this.updatedApplicant.tags.tagDtos = this.tags = applicant.tags.tagDtos;
   }
 

@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using entities = Domain.Entities;
 using Application.ElasticEnities.Dtos;

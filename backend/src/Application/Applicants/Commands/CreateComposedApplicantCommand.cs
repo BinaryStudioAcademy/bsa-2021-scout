@@ -1,3 +1,4 @@
+using System;
 using MediatR;
 using AutoMapper;
 using Domain.Entities;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Application.Applicants.Dtos;
 using Domain.Interfaces.Abstractions;
+using System.Linq;
 using Application.Common.Commands;
 using Application.ElasticEnities.Dtos;
 
@@ -41,7 +43,11 @@ namespace Application.Applicants.Commands
             {
                 ElasticType = ElasticType.ApplicantTags,
                 Id = createdApplicant.Id,
-                TagsDtos = command.Entity.Tags.TagDtos
+                TagsDtos = command.Entity.Tags.TagDtos.Select(t => new TagDto()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    TagName = t.TagName
+                })
             });
             createdApplicant.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));
             createdApplicant.Vacancies = new List<ApplicantVacancyInfoDto>();
