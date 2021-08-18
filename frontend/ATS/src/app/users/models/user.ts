@@ -4,8 +4,9 @@ export interface User {
   id?: string;
   firstName: string;
   lastName: string;
-  middleName: string;
   birthDate: Date;
+  creationDate: Date;
   email: string;
-  roles: Role[];
+  isEmailConfirmed: boolean;
+  roles?: Role[];
 }

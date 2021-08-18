@@ -68,6 +68,22 @@ namespace Infrastructure.Repositories.Read
             return user;
         }
 
+        public async Task<IEnumerable<User>> GetUsersByCompanyIdAsync(string companyId)
+        {
+            var connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
+            StringBuilder sql = new StringBuilder();
+            sql.Append("SELECT *");
+            sql.Append(" FROM Users");
+            sql.Append($" WHERE Users.CompanyId = '{companyId}'");
+
+            IEnumerable<User> users = await connection
+                .QueryAsync<User>(sql.ToString());
+
+            await connection.CloseAsync();
+            return users;
+        }
+
         public async Task LoadRolesAsync(User user)
         {
             var connection = _connectionFactory.GetSqlConnection();

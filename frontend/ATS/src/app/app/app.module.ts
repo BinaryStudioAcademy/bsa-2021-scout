@@ -23,6 +23,7 @@ import { MatTableModule } from '@angular/material/table';
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
 import { AuthGuard } from '../users/guards/auth.guard';
+import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 
 import { ProjectsModule } from '../projects/projects.module';
 
@@ -49,6 +50,7 @@ import { ProjectsModule } from '../projects/projects.module';
   providers: [
     SidenavService,
     AuthGuard,
+    HrLeadGuard,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
