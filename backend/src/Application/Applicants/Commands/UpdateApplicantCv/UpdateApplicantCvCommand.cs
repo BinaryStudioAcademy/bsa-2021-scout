@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Files.Dtos;
 
-namespace Application.Applicants.Commands.UpdateApplicantCv
+namespace Application.Applicants.Commands
 {
     public class UpdateApplicantCvCommand : IRequest<Unit>
     {

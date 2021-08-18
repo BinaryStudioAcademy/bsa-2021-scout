@@ -2,7 +2,7 @@
 using Application.Common.Validators;
 using FluentValidation;
 
-namespace Application.Applicants.Commands.UpdateApplicantCv
+namespace Application.Applicants.Commands
 {
     public class UpdateApplicantCvCommandValidator : AbstractValidator<UpdateApplicantCvCommand>
     {

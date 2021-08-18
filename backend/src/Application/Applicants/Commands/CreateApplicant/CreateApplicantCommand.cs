@@ -9,8 +9,11 @@ using Domain.Interfaces.Write;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Files.Dtos;
+using Application.Interfaces;
+using Application.ElasticEnities.Dtos;
+using System.Collections.Generic;
 
-namespace Application.Applicants.Commands.Create
+namespace Application.Applicants.Commands
 {
     public class CreateApplicantCommand : IRequest<ApplicantDto>
     {
@@ -28,42 +31,70 @@ namespace Application.Applicants.Commands.Create
     {
         private readonly IWriteRepository<Applicant> _applicantWriteRepository;
         private readonly IApplicantCvFileWriteRepository _applicantCvFileWriteRepository;
+        protected readonly ICurrentUserContext _currentUserContext;
         private readonly IMapper _mapper;
+        private readonly ISender _mediator;
 
         public CreateApplicantCommandHandler(
             IWriteRepository<Applicant> applicantWriteRepository,
             IApplicantCvFileWriteRepository applicantCvFileWriteRepository,
-            IMapper mapper
+            ICurrentUserContext currentUserContext,
+            IMapper mapper,
+            ISender mediator
         )
         {
             _applicantWriteRepository = applicantWriteRepository;
             _applicantCvFileWriteRepository = applicantCvFileWriteRepository;
+            _currentUserContext = currentUserContext;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         public async Task<ApplicantDto> Handle(CreateApplicantCommand command, CancellationToken _)
         {
+            var creatorUser = await _currentUserContext.GetCurrentUser();
+
             var applicant = new Applicant
             {
-                FirstName = "",
-                LastName = "",
-                MiddleName = "",
-                BirthDate = System.DateTime.Now,
-                Email = "",
+                FirstName = command.ApplicantDto.FirstName,
+                LastName = command.ApplicantDto.LastName,
+                MiddleName = command.ApplicantDto.MiddleName,
+                BirthDate = command.ApplicantDto.BirthDate,
+                Email = command.ApplicantDto.Email,
                 Phone = command.ApplicantDto.Phone,
                 Skype = command.ApplicantDto.Skype,
                 Experience = command.ApplicantDto.Experience,
-                ToBeContacted = command.ApplicantDto.ToBeContacted,
-                CompanyId = command.ApplicantDto.CompanyId,
+                LinkedInUrl = command.ApplicantDto.LinkedInUrl,
+                CompanyId = creatorUser.CompanyId,
             };
 
-            var uploadedCvFileInfo = await _applicantCvFileWriteRepository.UploadAsync(applicant.Id, command.CvFileDto.Content);
-
-            applicant.CvFileInfo = uploadedCvFileInfo;
+            await UploadCvFile(applicant, command);
 
             await _applicantWriteRepository.CreateAsync(applicant);
 
-            return _mapper.Map<Applicant, ApplicantDto>(applicant);
+            var createdApplicant = _mapper.Map<Applicant, ApplicantDto>(applicant);
+
+            await CreateTags(createdApplicant);
+
+            return createdApplicant;
+        }
+
+        private async Task UploadCvFile(Applicant applicant, CreateApplicantCommand command)
+        {
+            var uploadedCvFileInfo = await _applicantCvFileWriteRepository.UploadAsync(applicant.Id, command.CvFileDto.Content);
+            applicant.CvFileInfo = uploadedCvFileInfo;
+        }
+
+        private async Task CreateTags(ApplicantDto createdApplicant)
+        {
+            var elasticQuery = new CreateElasticDocumentCommand<CreateElasticEntityDto>(new CreateElasticEntityDto()
+            {
+                ElasticType = ElasticType.ApplicantTags,
+                Id = createdApplicant.Id
+            });
+
+            createdApplicant.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));
+            createdApplicant.Vacancies = new List<ApplicantVacancyInfoDto>();
         }
     }
 }
