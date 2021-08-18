@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Applicant } from 'src/app/shared/models/applicant/applicant';
+import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { CreateApplicantComponent } from '../create-applicant/create-applicant.component';
@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { ActivatedRoute } from '@angular/router';
-import { CreateApplicant } from 'src/app/shared/models/applicant/create-applicant';
+import { CreateApplicant } from 'src/app/shared/models/applicants/create-applicant';
 
 @Component({
   selector: 'app-applicants',

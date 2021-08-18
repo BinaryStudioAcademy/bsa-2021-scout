@@ -1,14 +1,17 @@
-import { Model } from '../model';
+import { ElasticEntity } from '../elastic-entity/elastic-entity';
+import { ApplicantVacancyInfo } from './applicant-vacancy-info';
 
-export interface Applicant extends Model {
+export interface Applicant {
+  id: string;
   firstName: string;
   lastName: string;
   middleName: string;
-  birthDate: Date;
+  linkedInUrl: string;
   email: string;
   phone: string;
   skype: string;
-  experience: string;
-  toBeContacted: Date;
-  companyId: string;
+  experience: number;
+
+  tags: ElasticEntity;
+  vacancies: ApplicantVacancyInfo[];
 }

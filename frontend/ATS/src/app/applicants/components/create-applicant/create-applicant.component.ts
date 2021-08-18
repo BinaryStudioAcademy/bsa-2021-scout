@@ -4,8 +4,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { applicantGroup } from '../../validators/applicant-validator';
-import { Applicant } from 'src/app/shared/models/applicant/applicant';
-import { CreateApplicant } from 'src/app/shared/models/applicant/create-applicant';
+import { Applicant } from 'src/app/shared/models/applicants/applicant';
+import { CreateApplicant } from 'src/app/shared/models/applicants/create-applicant';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 
