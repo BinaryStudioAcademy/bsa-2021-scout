@@ -21,6 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ApplicantsComponent implements OnInit, AfterViewInit {
   public displayedColumns: string[] = [
+    'position',
     'name',
     'rate',
     'email',
@@ -63,6 +64,7 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
       .subscribe((result: ViewableApplicant[]) => {
         this.dataSource.data = result;
         this.cashedData = result;
+        this.directive!.applyFilter$.emit();
       },
       (error: Error) => {
         this.notificationsService.showErrorMessage(error.message,
@@ -111,7 +113,7 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
 
   public showApplicantUpdateDialog(applicant: Applicant): void {
     const dialogRef = this.dialog.open(UpdateApplicantComponent, {
-      width: '914px',
+      width: '480px',
       height: 'min-content',
       autoFocus: false,
       data: applicant,
@@ -141,29 +143,16 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
   }
 
   public deleteApplicant(applicantId: string): void {
-    this.applicantsService
-      .deleteApplicant(applicantId)
-      .pipe(takeUntil(this.$unsubscribe))
-      .subscribe(
-        () => {
-          let applicantIndex = this.dataSource.data.findIndex(
-            (a) => a.id === applicantId,
-          );
+    let applicantIndex = this.dataSource.data.findIndex(
+      (a) => a.id === applicantId,
+    );
 
-          this.cashedData.splice(applicantIndex, 1);
-          this.dataSource.data = this.cashedData;
-          this.notificationsService.showSuccessMessage(
-            'The applicant was successfully deleted',
-            'Success!',
-          );
-        },
-        (error: Error) => {
-          this.notificationsService.showErrorMessage(
-            error.message,
-            'Cannot delete the applicant',
-          );
-        },
-      );
+    this.cashedData.splice(applicantIndex, 1);
+    this.dataSource.data = this.cashedData;
+    this.notificationsService.showSuccessMessage(
+      'The applicant was successfully deleted',
+      'Success!',
+    );
   }
 
   public getFirstTags(applicant: ViewableApplicant): Tag[] {

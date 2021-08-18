@@ -40,7 +40,8 @@ namespace Application.Applicants.Commands
             var elasticQuery = new CreateElasticDocumentCommand<CreateElasticEntityDto>(new CreateElasticEntityDto()
             {
                 ElasticType = ElasticType.ApplicantTags,
-                Id = createdApplicant.Id
+                Id = createdApplicant.Id,
+                TagsDtos = command.Entity.Tags.TagDtos
             });
             createdApplicant.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));
             createdApplicant.Vacancies = new List<ApplicantVacancyInfoDto>();

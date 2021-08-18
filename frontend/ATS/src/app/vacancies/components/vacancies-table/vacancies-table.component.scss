@@ -34,7 +34,7 @@ th {
     background-color: transparent; 
 }
 
-::ng-deep {
+:host ::ng-deep {
     .mat-icon{
         cursor: pointer;
     }

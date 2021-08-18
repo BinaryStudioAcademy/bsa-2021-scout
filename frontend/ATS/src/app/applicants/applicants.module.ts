@@ -10,6 +10,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ApplicantsHeadComponent } from './components/applicants-head/applicants-head.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { TagsEditComponent } from './components/tags-edit/tags-edit.component';
+import { ApplicantControlComponent } 
+  from './components/applicant-control/applicant-control.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +21,8 @@ import { ApplicantsHeadComponent } from './components/applicants-head/applicants
     CreateApplicantComponent,
     UpdateApplicantComponent,
     ApplicantsHeadComponent,
+    TagsEditComponent,
+    ApplicantControlComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,6 +33,7 @@ import { ApplicantsHeadComponent } from './components/applicants-head/applicants
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatChipsModule,
   ],
   providers: [],
   bootstrap: [ApplicantsComponent],

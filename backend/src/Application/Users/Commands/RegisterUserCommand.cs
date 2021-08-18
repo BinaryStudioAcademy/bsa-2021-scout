@@ -47,6 +47,7 @@ namespace Application.Users.Commands
             newUser.IsEmailConfirmed = false;
             var salt = _securityService.GetRandomBytes();
 
+            Console.WriteLine("Password " + command.RegisterUser.Email);
             newUser.PasswordSalt = Convert.ToBase64String(salt);
             newUser.Password = _securityService.HashPassword(command.RegisterUser.Password, salt);
 

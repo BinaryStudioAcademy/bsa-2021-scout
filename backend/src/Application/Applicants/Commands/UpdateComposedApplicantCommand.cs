@@ -40,8 +40,10 @@ namespace Application.Applicants.Commands
             var query = new UpdateEntityCommand<ApplicantDto>(updatableApplicant);
             var updatedApplicant = await _mediator.Send(query);
 
-            var elasticQuery = new GetElasticDocumentByIdQuery<ElasticEnitityDto>(updatedApplicant.Id);
-            updatedApplicant.Tags = await _mediator.Send(elasticQuery);
+            var elasticQuery = new UpdateElasticDocumentCommand<UpdateApplicantToTagsDto>(
+                _mapper.Map<UpdateApplicantToTagsDto>(command.Entity.Tags)
+            );
+            updatedApplicant.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));
             updatedApplicant.Vacancies = _mapper.Map<IEnumerable<ApplicantVacancyInfoDto>>
                 (await _repository.GetApplicantVacancyInfoListAsync(updatedApplicant.Id));
 

@@ -30,8 +30,7 @@ export class ApplicantsHeadComponent {
 
   public showApplicantsCreateDialog(): void {
     const dialogRef = this.dialog.open(CreateApplicantComponent, {
-      width: '914px',
-      height: 'min-content',
+      width: '532px',
       autoFocus: false,
     });
 
