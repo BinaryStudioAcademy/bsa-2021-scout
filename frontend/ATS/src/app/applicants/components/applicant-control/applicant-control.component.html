@@ -1,0 +1,15 @@
+<button mat-icon-button class="applicant-control-btn">
+    <mat-icon>turned_in</mat-icon>
+</button>
+<button (click)="showApplicantUpdateDialog()" mat-icon-button class="applicant-control-btn">
+    <mat-icon>edit</mat-icon>
+</button>
+<div *ngIf="isDotMenuVisible" class="outside-wrapper" (click)="toggleDotMenu()"></div>
+<button (click)="toggleDotMenu()" mat-icon-button class="applicant-control-btn dot-menu">
+    <mat-icon>more_horiz</mat-icon>
+    <mat-list *ngIf="isDotMenuVisible">
+        <mat-list-item>
+            <button mat-flat-button (click)="deleteApplicant()">Delete</button>
+        </mat-list-item>
+    </mat-list>
+</button>

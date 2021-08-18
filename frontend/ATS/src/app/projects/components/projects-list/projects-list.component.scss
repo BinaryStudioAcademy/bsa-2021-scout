@@ -136,7 +136,7 @@ img {
 
 /* Angular Materials */
 
-::ng-deep {
+:host ::ng-deep {
     /* Scroll Bar */
      ::-webkit-scrollbar {
         width: 5px;
