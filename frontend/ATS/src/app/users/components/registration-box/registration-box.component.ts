@@ -97,7 +97,12 @@ export class RegistrationBoxComponent {
         },
         (error) => {
           this.isRequestFinished = true;
-          this.notificationService.showErrorMessage(error.description, 'Something went wrong');
+          if(error.description != null){
+            this.notificationService.showErrorMessage(error.description, 'Something went wrong');
+          }
+          else{
+            this.notificationService.showErrorMessage(error.message, 'Something went wrong');
+          }
         },
         );
     }

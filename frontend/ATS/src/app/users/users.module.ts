@@ -19,7 +19,11 @@ import { LoginRegistCommonComponent } from './components/login-regist-common/log
 import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
 import { SuccessfulRegistrationComponent }
   from './components/successful-registration/successful-registration.component';
+import { UserDataService } from './services/user-data.service';
+import { UsersTableComponent } from './components/hr-lead/users-table/users-table.component';
 import { LoggedInUserGuard } from './guards/logged-in-user.guard';
+import { ResendEmailAfterLoginComponent } from
+  './components/resend-email-after-login/resend-email-after-login.component';
 import { ApplicationPoolComponent } from './components/application-pool/application-pool.component';
 import { CreateTalentpoolModalComponent } 
   from './components/create-talentpool-modal/create-talentpool-modal.component';
@@ -39,6 +43,9 @@ import { EditAppPoolModalComponent }
     ResetPasswordComponent,
     ResetPasswordBoxComponent,
     ConfirmEmailComponent,
+    SuccessfulRegistrationComponent,
+    UsersTableComponent,
+    ResendEmailAfterLoginComponent,
     SuccessfulRegistrationComponent,    
     ApplicationPoolComponent,
     CreateTalentpoolModalComponent,
@@ -48,6 +55,7 @@ import { EditAppPoolModalComponent }
   providers: [
     LoginRegistCommonComponent,
     ResetPasswordGuard,
+    UserDataService,
     LoggedInUserGuard,
   ],
 })
