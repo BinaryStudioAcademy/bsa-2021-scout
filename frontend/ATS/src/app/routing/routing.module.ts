@@ -19,7 +19,7 @@ import { ProjectsListComponent } from
 import { UsersTableComponent } from '../users/components/hr-lead/users-table/users-table.component';
 import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 import { ApplicationPoolComponent } from 
-  '../users/components/application-pool/application-pool.component';
+  '../pools/components/application-pool/application-pool.component';
 
 
 
