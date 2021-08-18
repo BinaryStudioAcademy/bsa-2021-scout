@@ -22,6 +22,10 @@ namespace Infrastructure.EF.Seeds
            Tier.TeamLead
         };
         private Vacancy GenerateVacancy(string id){
+            Tier tierFrom = Tiers[_random.Next(Tiers.Count)];
+            Tier tierTo = Tiers[_random.Next(Tiers.Count)];
+            if((int)tierFrom > (int)tierTo)
+                (tierTo, tierFrom) = (tierFrom, tierTo);
             return  new Vacancy
             {
                 Id = id,
@@ -37,8 +41,8 @@ namespace Infrastructure.EF.Seeds
                 SalaryTo = _random.Next(1300, 56000),
                 CompletionDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 20),
                 PlannedCompletionDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 21),
-                TierFrom = Tiers[_random.Next(Tiers.Count)],
-                TierTo = Tiers[_random.Next(Tiers.Count)],
+                TierFrom = tierFrom,
+                TierTo = tierTo,
                 Sources = SourcesList[_random.Next(SourcesList.Count)],
                 ProjectId = ProjectIds[_random.Next(ProjectIds.Count)],
                 ResponsibleHrId = ResponsibleHrIds[_random.Next(ResponsibleHrIds.Count)],
