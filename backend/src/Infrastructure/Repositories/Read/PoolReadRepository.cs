@@ -22,7 +22,7 @@ namespace Infrastructure.Repositories.Read
             await connection.OpenAsync();
             string sql = $@"
                             SELECT p.*, pa.*, a.*
-                            FROM [ATS_dev].[dbo].[Pools] p left outer join 
+                            FROM Pools p left outer join 
                             PoolToApplicants pa ON pa.PoolId = p.Id left outer join
                             Applicants a on a.Id = pa.ApplicantId
                             where p.id = @id";
@@ -80,7 +80,7 @@ namespace Infrastructure.Repositories.Read
             await connection.OpenAsync();
             string sql = $@"
                             SELECT p.*, pa.*, a.*
-                            FROM [ATS_dev].[dbo].[Pools] p left outer join 
+                            FROM Pools p left outer join 
                             PoolToApplicants pa ON pa.PoolId = p.Id left outer join
                             Applicants a on a.Id = pa.ApplicantId";
                             
