@@ -34,14 +34,10 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
 
         if (response.status === 401) {
-
-          const errorInfo: { type: string; description: string }
-            = JSON.parse(response.error.message);
-
           if (response.headers.has('Token-Expired')) {
             return this.authService.refreshTokens().pipe(
               switchMap((resp) => {
-                if (req.body.refreshToken) {
+                if (req.body?.refreshToken) {
                   req = req.clone({
                     setHeaders: {
                       Authorization: `Bearer ${resp.accessToken.token}`,
@@ -60,7 +56,9 @@ export class ErrorInterceptor implements HttpInterceptor {
             );
           }
 
-          if (errorInfo) {
+          if (response.error?.message) {
+            const errorInfo: { type: string; description: string }
+              = JSON.parse(response.error.message);
             if (errorInfo.type === TokenErrorType.InvalidToken &&
               !this.authService.areTokensExist()) {
               return throwError(errorInfo);
@@ -76,7 +74,6 @@ export class ErrorInterceptor implements HttpInterceptor {
               return throwError(errorInfo);
             }
           }
-
         }
 
         if (response.status === 400) {

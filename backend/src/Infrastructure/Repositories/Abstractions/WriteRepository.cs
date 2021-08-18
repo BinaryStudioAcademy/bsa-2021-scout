@@ -3,6 +3,8 @@ using Domain.Interfaces.Abstractions;
 using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Abstractions
@@ -33,6 +35,7 @@ namespace Infrastructure.Repositories.Abstractions
         }
 
         public virtual async Task DeleteAsync(string id)
+
         {
             var entity = await _context.Set<T>().FirstOrDefaultAsync(_ => _.Id == id);
 
