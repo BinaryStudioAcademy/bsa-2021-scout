@@ -11,14 +11,14 @@ namespace Infrastructure.Elastic.Seeding
         {
             Random _random = new Random();
             IList<Tag> tags = new List<Tag>();
-            foreach(var tag in Tags)
+            foreach (var tag in Tags)
             {
                 if (_random.Next() % 2 == 0)
                     tags.Add(tag);
             }
             return tags;
         }
-        
+
         #region Tags
         private readonly static IList<Tag> Tags = new List<Tag>
         {
@@ -189,6 +189,132 @@ namespace Infrastructure.Elastic.Seeding
                 new ElasticEntity
                 {
                     Id = "db1646f4-1c00-4d72-832f-9fd1093ae6dc",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "1d4128f9-3d3f-4b19-91f3-f1766e42576b",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "a43a0590-1aad-4564-94d0-a9e5e6e51c12",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "25faa343-1b96-4679-9ca9-dc9af08f891b",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "ffbd3588-1666-40ea-980a-373c9824417e",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "154065a4-1f7d-4706-b9fd-7a97646870d0",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "c0444497-1e0f-4b93-83ab-f5522c4391d7",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "f2531da3-18da-4e64-aab9-c4ec10957dcc",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "0c1bde8f-1622-44b3-86d0-67ec69665134",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "d12218ee-3688-42d1-8874-fd80a1634340",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "34366ad0-15ed-4775-b0cf-826f84b1c095",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "27730877-1d1e-46ee-a8cb-9b019be065fe",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "13f41ed3-108c-4100-b030-197773798d44",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "28c49bd7-17da-415b-88bf-5844843d5fac",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "6532e19d-1bc1-482d-9413-cbf7b5d547c4",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "90a4b78a-1bb4-4321-891d-8f36b67f2c36",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "32aa24b6-1f28-4be3-9cf9-b09e044f47fe",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "e3f41ed3-108c-4100-b030-197773798d44",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "e8c49bd7-17da-415b-88bf-5844843d5fac",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "e532e19d-1bc1-482d-9413-cbf7b5d547c4",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "e0a4b78a-1bb4-4321-891d-8f36b67f2c36",
+                    Tags = GetRandomTags(),
+                    ElasticType = ElasticType.VacancyTags
+                },
+                new ElasticEntity
+                {
+                    Id = "e2aa24b6-1f28-4be3-9cf9-b09e044f47fe",
                     Tags = GetRandomTags(),
                     ElasticType = ElasticType.VacancyTags
                 },

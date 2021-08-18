@@ -76,11 +76,17 @@ namespace Infrastructure.EF.Seeds
             "Project Manager"
         };
         private  IList<string> ProjectIds = new List<string>{
-            "pd45e3b4-cdf6-4f67-99de-795780c70b8f",
             "p9e10160-0522-4c2f-bfcf-a07e9faf0c04",
             "p8b0e8ca-54ff-4186-8cc0-5f71e1ec1d3c",
             "p0679037-9b5e-45df-b24d-edc5bbbaaec4",
             "paa3320f-866a-4b02-9076-5e8d12796710",
+            "pd45e3b4-cdf6-4f67-99de-795780c70b8f",
+            "new10160-0522-4c2f-bfcf-a07e9faf0c04",
+            "new0e8ca-54ff-4186-8cc0-5f71e1ec1d3c",
+            "new79037-9b5e-45df-b24d-edc5bbbaaec4",
+            "new3320f-866a-4b02-9076-5e8d12796710",
+            "new5e3b4-cdf6-4f67-99de-795780c70b8f",
+            "snew3b4-cdf6-4f67-99de-795780c70b8f",
         };
         private  IList<string> ResponsibleHrIds = new List<string>{
             "057c23ff-58b1-4531-8012-0b5c1f949ee1",
