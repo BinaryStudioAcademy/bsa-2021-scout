@@ -54,7 +54,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 return next.handle(req);
               }),
             );
-          };
+          }
 
           if (response.error?.message) {
             const errorInfo: { type: string; description: string }
