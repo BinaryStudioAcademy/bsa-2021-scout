@@ -24,12 +24,12 @@ import { ApplicantsPool } from 'src/app/shared/models/applicants-pool/applicants
 export class EditAppPoolModalComponent implements OnInit{
   
   @Output() submitClicked = new EventEmitter<any>();
-  id : string;
+  id : string = '';
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];  
   filteredApplicants: Observable<Applicant[]>;
-  filterValue : string;  
+  filterValue : string = '';  
   
 
   public allapplicants : Applicant [] = [
@@ -44,8 +44,7 @@ export class EditAppPoolModalComponent implements OnInit{
   public applicants : Applicant [] = this.data.applicants;  
 
   applicantsCtrl = new FormControl();
-  iconName : 'done';
-  
+   
 
   public editPool: FormGroup = new FormGroup({
     'name': new FormControl(this.data.name, [
@@ -58,7 +57,7 @@ export class EditAppPoolModalComponent implements OnInit{
   });
 
   
-  @ViewChild('applicantInput') applicantInput: ElementRef<HTMLInputElement>;
+  @ViewChild('applicantInput') applicantInput!: ElementRef<HTMLInputElement>;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: ApplicantsPool,
     public dialogRef: MatDialogRef<EditAppPoolModalComponent>) {

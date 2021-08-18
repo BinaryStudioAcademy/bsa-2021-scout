@@ -50,7 +50,7 @@ export class ApplicationPoolComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
-  @ViewChild(MatTable) table: MatTable<ApplicantsPool>;
+  @ViewChild(MatTable) table!: MatTable<ApplicantsPool>;
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
