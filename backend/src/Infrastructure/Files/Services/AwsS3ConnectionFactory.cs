@@ -19,15 +19,6 @@ namespace Infrastructure.Mongo.Services
             _awsRegion = Environment.GetEnvironmentVariable("AWS_REGION");
             _bucketName = Environment.GetEnvironmentVariable("AWS_S3_BUCKET_NAME");
 
-            if (_awsAccessKeyId is null)
-                throw new Exception("AWS Access Key Id is not specified");
-
-            if (_awsSecretAccessKey is null)
-                throw new Exception("AWS Secret Access Key is not specified");
-
-            if (_awsRegion is null)
-                throw new Exception("AWS Region is not specified");
-
             if (_bucketName is null)
                 throw new Exception("AWS S3 Bucket name is not specified");
         }
