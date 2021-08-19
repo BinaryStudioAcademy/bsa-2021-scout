@@ -57,6 +57,14 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
         map(arr => arr.map(a => {
           let viewableApplicant = (a as unknown) as ViewableApplicant;
           viewableApplicant.isShowAllTags = false;
+
+          if (!a.tags) {
+            viewableApplicant.tags = {
+              id: '',
+              elasticType: 1,
+              tagDtos: []
+            };
+          }
   
           return viewableApplicant;
         })),
