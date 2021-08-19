@@ -17,7 +17,7 @@ namespace Infrastructure.EF.Seeds
             "Pet owner, check company pet policy.",
             "Tea addict, 3 cups of tea is must have or else.",
             "Impresive personal achivements.",
-            "Quite a procatasinator.",
+            "Quite a procrastinator.",
             "Really punctual",
             "Always late"
         };
