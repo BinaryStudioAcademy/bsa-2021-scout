@@ -37,7 +37,7 @@ const STATUES: VacancyStatus[] = [
 export class VacanciesTableComponent implements AfterViewInit {
   displayedColumns: string[] =
   ['position', 'title', 'candidates', 'teamInfo',
-    'responsible', 'creationDate', 'status',  'projects', 'actions'];
+    'responsible', 'creationDate', 'status',  'project', 'actions'];
   dataSource: MatTableDataSource<VacancyData>;
 ​
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -50,6 +50,7 @@ export class VacanciesTableComponent implements AfterViewInit {
     service.getList().subscribe(data=>{
       this.dataSource.data = data;
       this.directive.applyFilter$.emit();
+      console.log(data);
     },
     );
     // Assign the data to the data source for the table to render

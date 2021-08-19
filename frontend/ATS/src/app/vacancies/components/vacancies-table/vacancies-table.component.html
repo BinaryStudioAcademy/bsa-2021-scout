@@ -31,7 +31,7 @@
         </ng-container>
         <ng-container matColumnDef="teamInfo">
             <th mat-header-cell *matHeaderCellDef> Team Info </th>
-            <td mat-cell *matCellDef="let row"> {{row.department}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.project.teamInfo}} </td>
         </ng-container>
 
         <ng-container matColumnDef="responsible">
@@ -48,9 +48,9 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
             <td mat-cell *matCellDef="let row"> {{getStatus(row.status)}} </td>
         </ng-container>
-        <ng-container matColumnDef="projects">
+        <ng-container matColumnDef="project">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Projects </th>
-            <td mat-cell *matCellDef="let row"> {{getStatus(row.project?.title)}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.project.name}} </td>
         </ng-container>
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
