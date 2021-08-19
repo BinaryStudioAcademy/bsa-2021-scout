@@ -1,4 +1,6 @@
 using MediatR;
+using System;
+using System.Linq;
 using AutoMapper;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,6 +10,9 @@ using Application.Common.Commands;
 using Application.ElasticEnities.Dtos;
 using Application.Common.Queries;
 using Application.Common.Files.Dtos;
+
+using Domain.Entities;
+using Domain.Interfaces.Read;
 
 namespace Application.Applicants.Commands
 {
@@ -27,10 +32,13 @@ namespace Application.Applicants.Commands
     {
         private readonly ISender _mediator;
         private readonly IMapper _mapper;
-        public UpdateApplicantCommandHandler(ISender mediator, IMapper mapper)
+        private readonly IApplicantReadRepository _repository;
+
+        public UpdateApplicantCommandHandler(IApplicantReadRepository repository, ISender mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _repository = repository;
         }
 
         public async Task<ApplicantDto> Handle(UpdateApplicantCommand command, CancellationToken _)
@@ -39,9 +47,13 @@ namespace Application.Applicants.Commands
             var query = new UpdateEntityCommand<ApplicantDto>(updatableApplicant);
             var updatedApplicant = await _mediator.Send(query);
 
-            var elasticQuery = new GetElasticDocumentByIdQuery<ElasticEnitityDto>(updatedApplicant.Id);
-            updatedApplicant.Tags = await _mediator.Send(elasticQuery);
-            updatedApplicant.Vacancies = new List<ApplicantVacancyInfoDto>();
+            var elasticQuery = new UpdateElasticDocumentCommand<UpdateApplicantToTagsDto>(
+                _mapper.Map<UpdateApplicantToTagsDto>(command.Entity.Tags)
+            );
+            
+            updatedApplicant.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));
+            updatedApplicant.Vacancies = _mapper.Map<IEnumerable<ApplicantVacancyInfoDto>>
+                (await _repository.GetApplicantVacancyInfoListAsync(updatedApplicant.Id));
 
             await _mediator.Send(new UpdateApplicantCvCommand(updatableApplicant.Id, command.CvFileDto));
 

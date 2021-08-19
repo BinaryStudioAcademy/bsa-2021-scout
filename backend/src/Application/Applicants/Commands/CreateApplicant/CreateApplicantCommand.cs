@@ -12,6 +12,7 @@ using Application.Common.Files.Dtos;
 using Application.Interfaces;
 using Application.ElasticEnities.Dtos;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Application.Applicants.Commands
 {
@@ -74,7 +75,7 @@ namespace Application.Applicants.Commands
 
             var createdApplicant = _mapper.Map<Applicant, ApplicantDto>(applicant);
 
-            await CreateTags(createdApplicant);
+            await CreateTags(createdApplicant, command);
 
             return createdApplicant;
         }
@@ -85,12 +86,17 @@ namespace Application.Applicants.Commands
             applicant.CvFileInfo = uploadedCvFileInfo;
         }
 
-        private async Task CreateTags(ApplicantDto createdApplicant)
+        private async Task CreateTags(ApplicantDto createdApplicant, CreateApplicantCommand command)
         {
             var elasticQuery = new CreateElasticDocumentCommand<CreateElasticEntityDto>(new CreateElasticEntityDto()
             {
                 ElasticType = ElasticType.ApplicantTags,
-                Id = createdApplicant.Id
+                Id = createdApplicant.Id,
+                TagsDtos = command.ApplicantDto.Tags.TagDtos.Select(t => new TagDto()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    TagName = t.TagName
+                })
             });
 
             createdApplicant.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));

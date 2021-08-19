@@ -18,6 +18,8 @@ import { ProjectsListComponent } from
   '../projects/components/projects-list/projects-list.component';
 import { UsersTableComponent } from '../users/components/hr-lead/users-table/users-table.component';
 import { HrLeadGuard } from '../users/guards/hr-lead.guard';
+import { ApplicationPoolComponent } from 
+  '../users/components/application-pool/application-pool.component';
 
 
 
@@ -32,6 +34,7 @@ const routes: Routes = [
       { path: AppRoute.Analytics, component: VacanciesListComponent, pathMatch: 'full' },
       { path: AppRoute.TaskManagement, component: VacanciesListComponent, pathMatch: 'full' },
       { path: AppRoute.Templates, component: VacanciesListComponent, pathMatch: 'full' },
+      { path: AppRoute.Pools, component: ApplicationPoolComponent, pathMatch: 'full' },
       { path: AppRoute.UserManagement, component: UsersTableComponent, canActivate:[HrLeadGuard],
         pathMatch: 'full' },
       { path: '**', redirectTo: AppRoute.Home },
@@ -44,7 +47,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     UserRoutingModule,
     VacanciesRoutingModule,
-    ProjectRoutingModule,
+    ProjectRoutingModule,    
   ],
   exports: [RouterModule],
 })

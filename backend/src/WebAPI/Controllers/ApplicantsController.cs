@@ -14,7 +14,6 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
 namespace WebAPI.Controllers
 {
     public class ApplicantsController : ApiController

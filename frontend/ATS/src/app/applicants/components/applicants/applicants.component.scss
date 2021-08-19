@@ -1,62 +1,28 @@
-$row-height: 65px;
+$row-height: 55px;
 $header-height: 30px;
 
+:host ::ng-deep app-search-form {
+    display: none;
+}
+
 .page-content {
-    padding: 45px 51px 0 0;
-    background-color: #f6f7f9;
-    height: calc(100% - 120px);
+    background-color: #fafafa;
+    height: calc(100% - 170px);
+
+    .mat-elevation-z8 {
+        box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%),
+            0px 8px 10px 1px rgb(0 0 0 / 14%),
+            0px 3px 14px 2px rgb(0 0 0 / 12%);
+    }
 }
 
 .outside-wrapper {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 5;
     width: 100%;
     height: 100vh;
-}
-
-:host ::ng-deep .applicants-header-bar {
-    display: flex;
-    background: none;
-    justify-content: space-between;
-    padding: 0 0 30px 51px;
-
-    .mat-form-field-wrapper.mat-form-field-wrapper{
-        height: 45px;
-    }
-    
-    .mat-form-field-appearance-fill .mat-form-field-infix{
-        display:flex;
-        align-items: center;
-        padding: 0.75em 0.25em;
-    }
-    
-    .mat-form-field-appearance-fill .mat-form-field-flex{
-        padding: .75em .75em .75em .75em;
-    }
-    
-    .mat-icon{
-        color: #4d4d4d;
-        font-size: 15px;
-        height:16px;
-    }
-    
-    .mat-icon-button .mat-icon {
-        line-height: 1;
-    }
-
-    .create-button {
-        width: 153px;
-    }
-
-    .mat-form-field-wrapper {
-        background-color: #fff;
-    
-        .mat-form-field-flex {
-            background: none;
-        }
-    }
 }
 
 :host ::ng-deep .mat-table {
@@ -72,28 +38,31 @@ $header-height: 30px;
 
     .mat-cell {
         border: none;
-        font-size: 1.2em;
+        font-size: 14px;
+        padding-right: 15px;
         position: relative;
 
+        &:last-of-type {
+            padding-left: 100px;
+        }
+
         &:not(.control-buttons-cell) {
+            min-width: 0px;
+            max-width: 300px;
+
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
         }
 
-        &:not(.active-vac-cell, .jobs-list-cell, .tags-list-cell) {
-            min-width: 50px;
-            max-width: 200px;
+        &.index-cell {
+            min-width: fit-content;
+            max-width: 30px;
         }
 
         &.active-vac-cell {
-            min-width: 20px;
-            max-width: 100px;
-        }
-
-        &.jobs-list-cell {
-            overflow: visible;
-            width: 200px;
+            width: fit-content;
+            text-align: center;
         }
         
         &.tags-list-cell {
@@ -103,7 +72,6 @@ $header-height: 30px;
 
         &.jobs-list-cell {
             overflow: visible;
-            width: 200;
         }
 
         .mat-list-base {
@@ -116,12 +84,19 @@ $header-height: 30px;
 
         .jobs-list {
             overflow-y: hidden;
-            height: $row-height - 10px;
-            margin-left: -16px;
+            height: min-content;
+            width: 250px;
+
+            max-height: $row-height - 15px;
+            margin: auto;
 
             .mat-list-item {
-                font-size: 13px;
+                font-size: 15px;
                 height: 20px;
+                
+                .mat-list-item-content {
+                    padding-left: 0;
+                }
             }
         }
 
@@ -131,11 +106,15 @@ $header-height: 30px;
             max-height: 350px;
             animation: fadeIn 0.5s;
             padding: 10px;
-            width: 200px;
+            width: min-content;
 
             .mat-list-item {
                 height: 30px;
                 margin-bottom: 15px;
+
+                .mat-list-item-content {
+                    padding: 5px 15px;
+                }
             }
         }
 
@@ -154,7 +133,7 @@ $header-height: 30px;
             position: absolute;
             width: 350px;
             max-height: 300px;
-            animation: appearance 0.5s;
+            animation: fadeIn 0.5s;
             padding: 3px 0 15px 20px;
 
             .mat-list-item {
@@ -175,6 +154,7 @@ $header-height: 30px;
             display: flex;
             flex-wrap: wrap;
             align-content: center;
+            overflow: hidden;
 
             .mat-list-item {
                 width: min-content;
@@ -206,29 +186,31 @@ $header-height: 30px;
     .mat-row:nth-child(even) {
         background-color: #F0F3F9;
     }
-
-    .control-buttons-cell .buttons-wrap {
-        display: flex;
-        justify-content: flex-end;
-        align-content: center;
-
-        .applicant-control-btn {
-            color: #8E8E8E;
-        }
-    }
 }
 
 :host ::ng-deep .mat-paginator {
-    background: none;
-}
+    box-sizing: border-box;
+    outline: 1px solid rgba(0, 0, 0, 0.12);
 
-@keyframes appearance {
-    0% {
-        transform: scale(0);
+    .mat-paginator-container {
+        justify-content: space-between;
+    
+        .mat-paginator-page-size {
+            margin-right: auto;
+            
+            .mat-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-form-field-flex {
+                width: 40px;
+                margin-left: 15px;
+    
+                .mat-selector {
+                    background: none;
+                }
+            }
+        }
     }
 
-    100% {
-        transform: scale(1);
+    .mat-form-field-wrapper {
+        background: none;
     }
 }
 

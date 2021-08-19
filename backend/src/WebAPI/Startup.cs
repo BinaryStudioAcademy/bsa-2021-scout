@@ -67,6 +67,7 @@ namespace WebAPI
             app.UseAuthentication();
             app.UseAuthorization();
 
+            
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseEndpoints(endpoints =>
