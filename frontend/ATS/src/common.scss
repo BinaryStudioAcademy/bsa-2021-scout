@@ -74,7 +74,8 @@ input:-webkit-autofill {
     border-radius: 10px;
     padding: 0px 20px 0px 20px;
     height: 40px;
-    color: $primary-color;
+    color: black;
+    z-index: 10;
 }
 
 .mat-form-field-underline {
@@ -142,5 +143,4 @@ a {
     line-height: 19px;
     margin-top: 5px;
     color: #EF5350;
-    max-width: fit-content;
 }

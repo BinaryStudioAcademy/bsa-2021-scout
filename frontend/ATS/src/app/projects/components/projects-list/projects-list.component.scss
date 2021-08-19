@@ -65,6 +65,12 @@ td.mat-cell {
     padding-left: 20px;
 }
 
+.mat-paginator-sticky {
+    bottom: 0px;
+    position: sticky;
+    z-index: 10;
+}
+
 th:first-child,
 td:first-child {
     width: 9%;
