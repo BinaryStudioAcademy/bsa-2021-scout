@@ -1,3 +1,5 @@
+import { ElasticEntity } from '../elastic-entity/elastic-entity';
+
 export interface CreateApplicant {
   firstName: string;
   lastName: string;
@@ -7,4 +9,6 @@ export interface CreateApplicant {
   skype: string;
   linkedInUrl: string;
   experience: number;
+
+  tags: ElasticEntity;
 }

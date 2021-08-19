@@ -80,6 +80,21 @@ namespace WebAPI.Extensions
 
             return host;
         }
+        public async static Task<IHost> ApplyPoolSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            foreach (var pool in PoolSeeds.Pools)
+            {
+                if(await context.Vacancies.AnyAsync(c=>c.Id == pool.Id))
+                    context.Pools.Update(pool);
+                else
+                    await context.Pools.AddAsync(pool);
+                await context.SaveChangesAsync();
+            }
+
+            return host;
+        }
 
         public async static Task<IHost> ApplyVacancySeeding(this IHost host)
         {

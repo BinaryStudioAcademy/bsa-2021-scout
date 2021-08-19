@@ -13,6 +13,8 @@ namespace Application.Applicants.Profiles
             CreateMap<CreateApplicantDto, ApplicantDto>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
+            CreateMap<ApplicantCsvDto, Applicant>();
+
             CreateMap<UpdateApplicantDto, ApplicantDto>();
             CreateMap<ApplicantVacancyInfo, ApplicantVacancyInfoDto>();
         }
