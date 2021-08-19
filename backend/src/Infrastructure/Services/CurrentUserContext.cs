@@ -43,7 +43,7 @@ namespace Infrastructure.Services
                     currentUser = _mapper.Map<UserDto>(await _userRepository.GetByEmailAsync(Email));
             }
             else{
-                throw new InvalidTokenException("get current user");
+                throw new InvalidTokenException("access");
             }
 
             return currentUser;
