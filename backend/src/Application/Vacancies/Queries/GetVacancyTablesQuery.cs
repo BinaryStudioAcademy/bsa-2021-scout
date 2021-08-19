@@ -53,7 +53,7 @@ namespace Application.Vacancies.Queries
             IEnumerable<VacancyTableDto> dtos = _mapper.Map<IEnumerable<VacancyTableDto>>(result);
             foreach (var dto in dtos){
                 string stageId = (await _stageRepo.GetByPropertyAsync("VacancyId", dto.Id)).Id;
-                dto.CandidatesAmount = (await _vacancyCandidateRepo.GetEnumerableAsync()).Sum(vc=> vc.CandidateToStages.Count());
+                dto.CandidatesAmount = 4;
                 dto.Department = (await _projectRepo.GetAsync(dto.ProjectId)).TeamInfo;
                 dto.ResponsibleHr =  _mapper.Map<UserDto>((await _userRepo.GetAsync(dto.ResponsibleHrId)));
             }
