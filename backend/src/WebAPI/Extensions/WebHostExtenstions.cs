@@ -29,10 +29,12 @@ namespace WebAPI.Extensions
             await ApplyElasticSeeding(host);
             await ApplyRoleSeeding(host);
             await ApplyProjectSeeding(host);
+            await ApplyPoolSeeding(host);
             await ApplyUserSeeding(host);
             await ApplyUserToRoleSeeding(host);
             await ApplyVacancySeeding(host);
             await ApplyApplicantSeeding(host);
+            await ApplyPoolToApplicantSeeding(host);
             await ApplyStageSeeding(host);
             return host;
         }
@@ -86,10 +88,25 @@ namespace WebAPI.Extensions
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
             foreach (var pool in PoolSeeds.Pools)
             {
-                if(await context.Vacancies.AnyAsync(c=>c.Id == pool.Id))
+                if(await context.Pools.AnyAsync(c=>c.Id == pool.Id))
                     context.Pools.Update(pool);
                 else
                     await context.Pools.AddAsync(pool);
+                await context.SaveChangesAsync();
+            }
+
+            return host;
+        }
+         public async static Task<IHost> ApplyPoolToApplicantSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            foreach (var poolToApplicant in PoolToApplicantSeeds.PoolToApplicants)
+            {
+                if(await context.PoolToApplicants.AnyAsync(c=>c.Id == poolToApplicant.Id))
+                    context.PoolToApplicants.Update(poolToApplicant);
+                else
+                    await context.PoolToApplicants.AddAsync(poolToApplicant);
                 await context.SaveChangesAsync();
             }
 
