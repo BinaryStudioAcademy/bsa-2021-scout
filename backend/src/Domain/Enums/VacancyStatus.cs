@@ -2,9 +2,9 @@ namespace Domain.Enums
 {
     public enum VacancyStatus
     {
-        Invited = 1,
-        Active = 2,
-        Vacation = 3,
-        Former = 4,
+        Active = 1,
+        Former = 2,
+        Invited = 3,
+        Vacation = 4,
     }
 }
