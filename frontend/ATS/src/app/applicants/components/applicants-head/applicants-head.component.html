@@ -1,0 +1,12 @@
+<button class="tub">All</button>
+<button class="tub">Followed</button>
+<mat-form-field appearance="fill">
+    <mat-icon>search</mat-icon>
+        <input #input [(ngModel)]="searchValue" matInput type="text" class="search-input" placeholder="Search..." (keyup)="applySearchValue()">
+    <button *ngIf="searchValue" mat-icon-button aria-label="Clear" (click)="clearSearchInput()">
+          <mat-icon>close</mat-icon>
+    </button>
+</mat-form-field>
+<button mat-button class="create-button" (click)="showApplicantsCreateDialog()">
+    + New applicant
+</button>

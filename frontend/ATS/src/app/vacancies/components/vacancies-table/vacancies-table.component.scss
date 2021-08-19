@@ -118,6 +118,10 @@ img {
 
 /* Description + Team info */
 
+.mat-icon{
+    cursor: pointer;
+}
+
 .module {
     position: relative;
     overflow: hidden;
@@ -211,5 +215,4 @@ img {
         font-size: 16px;
     }
 }
-
 }

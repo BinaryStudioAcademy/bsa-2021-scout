@@ -11,7 +11,6 @@ using Application.ElasticEnities.CommandQuery.DeleteTagCommand;
 using Application.Applicants.Queries;
 using Application.ElasticEnities.Dtos;
 using System.Threading;
-using Domain.Entities;
 using Application.Applicants.Commands;
 
 namespace WebAPI.Controllers
@@ -63,6 +62,20 @@ namespace WebAPI.Controllers
 
             return Ok(await Mediator.Send(query));
         }
+
+        [HttpPost("csv/")]
+        public async Task<IActionResult> PostApplicantFromCsv()
+        {
+            var file = Request.Form.Files[0];
+
+            using (var fileReadStream = file.OpenReadStream())
+            {
+                var command = new CreateApplicantsFromCsvCommand(fileReadStream);
+
+                return Ok(await Mediator.Send(command));
+            }
+        }
+
         [HttpPost("tags/{entityId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> PostTagAsync(string entityId, [FromBody] TagDto createDto)

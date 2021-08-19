@@ -10,19 +10,17 @@ import { VacanciesModule } from '../vacancies/vacancies.module';
 import { ApplicantsModule } from '../applicants/applicants.module';
 import { SharedModule } from '../shared/shared.module';
 import { UsersModule } from '../users/users.module';
-
 import { VacancyCardComponent } from '../vacancies/components/vacancy-card/vacancy-card.component';
 import { VacancyWidgetComponent } from '../vacancies/components/vacancy-widget/vacancy-widget.component';
 import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
-
-
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-
+import { ApplicationPoolComponent } from '../users/components/application-pool/application-pool.component';
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
 import { AuthGuard } from '../users/guards/auth.guard';
+import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 
 import { ProjectsModule } from '../projects/projects.module';
 
@@ -31,7 +29,8 @@ import { ProjectsModule } from '../projects/projects.module';
     AppComponent, 
     VacancyCardComponent,
     VacancyWidgetComponent,
-    HomeComponent],
+    HomeComponent,    
+  ],
   imports: [
     BrowserModule,
     RoutingModule,
@@ -44,11 +43,12 @@ import { ProjectsModule } from '../projects/projects.module';
     ApplicantsModule,
     VacanciesModule,
     UsersModule,
-    ProjectsModule,
+    ProjectsModule,    
   ],
   providers: [
     SidenavService,
     AuthGuard,
+    HrLeadGuard,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
