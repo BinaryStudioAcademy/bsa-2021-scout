@@ -62,7 +62,7 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
             viewableApplicant.tags = {
               id: '',
               elasticType: 1,
-              tagDtos: []
+              tagDtos: [],
             };
           }
   
