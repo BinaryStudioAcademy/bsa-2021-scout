@@ -43,7 +43,6 @@ namespace Infrastructure.Services
                     currentUser = _mapper.Map<UserDto>(await _userRepository.GetByEmailAsync(Email));
             }
 
-
             return currentUser;
         }
     }
