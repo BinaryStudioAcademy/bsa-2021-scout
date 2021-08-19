@@ -26,20 +26,25 @@ namespace Infrastructure.EF.Seeds
             Tier tierTo = Tiers[_random.Next(Tiers.Count)];
             if((int)tierFrom > (int)tierTo)
                 (tierTo, tierFrom) = (tierFrom, tierTo);
+            DateTime creationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30));
+            DateTime dateOfOpening = creationDate.AddDays(20);
+            DateTime modificationDate = dateOfOpening.AddDays(2);
+            DateTime? completionDate = _random.Next() % 2 == 0 ?  creationDate.AddMonths(_random.Next(2, 4)): null;
+            DateTime plannedCompletionDate = creationDate.AddMonths(3);
             return  new Vacancy
             {
                 Id = id,
                 Title = Titles[_random.Next(Titles.Count)],
                 Requirements = RequirementsList[_random.Next(RequirementsList.Count())],
                 Status = Statuses[_random.Next(Statuses.Count)],
-                CreationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, -10),
-                DateOfOpening = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 5),
-                ModificationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, -2),
+                CreationDate = creationDate,
+                DateOfOpening = dateOfOpening,
+                ModificationDate = modificationDate,
                 IsRemote = _random.Next() % 2 == 0,
                 IsHot = _random.Next() % 2 == 0,
                 SalaryFrom = _random.Next(1200, 1300),
                 SalaryTo = _random.Next(1300, 56000),
-                CompletionDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 20),
+                CompletionDate = completionDate,
                 PlannedCompletionDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 21),
                 TierFrom = tierFrom,
                 TierTo = tierTo,
