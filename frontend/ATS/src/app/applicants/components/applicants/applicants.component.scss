@@ -1,6 +1,10 @@
 $row-height: 55px;
 $header-height: 30px;
 
+:host {
+    width: 100%;
+}
+
 :host ::ng-deep app-search-form {
     display: none;
 }
@@ -67,11 +71,13 @@ $header-height: 30px;
         
         &.tags-list-cell {
             overflow: visible;
-            width: 300px;
+            min-width: 300px;
+            width: fit-content;
         }
 
         &.jobs-list-cell {
             overflow: visible;
+            width: fit-content;
         }
 
         .mat-list-base {
@@ -85,7 +91,7 @@ $header-height: 30px;
         .jobs-list {
             overflow-y: hidden;
             height: min-content;
-            width: 250px;
+            width: fit-content;
 
             max-height: $row-height - 15px;
             margin: auto;
