@@ -1,0 +1,46 @@
+.buttons{
+    display:flex;
+    flex-direction:row;
+}
+.buttons>*{
+    margin-right:10px;
+}
+
+.form-container {
+    background-color: #F0F3F9;
+    border-radius:20px;
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    form{
+        display:flex;
+    flex-direction:column;
+    }
+}
+
+.mat-form-field{
+    margin-bottom: 15px;
+}
+
+::ng-deep{
+    .white-class .mat-form-field-appearance-fill .mat-form-field-flex{
+        background: #ffffff !important;
+        color:black;
+    padding: 5px 20px !important;
+    border-radius: 10px !important;
+    box-sizing: border-box;
+    min-height: 40px;
+    align-items: center;
+    }
+    .white-class .mat-checkbox{
+        margin-bottom: 25px
+    }
+}
+
+:host ::ng-deep{
+    .mat-form-field-wrapper.mat-form-field-wrapper{
+    padding: 0px 0px 18px 0px;
+    }
+}

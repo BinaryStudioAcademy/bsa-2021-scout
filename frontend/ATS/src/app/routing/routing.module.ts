@@ -24,8 +24,8 @@ import { ApplicationPoolComponent } from
 
 
 const routes: Routes = [
-  { 
-    path: '', component: MainContentComponent, canActivate:[AuthGuard], children: [
+  { //canActivate:[AuthGuard],
+    path: '', component: MainContentComponent,  children: [
       { path: AppRoute.Home, component: HomeComponent, pathMatch: 'full' },
       { path: AppRoute.Vacancies, component: VacanciesTableComponent, pathMatch: 'full' },
       { path: AppRoute.Applicants, component: ApplicantsComponent, pathMatch: 'full' },

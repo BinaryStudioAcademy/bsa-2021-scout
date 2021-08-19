@@ -29,6 +29,7 @@ import { MainContentComponent } from './components/main-content/main-content.com
 import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -74,6 +75,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSortModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatCheckboxModule,
   ],
   imports: [
     MatButtonModule,
@@ -103,6 +105,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSortModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatCheckboxModule,
   ],
   providers: [HttpClientService],
   declarations: [

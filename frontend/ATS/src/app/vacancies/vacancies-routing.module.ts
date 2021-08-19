@@ -12,7 +12,7 @@ const routes: Routes = [
     path: 'candidates/:id',
     pathMatch: 'full',
     component: VacanciesStagesBoardComponent,
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
   },
 ];
 
