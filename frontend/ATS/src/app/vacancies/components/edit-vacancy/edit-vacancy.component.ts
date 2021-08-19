@@ -105,15 +105,15 @@ export class EditVacancyComponent implements OnInit {
 
     if(!this.data.vacancyToEdit){
       this.vacancyService.postVacancy(this.vacancy)
-      .subscribe(
-        response=> this.vacancyChange.emit(response),
-      );
+        .subscribe(
+          response=> this.vacancyChange.emit(response),
+        );
     }else{
       
       this.vacancyService.putVacancy(this.vacancy, this.data.vacancyToEdit.id)
-      .subscribe(
-        response=> this.vacancyChange.emit(response),
-      );
+        .subscribe(
+          response=> this.vacancyChange.emit(response),
+        );
     }
     
 
