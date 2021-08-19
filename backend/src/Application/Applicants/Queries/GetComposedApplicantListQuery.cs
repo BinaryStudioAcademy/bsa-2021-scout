@@ -16,7 +16,7 @@ namespace Application.Applicants.Queries
     {
         private readonly IApplicantReadRepository _applicantRepository;
         private readonly ISender _mediator;
-
+        
         public GetComposedApplicantListQueryHandler(IApplicantReadRepository applicantRepository, ISender mediator)
         {
             _mediator = mediator;

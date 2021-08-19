@@ -168,14 +168,12 @@ namespace Infrastructure
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
             services.AddScoped<IElasticReadRepository<ElasticEntity>, ElasticReadRepository<ElasticEntity>>();
 
-            services.AddScoped<IReadRepository<Applicant>, ApplicantsReadRepository>();
-            services.AddScoped<IApplicantsReadRepository, ApplicantsReadRepository>();
+            services.AddScoped<IApplicantReadRepository, ApplicantReadRepository>();
 
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
-            services.AddScoped<IApplicantReadRepository, ApplicantReadRepository>();
 
             services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
             services.AddScoped<IReadRepository<MailTemplate>, MongoReadRespoitory<MailTemplate>>();

@@ -24,9 +24,9 @@ namespace Application.Applicants.Queries
     public class GetComposedApplicantQueryHandler : IRequestHandler<GetComposedApplicantQuery, ApplicantDto>
     {
         private readonly ISender _mediator;
-        private readonly IApplicantsReadRepository _repository;
+        private readonly IApplicantReadRepository _repository;
         private readonly IMapper _mapper;
-        public GetComposedApplicantQueryHandler(IApplicantsReadRepository repository, ISender mediator, IMapper mapper)
+        public GetComposedApplicantQueryHandler(IApplicantReadRepository repository, ISender mediator, IMapper mapper)
         {
             _mediator = mediator;
             _repository = repository;
