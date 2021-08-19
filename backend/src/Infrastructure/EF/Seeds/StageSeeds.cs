@@ -40,7 +40,7 @@ namespace Infrastructure.EF.Seeds
             "Offer",
             "Hired",
         };
-        private static List<StageType> Types = new List<StageType> {
+        public static List<StageType> Types = new List<StageType> {
             StageType.Applied,
             StageType.PhoneScreen,
             StageType.Interview,
