@@ -13,22 +13,21 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Read
 {
-    public class VacancyTableRepository : ReadRepository<VacancyTable>, IReadRepository<VacancyTable>
+    public class VacancyTableReadRepository : ReadRepository<VacancyTable>, IVacancyTableReadRepository
     {
         private readonly IMapper _mapper;
-        public VacancyTableRepository(IConnectionFactory connectionFactory, IMapper mapper) : base("Users", connectionFactory) 
+        public VacancyTableReadRepository(IConnectionFactory connectionFactory, IMapper mapper) : base("Users", connectionFactory) 
         { 
             _mapper = mapper;
         }
 
 
-        public async Task<IEnumerable<VacancyTable>> GetUsersByCompanyIdAsync(string companyId)
+        public async Task<IEnumerable<VacancyTable>> GetVacancyTablesByCompanyIdAsync(string companyId)
         {
             var connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
             StringBuilder vacancySql = new StringBuilder();
             vacancySql.Append("SELECT * FROM Vacancies as VC");
-            vacancySql.Append(" LEFT JOIN Users AS US ON US.Id = VC.ResponsibleHrId");
             vacancySql.Append(" WHERE VC.CompanyId = @CompanyId");
             StringBuilder candidateCountSql = new StringBuilder();
             candidateCountSql.Append("SELECT COUNT(*) FROM VacancyCandidates");
@@ -37,14 +36,27 @@ namespace Infrastructure.Repositories.Read
             candidateCountSql.Append(" WHERE CandidateToStages.CandidateId = VacancyCandidates.Id ");
             candidateCountSql.Append(" AND CandidateToStages.StageId = Stages.Id AND CandidateToStages.DateRemoved IS NULL))");
             IEnumerable<VacancyTable> vacancyTables = await connection
-                .QueryAsync<VacancyTable>(vacancySql.ToString(), param: new {
+            .QueryAsync<VacancyTable>(vacancySql.ToString(), 
+                param: new 
+                {
                     CompanyId = companyId
-                });
+                }
+            );
             foreach (var vacancyTable in vacancyTables){
-                vacancyTable.CandidatesAmount = (await connection.QueryAsync<int>(candidateCountSql.ToString(), param: new {
-                    vacancyId = vacancyTable.Id
-                })).First();
-                //vacancyTable.Department = (await _projectRepo.GetAsync(dto.ProjectId)).TeamInfo;
+                vacancyTable.CandidatesAmount = (await connection.QueryAsync<int>(candidateCountSql.ToString(), 
+                    param: new 
+                    {
+                        vacancyId = vacancyTable.Id
+                    }
+                )).Count();
+                string hrSql = "SELECT * FROM Users WHERE Users.Id = @responsibleId";
+                vacancyTable.ResponsibleHr = (await connection.QueryAsync<User>(hrSql, param: new {
+                    responsibleId = vacancyTable.ResponsibleHrId
+                })).FirstOrDefault();
+                string projectSql = "SELECT * FROM Projects WHERE Projects.Id = @projectId";
+                vacancyTable.Project = (await connection.QueryAsync<Project>(projectSql, param: new {
+                    projectId = vacancyTable.ProjectId
+                })).FirstOrDefault();
             }
             // 
             await connection.CloseAsync();

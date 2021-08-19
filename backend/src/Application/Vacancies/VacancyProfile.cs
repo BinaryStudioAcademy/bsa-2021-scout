@@ -15,12 +15,14 @@ namespace Application.Vacancies
             //.ForMember(dest=>dest.Company, opt=>opt.);
             CreateMap<Vacancy, VacancyDto>();
             CreateMap<Vacancy, VacancyCreateDto>();
-            
-            CreateMap<Vacancy, VacancyTableDto>();
 
             CreateMap<VacancyUpdateDto, Vacancy>();
             CreateMap<Vacancy, VacancyDto>();
+            CreateMap<Vacancy, VacancyTableDto>();
             CreateMap<Vacancy, VacancyUpdateDto>();
+
+            CreateMap<VacancyTable, VacancyTableDto>()
+                .ForMember(dest => dest.TeamInfo, opt => opt.MapFrom(p => p.Project.TeamInfo));
 
             CreateMap<Vacancy, ShortVacancyWithStagesDto>();
 

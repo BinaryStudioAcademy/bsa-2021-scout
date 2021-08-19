@@ -13,8 +13,6 @@ namespace Domain.Entities
         public Project Project { get; set; }
         public DateTime CreationDate { get; set; }
         public User ResponsibleHr { get; set; }
-
-        public string Department { get; set; } 
         public VacancyStatus Status { get; set; }
     }
 }

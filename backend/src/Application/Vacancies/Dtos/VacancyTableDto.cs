@@ -17,7 +17,7 @@ namespace Application.Vacancies.Dtos
         public DateTime CreationDate { get; set; }
         public UserDto ResponsibleHr { get; set; }
 
-        public string Department { get; set; } 
+        public string TeamInfo { get; set; } 
         public VacancyStatus Status { get; set; }
     }
 }
