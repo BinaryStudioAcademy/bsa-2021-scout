@@ -11,17 +11,42 @@ namespace Infrastructure.EF.Seeds
 
         public static IEnumerable<Stage> Stages ()
         { 
-           var stages = new List<Stage>();
-           foreach(var id in (new VacancySeeds()).VacancyIds){
-               stages.Add( 
-                new Stage{
-                    Id = id,
-                    Name = "Interview",
-                    VacancyId = id
+          IList<Stage> stages = new List<Stage>();
+          foreach (string id in (new VacancySeeds()).VacancyIds)
+            {
+                for (int index = 0; index < Types.Count; index++)
+                {
+                    stages.Add(
+                        new Stage
+                        {
+                            Id = id.Substring(0, id.Length - 1) + index.ToString(),
+                            Name = Names[index],
+                            Type = Types[index],
+                            Index = index,
+                            IsReviewable = index == 3,
+                            VacancyId = id,
+                        }
+                    );
                 }
-            );
-           }
-        return stages;
+            }
+
+            return stages;
         }
+        private static List<string> Names = new List<string> {
+            "Applied",
+            "Phone screen",
+            "Interview",
+            "Test",
+            "Offer",
+            "Hired",
+        };
+        private static List<StageType> Types = new List<StageType> {
+            StageType.Applied,
+            StageType.PhoneScreen,
+            StageType.Interview,
+            StageType.Test,
+            StageType.Offer,
+            StageType.Hired,
+        };
     }
 }
