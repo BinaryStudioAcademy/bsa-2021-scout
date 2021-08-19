@@ -22,6 +22,8 @@ namespace Application.Vacancies.Queries
     {
         protected readonly IReadRepository<Vacancy> _vacancyRepo;
         protected readonly IReadRepository<Project> _projectRepo;
+        protected readonly IReadRepository<Stage> _stageRepo;
+        protected readonly IReadRepository<VacancyCandidate> _vacancyCandidateRepo;
         protected readonly IReadRepository<User> _userRepo;
         protected readonly ICurrentUserContext _context;
 
@@ -29,11 +31,14 @@ namespace Application.Vacancies.Queries
 
         public GetVacancyTablesQueryHandler(ICurrentUserContext context, IReadRepository<Vacancy> vacancyRepo,
          IReadRepository<Project> projectRepo, IReadRepository<User> userRepo,
+         IReadRepository<Stage> stageRepo, IReadRepository<VacancyCandidate> vacancyCandidateRepo,
          IMapper mapper)
         {
             _vacancyRepo = vacancyRepo;
             _projectRepo = projectRepo;
             _userRepo = userRepo;
+            _stageRepo = stageRepo;
+            _vacancyCandidateRepo = vacancyCandidateRepo;
             _context = context;
             _mapper = mapper;
         }
@@ -47,6 +52,8 @@ namespace Application.Vacancies.Queries
             IEnumerable<Vacancy> result = (await _vacancyRepo.GetEnumerableAsync()).Where(x=>x.CompanyId == companyId);
             IEnumerable<VacancyTableDto> dtos = _mapper.Map<IEnumerable<VacancyTableDto>>(result);
             foreach (var dto in dtos){
+                string stageId = (await _stageRepo.GetByPropertyAsync("VacancyId", dto.Id)).Id;
+                dto.CandidatesAmount = (await _vacancyCandidateRepo.GetEnumerableAsync()).Sum(vc=> vc.CandidateToStages.Count());
                 dto.Department = (await _projectRepo.GetAsync(dto.ProjectId)).TeamInfo;
                 dto.ResponsibleHr =  _mapper.Map<UserDto>((await _userRepo.GetAsync(dto.ResponsibleHrId)));
             }

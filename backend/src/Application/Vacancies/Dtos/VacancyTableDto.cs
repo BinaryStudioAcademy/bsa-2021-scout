@@ -9,8 +9,7 @@ namespace Application.Vacancies.Dtos
     public class VacancyTableDto: Dto
     {
         public string Title { get; set; }
-        public int CurrentApplicantsAmount { get; set; }
-        public int RequiredCandidatesAmount { get; set; }
+        public int CandidatesAmount { get; set; }
         public string ProjectId { get; set; }
         public string ResponsibleHrId { get; set; }
         public DateTime CreationDate { get; set; }

@@ -3,8 +3,7 @@ import { VacancyStatus } from './vacancy-status';
 
 export interface VacancyData {
   title: string;
-  currentApplicantsAmount: number;
-  requiredCandidatesAmount: number;
+  candidatesAmount: number;
   department: string;
   responsibleHr: User;
   creationDate: Date;

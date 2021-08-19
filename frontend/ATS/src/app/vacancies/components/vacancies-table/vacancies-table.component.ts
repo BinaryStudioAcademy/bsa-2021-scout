@@ -44,20 +44,10 @@ export class VacanciesTableComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild('input') serachField!: ElementRef;
-  private randomRequiredCandidatesAmounts: number[] = [60, 30, 6, 29, 44, 34, 55, 30, 6, 32];
-  private randomCurrentApplicantsAmounts: number[] = [130, 34, 56, 34];
   constructor(private router:Router, private cd: ChangeDetectorRef,
     private dialog: MatDialog, private service: VacancyDataService) {
     // const vacancies =  Array.from({ length: 99 }, (_, k) => createNewVacancy());
     service.getList().subscribe(data=>{
-      data.forEach(d=>{
-        d.requiredCandidatesAmount = this.randomRequiredCandidatesAmounts[
-          Math.round(Math.random() * (this.randomRequiredCandidatesAmounts.length - 1))
-        ];
-        d.currentApplicantsAmount = this.randomCurrentApplicantsAmounts[
-          Math.round(Math.random() * (this.randomCurrentApplicantsAmounts.length - 1))
-        ];
-      });
       this.dataSource.data = data;
       this.directive.applyFilter$.emit();
     },
