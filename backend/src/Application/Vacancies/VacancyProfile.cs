@@ -21,8 +21,7 @@ namespace Application.Vacancies
             CreateMap<Vacancy, VacancyTableDto>();
             CreateMap<Vacancy, VacancyUpdateDto>();
 
-            CreateMap<VacancyTable, VacancyTableDto>()
-                .ForMember(dest => dest.TeamInfo, opt => opt.MapFrom(p => p.Project.TeamInfo));
+            CreateMap<VacancyTable, VacancyTableDto>();
 
             CreateMap<Vacancy, ShortVacancyWithStagesDto>();
 
