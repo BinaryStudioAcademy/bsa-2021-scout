@@ -3,11 +3,13 @@ using Application.Projects.CommandQuery.Update;
 using Application.Projects.Commands.Create;
 using Application.Projects.Dtos;
 using Application.Projects.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     public class ProjectsController : ApiController
     {
         [HttpGet]
