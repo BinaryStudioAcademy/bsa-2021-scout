@@ -118,7 +118,7 @@ namespace WebAPI.Extensions
         {
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            foreach (var candidateToStage in CandidateToStagesSeeds.CandidateToStages)
+            foreach (var candidateToStage in CandidateToStagesSeeds.CandidateToStages())
             {
                 if(await context.CandidateToStages.AnyAsync(c=>c.Id == candidateToStage.Id))
                     context.CandidateToStages.Update(candidateToStage);
