@@ -44,7 +44,7 @@ namespace Infrastructure.Repositories.Read
                 vacancyTable.CandidatesAmount = (await connection.QueryAsync<int>(candidateCountSql.ToString(), param: new {
                     vacancyId = vacancyTable.Id
                 })).First();
-                vacancyTable.Department = (await _projectRepo.GetAsync(dto.ProjectId)).TeamInfo;
+                //vacancyTable.Department = (await _projectRepo.GetAsync(dto.ProjectId)).TeamInfo;
             }
             // 
             await connection.CloseAsync();

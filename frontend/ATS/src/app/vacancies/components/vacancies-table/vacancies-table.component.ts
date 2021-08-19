@@ -37,7 +37,7 @@ const STATUES: VacancyStatus[] = [
 export class VacanciesTableComponent implements AfterViewInit {
   displayedColumns: string[] =
   ['position', 'title', 'candidates', 'teamInfo',
-    'responsible', 'creationDate', 'status', 'actions'];
+    'responsible', 'creationDate', 'status',  'projects', 'actions'];
   dataSource: MatTableDataSource<VacancyData>;
 ​
   @ViewChild(MatPaginator) paginator!: MatPaginator;
