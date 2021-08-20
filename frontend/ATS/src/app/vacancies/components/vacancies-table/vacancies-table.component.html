@@ -17,8 +17,8 @@
     <table #mytable mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef> # </th>
-            <td mat-cell *matCellDef="let i = index"> {{ (i+1) + (paginator.pageIndex * paginator.pageSize)}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+            <td mat-cell *matCellDef="let row"> {{row.position}} </td>
         </ng-container>
 
         <ng-container matColumnDef="title">
@@ -26,18 +26,22 @@
             <td mat-cell *matCellDef="let row"> {{row.title}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="candidates">
-            <th mat-header-cell *matHeaderCellDef> Candidates </th>
-            <td mat-cell *matCellDef="let row"  class="clicable" (click)="toStagedReRoute(row.id)"> {{row.candidatesAmount}}</td>
+        <ng-container matColumnDef="candidatesAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Candidates </th>
+            <td mat-cell *matCellDef="let row"  class="clicable" (click)="toStagedReRoute(row.id)">{{row.candidatesAmount}}</td>
+        </ng-container>
+        <ng-container matColumnDef="project">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Projects </th>
+            <td mat-cell *matCellDef="let row"> {{row.project.name}} </td>
         </ng-container>
         <ng-container matColumnDef="teamInfo">
-            <th mat-header-cell *matHeaderCellDef> Team Info </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Team Info </th>
             <td mat-cell *matCellDef="let row"> {{row.project.teamInfo}} </td>
         </ng-container>
 
         <ng-container matColumnDef="responsible">
-            <th mat-header-cell *matHeaderCellDef> Responsible </th>
-            <td mat-cell *matCellDef="let row"> {{row.responsibleHr.firstName}} {{row.responsibleHr.lastName}}</td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Responsible </th>
+            <td mat-cell *matCellDef="let row"> {{row.responsibleHr.firstName + " " + row.responsibleHr.lastName}}</td>
         </ng-container>
 
         <ng-container matColumnDef="creationDate">
@@ -48,10 +52,6 @@
         <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
             <td mat-cell *matCellDef="let row"> {{getStatus(row.status)}} </td>
-        </ng-container>
-        <ng-container matColumnDef="project">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Projects </th>
-            <td mat-cell *matCellDef="let row"> {{row.project.name}} </td>
         </ng-container>
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
