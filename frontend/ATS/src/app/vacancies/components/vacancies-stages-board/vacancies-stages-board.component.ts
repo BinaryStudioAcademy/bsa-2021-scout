@@ -19,8 +19,6 @@ import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candida
 import { ShortVacancyCandidateWithApplicant } from 'src/app/shared/models/vacancy-candidates/short-with-applicant';
 import { OneCandidateModalComponent } from '../one-candidate-modal/one-candidate-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-import { AddCandidateModalComponent }
-  from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
 
 interface CandidatePos {
   index: number;
@@ -39,8 +37,6 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   public listIds: string[] = [];
   public avatars: string[] = [];
   public extraAvatarsCount: number = 0;
-  public vacancyId: string = '';
-
 
   private readonly showingAvatarsCount: number = 7;
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
@@ -51,7 +47,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
     private readonly modalService: MatDialog,
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     this.route.params.subscribe(({ id }) => {
@@ -111,19 +107,6 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
         );
     }
   }
-
-  public openCandidateAddModal(): void {
-    this.modalService.open(AddCandidateModalComponent, {
-      width: '400px',
-      autoFocus: false,
-      panelClass: 'candidate-dialog',
-      data: {
-        vacancyId: this.vacancyId,
-      },
-    }).afterClosed()
-      .subscribe(_ => this.loadData(this.vacancyId));
-  }
-
 
   public openCandidateModal(id: string): void {
     let pos: CandidatePos = { index: 0, stageIndex: 0 };
@@ -258,7 +241,6 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
         (data) => {
           this.data = data.stages;
           this.title = data.title;
-          this.vacancyId = vacancyId;
           this.loading = false;
 
           this.filterData();

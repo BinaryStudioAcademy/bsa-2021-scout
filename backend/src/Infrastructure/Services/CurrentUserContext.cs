@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Auth.Exceptions;
 using Application.Interfaces;
 using Application.Users.Dtos;
 using AutoMapper;
@@ -41,9 +40,6 @@ namespace Infrastructure.Services
             {
                 if(currentUser is null)
                     currentUser = _mapper.Map<UserDto>(await _userRepository.GetByEmailAsync(Email));
-            }
-            else{
-                throw new InvalidTokenException("access");
             }
 
             return currentUser;

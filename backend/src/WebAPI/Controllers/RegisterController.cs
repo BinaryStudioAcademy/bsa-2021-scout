@@ -10,11 +10,10 @@ using System.Threading.Tasks;
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    [AllowAnonymous]
     [ApiController]
     public class RegisterController : ApiController
     {
-        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] RegisterDto registerDto)
         {
@@ -23,7 +22,6 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
         [HttpPost("confirm-email")]
         public async Task<ActionResult<AuthUserDto>> ComfirmEmail([FromBody] ConfirmEmailDto emailTokenDto)
         {
@@ -32,20 +30,10 @@ namespace WebAPI.Controllers
             return CreatedAtAction("GetUser", "users", new { id = authUserDto.User.Id }, authUserDto);
         }
 
-        [AllowAnonymous]
         [HttpPost("resend-confirm-email")]
         public async Task<ActionResult<AuthUserDto>> Reseb([FromBody] ResendConfirmEmailDto resendConfirmEmailDto)
         {
             var command = new ResendConfirmEmailCommand(resendConfirmEmailDto);
-            await Mediator.Send(command);
-            return Ok();
-        }
-
-        [Authorize(Roles = "HrLead")]
-        [HttpPost("send-registration-link")]
-        public async Task<ActionResult<AuthUserDto>> SendRegistrationLink([FromBody] RegistrationLinkDto sendRegistrationLinkDto)
-        {
-            var command = new SendRegistrationLinkCommand(sendRegistrationLinkDto);
             await Mediator.Send(command);
             return Ok();
         }

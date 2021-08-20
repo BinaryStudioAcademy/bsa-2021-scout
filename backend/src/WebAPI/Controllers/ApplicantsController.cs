@@ -42,22 +42,6 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
-        [HttpGet("company/{id}")]
-        public async Task<IActionResult> GetApplicantByCompanyAsync(string id)
-        {
-            var query = new GetApplicantByIdByCompanyQuery(id);
-
-            return Ok(await Mediator.Send(query));
-        }
-
-        [HttpGet("marked/{vacancyId}")]
-        public async Task<IActionResult> GetApplicantsWithAppliedMark(string vacancyId)
-        {
-            var query = new GetApplicantsWithAppliedMark(vacancyId);
-
-            return Ok(await Mediator.Send(query));
-        }
-
         [HttpPost]
         public async Task<IActionResult> PostApplicantAsync([FromForm] string body, [FromForm] IFormFile? cvFile)
         {

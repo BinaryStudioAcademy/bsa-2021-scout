@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
@@ -26,7 +26,7 @@ const DATA: ApplicantsPool[] = [];
   styleUrls: ['./application-pool.component.scss'],
 })
 
-export class ApplicationPoolComponent implements OnInit , AfterViewInit{
+export class ApplicationPoolComponent implements OnInit {
 
   constructor(
     private readonly dialogService: MatDialog, 

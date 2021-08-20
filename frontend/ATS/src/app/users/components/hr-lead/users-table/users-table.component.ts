@@ -8,9 +8,6 @@ import { User } from 'src/app/users/models/user';
 import { UserDataService } from 'src/app/users/services/user-data.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { finalize } from 'rxjs/operators';
-import { SendingRegisterLinkDialogComponent } 
-  from '../send-registration-link-dialog/sending-register-link-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-users-table',
@@ -19,8 +16,8 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class UsersTableComponent implements AfterViewInit, OnInit {
   public displayedColumns: string[] =
-  ['position', 'full-name', 'email', 'birth-date', 
-    'creation-date', 'email-confirmed', 'actions'];
+  ['position', 'full-name', 'email', 'creation-date', 
+    'birth-date', 'email-confirmed', 'actions'];
   private users: User[] = [];
   public dataSource: MatTableDataSource<User>;
   public loading: boolean = true;
@@ -30,8 +27,7 @@ export class UsersTableComponent implements AfterViewInit, OnInit {
 
   constructor(
     private userDataService: UserDataService,
-    private notificationService: NotificationService,
-    private dialog: MatDialog) {
+    private notificationService: NotificationService) {
     this.dataSource = new MatTableDataSource<User>();
   }
 
@@ -88,13 +84,6 @@ export class UsersTableComponent implements AfterViewInit, OnInit {
         default:
           return 0;
       }
-    });
-  }
-
-  public OpenSendRegistrationLinkDialog(): void {
-    this.dialog.open(SendingRegisterLinkDialogComponent, {
-      disableClose: true,
-      maxWidth: '400px',
     });
   }
 
