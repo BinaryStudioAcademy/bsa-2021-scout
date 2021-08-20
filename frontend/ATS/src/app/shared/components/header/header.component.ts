@@ -10,16 +10,11 @@ import { NotificationService } from '../../services/notification.service';
 })
 export class HeaderComponent {
   public value: string = '';
-  public dropdownOpened: boolean = false;
 
   public constructor(
     private readonly service: AuthenticationService,
     private readonly notifications: NotificationService,
   ) {}
-
-  public toggleDropdown(): void {
-    this.dropdownOpened = !this.dropdownOpened;
-  }
 
   public logout(): void {
     this.service.logout().subscribe(

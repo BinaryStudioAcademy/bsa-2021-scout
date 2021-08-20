@@ -29,15 +29,14 @@ import { MainContentComponent } from './components/main-content/main-content.com
 import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
-
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   exports: [
@@ -76,6 +75,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatChipsModule,
     MatAutocompleteModule,
     MatCheckboxModule,
+    MatMenuModule,
   ],
   imports: [
     MatButtonModule,
@@ -106,6 +106,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatChipsModule,
     MatAutocompleteModule,
     MatCheckboxModule,
+    MatMenuModule,
   ],
   providers: [HttpClientService],
   declarations: [
