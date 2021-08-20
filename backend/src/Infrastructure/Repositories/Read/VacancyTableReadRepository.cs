@@ -48,7 +48,7 @@ namespace Infrastructure.Repositories.Read
                     {
                         vacancyId = vacancyTable.Id
                     }
-                )).Count();
+                )).First();
                 string hrSql = "SELECT * FROM Users WHERE Users.Id = @responsibleId";
                 vacancyTable.ResponsibleHr = (await connection.QueryAsync<User>(hrSql, param: new {
                     responsibleId = vacancyTable.ResponsibleHrId
