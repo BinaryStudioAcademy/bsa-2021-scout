@@ -92,7 +92,7 @@ namespace Infrastructure.EF.Seeds
                 CompanyId = "1",
                 Email = "greenpeace@gmail.com",
                 IsEmailConfirmed  = false,
-                Password = "Something1",
+                Password = "grEEnpeace12",
                 BirthDate = new DateTime(1995, 3, 12),
                 CreationDate = new DateTime(2020, 3, 12)
             },
@@ -103,7 +103,7 @@ namespace Infrastructure.EF.Seeds
                 CompanyId = "1",
                 Email = "msbean@gmail.com",
                 IsEmailConfirmed  = true,
-                Password = "Something2",
+                Password = "mSBean",
                 BirthDate = new DateTime(1992, 5, 21),
                 CreationDate = new DateTime(2020, 1, 26)
             },
@@ -114,7 +114,7 @@ namespace Infrastructure.EF.Seeds
                 CompanyId = "1",
                 Email = "kiannashepard@gmail.com",
                 IsEmailConfirmed  = true,
-                Password = "Something3",
+                Password = "KIannaSHepard",
                 BirthDate = new DateTime(1999, 9, 9),
                 CreationDate = new DateTime(2021, 2, 5)
             },
@@ -125,7 +125,7 @@ namespace Infrastructure.EF.Seeds
                 CompanyId = "1",
                 Email = "onenajma@gmail.com",
                 IsEmailConfirmed  = false,
-                Password = "Something4",
+                Password = "najma1il",
                 BirthDate = new DateTime(1993, 2, 8),
                 CreationDate = new DateTime(2020, 7, 5)
             },
@@ -136,7 +136,7 @@ namespace Infrastructure.EF.Seeds
                 CompanyId = "1",
                 Email = "powerbrax@gmail.com",
                 IsEmailConfirmed  = false,
-                Password = "Something5",
+                Password = "powerbraX",
                 BirthDate = new DateTime(1998, 11, 3),
                 CreationDate = new DateTime(2020, 4, 15)
             },
@@ -147,7 +147,7 @@ namespace Infrastructure.EF.Seeds
                 CompanyId = "1",
                 Email = "gregdan@gmail.com",
                 IsEmailConfirmed  = true,
-                Password = "Something6",
+                Password = "gregDAN",
                 BirthDate = new DateTime(1990, 1, 10),
                 CreationDate = new DateTime(2019, 10, 13)
             },
@@ -158,7 +158,7 @@ namespace Infrastructure.EF.Seeds
                 CompanyId = "1",
                 Email = "color20@gmail.com",
                 IsEmailConfirmed  = true,
-                Password = "Something7",
+                Password = "yelloW",
                 BirthDate = new DateTime(1994, 2, 16),
                 CreationDate = new DateTime(2020, 3, 22)
             },
@@ -169,7 +169,7 @@ namespace Infrastructure.EF.Seeds
                 CompanyId = "1",
                 Email = "kastiel@gmail.com",
                 IsEmailConfirmed  = false,
-                Password = "Something8",
+                Password = "angelKas",
                 BirthDate = new DateTime(1997, 5, 5),
                 CreationDate = new DateTime(2021, 4, 1)
             }
