@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <app-button>
+  <app-button *ngIf="!removeButton">
     + New vacancy
   </app-button>
   <app-search-form>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import _ from 'lodash';
 import { AuthenticationService } from 'src/app/users/services/auth.service';
 import { NotificationService } from '../../services/notification.service';
@@ -10,6 +10,8 @@ import { NotificationService } from '../../services/notification.service';
 })
 export class HeaderComponent {
   public value: string = '';
+  public dropdownOpened: boolean = false;
+  @Input() removeButton = false;
 
   public constructor(
     private readonly service: AuthenticationService,
