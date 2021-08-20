@@ -113,22 +113,10 @@ input:-webkit-autofill {
     height: 45px;
 }
 
-.logo-validation-message {
-    font-family: $primary-font;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 19px;
-    margin-top: 5px;
-    color: red;
-    max-width: fit-content;
-}
-
-.logo-invalid-input {
-    border: 1px solid red;
-    border-radius: 10px;
-}
-
-::ng-deep {
+::ng-deep .login-container,
+::ng-deep .registration-container,
+::ng-deep .reset-password-container,
+::ng-deep .dialog-container{
     .mat-form-field-suffix {
         width: 17px;
         height: 17px;
@@ -163,7 +151,10 @@ input:-webkit-autofill {
     }
 }
 
-:host ::ng-deep {
+:host ::ng-deep .login-container,
+:host ::ng-deep .registration-container,
+:host ::ng-deep .reset-password-container
+:host ::ng-deep .dialog-container{
     .mat-form-field.mat-focused .mat-form-field-label,
     .mat-form-field.mat-form-field-invalid .mat-form-field-label {
         color: gray;
@@ -195,12 +186,4 @@ input:-webkit-autofill {
         align-items: center;
     }
 
-    .mat-form-field.mat-warn .mat-input-element,
-    .mat-form-field-invalid .mat-input-element {
-        caret-color: gray;
-    }
-
-    .mat-input-element{
-        caret-color: gray;
-    }
 }
