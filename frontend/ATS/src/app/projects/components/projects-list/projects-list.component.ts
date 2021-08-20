@@ -89,4 +89,11 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
       this.getProjects());
   }
 
+  public OnDelete(projectToDelete: ProjectInfo): void {
+    this.projectService.deleteProject(projectToDelete).subscribe(_ => {
+      this.notificationService.showSuccessMessage(`Project ${projectToDelete.name} deleted!`);
+      this.getProjects();
+    },
+    );
+  }
 }
