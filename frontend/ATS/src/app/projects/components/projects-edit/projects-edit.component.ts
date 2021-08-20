@@ -88,8 +88,7 @@ export class ProjectsEditComponent {
     this.projectService.updateProject(this.project)
       .subscribe(_ => {
         this.notificationService.showSuccessMessage(`Project ${this.project.name} updated!`);
-      },
-      (error) => (this.notificationService.showErrorMessage(error.message)));
+      });
   }
 
 }
