@@ -15,6 +15,7 @@ import { PoolService } from 'src/app/shared/services/poolService';
 import { CreatePool } from 'src/app/shared/models/applicants-pool/create-pool';
 import { UpdatePool } from 'src/app/shared/models/applicants-pool/update-pool';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { Router } from '@angular/router';
 
 
 
@@ -31,12 +32,14 @@ export class ApplicationPoolComponent implements OnInit {
   constructor(
     private readonly dialogService: MatDialog, 
     private poolService : PoolService,
-    private notificationService: NotificationService) {}
+    private notificationService: NotificationService,
+  ) {}
+    
 
   displayedColumns: string[] = [
     'position',
     'name',
-    //  'createdBy',
+    'createdBy',
     'dateCreated',
     'applicantsCount',
     'description',
@@ -44,7 +47,7 @@ export class ApplicationPoolComponent implements OnInit {
   ];
 
   loading : boolean = false;
-  dataSource = new MatTableDataSource(DATA);
+  dataSource = new MatTableDataSource(DATA);  
   private unsubscribe$ = new Subject<void>();
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -54,6 +57,10 @@ export class ApplicationPoolComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+    this.updatePaginator();
+  }
+
+  updatePaginator() {
     this.dataSource.paginator = this.paginator;
     this.directive?.applyFilter$.emit();
   }
@@ -69,7 +76,7 @@ export class ApplicationPoolComponent implements OnInit {
   }
 
   ngOnInit() : void {
-    this.loadData();
+    this.loadData();    
   }
   
   loadData() {
@@ -79,8 +86,15 @@ export class ApplicationPoolComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
-          this.loading = false;
-          this.dataSource.data = resp;          
+          this.loading = false;          
+          const dataWithTotal = resp.map(
+            value => {
+              return {
+                ...value, count: value.applicants.length};                
+            },            
+          );
+          this.dataSource.data = dataWithTotal;
+          this.updatePaginator();
         },
         (error) => {
           this.loading = false; 
@@ -88,6 +102,8 @@ export class ApplicationPoolComponent implements OnInit {
         },
       );
   }
+
+  
 
   createPool(pool : CreatePool) {
     this.loading = true;
@@ -98,9 +114,8 @@ export class ApplicationPoolComponent implements OnInit {
         (resp) => {
           this.loading = false;
           this.dataSource.data.push(resp);          
-          this.directive?.applyFilter$.emit();
-          this.table.renderRows();
-          this.dataSource.paginator = this.paginator;
+          this.table.renderRows();          
+          this.updatePaginator();
           this.notificationService.showSuccessMessage('Pool successfully added');
         },
         (error) => {
@@ -164,8 +179,11 @@ export class ApplicationPoolComponent implements OnInit {
     {
       source.applicants = row.applicants;
       source.name = row.name;
-      source.description = row.description;      
+      source.description = row.description;
+      source.dateCreated = row.dateCreated;
+      source.createdBy = row.createdBy;
     }    
   }
+
 
 }

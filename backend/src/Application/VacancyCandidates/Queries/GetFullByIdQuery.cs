@@ -23,7 +23,7 @@ namespace Application.VacancyCandidates.Queries
         : IRequestHandler<GetFullVacancyCandidateByIdQuery, VacancyCandidateFullDto>
     {
         private readonly IVacancyCandidateReadRepository _readRepository;
-        private readonly IReadRepository<entities::ApplicantCv> _cvReadRepository;
+        private readonly IReadRepository<ApplicantCv> _cvReadRepository;
         private readonly IMapper _mapper;
 
         public GetFullVacancyCandidateByIdQueryHandler(

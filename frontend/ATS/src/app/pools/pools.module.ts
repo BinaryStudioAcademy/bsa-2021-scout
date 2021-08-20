@@ -1,5 +1,8 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { ApplicationPoolDetailsComponent } 
+  from './components/application-pool-details/application-pool-details.component';
 import { ApplicationPoolComponent } 
   from './components/application-pool/application-pool.component';
 import { CreateTalentpoolModalComponent } 
@@ -12,9 +15,10 @@ import { EditAppPoolModalComponent }
   declarations: [
     ApplicationPoolComponent,
     CreateTalentpoolModalComponent,
-    EditAppPoolModalComponent,    
+    EditAppPoolModalComponent,
+    ApplicationPoolDetailsComponent,
   ],
-  imports: [SharedModule],
+  imports: [SharedModule,RouterModule],
   providers: [
   ],
 })

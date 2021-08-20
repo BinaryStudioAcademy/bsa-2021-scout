@@ -20,6 +20,7 @@ import { UsersTableComponent } from '../users/components/hr-lead/users-table/use
 import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 import { ApplicationPoolComponent } from 
   '../pools/components/application-pool/application-pool.component';
+import { PoolsRoutingModule } from '../pools/pools-routing.module';
 
 
 
@@ -47,7 +48,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     UserRoutingModule,
     VacanciesRoutingModule,
-    ProjectRoutingModule,    
+    ProjectRoutingModule,
+    PoolsRoutingModule,
   ],
   exports: [RouterModule],
 })

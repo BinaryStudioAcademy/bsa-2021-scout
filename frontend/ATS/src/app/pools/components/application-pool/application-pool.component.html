@@ -1,8 +1,10 @@
 <app-header></app-header>
 <div class="header">
-    <mat-form-field floatLabel="never"> 
-        <input matInput type="text" (keyup)="applyFilter($event)" placeholder="Search..." #input style="color:darkgray">
+    <mat-form-field class="search-field" floatLabel="never">        
+ <!--       <mat-icon class="search">search</mat-icon>-->
+        <input matInput type="text" (keyup)="applyFilter($event)" placeholder="Search..." #input style="color:darkgray">        
     </mat-form-field>
+    
     <button mat-button (click)="onCreate()"> + New pool</button>
 </div>
 <app-spinner *ngIf="loading"></app-spinner>
@@ -31,7 +33,7 @@
 
         <ng-container matColumnDef="applicantsCount">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Applicants count </th>
-            <td mat-cell *matCellDef="let row">{{ row.applicants ? row.applicants.length : 0}} </td>
+            <td mat-cell *matCellDef="let row">{{ row.applicants ? row.count : 0}} </td>
         </ng-container>
 
         <ng-container matColumnDef="description">
@@ -42,16 +44,20 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
             <td mat-cell *matCellDef="let row">
-                <mat-icon (click)="editPool(row)" >edit</mat-icon>
-                <mat-icon>more_horiz</mat-icon>
+                <mat-icon (click)="editPool(row)" >edit</mat-icon>                
+<!--                <mat-icon (click)="poolDetails(row.id)">more_horiz</mat-icon>-->
+                <a [routerLink]="row.id">
+                    <mat-icon>more_horiz</mat-icon>
+                </a>
             </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
 
         <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" colspan="4">No data maching the filter {{input.value}}</td>
+            <td class="mat-cell" colspan="4">No data maching the filter</td>
         </tr>       
 
     </table>

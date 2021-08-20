@@ -14,4 +14,5 @@ export interface Applicant {
 
   tags: ElasticEntity;
   vacancies: ApplicantVacancyInfo[];
+  isSelected?:boolean;
 }

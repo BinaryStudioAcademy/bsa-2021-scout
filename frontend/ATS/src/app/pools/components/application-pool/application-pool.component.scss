@@ -4,6 +4,12 @@
     display: flex;
     justify-content: space-between;
     padding: 10px 5px;
+    align-items: center;
+}
+
+.search-field {
+    display: flex;
+    direction: row;
 }
 
 .header input {

@@ -1,4 +1,4 @@
-import { Applicant } from '../applicants/applicant';
+import { Applicant } from '../applicant/applicant';
 import { Model } from '../model';
 
 export interface ApplicantsPool extends Model{

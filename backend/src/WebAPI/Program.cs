@@ -25,7 +25,7 @@ namespace WebAPI
                                         await CreateHostBuilder(args)
                                         .Build()
                                         .ApplyDatabaseMigrations()
-                                        .ApplyMongoSeeding()
+//                                        .ApplyMongoSeeding()
                                     .ApplyCompanySeeding()
                                 ).ApplyElasticSeeding()
                                 .ApplyDatabaseSeeding()
