@@ -1,4 +1,5 @@
 using Application.Applicants.Commands;
+using Application.Applicants.Commands.DeleteApplicant;
 using Application.Applicants.Dtos;
 using Application.Applicants.Queries;
 using Application.Common.Commands;
@@ -11,6 +12,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,25 +43,25 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostApplicantAsync([FromForm] string body, [FromForm] IFormFile cvFile)
+        public async Task<IActionResult> PostApplicantAsync([FromForm] string body, [FromForm] IFormFile? cvFile)
         {
             var createApplicantDto = JsonConvert.DeserializeObject<CreateApplicantDto>(body);
 
-            var cvFileDto = new FileDto(cvFile.OpenReadStream(), cvFile.FileName);
+            var cvFileDto = cvFile != null ? new FileDto(cvFile.OpenReadStream(), cvFile.FileName) : null;
 
-            var query = new CreateApplicantCommand(createApplicantDto, cvFileDto);
+            var query = new CreateApplicantCommand(createApplicantDto!, cvFileDto);
 
             return Ok(await Mediator.Send(query));
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutApplicantAsync([FromForm] string body, [FromForm] IFormFile cvFile)
+        public async Task<IActionResult> PutApplicantAsync([FromForm] string body, [FromForm] IFormFile? cvFile)
         {
             var updateApplicantDto = JsonConvert.DeserializeObject<UpdateApplicantDto>(body);
 
-            var cvFileDto = new FileDto(cvFile.OpenReadStream(), cvFile.FileName);
+            var cvFileDto = cvFile != null ? new FileDto(cvFile.OpenReadStream(), cvFile.FileName) : null;
 
-            var query = new UpdateApplicantCommand(updateApplicantDto, cvFileDto);
+            var query = new UpdateApplicantCommand(updateApplicantDto!, cvFileDto);
 
             return Ok(await Mediator.Send(query));
         }
@@ -68,7 +70,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteApplicantAsync(string id)
         {
-            var query = new DeleteEntityCommand(id);
+            var query = new DeleteApplicantCommand(id);
             await Mediator.Send(query);
 
             var elasticQuery = new DeleteElasticDocumentCommand(id);

@@ -20,9 +20,9 @@ namespace Application.Applicants.Commands
     public class CreateApplicantCommand : IRequest<ApplicantDto>
     {
         public CreateApplicantDto ApplicantDto { get; set; }
-        public FileDto CvFileDto { get; set; }
+        public FileDto? CvFileDto { get; set; }
 
-        public CreateApplicantCommand(CreateApplicantDto applicantDto, FileDto cvFileDto)
+        public CreateApplicantCommand(CreateApplicantDto applicantDto, FileDto? cvFileDto)
         {
             ApplicantDto = applicantDto;
             CvFileDto = cvFileDto;
@@ -70,25 +70,37 @@ namespace Application.Applicants.Commands
                 CompanyId = creatorUser.CompanyId,
             };
 
-            await UploadCvFile(applicant, command);
+            await UploadCvFileIfExists(applicant, command);
 
             await _applicantWriteRepository.CreateAsync(applicant);
 
             var createdApplicant = _mapper.Map<Applicant, ApplicantDto>(applicant);
 
-            await CreateTags(createdApplicant, command);
+            await CreateTagsIfExists(createdApplicant, command);
+
+            createdApplicant.Vacancies = new List<ApplicantVacancyInfoDto>();
 
             return createdApplicant;
         }
 
-        private async Task UploadCvFile(Applicant applicant, CreateApplicantCommand command)
+        private async Task UploadCvFileIfExists(Applicant applicant, CreateApplicantCommand command)
         {
-            var uploadedCvFileInfo = await _applicantCvFileWriteRepository.UploadAsync(applicant.Id, command.CvFileDto.Content);
+            if (command.CvFileDto == null)
+            {
+                return;
+            }
+
+            var uploadedCvFileInfo = await _applicantCvFileWriteRepository.UploadAsync(applicant.Id, command.CvFileDto!.Content);
             applicant.CvFileInfo = uploadedCvFileInfo;
         }
 
-        private async Task CreateTags(ApplicantDto createdApplicant, CreateApplicantCommand command)
+        private async Task CreateTagsIfExists(ApplicantDto createdApplicant, CreateApplicantCommand command)
         {
+            if (!command.ApplicantDto.Tags.TagDtos.Any())
+            {
+                return;
+            }
+
             var elasticQuery = new CreateElasticDocumentCommand<CreateElasticEntityDto>(new CreateElasticEntityDto()
             {
                 ElasticType = ElasticType.ApplicantTags,
@@ -101,7 +113,6 @@ namespace Application.Applicants.Commands
             });
 
             createdApplicant.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));
-            createdApplicant.Vacancies = new List<ApplicantVacancyInfoDto>();
         }
     }
 }

@@ -1,6 +1,4 @@
 using MediatR;
-using System;
-using System.Linq;
 using AutoMapper;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,10 +6,7 @@ using System.Collections.Generic;
 using Application.Applicants.Dtos;
 using Application.Common.Commands;
 using Application.ElasticEnities.Dtos;
-using Application.Common.Queries;
 using Application.Common.Files.Dtos;
-
-using Domain.Entities;
 using Domain.Interfaces.Read;
 
 namespace Application.Applicants.Commands
@@ -19,9 +14,9 @@ namespace Application.Applicants.Commands
     public class UpdateApplicantCommand : IRequest<ApplicantDto>
     {
         public UpdateApplicantDto Entity { get; set; }
-        public FileDto CvFileDto { get; set; }
+        public FileDto? CvFileDto { get; set; }
 
-        public UpdateApplicantCommand(UpdateApplicantDto entity, FileDto cvFileDto)
+        public UpdateApplicantCommand(UpdateApplicantDto entity, FileDto? cvFileDto)
         {
             Entity = entity;
             CvFileDto = cvFileDto;
@@ -55,9 +50,19 @@ namespace Application.Applicants.Commands
             updatedApplicant.Vacancies = _mapper.Map<IEnumerable<ApplicantVacancyInfoDto>>
                 (await _repository.GetApplicantVacancyInfoListAsync(updatedApplicant.Id));
 
-            await _mediator.Send(new UpdateApplicantCvCommand(updatableApplicant.Id, command.CvFileDto));
+            await UploadCvFileIfExists(updatableApplicant, command);
 
             return updatedApplicant;
+        }
+
+        private async Task UploadCvFileIfExists(ApplicantDto updatableApplicant, UpdateApplicantCommand command)
+        {
+            if (command.CvFileDto != null)
+            {
+                return;
+            }
+
+            await _mediator.Send(new UpdateApplicantCvCommand(updatableApplicant.Id, command.CvFileDto!));
         }
     }
 }
