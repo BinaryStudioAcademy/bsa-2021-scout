@@ -5,7 +5,6 @@ using Application.Users.Commands;
 using Application.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers

@@ -8,11 +8,10 @@ namespace Infrastructure.EF.Seeds
     {
         public static IEnumerable<Stage> GetStages()
         {
-            List<Stage> stages = new List<Stage>();
-
+            IList<Stage> stages = new List<Stage>();
             foreach (string id in VacancySeeds.vacancyIds)
             {
-                for (int index = 0; index < 6; index++)
+                for (int index = 0; index < types.Count; index++)
                 {
                     stages.Add(
                         new Stage
@@ -40,7 +39,7 @@ namespace Infrastructure.EF.Seeds
             "Hired",
         };
 
-        private static List<StageType> types = new List<StageType> {
+        public static List<StageType> types = new List<StageType> {
             StageType.Applied,
             StageType.PhoneScreen,
             StageType.Interview,

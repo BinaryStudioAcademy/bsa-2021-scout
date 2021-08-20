@@ -138,6 +138,9 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<Review>, WriteRepository<Review>>();
             services.AddScoped<IWriteRepository<ReviewToStage>, WriteRepository<ReviewToStage>>();
             services.AddScoped<IWriteRepository<CandidateComment>, WriteRepository<CandidateComment>>();
+            services.AddScoped<IWriteRepository<Pool>, WriteRepository<Pool>>();
+            services.AddScoped<IWriteRepository<PoolToApplicant>, PoolToApplicantWriteRepository>();
+            services.AddScoped<IPoolToApplicantWriteRepository, PoolToApplicantWriteRepository>();
 
             return services;
         }
@@ -168,6 +171,10 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<MailTemplate>, MongoReadRespoitory<MailTemplate>>();
             services.AddScoped<IReadRepository<EmailToken>, EmailTokenReadRepository>();
             services.AddScoped<IReadRepository<Review>, ReviewReadRepository>();
+
+            services.AddScoped<IReadRepository<Pool>, PoolReadRepository>();
+            services.AddScoped<IPoolReadRepository, PoolReadRepository>();
+
 
             return services;
         }

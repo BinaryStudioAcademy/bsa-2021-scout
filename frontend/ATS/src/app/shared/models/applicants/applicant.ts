@@ -5,12 +5,16 @@ export interface Applicant {
   id: string;
   firstName: string;
   lastName: string;
-  middleName: string;
-  linkedInUrl: string;
+  middleName?: string;
+  birthDate?: Date;
   email: string;
-  phone: string;
-  skype: string;
-  experience: number;
+  phone?: string;
+  skype?: string;
+  linkedInUrl?: string;
+  experience?: string;
+  toBeContacted?: Date;
+  companyId?: string;
+  isSelected?: boolean;
 
   tags: ElasticEntity;
   vacancies: ApplicantVacancyInfo[];

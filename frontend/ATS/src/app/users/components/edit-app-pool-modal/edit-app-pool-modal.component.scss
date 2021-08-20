@@ -1,0 +1,39 @@
+@import '/src/common.scss';
+
+.mat-chip {
+    background-color: $primary-color;
+    color: $primary-color-white;
+}
+
+.mat-chip.mat-standard-chip .mat-chip-remove {
+    color:$primary-color-white;
+    opacity: 1;
+}
+
+.mat-standard-chip.mat-chip-with-trailing-icon {
+    padding: 5px;
+}
+
+.mat-chip-list-wrapper input.mat-input-element, .mat-chip-list-wrapper .mat-standard-chip {
+    margin: 2px;
+}
+
+.mat-chip .mat-icon {
+    margin-left: 2px;
+}
+
+.mat-chip {
+    font-size: 12px;
+}
+
+.used {    
+    display: inline-block!important;
+}
+
+.mat-option .mat-icon {    
+    display:none;
+}
+
+
+
+

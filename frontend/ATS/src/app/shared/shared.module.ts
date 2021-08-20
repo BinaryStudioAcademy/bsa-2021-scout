@@ -29,10 +29,15 @@ import { MainContentComponent } from './components/main-content/main-content.com
 import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+
 
 @NgModule({
   exports: [
@@ -54,10 +59,10 @@ import { MatSortModule } from '@angular/material/sort';
     BrowserAnimationsModule,
     HeaderComponent,
     MatListModule,
-    MatDialogModule,
     MatSelectModule,
     MultiselectComponent,
     MatDatepickerModule,
+    MatDialogModule,
     MatNativeDateModule,
     TopicComponent,
     FileInputComponent,
@@ -68,6 +73,9 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
   ],
   imports: [
     MatButtonModule,
@@ -84,8 +92,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressBarModule,
     MatDialogModule,
+    MatProgressBarModule,
     MatListModule,
     BrowserAnimationsModule,
     BrowserModule,
@@ -95,6 +103,9 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
   ],
   providers: [HttpClientService],
   declarations: [

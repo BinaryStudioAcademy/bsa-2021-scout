@@ -1,69 +1,81 @@
+@import url('scroll.scss');
+
+.dialog-header-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    height: min-content;
+    align-items: flex-start;
+}
+
 .mat-dialog-title {
-    margin: 0 16px 20px;
-    font-size: 1.65em;
+    margin: 0;
+    font-size: 24px;
     font-weight: 700;
+    height: min-content;
 }
 
 .mat-dialog-actions {
-    padding: 15px 16px 10px;
+    height: min-content;
+    padding: 0;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    min-height: 0;
 
     .mat-icon {
         color: #000;
     }
 }
 
-.mat-dialog-content {
-    padding: 0 40px 10px;
-
+.applicant-form {
+    margin-bottom: 24px;
+    
     p {
-        font-size: 1.35em;
-        margin: 0;
-    }
-
-    &::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    &::-webkit-scrollbar-track {
-        background: none;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: rgba($color: (#291965), $alpha: 0.5);
-        border-radius: 5px;
+        font-size: 12px;
+        margin: 10px 0 0 0;
     }
 }
 
-:host ::ng-deep .mat-button-disabled {
-    background-color: #dfdfdf;
+::ng-deep {
+    .cdk-overlay-pane .mat-dialog-container {
+        height: 90vh;
+    }
+    .mat-dialog-container {
+        position: relative;
+    }
+}
+
+:host ::ng-deep .mat-button {
+    width: 170px;
+
+    .mat-button-disabled {
+        background-color: #919398;
+        color: #f6f7f9 !important;
+    }
 }
 
 :host ::ng-deep .mat-form-field {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
 
     .mat-form-field-flex {
         background: none;
-    }
-
-    .mat-form-field-label {
-        font-size: 1.5em;
-    }
-
-    .mat-form-field-infix:focus-within .mat-form-field-label {
-        font-size: 1.45em;
+        padding-left: 0;
+        padding-right: 0;
     }
 
     .mat-input-element {
         height: 2em;
-        font-size: 1.5em;
+        font-size: 12px;
+        color: #424242;
     }
 
     .mat-form-field-wrapper {
         max-width: none;
-        height: 50px;
+        padding: 0 5px 0 15px;
         box-sizing: border-box;
         border-radius: 10px;
+        height: 40px;
         width: 100%;
         line-height: 1;
 
@@ -77,4 +89,34 @@
         margin-top: 3px;
         font-size: 2em;
     }
+}
+
+.error-border {
+    border: 1px solid #f00;
+    border-radius: 10px;
+    
+    .mat-input-element {
+        color: #f00;
+    }
+}
+
+.custom-error {
+    font-family: Nunito;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 19px;
+    color: #f00;
+    max-width: fit-content;
+}
+
+.cdk-overlay-pane .mat-dialog-container {
+    height: 90vh;
+    box-sizing: border-box;
+}
+.mat-dialog-container {
+    position: relative;
+}
+
+:host ::ng-deep .mat-form-field-wrapper {
+    height: 50px;
 }

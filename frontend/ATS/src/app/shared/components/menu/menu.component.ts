@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { animateText, onSideNavChange } from 'src/app/shared/animations/animation';
@@ -13,7 +13,7 @@ import { AuthenticationService } from 'src/app/users/services/auth.service';
   styleUrls: ['./menu.component.scss'],
   animations: [onSideNavChange, animateText],
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit, OnDestroy{
 
   public hideMenu = false;
 

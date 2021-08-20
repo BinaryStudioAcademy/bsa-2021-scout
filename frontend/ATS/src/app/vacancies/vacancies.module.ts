@@ -30,6 +30,10 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
 // eslint-disable-next-line max-len
 import { RateCandidateModalComponent } from './components/rate-candidate-modal/rate-candidate-modal.component';
 
+import { EditVacancyComponent } from './components/edit-vacancy/edit-vacancy.component';
+import { CreateStageComponent } from './components/stages/create-stage/create-stage.component';
+import { StageComponent } from './components/stages/stage/stage.component';
+
 @NgModule({
   declarations: [
     CandidateCardComponent,
@@ -40,6 +44,9 @@ import { RateCandidateModalComponent } from './components/rate-candidate-modal/r
     OneCandidateModalComponent,
     VacanciesTableComponent,
     RateCandidateModalComponent,
+    EditVacancyComponent,
+    CreateStageComponent,
+    StageComponent,
   ],
   imports: [
     MatDialogModule,

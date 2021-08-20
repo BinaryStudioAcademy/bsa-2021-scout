@@ -218,8 +218,17 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CompanyId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -469,7 +478,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CompanyId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("CompletionDate")
+                    b.Property<DateTime?>("CompletionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreationDate")
@@ -546,7 +555,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContactedBy")
+                    b.Property<string>("ContactedById")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateAdded")
@@ -555,7 +564,7 @@ namespace Infrastructure.Migrations
                     b.Property<double>("Experience")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("FirstContactDate")
+                    b.Property<DateTime?>("FirstContactDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("HrWhoAddedId")
@@ -564,10 +573,10 @@ namespace Infrastructure.Migrations
                     b.Property<int>("SalaryExpectation")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("SecondContactDate")
+                    b.Property<DateTime?>("SecondContactDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ThirdContactDate")
+                    b.Property<DateTime?>("ThirdContactDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

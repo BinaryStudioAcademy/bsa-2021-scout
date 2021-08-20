@@ -43,6 +43,10 @@
                 <mat-icon matListIcon>dashboard</mat-icon>
                 <a [@animateText]="linkText ? 'show' : 'hide'" matLine>Templates</a>
             </mat-list-item>
+            <mat-list-item routerLink='/pools' routerLinkActive='active'>
+                <mat-icon matListIcon>group</mat-icon>
+                <a [@animateText]="linkText ? 'show' : 'hide'" matLine>Pools</a>
+            </mat-list-item>
         </mat-nav-list>
     </div>
 </div>
