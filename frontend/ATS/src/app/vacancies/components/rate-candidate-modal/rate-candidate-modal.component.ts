@@ -48,14 +48,6 @@ export class RateCandidateModalComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  public onChange(id: string, mark: number): void {
-    if (mark < 0 || mark > 10) {
-      return;
-    }
-
-    this.rateData[id] = mark;
-  }
-
   public onChangeOptionalCriterias(newCriteriaOptions: IOption[]): void {
     this.selectedOptionalCriteriaOptions = [...newCriteriaOptions];
 
@@ -63,6 +55,12 @@ export class RateCandidateModalComponent implements OnInit, OnDestroy {
       id: opt.id as string,
       name: opt.label,
     }));
+  }
+
+  public isButtonDisabled(): boolean {
+    return this.data.fixedCriterias.every(
+      (crit) => typeof this.rateData[crit.id] === 'number',
+    );
   }
 
   public submit(): void {

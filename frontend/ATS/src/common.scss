@@ -41,27 +41,28 @@ $primary-font: Nunito;
 }
 
 // disabled button
-.mat-button.mat-button-disabled{
+.mat-button.mat-button-disabled {
   background: $primary-color-darkgrey;
   color: $primary-color-white !important;
 }
 
 //input
-.mat-form-field-wrapper.mat-form-field-wrapper {
-    display: flex;
-    align-items: center;
-    font-family: $primary-font;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    background-color: rgba(226, 226, 226, 0.5);
-    min-width: 250px;
-    max-width: 500px;
-    width: 100%;
-    border-radius: 10px;
-    padding: 0px 20px 0px 20px;
-    height: 40px;
-    color: $primary-color;
+.mat-form-field-wrapper {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  font-family: $primary-font;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  background-color: rgba(226, 226, 226, 0.5);
+  min-width: 250px;
+  max-width: 500px;
+  width: 100%;
+  border-radius: 10px;
+  padding: 0px 20px 0px 20px !important;
+  height: 40px;
+  color: $primary-color;
 }
 
 .mat-form-field-underline {

@@ -17,7 +17,7 @@ namespace Infrastructure.EF.Seeds
                     stages.Add(
                         new Stage
                         {
-                            Id = id.Substring(0, id.Length - 1) + index.ToString(),
+                            Id = id.Substring(0, id.Length - 3) + "00" + index.ToString(),
                             Name = names[index],
                             Type = types[index],
                             Index = index,

@@ -246,8 +246,24 @@ namespace WebAPI.Extensions
 
             var users = new List<User>
             {
-                new User { Id = "1", FirstName = "Hr", LastName = "Lead", Email = "hrlead@gmail.com", CompanyId = "1", IsEmailConfirmed = true, BirthDate = new DateTime(1990, 1, 11) },
-                new User { Id = "2", FirstName = "Dominic", LastName = "Torreto", Email = "family@gmail.com", CompanyId = "1", IsEmailConfirmed = true, BirthDate = new DateTime(1976,8, 29) }
+                new User {
+                    Id = "1",
+                    FirstName = "Hr",
+                    LastName = "Lead",
+                    Email = "hrlead@gmail.com",
+                    CompanyId = "0b129ab3-7375-4c96-95a5-8efa95a455b4",
+                    IsEmailConfirmed = true,
+                    BirthDate = new DateTime(1990, 1, 11)
+                },
+                new User {
+                    Id = "2",
+                    FirstName = "Dominic",
+                    LastName = "Torreto",
+                    Email = "family@gmail.com",
+                    CompanyId = "0b129ab3-7375-4c96-95a5-8efa95a455b4",
+                    IsEmailConfirmed = true,
+                    BirthDate = new DateTime(1976,8, 29)
+                }
             };
 
             var securityService = scope.ServiceProvider.GetService<ISecurityService>();

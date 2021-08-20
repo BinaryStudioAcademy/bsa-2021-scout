@@ -12,11 +12,16 @@
   height: 12px;
 }
 
+.content {
+  overflow: visible !important;
+}
+
 .attention {
   border-radius: 15px;
   padding: 20px;
   border: 3px solid $accent-color;
   box-sizing: border-box;
+  margin-bottom: 15px;
 }
 
 .label {
@@ -35,7 +40,7 @@
   gap: 10px;
 
   .criteria {
-    min-width: 150px;
+    width: 250px;
   }
 }
 
@@ -49,5 +54,11 @@
   border-radius: 50px;
   display: flex;
   align-items: center;
+  justify-content: center;
   background-color: $primary-color;
+}
+
+.textarea {
+  min-height: 100px;
+  max-height: 200px;
 }

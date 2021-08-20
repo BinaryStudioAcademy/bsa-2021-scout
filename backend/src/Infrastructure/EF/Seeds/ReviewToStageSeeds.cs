@@ -11,7 +11,7 @@ namespace Infrastructure.EF.Seeds
 
             foreach (string vacancyId in VacancySeeds.vacancyIds)
             {
-                string id = vacancyId.Substring(0, vacancyId.Length - 1) + "3";
+                string id = vacancyId.Substring(0, vacancyId.Length - 3) + "003";
 
                 list.Add(new ReviewToStage
                 {

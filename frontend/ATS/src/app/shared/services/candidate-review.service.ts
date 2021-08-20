@@ -13,7 +13,7 @@ export class CandidateReviewService {
     candidateId: string,
     data: Record<string, number>,
   ): Observable<void> {
-    return this.http.postRequest('api/candidateReviews/bulk', {
+    return this.http.postRequest('/candidateReviews/bulk', {
       stageId,
       candidateId,
       data,

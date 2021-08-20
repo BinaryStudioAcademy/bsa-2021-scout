@@ -2,6 +2,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RoutingModule } from '../routing/routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -49,6 +51,8 @@ import { RateCandidateModalComponent } from './components/rate-candidate-modal/r
     MatPaginatorModule,
     MatTableModule,
     MatTabsModule,
+    MatInputModule,
+    MatFormFieldModule,
     DragDropModule,
     SharedModule,
     CommonModule,
@@ -56,7 +60,6 @@ import { RateCandidateModalComponent } from './components/rate-candidate-modal/r
     DragDropModule,
     SharedModule,
   ],
-
   exports: [
     CandidateCardComponent,
     CandidateColumnComponent,
