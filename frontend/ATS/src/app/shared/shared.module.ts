@@ -39,6 +39,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 @NgModule({
   exports: [
@@ -127,6 +128,7 @@ import { MatMenuModule } from '@angular/material/menu';
     SpinnerComponent,
     StylePaginatorDirective,
     AddCandidateModalComponent,
+    UserProfileComponent,
   ],
 })
 export class SharedModule { }

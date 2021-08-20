@@ -28,12 +28,13 @@ import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 import {
   ApplicationPoolComponent,
 } from '../users/components/application-pool/application-pool.component';
+import { UserProfileComponent } from '../shared/components/user-profile/user-profile.component';
 
 const routes: Routes = [
   {
     path: '',
     component: MainContentComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       { path: AppRoute.Home, component: HomeComponent, pathMatch: 'full' },
       { path: AppRoute.Vacancies, component: VacanciesTableComponent, pathMatch: 'full' },
@@ -43,6 +44,7 @@ const routes: Routes = [
       { path: AppRoute.Analytics, component: VacanciesListComponent, pathMatch: 'full' },
       { path: AppRoute.TaskManagement, component: VacanciesListComponent, pathMatch: 'full' },
       { path: AppRoute.Templates, component: VacanciesListComponent, pathMatch: 'full' },
+      { path: 'test', component: UserProfileComponent, pathMatch: 'full' },
       {
         path: 'candidates/:id',
         pathMatch: 'full',

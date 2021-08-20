@@ -146,3 +146,7 @@ a {
     color: #EF5350;
     max-width: fit-content;
 }
+
+.mat-menu-content:not(:empty){
+    padding: 0px !important;
+}
