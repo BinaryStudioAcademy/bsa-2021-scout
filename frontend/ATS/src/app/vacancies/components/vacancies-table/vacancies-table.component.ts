@@ -9,8 +9,6 @@ import { VacancyStatus } from 'src/app/shared/models/vacancy/vacancy-status';
 import { VacancyData } from 'src/app/shared/models/vacancy/vacancy-data';
 import { VacancyDataService } from 'src/app/shared/services/vacancy-data.service';
 import { Router } from '@angular/router';
-import { VacancyCreate } from 'src/app/shared/models/vacancy/vacancy-create';
-import { EditVacancyComponent } from '../edit-vacancy/edit-vacancy.component';
 
 ​
 const HRs: string[] = [
@@ -40,7 +38,7 @@ export class VacanciesTableComponent implements AfterViewInit {
   displayedColumns: string[] =
   ['position', 'title', 'candidates', 'teamInfo',
     'responsible', 'creationDate', 'status', 'actions'];
-  dataSource: MatTableDataSource<VacancyData> = new MatTableDataSource<VacancyData>();
+  dataSource: MatTableDataSource<VacancyData>;
 ​
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -51,10 +49,7 @@ export class VacanciesTableComponent implements AfterViewInit {
   constructor(private router:Router, private cd: ChangeDetectorRef,
     private dialog: MatDialog, private service: VacancyDataService) {
     // const vacancies =  Array.from({ length: 99 }, (_, k) => createNewVacancy());
-    this.getVacancies();
-  }
-  getVacancies(){
-    this.service.getList().subscribe(data=>{
+    service.getList().subscribe(data=>{
       data.forEach(d=>{
         d.requiredCandidatesAmount = this.randomRequiredCandidatesAmounts[
           Math.round(Math.random() * (this.randomRequiredCandidatesAmounts.length - 1))
@@ -67,32 +62,8 @@ export class VacanciesTableComponent implements AfterViewInit {
       this.directive.applyFilter$.emit();
     },
     );
-  }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(EditVacancyComponent, {
-      width: '914px',
-      height: 'auto',
-      data: {},
-    });
-
-    this.dialog.afterAllClosed.subscribe(_ =>
-      this.getVacancies());
-
-  }
-
-  onEdit(vacancyEdit: VacancyCreate): void {
-    this.dialog.open(EditVacancyComponent, {
-      data: {
-        vacancyToEdit: vacancyEdit,
-      },
-    });
-    this.dialog.afterAllClosed.subscribe(_ =>
-      this.getVacancies());
-  }
-  
-  saveVacancy(changedVacancy: VacancyData){
-    this.dataSource.data.unshift(changedVacancy);
+    // Assign the data to the data source for the table to render
+    this.dataSource = new MatTableDataSource<VacancyData>();
   }
   public getStatus(index:number): string{
     return VacancyStatus[index];

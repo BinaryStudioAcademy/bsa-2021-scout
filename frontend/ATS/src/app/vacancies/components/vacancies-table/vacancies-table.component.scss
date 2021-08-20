@@ -40,10 +40,6 @@ button.tub:focus {
     height: 60px;
     padding: 10px 20px 10px 20px;
     background: $primary-color-white;
-
-    input:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px white inset;
-    }
 }
 
 
@@ -117,10 +113,6 @@ img {
 
 
 /* Description + Team info */
-
-.mat-icon{
-    cursor: pointer;
-}
 
 .module {
     position: relative;
@@ -215,4 +207,5 @@ img {
         font-size: 16px;
     }
 }
+
 }

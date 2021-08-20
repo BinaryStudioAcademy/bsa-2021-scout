@@ -35,11 +35,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
 import { AddCandidateModalComponent }
   from './components/modal-add-candidate/modal-add-candidate.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-
-
 
 @NgModule({
   exports: [
@@ -61,10 +56,10 @@ import { MatSortModule } from '@angular/material/sort';
     BrowserAnimationsModule,
     HeaderComponent,
     MatListModule,
+    MatDialogModule,
     MatSelectModule,
     MultiselectComponent,
     MatDatepickerModule,
-    MatDialogModule,
     MatNativeDateModule,
     MatAutocompleteModule,
     MatCheckboxModule,
@@ -76,12 +71,6 @@ import { MatSortModule } from '@angular/material/sort';
     SpinnerComponent,
     StylePaginatorDirective,
     AddCandidateModalComponent,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatChipsModule,
-    MatAutocompleteModule,
-    MatCheckboxModule,
   ],
   imports: [
     MatButtonModule,
@@ -98,8 +87,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatDialogModule,
     MatProgressBarModule,
+    MatDialogModule,
     MatListModule,
     MatAutocompleteModule,
     MatCheckboxModule,
@@ -109,12 +98,6 @@ import { MatSortModule } from '@angular/material/sort';
     MatSelectModule,
     ReactiveFormsModule,
     RouterModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatChipsModule,
-    MatAutocompleteModule,
-    MatCheckboxModule,
   ],
   providers: [HttpClientService],
   declarations: [

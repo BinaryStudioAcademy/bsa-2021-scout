@@ -7,13 +7,10 @@ export enum AppRoute {
   Interviews = 'interviews',
   Analytics = 'analytics',
   TaskManagement = 'taskManagement',
-  UserManagement = 'user-management',
   Templates = 'templates',
-  Pools = 'pools',
   Login = 'login',
   Registration = 'registration',
   ConfirmEmail = 'confirm-email',
   SuccessfulRegistration = 'successful-registration',
   ResetPassword = 'reset-password',
-  ResendEmail = 'resend-email',
 }

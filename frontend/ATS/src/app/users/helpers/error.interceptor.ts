@@ -17,27 +17,22 @@ export class ErrorInterceptor implements HttpInterceptor {
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((response) => {
+
         if (response.status === 404) {
-
-          if (response.error.message != null) {
-            const errorInfo: { description: string; }
-              = { description: response.error.message };
-            return throwError(errorInfo);
-          }
-
-          const errorInfo: { type: string; description: string }
-            = JSON.parse(response.error.message);
-
-          if (errorInfo.type === EmailIsAlreadyConfirmedErrorType.EmailIsAlreadyConfirmed) {
-            return throwError(errorInfo);
-          }
+          const errorInfo: { description: string; }
+            = { description: response.error.message };
+          return throwError(errorInfo);
         }
 
+        const errorInfo: { type: string; description: string }
+          = JSON.parse(response.error.message);
+
         if (response.status === 401) {
+
           if (response.headers.has('Token-Expired')) {
             return this.authService.refreshTokens().pipe(
               switchMap((resp) => {
-                if (req.body?.refreshToken) {
+                if (req.body.refreshToken) {
                   req = req.clone({
                     setHeaders: {
                       Authorization: `Bearer ${resp.accessToken.token}`,
@@ -56,9 +51,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             );
           }
 
-          if (response.error?.message) {
-            const errorInfo: { type: string; description: string }
-              = JSON.parse(response.error.message);
+          if (errorInfo) {
             if (errorInfo.type === TokenErrorType.InvalidToken &&
               !this.authService.areTokensExist()) {
               return throwError(errorInfo);
@@ -74,11 +67,10 @@ export class ErrorInterceptor implements HttpInterceptor {
               return throwError(errorInfo);
             }
           }
+
         }
 
         if (response.status === 400) {
-          const errorInfo: { type: string; description: string }
-            = JSON.parse(response.error.message);
           if (errorInfo.type === EmailIsAlreadyConfirmedErrorType.EmailIsAlreadyConfirmed) {
             return throwError(errorInfo);
           }
@@ -86,6 +78,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         const error = response.error.message
           ? response.error.message
           : response.message || `${response.status} ${response.statusText}`;
+        console.log(error);
         return throwError(error);
       }),
     );

@@ -44,8 +44,7 @@ namespace Infrastructure.EF
         {
             if (!optionsBuilder.IsConfigured)
             {
-//                optionsBuilder.UseSqlServer("Server=(local);Database=ATS_dev;User Id=sa;Password=123Admin!;");
-                optionsBuilder.UseSqlServer("Server=localhost;Database=ATS_dev;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=(local);Database=ATS_dev;User Id=sa;Password=123Admin!;");
             }
         }
 

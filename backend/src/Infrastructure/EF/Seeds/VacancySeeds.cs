@@ -9,6 +9,12 @@ namespace Infrastructure.EF.Seeds
     public class VacancySeeds
     {
         private Random _random = new Random();
+        public  DateTime GetRandomDateTime(int daysOffset = 0)
+        {
+            DateTime start = new DateTime(1995, 1, 1);
+            int range = (DateTime.Today - start).Days - daysOffset;
+            return start.AddDays(_random.Next(range));
+        }
         private  IList<VacancyStatus> Statuses = new List<VacancyStatus>{
             VacancyStatus.Invited,
             VacancyStatus.Active,
@@ -22,35 +28,24 @@ namespace Infrastructure.EF.Seeds
            Tier.TeamLead
         };
         private Vacancy GenerateVacancy(string id){
-            Tier tierFrom = Tiers[_random.Next(Tiers.Count)];
-            Tier tierTo = Tiers[_random.Next(Tiers.Count)];
-            if((int)tierFrom > (int)tierTo)
-                (tierTo, tierFrom) = (tierFrom, tierTo);
-            DateTime creationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30));
-            DateTime dateOfOpening = creationDate.AddDays(20);
-            DateTime modificationDate = dateOfOpening.AddDays(2);
-            DateTime? completionDate = _random.Next() % 2 == 0 ?  creationDate.AddMonths(_random.Next(2, 4)): null;
-            DateTime plannedCompletionDate = creationDate.AddMonths(3);
-            int randomIndex = _random.Next(Titles.Count());
             return  new Vacancy
             {
                 Id = id,
-                Title = Titles[randomIndex],
-                Requirements = RequirementsList[_random.Next(RequirementsList.Count())],
+                Title = Titles[_random.Next(Titles.Count)],
+                Requirements = "¯\\_(ツ)_/¯",
                 Status = Statuses[_random.Next(Statuses.Count)],
-                CreationDate = creationDate,
-                Description = Descriptions[randomIndex],
-                DateOfOpening = dateOfOpening,
-                ModificationDate = modificationDate,
+                CreationDate = GetRandomDateTime(30),
+                DateOfOpening = GetRandomDateTime(-10),
+                ModificationDate = GetRandomDateTime(2),
                 IsRemote = _random.Next() % 2 == 0,
                 IsHot = _random.Next() % 2 == 0,
                 SalaryFrom = _random.Next(1200, 1300),
                 SalaryTo = _random.Next(1300, 56000),
-                CompletionDate = completionDate,
-                PlannedCompletionDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 21),
-                TierFrom = tierFrom,
-                TierTo = tierTo,
-                Sources = SourcesList[_random.Next(SourcesList.Count)],
+                CompletionDate = GetRandomDateTime(-29),
+                PlannedCompletionDate = GetRandomDateTime(-30),
+                TierFrom = Tiers[_random.Next(Tiers.Count)],
+                TierTo = Tiers[_random.Next(Tiers.Count)],
+                Sources = "¯\\_(ツ)_/¯",
                 ProjectId = ProjectIds[_random.Next(ProjectIds.Count)],
                 ResponsibleHrId = ResponsibleHrIds[_random.Next(ResponsibleHrIds.Count)],
                 CompanyId = "1",
@@ -63,19 +58,6 @@ namespace Infrastructure.EF.Seeds
             }
             return list;
         }
-        private List<string> SourcesList = new List<string>{
-            "https://www.work.ua/",
-            "https://djinni.co/jobs/",
-            "https://jobs.ua/",
-            "https://www.linkedin.com/jobs/"
-        };
-        private List<string> RequirementsList = new List<string>{
-            "English Advanced level",
-            "Be a cat lover",
-            "Be a dog lover",
-            "Speak German",
-            "Excellent communication and teamwork skills",
-        };
         private IList<string> Titles = new List<string>{
             "Devops",
             "QA",
@@ -86,28 +68,12 @@ namespace Infrastructure.EF.Seeds
             "Web Developer",
             "Project Manager"
         };
-        private IList<string> Descriptions = new List<string>{
-            "Looking for Devops for maintaining current and developing new pipelines and some casual automation.",
-            "Looking for QA for manual, auto, unit, stress, durability and integration tests.",
-            "Looking for Software Enginner that can perform any wish from our clients.",
-            "Looking for Project Designer, that design products whitch customers will love.",
-            "Looking not only for UI/UX Designer but also for a Frontend developer to maintain from idea to project pipeline.",
-            "Looking for orinary Developer for microservice based applicantion, language doesn't matter.",
-            "Looking for modern Web Developer with skill to perform not template based magic.",
-            "Looking for efficient Project Manger with SCRUM/KANBAN/AGILE principles in mind."
-        };
         private  IList<string> ProjectIds = new List<string>{
+            "pd45e3b4-cdf6-4f67-99de-795780c70b8f",
             "p9e10160-0522-4c2f-bfcf-a07e9faf0c04",
             "p8b0e8ca-54ff-4186-8cc0-5f71e1ec1d3c",
             "p0679037-9b5e-45df-b24d-edc5bbbaaec4",
             "paa3320f-866a-4b02-9076-5e8d12796710",
-            "pd45e3b4-cdf6-4f67-99de-795780c70b8f",
-            "new10160-0522-4c2f-bfcf-a07e9faf0c04",
-            "new0e8ca-54ff-4186-8cc0-5f71e1ec1d3c",
-            "new79037-9b5e-45df-b24d-edc5bbbaaec4",
-            "new3320f-866a-4b02-9076-5e8d12796710",
-            "new5e3b4-cdf6-4f67-99de-795780c70b8f",
-            "snew3b4-cdf6-4f67-99de-795780c70b8f",
         };
         private  IList<string> ResponsibleHrIds = new List<string>{
             "057c23ff-58b1-4531-8012-0b5c1f949ee1",

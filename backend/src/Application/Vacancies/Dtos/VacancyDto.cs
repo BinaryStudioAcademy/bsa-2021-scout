@@ -29,7 +29,7 @@ namespace Application.Vacancies.Dtos
         public DateTime CreationDate { get; set; }
         public DateTime DateOfOpening { get; set; }
         public DateTime ModificationDate { get; set; }
-        public DateTime? CompletionDate { get; set; }
+        public DateTime CompletionDate { get; set; }
         public DateTime PlannedCompletionDate { get; set; }
         public ICollection<StageWithCandidatesDto> Stages { get; set; }
     }

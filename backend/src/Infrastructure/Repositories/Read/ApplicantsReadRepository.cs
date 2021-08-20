@@ -14,25 +14,11 @@ namespace Infrastructure.Repositories.Read
 {
     public class ApplicantsReadRepository : ReadRepository<Applicant>, IApplicantsReadRepository
     {
-        private readonly ICurrentUserContext _currentUserContext;
-
+        protected readonly ICurrentUserContext _currentUserContext;
         public ApplicantsReadRepository(IConnectionFactory connectionFactory, ICurrentUserContext currentUserContext)
             : base("Applicants", connectionFactory)
         {
             _currentUserContext = currentUserContext;
-        }
-
-        public async Task<IEnumerable<Applicant>> GetCompanyApplicants()
-        {
-            var companyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
-            
-            var connection = _connectionFactory.GetSqlConnection();
-            await connection.OpenAsync();
-            string sql = $"SELECT * FROM {_tableName} WHERE [CompanyId] = @companyId";
-            var entities = await connection.QueryAsync<Applicant>(sql, new { companyId });
-            await connection.CloseAsync();
-            
-            return entities;
         }
 
         public async Task<IEnumerable<ApplicantVacancyInfo>> GetApplicantVacancyInfoListAsync(string applicantId)

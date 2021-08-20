@@ -13,35 +13,26 @@ import { ConfirmEmailDto } from '../models/confirm-email-dto';
 import { ResendConfirmEmailDto } from '../models/resend-confirm-email-dto';
 import { ForgotPasswordDto } from '../models/forgot-password-dto';
 import { ResetPasswordDto } from '../models/reset-password-dto';
-import { AuthUserEventService } from './auth-user-event.service';
 
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private user: User | null = null;
 
-  constructor(
-    private httpService: HttpClientService,
-    private authUserEventService: AuthUserEventService) { }
+  constructor(private httpService: HttpClientService) { }
 
   public getUser(): Observable<User | null> {
     return this.user
       ? of(this.user)
-      : this.httpService.getFullRequest<User>('/users/from-token').pipe(
+      : this.httpService.getFullRequest<User>('users/from-token').pipe(
         map((resp) => {
           if (!resp.body) {
             throw throwError(resp);
           }
           this.user = resp.body;
-          this.authUserEventService.userChanged(this.user);
           return this.user;
         }),
       );
-  }
-
-  public setUser(user: User) {
-    this.user = user;
-    this.authUserEventService.userChanged(user);
   }
 
   public register(registerDto: RegisterDto): Observable<HttpResponse<void>> {
@@ -69,7 +60,6 @@ export class AuthenticationService {
       finalize(() => {
         this.removeTokensFromStorage();
         this.user = null;
-        this.authUserEventService.userChanged(null);
       }),
     );
   }
@@ -79,13 +69,13 @@ export class AuthenticationService {
       localStorage.getItem('refreshToken') !== null;
   }
 
-  private revokeRefreshToken(): Observable<HttpResponse<void>> {
+  public revokeRefreshToken(): Observable<HttpResponse<void>> {
     return this.httpService.postFullRequest('/token/revoke', {
       refreshToken: JSON.parse(localStorage.getItem('refreshToken') as string),
     });
   }
 
-  private removeTokensFromStorage(): void {
+  public removeTokensFromStorage(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   }
@@ -113,7 +103,7 @@ export class AuthenticationService {
   }
 
   public sendPasswordResetRequest(forgotPasswordDto: ForgotPasswordDto): Observable<void> {
-    return this.httpService.postRequest<void>('/Auth/forgot-password', forgotPasswordDto);
+    return this.httpService.postRequest<void>('/Auth/forgot-password', forgotPasswordDto);  
   }
 
   public isResetTokenPasswordValid(email: string, token: string): Observable<boolean> {
@@ -133,7 +123,6 @@ export class AuthenticationService {
         }
         this._setTokens(resp.body.token);
         this.user = resp.body.user;
-        this.authUserEventService.userChanged(resp.body.user);
         return resp.body.user;
       }),
     );

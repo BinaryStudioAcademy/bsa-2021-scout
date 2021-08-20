@@ -21,25 +21,6 @@ namespace WebAPI.Extensions
 {
     public static class WebHostExtenstions
     {
-
-        public static async Task<IHost> SeedingManager(this IHost host)
-        {
-            ApplyMongoSeeding(host);
-            await ApplyCompanySeeding(host);
-            await ApplyElasticSeeding(host);
-            await ApplyRoleSeeding(host);
-            await ApplyProjectSeeding(host);
-            await ApplyPoolSeeding(host);
-            await ApplyUserSeeding(host);
-            await ApplyUserToRoleSeeding(host);
-            await ApplyVacancySeeding(host);
-            await ApplyApplicantSeeding(host);
-            await ApplyPoolToApplicantSeeding(host);
-            await ApplyStageSeeding(host);
-            await ApplyVacancyCandidateSeeding(host);
-            await ApplyCandidateToStagesSeeding(host);
-            return host;
-        }
         public static IHost ApplyDatabaseMigrations(this IHost host)
         {
             using var scope = host.Services.CreateScope();
@@ -49,16 +30,13 @@ namespace WebAPI.Extensions
 
             return host;
         }
-        public static async Task<IHost> ApplyElasticSeeding(this IHost host)
+        public static IHost ApplyElasticSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
             var client = scope.ServiceProvider.GetService<IElasticClient>();
 
-            await client.DeleteManyAsync<ElasticEntity>(
-                ElasticTagsSeeds.GetSeed()
-            );
-            await client.IndexManyAsync<ElasticEntity>(
-                ElasticTagsSeeds.GetSeed()
+            client.IndexMany<ElasticEntity>(
+                ApplicantTagsSeeds.GetSeed()
             );
 
             return host;
@@ -84,78 +62,23 @@ namespace WebAPI.Extensions
 
             return host;
         }
-        public async static Task<IHost> ApplyPoolSeeding(this IHost host)
-        {
-            using var scope = host.Services.CreateScope();
-            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            foreach (var pool in PoolSeeds.Pools)
-            {
-                if(await context.Pools.AnyAsync(c=>c.Id == pool.Id))
-                    context.Pools.Update(pool);
-                else
-                    await context.Pools.AddAsync(pool);
-                await context.SaveChangesAsync();
-            }
-
-            return host;
-        }
-         public async static Task<IHost> ApplyPoolToApplicantSeeding(this IHost host)
-        {
-            using var scope = host.Services.CreateScope();
-            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            foreach (var poolToApplicant in PoolToApplicantSeeds.PoolToApplicants)
-            {
-                if(await context.PoolToApplicants.AnyAsync(c=>c.Id == poolToApplicant.Id))
-                    context.PoolToApplicants.Update(poolToApplicant);
-                else
-                    await context.PoolToApplicants.AddAsync(poolToApplicant);
-                await context.SaveChangesAsync();
-            }
-
-            return host;
-        }
-        public async static Task<IHost> ApplyCandidateToStagesSeeding(this IHost host)
-        {
-            using var scope = host.Services.CreateScope();
-            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            foreach (var candidateToStage in CandidateToStagesSeeds.CandidateToStages())
-            {
-                if(await context.CandidateToStages.AnyAsync(c=>c.Id == candidateToStage.Id))
-                    context.CandidateToStages.Update(candidateToStage);
-                else
-                    await context.CandidateToStages.AddAsync(candidateToStage);
-                await context.SaveChangesAsync();
-            }
-
-            return host;
-        }
-        public async static Task<IHost> ApplyVacancyCandidateSeeding(this IHost host)
-        {
-            using var scope = host.Services.CreateScope();
-            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            foreach (var vacancyCandidate in VacancyCandidateSeeds.VacancyCandidates)
-            {
-                if(await context.VacancyCandidates.AnyAsync(c=>c.Id == vacancyCandidate.Id))
-                    context.VacancyCandidates.Update(vacancyCandidate);
-                else
-                    await context.VacancyCandidates.AddAsync(vacancyCandidate);
-                await context.SaveChangesAsync();
-            }
-
-            return host;
-        }
 
         public async static Task<IHost> ApplyVacancySeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            var repo = scope.ServiceProvider.GetService<IWriteRepository<Vacancy>>();
+            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Vacancy>>();
             foreach (var vacancy in (new VacancySeeds()).Vacancies())
             {
-                if(await context.Vacancies.AnyAsync(c=>c.Id == vacancy.Id))
-                    context.Vacancies.Update(vacancy);
-                else
-                    await context.Vacancies.AddAsync(vacancy);
-                await context.SaveChangesAsync();
+                try
+                {
+                    await otherRepo.GetAsync(vacancy.Id);
+                    await repo.UpdateAsync(vacancy);
+                }
+                catch
+                {
+                    await repo.CreateAsync(vacancy);
+                }
             }
 
             return host;
@@ -163,14 +86,20 @@ namespace WebAPI.Extensions
         public async static Task<IHost> ApplyCompanySeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var context  = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            var repo = scope.ServiceProvider.GetService<IWriteRepository<Company>>();
+            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Company>>();
             foreach (var company in CompanySeeds.Companies)
             {
-                if(await context.Companies.AnyAsync(c=>c.Id == company.Id))
-                    context.Companies.Update(company);
-                else
-                    await context.Companies.AddAsync(company);
-                await context.SaveChangesAsync();
+                try
+                {
+                    await otherRepo.GetAsync(company.Id);
+                    await repo.UpdateAsync(company);
+                }
+                catch
+                {
+                    await repo.CreateAsync(company);
+                }
+
             }
 
             return host;
@@ -178,14 +107,18 @@ namespace WebAPI.Extensions
         public async static Task<IHost> ApplyProjectSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var context  = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            var repo = scope.ServiceProvider.GetService<IWriteRepository<Project>>();
+            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Project>>();
             foreach (var project in ProjectSeeds.Projects)
             {
-                if(await context.Projects.AnyAsync(c=>c.Id == project.Id))
-                    context.Projects.Update(project);
-                else
-                    await context.Projects.AddAsync(project);
-                await context.SaveChangesAsync();
+                try
+                {
+                    await repo.CreateAsync(project);
+                }
+                catch
+                {
+                    await repo.UpdateAsync(project);
+                }
             }
 
             return host;
@@ -193,89 +126,109 @@ namespace WebAPI.Extensions
         public async static Task<IHost> ApplyStageSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var context  = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            var repo = scope.ServiceProvider.GetService<IWriteRepository<Stage>>();
+            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<Stage>>();
             foreach (var stage in StageSeeds.Stages())
             {
-                if(await context.Stages.AnyAsync(c=>c.Id == stage.Id))
-                    context.Stages.Update(stage);
-                else
-                    await context.Stages.AddAsync(stage);
-                await context.SaveChangesAsync();
+                try
+                {
+                    await otherRepo.GetAsync(stage.Id);
+                    await repo.UpdateAsync(stage);
+                }
+                catch
+                {
+                    await repo.CreateAsync(stage);
+                }
             }
 
-            return host;
-        }
-         public async static Task<IHost> ApplyApplicantSeeding(this IHost host)
-        {
-            using var scope = host.Services.CreateScope();
-            var context  = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            foreach(var applicant in ApplicantSeeds.Applicants){
-                if(await context.Applicants.AnyAsync(c=>c.Id == applicant.Id))
-                    context.Applicants.Update(applicant);
-                else
-                    await context.Applicants.AddAsync(applicant);
-                await context.SaveChangesAsync();
-            }
             return host;
         }
         public async static Task<IHost> ApplyUserSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var context  = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            var securityService = scope.ServiceProvider.GetService<ISecurityService>();
+            var repo = scope.ServiceProvider.GetService<IWriteRepository<User>>();
+            var otherRepo = scope.ServiceProvider.GetService<IReadRepository<User>>();
             foreach (var user in UserSeeds.Users)
             {
-                var salt = securityService.GetRandomBytes();
-                user.PasswordSalt = Convert.ToBase64String(salt);
-                user.Password = securityService.HashPassword(user.Password, salt);
-                if(await context.Users.AnyAsync(c=>c.Id == user.Id))
-                    context.Users.Update(user);
-                else
-                    await context.Users.AddAsync(user);
-                await context.SaveChangesAsync();
+                try
+                {
+                    await otherRepo.GetAsync(user.Id);
+                    await repo.UpdateAsync(user);
+                }
+                catch
+                {
+                    await repo.CreateAsync(user);
+                }
             }
             return host;
         }
-         public async static Task<IHost> ApplyUserToRoleSeeding(this IHost host)
+
+        public async static Task<IHost> ApplyDatabaseSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var context  = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            var usersToRoles = new List<UserToRole>
+            var roleWriteRepo = scope.ServiceProvider.GetService<IWriteRepository<Role>>();
+            var roleReadRepo = scope.ServiceProvider.GetService<IReadRepository<Role>>();
+            var roles = new List<Role>
+                {
+                    new Role { Id = "1", Key = 1, Name = "HrLead" },
+                    new Role { Id = "2", Key = 2, Name = "HrUser"}
+                };
+            foreach (var role in roles)
+            {
+                try
+                {
+                    await roleReadRepo.GetAsync(role.Id);
+                }
+                catch
+                {
+                    await roleWriteRepo.CreateAsync(role);
+                }
+            }
+            using var scope2 = host.Services.CreateScope();
+            var userWriteRepo = scope2.ServiceProvider.GetService<IWriteRepository<User>>();
+            var userReadRepo = scope2.ServiceProvider.GetService<IReadRepository<User>>();
+            var users = new List<User>
+            {
+                new User { Id = "1", FirstName = "Hr", LastName = "Lead", Email = "hrlead@gmail.com", CompanyId = "1", IsEmailConfirmed = true, BirthDate = new DateTime(1990, 1, 11) },
+                new User { Id = "2", FirstName = "Dominic", LastName = "Torreto", Email = "family@gmail.com", CompanyId = "1", IsEmailConfirmed = true, BirthDate = new DateTime(1976,8, 29) }
+            };
+            var securityService = scope.ServiceProvider.GetService<ISecurityService>();
+            var passwords = new string[] { "hrlead", "family" };
+            for (int i = 0; i < users.Count; i++)
+            {
+                var salt = securityService.GetRandomBytes();
+                users[i].PasswordSalt = Convert.ToBase64String(salt);
+                users[i].Password = securityService.HashPassword(passwords[i], salt);
+                try
+                {
+                    await userReadRepo.GetAsync(users[i].Id);
+                    await userWriteRepo.UpdateAsync(users[i]);
+                }
+                catch
+                {
+                    await userWriteRepo.CreateAsync(users[i]);
+                }
+            }
+
+            var usersRoles = new List<UserToRole>
             {
                 new UserToRole { UserId = "1", RoleId = "1"},
                 new UserToRole { UserId = "1", RoleId = "2"},
+                new UserToRole { UserId = "2", RoleId = "2"}
             };
-            Random random = new Random();
-            foreach(var user in UserSeeds.Users.Skip(1))
+            using var scope3 = host.Services.CreateScope();
+            var userRoleWriteRepo = scope3.ServiceProvider.GetService<IWriteRepository<UserToRole>>();
+            var userRoleReadRepo = scope3.ServiceProvider.GetService<IReadRepository<UserToRole>>();
+            foreach (var userRole in usersRoles)
             {
-                usersToRoles.Add(
-                new UserToRole
+                try
                 {
-                    UserId = user.Id,
-                    RoleId = RoleSeeds.Roles[random.Next(RoleSeeds.Roles.Count())].Id
-                });
-            }
-            foreach (var userToRole in usersToRoles)
-            {
-                if(await context.UserToRoles.AnyAsync(c=>c.Id == userToRole.Id))
-                    context.UserToRoles.Update(userToRole);
-                else
-                    await context.UserToRoles.AddAsync(userToRole);
-                await context.SaveChangesAsync();
-            }
-            return host;
-        }
-        public async static Task<IHost> ApplyRoleSeeding(this IHost host)
-        {
-            using var scope = host.Services.CreateScope();
-            var context  = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            foreach (var role in RoleSeeds.Roles)
-            {
-                if(await context.Roles.AnyAsync(c=>c.Id == role.Id))
-                    context.Roles.Update(role);
-                else
-                    await context.Roles.AddAsync(role);
-                await context.SaveChangesAsync();
+                    await userRoleReadRepo.GetAsync(userRole.Id);
+                }
+                catch
+                {
+                    await userRoleWriteRepo.CreateAsync(userRole);
+                }
             }
             return host;
         }

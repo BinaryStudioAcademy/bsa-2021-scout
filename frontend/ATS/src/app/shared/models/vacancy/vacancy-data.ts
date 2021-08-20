@@ -1,8 +1,7 @@
 import { User } from 'src/app/users/models/user';
-import { Model } from '../model';
 import { VacancyStatus } from './vacancy-status';
 
-export interface VacancyData extends Model{
+export interface VacancyData {
   title: string;
   currentApplicantsAmount: number;
   requiredCandidatesAmount: number;

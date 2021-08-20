@@ -40,10 +40,6 @@ button.tub:focus {
     height: 60px;
     padding: 10px 20px 10px 20px;
     background: $primary-color-white;
-
-    input:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px white inset;
-    }
 }
 
 
@@ -63,12 +59,6 @@ td.mat-cell {
     width: 20%;
     padding-right: 20px;
     padding-left: 20px;
-}
-
-.mat-paginator-sticky {
-    bottom: 0px;
-    position: sticky;
-    z-index: 10;
 }
 
 th:first-child,
