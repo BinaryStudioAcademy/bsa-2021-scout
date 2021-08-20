@@ -12,10 +12,9 @@ $primary-font: Nunito;
 }
 .clicable{
     cursor: pointer;
-}
-.clicable{
     text-indent: 1.4em;
 }
+
 button.tub {
     background: transparent;
     border: none;
@@ -97,7 +96,6 @@ button.tub:focus {
         cursor: pointer;
         color: $primary-color;
     }
-
     /* Project Logo */
 
     .name-logo {
@@ -130,7 +128,7 @@ button.tub:focus {
     .mat-icon{
         cursor: pointer;
     }
-
+    
     .module {
         position: relative;
         overflow: hidden;
@@ -170,6 +168,9 @@ button.tub:focus {
         }
         app-search-form {
             display: none;
+        }
+        .applyPrimaryColor{
+            color: $primary-color !important;
         }
         /* Mat Form Field */
         .mat-form-field-wrapper.mat-form-field-wrapper {

@@ -16,6 +16,7 @@ import { EditVacancyComponent } from '../edit-vacancy/edit-vacancy.component';
 import { property } from 'lodash';
 
 
+
 const STATUES: VacancyStatus[] = [
   VacancyStatus.Active,
   VacancyStatus.Former,
@@ -35,10 +36,11 @@ export interface IIndexable {
 
 export class VacanciesTableComponent implements AfterViewInit {
   displayedColumns: string[] =
-  ['position', 'title', 'candidatesAmount', 'responsible', 'project', 
-    'teamInfo', 'creationDate', 'status', 'actions'];
+  ['position', 'title', 'candidatesAmount', 'responsible', 'teamInfo', 
+    'project', 'creationDate', 'status', 'actions'];
   dataSource: MatTableDataSource<VacancyData> = new MatTableDataSource<VacancyData>();
-
+  mainData!: VacancyData[];
+  isFollowedPage: boolean = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
@@ -47,7 +49,7 @@ export class VacanciesTableComponent implements AfterViewInit {
     private dialog: MatDialog, private service: VacancyDataService) {
     service.getList().subscribe(data => {
       this.getVacancies();
-
+      
     });
   }
 
@@ -58,8 +60,8 @@ export class VacanciesTableComponent implements AfterViewInit {
       data.forEach((d, i) => {
         d.position = i + 1;
       });
+      this.mainData = data;
       this.directive.applyFilter$.emit();
-      console.log(data);
     },
     );
   }
@@ -75,7 +77,25 @@ export class VacanciesTableComponent implements AfterViewInit {
       this.getVacancies());
 
   }
-
+  public switchToFollowed(){
+    this.isFollowedPage = true;
+    this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    this.directive.applyFilter$.emit();
+  }
+  public switchAwayToAll(){
+    this.isFollowedPage = false;
+    this.dataSource.data = this.mainData;
+    this.directive.applyFilter$.emit();
+  }
+  public onBookmark(data: VacancyData, perfomToFollowCleanUp: boolean = false){
+    let vacancyIndex:number = this.dataSource.data.findIndex(vacancy=>vacancy.id === data.id)!;
+    data.isFollowed = !data.isFollowed;
+    this.dataSource.data[vacancyIndex] = data;
+    if(perfomToFollowCleanUp){
+      this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    }
+    this.directive.applyFilter$.emit();
+  }
   onEdit(vacancyEdit: VacancyCreate): void {
     this.dialog.open(EditVacancyComponent, {
       data: {
