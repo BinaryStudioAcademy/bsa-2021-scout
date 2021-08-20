@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import _ from 'lodash';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,6 +12,8 @@ import { NotificationService } from '../../services/notification.service';
 })
 export class HeaderComponent implements OnDestroy {
   public value: string = '';
+  public dropdownOpened: boolean = false;
+  @Input() removeButton = false;
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 

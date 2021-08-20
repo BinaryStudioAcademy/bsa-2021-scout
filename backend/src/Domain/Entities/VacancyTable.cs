@@ -1,23 +1,18 @@
 using System;
-
-using Application.Common.Models;
-using Application.Projects.Dtos;
-using Application.Users.Dtos;
+using Domain.Common;
 using Domain.Enums;
 
-namespace Application.Vacancies.Dtos
+namespace Domain.Entities
 {
-    public class VacancyTableDto: Dto
+    public class VacancyTable: Entity
     {
         public string Title { get; set; }
         public int CandidatesAmount { get; set; }
         public string ProjectId { get; set; }
         public string ResponsibleHrId { get; set; }
-        public ProjectDto Project { get; set; }
+        public Project Project { get; set; }
         public DateTime CreationDate { get; set; }
-        public UserDto ResponsibleHr { get; set; }
-
-        public string TeamInfo { get; set; } 
+        public User ResponsibleHr { get; set; }
         public VacancyStatus Status { get; set; }
     }
 }

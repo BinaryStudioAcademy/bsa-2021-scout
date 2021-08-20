@@ -6,12 +6,13 @@ $primary-font: Nunito;
 
 .vacancies-page{
 /* Header */
-
 .mat-form-field {
     font-size: 14px;
     width: 100%;
 }
-
+.clicable{
+    cursor: pointer;
+}
 button.tub {
     background: transparent;
     border: none;

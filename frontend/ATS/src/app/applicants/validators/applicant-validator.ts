@@ -10,7 +10,6 @@ export const applicantGroup = new FormGroup({
     Validators.pattern('[A-Z]{1}[a-z]*'),
   ]),
   middleName: new FormControl('', [
-    Validators.required,
     Validators.pattern('[A-Z]{1}[a-z]*'),
   ]),
   email: new FormControl('', [

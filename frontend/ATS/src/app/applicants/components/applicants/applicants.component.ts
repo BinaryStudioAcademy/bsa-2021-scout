@@ -17,7 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-applicants',
   templateUrl: 'applicants.component.html',
-  styleUrls: ['applicants.component.scss', '../../common/scroll.scss'],
+  styleUrls: ['applicants.component.scss'],
 })
 export class ApplicantsComponent implements OnInit, AfterViewInit {
   public displayedColumns: string[] = [
@@ -107,8 +107,11 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
     createdApplicant
       .pipe(
         map((a: Applicant) => {
-          let viewableApplicant = a as unknown as ViewableApplicant;
-          viewableApplicant.isShowAllTags = false;
+          let viewableApplicant = (a as unknown) as ViewableApplicant;
+          
+          if (viewableApplicant) {
+            viewableApplicant.isShowAllTags = false;
+          }
 
           return viewableApplicant;
         }),
@@ -117,47 +120,27 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
         if (result) {
           this.cashedData.unshift(result);
           this.dataSource.data = this.cashedData;
+          this.directive?.applyFilter$.emit();
+        
+          this.notificationsService.showSuccessMessage(
+            'An applicant was succesfully created',
+            'Success!',
+          );
         }
-
-        this.notificationsService.showSuccessMessage(
-          'An applicant was succesfully created',
-          'Success!',
-        );
       });
   }
 
-  public showApplicantUpdateDialog(applicant: Applicant): void {
-    const dialogRef = this.dialog.open(UpdateApplicantComponent, {
-      width: '480px',
-      height: 'min-content',
-      autoFocus: false,
-      data: applicant,
-    });
-
-    dialogRef
-      .afterClosed()
-      .pipe(
-        map((a: Applicant) => {
-          let viewableApplicant = a as unknown as ViewableApplicant;
-          viewableApplicant.isShowAllTags = false;
-
-          return viewableApplicant;
-        }),
-      )
-      .subscribe((result: ViewableApplicant) => {
-        if (result) {
-          let applicantIndex = this.cashedData.findIndex(
-            (a) => a.id === result.id,
-          );
-          this.cashedData[applicantIndex] = result;
-          this.dataSource.data = this.cashedData;
-        }
-
-        this.notificationsService.showSuccessMessage(
-          'An applicant was succesfully updated',
-          'Success!',
-        );
-      });
+  public updateApplicant(applicant: ViewableApplicant): void {
+    if (applicant) {
+      let applicantIndex = this.cashedData.findIndex(a => a.id === applicant.id);
+      this.cashedData[applicantIndex] = applicant;
+      this.dataSource.data = this.cashedData;
+    
+      this.notificationsService.showSuccessMessage(
+        'An applicant was succesfully updated',
+        'Success!',
+      );
+    }
   }
 
   public deleteApplicant(applicantId: string): void {
@@ -167,6 +150,7 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
 
     this.cashedData.splice(applicantIndex, 1);
     this.dataSource.data = this.cashedData;
+    this.directive?.applyFilter$.emit();
     this.notificationsService.showSuccessMessage(
       'The applicant was successfully deleted',
       'Success!',

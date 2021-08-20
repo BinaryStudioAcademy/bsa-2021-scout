@@ -89,7 +89,7 @@ namespace Infrastructure.EF.Seeds
         private static IList<string> titles = new List<string> {
             "Devops",
             "QA",
-            "Software Enginner",
+            "Software Engineer",
             "Project Designer",
             "UI/UX Frontend",
             "Developer",
@@ -100,7 +100,7 @@ namespace Infrastructure.EF.Seeds
         private static IList<string> descriptions = new List<string> {
             "Looking for Devops for maintaining current and developing new pipelines and some casual automation.",
             "Looking for QA for manual, auto, unit, stress, durability and integration tests.",
-            "Looking for Software Enginner that can perform any wish from our clients.",
+            "Looking for Software Engineer that can perform any wish from our clients.",
             "Looking for Project Designer, that design products whitch customers will love.",
             "Looking not only for UI/UX Designer but also for a Frontend developer to maintain from idea to project pipeline.",
             "Looking for orinary Developer for microservice based applicantion, language doesn't matter.",

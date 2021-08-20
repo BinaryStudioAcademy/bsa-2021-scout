@@ -21,14 +21,10 @@ export class ApplicantsHeadComponent {
     this.search.emit(this.searchValue);
   }
 
-  public clearSearchInput(): void {
-    this.searchValue = '';
-    this.search.emit(this.searchValue);
-  }
-
   public showApplicantsCreateDialog(): void {
     const dialogRef = this.dialog.open(CreateApplicantComponent, {
       width: '532px',
+      height: '95vh',
       autoFocus: false,
     });
 
