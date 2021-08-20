@@ -59,7 +59,6 @@ export class VacanciesTableComponent implements AfterViewInit {
         d.position = i + 1;
       });
       this.directive.applyFilter$.emit();
-      console.log(data);
     },
     );
   }

@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { AddCandidateModalComponent } 
+  from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
 import { Applicant } from 'src/app/shared/models/applicant/applicant';
 import { ViewableApplicant } from 'src/app/shared/models/applicant/viewable-applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
@@ -19,8 +21,6 @@ export class ApplicantControlComponent {
   @Input() public applicant: ViewableApplicant|undefined = undefined;
   @Output() public deleteApplicantEvent = new EventEmitter<string>();
   @Output() public updateApplicantEvent = new EventEmitter<ViewableApplicant>();
-
-  public isDotMenuVisible = false;
   
   constructor(
     private readonly dialog: MatDialog,
@@ -28,10 +28,6 @@ export class ApplicantControlComponent {
     private readonly applicantsService: ApplicantsService,
     private readonly route: ActivatedRoute,
   ) {}
-
-  public toggleDotMenu(): void {
-    this.isDotMenuVisible = !this.isDotMenuVisible;
-  }
 
   public showApplicantUpdateDialog(): void {
     const dialogRef = this.dialog.open(UpdateApplicantComponent, {
@@ -95,5 +91,16 @@ export class ApplicantControlComponent {
           );
         },
       );
+  }
+
+  public openVacancyAddModal(): void {
+    this.dialog.open(AddCandidateModalComponent, {
+      width: '400px',
+      autoFocus: false,
+      panelClass: 'applicants-options',
+      data: {
+        applicantId: this.applicant!.id,
+      },
+    });
   }
 }

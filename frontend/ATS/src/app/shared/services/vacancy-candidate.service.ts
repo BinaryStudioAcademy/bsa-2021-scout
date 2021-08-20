@@ -26,7 +26,6 @@ export class VacancyCandidateService {
   }
 
   public postRangeOfCandidates(vacancyId:string, applicantsIds: string[]){
-    console.log(applicantsIds);
     return this.http.postRequest<void>(
       `/VacancyCandidates/CandidatesRange/${vacancyId}`, applicantsIds,
     );
