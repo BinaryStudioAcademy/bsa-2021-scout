@@ -1,0 +1,31 @@
+<div class="dialog-title" mat-dialog-title>
+    <h1>Create pool</h1>
+    <button mat-icon-button mat-dialog-close="none">
+      <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div class="form-control">
+  <form [formGroup]="createPool">
+    <label>Pool name</label>
+    <mat-form-field floatLabel='never' class="al-subscribe-form-field">
+      <input matInput type="text" formControlName="name" placeholder="Enter name of pool">
+    </mat-form-field>
+    <div class="custom-error" *ngIf="this.createPool.controls['name'].dirty && this.createPool.controls['name'].errors?.required">
+      Please fill name of pool.
+    </div>
+    <label>Description</label>
+    <mat-form-field floatLabel='never' class="al-subscribe-form-field">
+        <textarea matInput type="text" autocomplete="off" formControlName="description" placeholder="Enter description"
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="12"
+        cdkAutosizeMaxRows="12"></textarea>
+    </mat-form-field>
+    <div class="custom-error" *ngIf="this.createPool.controls['description'].dirty && this.createPool.controls['description'].errors?.required">
+      Please fill name of pool.
+    </div>
+    <div class="login-button form-group">
+      <button mat-button color="primary" (click)="save()" [disabled]="!createPool.valid || !this.createPool.dirty">Save</button>
+    </div>
+  </form>
+</div>

@@ -11,7 +11,6 @@ using Application.ElasticEnities.CommandQuery.DeleteTagCommand;
 using Application.Applicants.Queries;
 using Application.ElasticEnities.Dtos;
 using System.Threading;
-using Domain.Entities;
 using Application.Applicants.Commands;
 
 namespace WebAPI.Controllers
