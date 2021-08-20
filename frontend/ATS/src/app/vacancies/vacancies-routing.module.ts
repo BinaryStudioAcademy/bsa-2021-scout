@@ -8,20 +8,7 @@ import { AuthGuard } from '../users/guards/auth.guard';
 // eslint-disable-next-line max-len
 import { VacanciesStagesBoardComponent } from './components/vacancies-stages-board/vacancies-stages-board.component';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: MainContentComponent,
-    canActivate: [AuthGuard],
-    children: [
-      {
-        path: 'candidates/:id',
-        pathMatch: 'full',
-        component: VacanciesStagesBoardComponent,
-      },
-    ],
-  },
-];
+const routes: Routes = [];
 
 @NgModule({
   exports: [RouterModule],

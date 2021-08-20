@@ -13,6 +13,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from './components/button/button.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -29,13 +32,12 @@ import { MainContentComponent } from './components/main-content/main-content.com
 import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
+import { AddCandidateModalComponent }
+  from './components/modal-add-candidate/modal-add-candidate.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
@@ -63,18 +65,19 @@ import { MatMenuModule } from '@angular/material/menu';
     MatDatepickerModule,
     MatDialogModule,
     MatNativeDateModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    MatChipsModule,
     TopicComponent,
     FileInputComponent,
     MenuComponent,
     MatProgressBarModule,
     SpinnerComponent,
     StylePaginatorDirective,
+    AddCandidateModalComponent,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatChipsModule,
-    MatAutocompleteModule,
-    MatCheckboxModule,
     MatMenuModule,
   ],
   imports: [
@@ -95,6 +98,9 @@ import { MatMenuModule } from '@angular/material/menu';
     MatDialogModule,
     MatProgressBarModule,
     MatListModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    MatChipsModule,
     BrowserAnimationsModule,
     BrowserModule,
     MatSelectModule,
@@ -120,6 +126,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MainContentComponent,
     SpinnerComponent,
     StylePaginatorDirective,
+    AddCandidateModalComponent,
   ],
 })
-export class SharedModule {}
+export class SharedModule { }

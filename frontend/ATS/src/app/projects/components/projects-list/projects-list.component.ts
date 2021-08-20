@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
 import { ProjectsAddComponent } from '../projects-add/projects-add.component';
 import { ProjectInfo } from 'src/app/projects/models/project-info';
@@ -48,7 +48,6 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
           this.dataSource.data = this.projects;
           this.directive.applyFilter$.emit();
         },
-        (error) => (this.notificationService.showErrorMessage(error.message)),
       );
   }
 
