@@ -41,12 +41,6 @@
             </ng-container>
 
             <ng-container matColumnDef="responsible">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Responsible </th>
-                <td mat-cell *matCellDef="let row"> {{row.responsibleHr.firstName + " " + row.responsibleHr.lastName}}
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="responsible">
                 <th mat-header-cell *matHeaderCellDef> Responsible </th>
                 <td mat-cell *matCellDef="let row"> {{row.responsibleHr.firstName}} {{row.responsibleHr.lastName}}</td>
             </ng-container>

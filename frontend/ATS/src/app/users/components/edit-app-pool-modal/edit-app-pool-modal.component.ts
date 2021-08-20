@@ -149,11 +149,4 @@ export class EditAppPoolModalComponent implements OnInit{
   closeDialog() {
     this.dialogRef.close();
   }
-
-
-
-
-  
-
-
 }
