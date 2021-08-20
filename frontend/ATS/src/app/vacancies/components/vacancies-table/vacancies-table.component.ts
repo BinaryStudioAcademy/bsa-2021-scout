@@ -60,7 +60,6 @@ export class VacanciesTableComponent implements AfterViewInit {
     this.service.getList().subscribe(data=>{
       this.dataSource.data = data;
       this.directive.applyFilter$.emit();
-      console.log(data);
     },
     );
   }
