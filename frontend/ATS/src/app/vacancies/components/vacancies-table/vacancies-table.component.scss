@@ -27,6 +27,17 @@ button.tub {
     line-height: 22px;
 }
 
+.name-logo {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    img {
+        margin-right: 10px;
+    }
+}
+
 button.tub:hover {
     cursor: pointer;
 }

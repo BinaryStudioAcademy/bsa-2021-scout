@@ -30,19 +30,24 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Candidates </th>
             <td mat-cell *matCellDef="let row"  class="clicable" (click)="toStagedReRoute(row.id)">{{row.candidatesAmount}}</td>
         </ng-container>
+        <ng-container matColumnDef="responsible">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Responsible Hr</th>
+            <td mat-cell *matCellDef="let row">
+                <div class="name-logo">
+                <img src="{{row.logo}}" onError="this.src='../../../../assets/images/defaultAvatar.png'" /> {{row.responsibleHr.firstName + " " + row.responsibleHr.lastName}}
+                </div>
+            </td>
+        </ng-container>
         <ng-container matColumnDef="project">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Projects </th>
             <td mat-cell *matCellDef="let row"> {{row.project.name}} </td>
         </ng-container>
         <ng-container matColumnDef="teamInfo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Team Info </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Team Info </th>
             <td mat-cell *matCellDef="let row"> {{row.project.teamInfo}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="responsible">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Responsible </th>
-            <td mat-cell *matCellDef="let row"> {{row.responsibleHr.firstName + " " + row.responsibleHr.lastName}}</td>
-        </ng-container>
+       
 
         <ng-container matColumnDef="creationDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>
