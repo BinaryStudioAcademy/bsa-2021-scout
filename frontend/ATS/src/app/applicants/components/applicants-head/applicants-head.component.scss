@@ -73,11 +73,6 @@ button.tub:focus {
     line-height: 1;
 }
 
-:host ::ng-deep .create-button {
-    width: fit-content;
-    min-width: 150px;
-}
-
 :host ::ng-deep .mat-form-field-wrapper {
     background-color: #fff;
 
