@@ -16,15 +16,6 @@ import { EditVacancyComponent } from '../edit-vacancy/edit-vacancy.component';
 import { property } from 'lodash';
 
 
-const HRs: string[] = [
-  'Livia Baptista',
-  'Emery Culhain',
-  'Mira Workham',
-];
-const NAMES: string[] = [
-  'Interface Designer', 'Software Enginner', 'Project Manager', 'Developer', 'QA',
-];
-
 const STATUES: VacancyStatus[] = [
   VacancyStatus.Active,
   VacancyStatus.Former,
@@ -138,18 +129,3 @@ export class VacanciesTableComponent implements AfterViewInit {
 
 
 }
-
-/** Builds and returns a new User. */
-// function createNewVacancy(): VacancyData {
-//   const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))];
-// ​
-//   return {
-//     title: name,
-//     requiredCandidatesAmount: Math.round(Math.random()*4+1),
-//     currentApplicantsAmount: Math.round(Math.random()*10 +1),
-//     responsible: HRs[Math.round(Math.random() * (HRs.length - 1))],
-//     department: 'Lorem ipsum dorot sit',
-//     creationDate: new Date(),
-//     status: STATUES[Math.round(Math.random()*(STATUES.length - 1))],
-//   };
-// }
