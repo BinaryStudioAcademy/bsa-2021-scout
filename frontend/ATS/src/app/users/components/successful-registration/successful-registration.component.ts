@@ -8,7 +8,7 @@ import { AuthenticationService } from '../../services/auth.service';
 @Component({
   selector: 'app-successful-registration',
   templateUrl: './successful-registration.component.html',
-  styleUrls: ['./successful-registration.component.scss' ,
+  styleUrls: ['./successful-registration.component.scss',
     '../login-regist-common/login-regist-common.component.scss'],
 })
 export class SuccessfulRegistrationComponent {
@@ -18,17 +18,23 @@ export class SuccessfulRegistrationComponent {
     private notificationService: NotificationService) { }
 
   public resendEmail(): void {
-    const dto : ResendConfirmEmailDto =  {
-      email : this.route.snapshot.queryParamMap.get('email') as string,
-      clientUrl : `${environment.clientUrl}/confirm-email`,
+    const dto: ResendConfirmEmailDto = {
+      email: this.route.snapshot.queryParamMap.get('email') as string,
+      clientUrl: `${environment.clientUrl}/confirm-email`,
     };
     this.authenticationService.resendConfirmationEmail(dto).pipe()
       .subscribe(() => {
         this.notificationService.showSuccessMessage(
           'Please check your email to confirm your email.');
       },
-      (error) =>
-        this.notificationService.showErrorMessage(error.description, 'Something went wrong'));
+      (error) => {
+        if (error.description != null) {
+          this.notificationService.showErrorMessage(error.description, 'Something went wrong');
+        }
+        else {
+          this.notificationService.showErrorMessage(error, 'Something went wrong');
+        }
+      });
   }
 
 }

@@ -1,0 +1,11 @@
+<mat-form-field class="tags-input" appearance="fill">
+    <mat-chip-list #tagsList>
+        <mat-chip *ngFor="let tag of tags" [selectable]="true" [removable]="true" (removed)="removeTag(tag.tagName)">
+            {{tag.tagName}}
+            <mat-icon matChipRemove>close</mat-icon>
+        </mat-chip>
+        <input matInput placeholder="Enter new tag..." maxlength="15" [matChipInputFor]="tagsList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="createTag($event)">
+    </mat-chip-list>
+</mat-form-field>

@@ -15,7 +15,8 @@ export class ResetPasswordGuard implements CanActivate {
     : Observable<boolean> {
 
     const email: string = route.queryParams['email'];
-    const token: string = route.queryParams['token'];
+    const re = /\+/gi; 
+    const token: string = route.queryParams['token'].replace(re, '%2B');
     return this.authService.isResetTokenPasswordValid(email, token).pipe(
       map(isTokenValid => {
         if (isTokenValid) {

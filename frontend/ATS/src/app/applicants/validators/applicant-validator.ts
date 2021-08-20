@@ -3,15 +3,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export const applicantGroup = new FormGroup({
   firstName: new FormControl('', [
     Validators.required,
-    Validators.pattern('[a-zA-Z]+'),
+    Validators.pattern('[A-Z]{1}[a-z]*'),
   ]),
   lastName: new FormControl('', [
     Validators.required,
-    Validators.pattern('[a-zA-Z]+'),
+    Validators.pattern('[A-Z]{1}[a-z]*'),
   ]),
   middleName: new FormControl('', [
     Validators.required,
-    Validators.pattern('[a-zA-Z]+'),
+    Validators.pattern('[A-Z]{1}[a-z]*'),
   ]),
   email: new FormControl('', [
     Validators.required,
@@ -24,7 +24,6 @@ export const applicantGroup = new FormGroup({
     Validators.pattern('[0-9]{8,16}'),
   ]),
   skype: new FormControl('', [
-    Validators.required,
     Validators.pattern('\\S{6,32}'),
   ]),
   linkedInUrl: new FormControl('', [
