@@ -83,5 +83,35 @@ namespace Infrastructure.Repositories.Read
 
             return applicantVacancyInfos;
         }
+
+        public async Task<Applicant> GetByIdAsync(string applicantId)
+        {
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
+            
+            string sql = $"SELECT * FROM {_tableName} WHERE Id = @id";
+
+            await connection.OpenAsync();
+
+            var applicant = await connection.QueryFirstOrDefaultAsync<Applicant>(sql, new { id = applicantId });
+
+            if (applicant == null)
+            {
+                throw new NotFoundException(typeof(Applicant), applicantId);
+            }
+
+            await connection.CloseAsync();
+
+            try
+            {
+                // TODO: move to one query
+                var cvFileInfo = await GetCvFileInfoAsync(applicantId);
+                applicant.CvFileInfo = cvFileInfo;
+            } catch (Exception _)
+            {
+
+            }
+
+            return applicant;
+        }
     }
 }
