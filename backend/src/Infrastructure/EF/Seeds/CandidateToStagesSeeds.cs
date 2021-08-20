@@ -22,7 +22,7 @@ namespace Infrastructure.EF.Seeds
                     bool isAppliedForVacancy = _random.Next() % 4 == 0;
                     if (!isAppliedForVacancy)
                         continue;
-                    string stageId = vacancyId.Substring(0, vacancyId.Length - 1) + _random.Next(StageSeeds.types.Count());
+                    string stageId = vacancyId.Substring(0, vacancyId.Length - 3) + "00" + _random.Next(StageSeeds.types.Count());
 
                     candidateToStages.Add(
                         new CandidateToStage

@@ -46,7 +46,7 @@ namespace Application.Users.Commands
             Console.WriteLine(command.RegisterDto.UserRegisterDto.FirstName);
             var newUser = _mapper.Map<User>(command.RegisterDto.UserRegisterDto);
             Console.WriteLine(newUser.FirstName);
-            newUser.CompanyId = "1"; // !IMPORTANT! delete in the future         
+            newUser.CompanyId = "0b129ab3-7375-4c96-95a5-8efa95a455b4"; // !IMPORTANT! delete in the future         
 
             newUser.IsEmailConfirmed = false;
             var salt = _securityService.GetRandomBytes();
