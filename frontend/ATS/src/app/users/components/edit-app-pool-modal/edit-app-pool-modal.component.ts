@@ -80,6 +80,7 @@ export class EditAppPoolModalComponent implements OnInit{
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();    
+    console.log(value);
     
     let app = this.applicants.find(x=> x.id === value && x.lastName === value);
 
@@ -107,7 +108,9 @@ export class EditAppPoolModalComponent implements OnInit{
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
+    //console.log(event);
     const value = event.option.viewValue;
+    console.log(value);
     
     let app = this.allapplicants.find(x=> 
       `done ${x.firstName} ${x.lastName}` === value );
@@ -121,6 +124,7 @@ export class EditAppPoolModalComponent implements OnInit{
   }
 
   private _filter(value: string): Applicant[] {    
+    console.log(value);
     const filterValue = value ? value.toLowerCase() : '';    
 
     return this.allapplicants.filter(applicant => (

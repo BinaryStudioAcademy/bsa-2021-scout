@@ -1,15 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { AddCandidateModalComponent } 
-  from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
+import { map, takeUntil } from 'rxjs/operators';
 import { Applicant } from 'src/app/shared/models/applicant/applicant';
 import { ViewableApplicant } from 'src/app/shared/models/applicant/viewable-applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { ApplicantDeleteConfirmComponent }
-  from '../applicant-delete-confirm/applicant-delete-confirm.component';
 import { UpdateApplicantComponent } from '../update-applicant/update-applicant.component';
 
 @Component({
@@ -21,6 +17,8 @@ export class ApplicantControlComponent {
   @Input() public applicant: ViewableApplicant|undefined = undefined;
   @Output() public deleteApplicantEvent = new EventEmitter<string>();
   @Output() public updateApplicantEvent = new EventEmitter<ViewableApplicant>();
+
+  public isDotMenuVisible = false;
   
   constructor(
     private readonly dialog: MatDialog,
@@ -29,10 +27,14 @@ export class ApplicantControlComponent {
     private readonly route: ActivatedRoute,
   ) {}
 
+  public toggleDotMenu(): void {
+    this.isDotMenuVisible = !this.isDotMenuVisible;
+  }
+
   public showApplicantUpdateDialog(): void {
     const dialogRef = this.dialog.open(UpdateApplicantComponent, {
       width: '480px',
-      height: '95vh',
+      height: 'min-content',
       autoFocus: false,
       data: this.applicant,
     });
@@ -41,38 +43,19 @@ export class ApplicantControlComponent {
       .pipe(
         map((a: Applicant) => {
           let viewableApplicant = (a as unknown) as ViewableApplicant;
-          
-          if (viewableApplicant) {
-            viewableApplicant.isShowAllTags = false;
-          }
+          viewableApplicant.isShowAllTags = false;
   
           return viewableApplicant;
         }),
       )
       .subscribe((result: ViewableApplicant) => {
         if (result) {
-          this.updateApplicantEvent.emit(result);
-        }
-      },
-      (error: Error) => {
-        this.notificationsService.showErrorMessage(
-          error.message,
-          'Cannot update the applicant',
-        );
-      });
-  }
-
-  public showDeleteConfirmDialog(): void {
-    const dialogRef = this.dialog.open(ApplicantDeleteConfirmComponent, {
-      width: '400px',
-      height: 'min-content',
-      autoFocus: false,
-    });
-
-    dialogRef.afterClosed()
-      .subscribe((response: boolean) => {
-        if (response) {
-          this.deleteApplicant();
+          this.applicant = result;
+        
+          this.notificationsService.showSuccessMessage(
+            'An applicant was succesfully updated',
+            'Success!',
+          );
         }
       });
   }
@@ -93,14 +76,4 @@ export class ApplicantControlComponent {
       );
   }
 
-  public openVacancyAddModal(): void {
-    this.dialog.open(AddCandidateModalComponent, {
-      width: '400px',
-      autoFocus: false,
-      panelClass: 'applicants-options',
-      data: {
-        applicantId: this.applicant!.id,
-      },
-    });
-  }
 }

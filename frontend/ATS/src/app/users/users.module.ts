@@ -29,8 +29,6 @@ import { CreateTalentpoolModalComponent }
   from './components/create-talentpool-modal/create-talentpool-modal.component';
 import { EditAppPoolModalComponent } 
   from './components/edit-app-pool-modal/edit-app-pool-modal.component';
-import { SendingRegisterLinkDialogComponent } 
-  from './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
 
 
 @NgModule({
@@ -52,7 +50,6 @@ import { SendingRegisterLinkDialogComponent }
     ApplicationPoolComponent,
     CreateTalentpoolModalComponent,
     EditAppPoolModalComponent,    
-    SendingRegisterLinkDialogComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [

@@ -1,0 +1,14 @@
+::ng-deep {
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: none;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background-color: rgba($color: (#291965), $alpha: 0.5);
+        border-radius: 5px;
+    }
+}

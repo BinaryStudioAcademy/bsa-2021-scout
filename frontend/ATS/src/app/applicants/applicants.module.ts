@@ -14,8 +14,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { TagsEditComponent } from './components/tags-edit/tags-edit.component';
 import { ApplicantControlComponent } 
   from './components/applicant-control/applicant-control.component';
-import { ApplicantDeleteConfirmComponent }
-  from './components/applicant-delete-confirm/applicant-delete-confirm.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +23,6 @@ import { ApplicantDeleteConfirmComponent }
     ApplicantsHeadComponent,
     TagsEditComponent,
     ApplicantControlComponent,
-    ApplicantDeleteConfirmComponent,
   ],
   imports: [
     BrowserModule,

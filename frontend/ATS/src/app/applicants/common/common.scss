@@ -1,3 +1,5 @@
+@import url('scroll.scss');
+
 .dialog-header-bar {
     display: flex;
     justify-content: space-between;
@@ -22,11 +24,6 @@
 
     .mat-icon {
         color: #000;
-
-        &:hover {
-            cursor: pointer;
-            color: #ee2a64;
-        }
     }
 }
 
@@ -36,6 +33,15 @@
     p {
         font-size: 12px;
         margin: 10px 0 0 0;
+    }
+}
+
+::ng-deep {
+    .cdk-overlay-pane .mat-dialog-container {
+        height: 90vh;
+    }
+    .mat-dialog-container {
+        position: relative;
     }
 }
 
@@ -83,6 +89,32 @@
         margin-top: 3px;
         font-size: 2em;
     }
+}
+
+.error-border {
+    border: 1px solid #f00;
+    border-radius: 10px;
+    
+    .mat-input-element {
+        color: #f00;
+    }
+}
+
+.custom-error {
+    font-family: Nunito;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 19px;
+    color: #f00;
+    max-width: fit-content;
+}
+
+.cdk-overlay-pane .mat-dialog-container {
+    height: 90vh;
+    box-sizing: border-box;
+}
+.mat-dialog-container {
+    position: relative;
 }
 
 :host ::ng-deep .mat-form-field-wrapper {
