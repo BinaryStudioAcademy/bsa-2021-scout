@@ -11,7 +11,7 @@ export interface Applicant {
   phone?: string;
   skype?: string;
   linkedInUrl?: string;
-  experience?: string;
+  experience?: number;
   toBeContacted?: Date;
   companyId?: string;
   isSelected?: boolean;

@@ -13,10 +13,7 @@ import { Tag } from 'src/app/shared/models/tags/tag';
 @Component({
   selector: 'app-create-applicant',
   templateUrl: 'create-applicant.component.html',
-  styleUrls: [
-    'create-applicant.component.scss',
-    '../../common/common.scss',
-  ],
+  styleUrls: ['create-applicant.component.scss', '../../common/common.scss'],
 })
 export class CreateApplicantComponent implements OnInit, OnDestroy {
   public validationGroup: FormGroup | undefined = undefined;

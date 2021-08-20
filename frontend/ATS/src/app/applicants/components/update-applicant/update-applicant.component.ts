@@ -13,10 +13,7 @@ import { Tag } from 'src/app/shared/models/tags/tag';
 @Component({
   selector: 'app-update-applicant',
   templateUrl: 'update-applicant.component.html',
-  styleUrls: [
-    'update-applicant.component.scss',
-    '../../common/common.scss',
-  ],
+  styleUrls: ['update-applicant.component.scss', '../../common/common.scss'],
 })
 export class UpdateApplicantComponent implements OnDestroy {
   public validationGroup: FormGroup | undefined = undefined;
@@ -51,12 +48,12 @@ export class UpdateApplicantComponent implements OnDestroy {
     this.updatedApplicant.id = applicant.id;
     this.updatedApplicant.firstName = applicant.firstName;
     this.updatedApplicant.lastName = applicant.lastName;
-    this.updatedApplicant.middleName = applicant.middleName;
+    this.updatedApplicant.middleName = applicant.middleName ?? '';
     this.updatedApplicant.email = applicant.email;
-    this.updatedApplicant.phone = applicant.phone;
-    this.updatedApplicant.linkedInUrl = applicant.linkedInUrl;
-    this.updatedApplicant.skype = applicant.skype;
-    this.updatedApplicant.experience = applicant.experience;
+    this.updatedApplicant.phone = applicant.phone ?? '';
+    this.updatedApplicant.linkedInUrl = applicant.linkedInUrl ?? '';
+    this.updatedApplicant.skype = applicant.skype ?? '';
+    this.updatedApplicant.experience = applicant.experience ?? 0;
     this.updatedApplicant.tags.id = applicant.tags.id;
     this.updatedApplicant.tags.tagDtos = this.tags = applicant.tags.tagDtos;
   }
