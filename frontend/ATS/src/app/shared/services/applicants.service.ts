@@ -16,7 +16,12 @@ export class ApplicantsService {
   }
 
   public addApplicant(createApplicant: CreateApplicant): Observable<Applicant> {
-    return this.httpClient.postRequest<Applicant>('/applicants', createApplicant);
+    const bodyFormData = new FormData();
+    bodyFormData.append('body', JSON.stringify(createApplicant));
+    if (createApplicant.cv) {
+      bodyFormData.append('cvFile', createApplicant.cv, createApplicant.cv.name);
+    }
+    return this.httpClient.postRequest<Applicant>('/applicants', bodyFormData);
   }
 
   public updateApplicant(updateApplicant: UpdateApplicant): Observable<Applicant> {
