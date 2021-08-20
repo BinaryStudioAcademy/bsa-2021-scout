@@ -38,9 +38,7 @@ import { AddCandidateModalComponent }
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-
-
-
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   exports: [
@@ -80,6 +78,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatMenuModule,
   ],
   imports: [
     MatButtonModule,
@@ -113,6 +112,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatChipsModule,
     MatAutocompleteModule,
     MatCheckboxModule,
+    MatMenuModule,
   ],
   providers: [HttpClientService],
   declarations: [
