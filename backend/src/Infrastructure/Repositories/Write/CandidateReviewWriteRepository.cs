@@ -13,7 +13,11 @@ namespace Infrastructure.Repositories.Write
 
         public async Task<IEnumerable<CandidateReview>> BulkCreateAsync(IEnumerable<CandidateReview> data)
         {
-            _context.AddRange(data);
+            foreach (CandidateReview review in data)
+            {
+                _context.Add(review);
+            }
+
             await _context.SaveChangesAsync();
 
             return data;

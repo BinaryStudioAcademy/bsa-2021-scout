@@ -17,5 +17,6 @@ namespace Domain.Entities
         public ICollection<CandidateToStage> CandidateToStages { get; set; }
         public ICollection<ReviewToStage> ReviewToStages { get; set; }
         public ICollection<CandidateReview> Reviews { get; set; }
+        public ICollection<CandidateComment> CandidateComments { get; set; }
     }
 }

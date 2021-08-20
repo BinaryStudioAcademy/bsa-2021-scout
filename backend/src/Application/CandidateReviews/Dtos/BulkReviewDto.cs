@@ -7,6 +7,7 @@ namespace Application.CandidateReviews.Dtos
     {
         public string StageId { get; set; }
         public string CandidateId { get; set; }
+        public string Comment { get; set; }
 
         // Dictionary<candidate id, mark>
         public Dictionary<string, int> Data { get; set; }

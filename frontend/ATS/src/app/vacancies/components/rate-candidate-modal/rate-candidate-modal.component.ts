@@ -58,14 +58,20 @@ export class RateCandidateModalComponent implements OnInit, OnDestroy {
   }
 
   public isButtonDisabled(): boolean {
-    return this.data.fixedCriterias.every(
-      (crit) => typeof this.rateData[crit.id] === 'number',
+    return this.data.fixedCriterias.some(
+      (crit) => typeof this.rateData[crit.id] !== 'number',
     );
   }
 
   public submit(): void {
+    console.log(this.rateData);
     this.candidateReviewService
-      .bulkReview(this.data.stageId, this.data.candidateId, this.rateData)
+      .bulkReview(
+        this.data.stageId,
+        this.data.candidateId,
+        this.comment || undefined,
+        this.rateData,
+      )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         () => this.dialogRef.close('rate'),

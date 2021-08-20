@@ -11,11 +11,13 @@ export class CandidateReviewService {
   public bulkReview(
     stageId: string,
     candidateId: string,
+    comment: string | undefined,
     data: Record<string, number>,
   ): Observable<void> {
     return this.http.postRequest('/candidateReviews/bulk', {
       stageId,
       candidateId,
+      comment,
       data,
     });
   }

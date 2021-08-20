@@ -137,7 +137,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<Project>, WriteRepository<Project>>();
             services.AddScoped<IWriteRepository<Review>, WriteRepository<Review>>();
             services.AddScoped<IWriteRepository<ReviewToStage>, WriteRepository<ReviewToStage>>();
-
+            services.AddScoped<IWriteRepository<CandidateComment>, WriteRepository<CandidateComment>>();
 
             return services;
         }

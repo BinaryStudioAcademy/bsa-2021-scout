@@ -5,7 +5,7 @@ using Application.CandidateReviews.Commands;
 
 namespace WebAPI.Controllers
 {
-    public class CandidateReviewController : ApiController
+    public class CandidateReviewsController : ApiController
     {
         [HttpPost("bulk")]
         public async Task<IActionResult> BulkCreate([FromBody] BulkReviewDto data)
