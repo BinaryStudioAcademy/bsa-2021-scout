@@ -12,7 +12,6 @@ import { NotificationService } from '../../services/notification.service';
 })
 export class HeaderComponent implements OnDestroy {
   public value: string = '';
-  public dropdownOpened: boolean = false;
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -24,10 +23,6 @@ export class HeaderComponent implements OnDestroy {
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-  }
-
-  public toggleDropdown(): void {
-    this.dropdownOpened = !this.dropdownOpened;
   }
 
   public logout(): void {

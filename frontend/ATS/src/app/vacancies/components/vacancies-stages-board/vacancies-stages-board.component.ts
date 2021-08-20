@@ -27,6 +27,10 @@ import { ShortVacancyWithStages } from 'src/app/shared/models/vacancy/short-with
 import { ReviewService } from 'src/app/shared/services/review.service';
 import { Review } from 'src/app/shared/models/reviews/review';
 
+import {
+  AddCandidateModalComponent,
+} from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
+
 interface CandidatePos {
   index: number;
   stageIndex: number;
@@ -44,6 +48,8 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   public listIds: string[] = [];
   public avatars: string[] = [];
   public extraAvatarsCount: number = 0;
+  public vacancyId: string = '';
+
 
   private reviews: Review[] = [];
   private readonly showingAvatarsCount: number = 7;
@@ -57,7 +63,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
     private readonly modalService: MatDialog,
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     this.route.params.subscribe(({ id }) => {
@@ -151,6 +157,19 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  public openCandidateAddModal(): void {
+    this.modalService.open(AddCandidateModalComponent, {
+      width: '400px',
+      autoFocus: false,
+      panelClass: 'candidate-dialog',
+      data: {
+        vacancyId: this.vacancyId,
+      },
+    }).afterClosed()
+      .subscribe(_ => this.loadData(this.vacancyId));
+  }
+
 
   public openCandidateModal(id: string): void {
     let pos: CandidatePos = { index: 0, stageIndex: 0 };
