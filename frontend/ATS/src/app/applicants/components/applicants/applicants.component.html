@@ -1,99 +1,93 @@
 <app-header></app-header>
-<div class="outside-wrapper" *ngIf="isShowAllTags" (click)="toggleAllTags()"></div>
 <div class="page-content">
-    <div class="applicants-header-bar">
-        <mat-form-field appearance="fill">
-            <mat-icon>search</mat-icon>
-                <input [(ngModel)]="searchValue" matInput type="text" class="search-input" placeholder="Search..." (keyup)="applyFilter()">
-            <button *ngIf="searchValue" mat-icon-button aria-label="Clear" (click)="clearSearchInput()">
-                  <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-        <button mat-button class="create-button" (click)="showApplicantCreateDialog()">
-            + New applicant
-        </button>
-    </div>
-    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Full name </th>
-            <td mat-cell *matCellDef="let applicant"> {{applicant.firstName}} {{applicant.lastName}} {{applicant.middleName}} </td>
-        </ng-container>
+    <div class="mat-elevation-z8">
+        <app-applicants-head (search)="applySearchValue($event)" (applicantCreated)="createApplicant($event)" #head></app-applicants-head>
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef> # </th>
+                <td mat-cell class="index-cell" *matCellDef="let i = index"> {{ (i+1) + (paginator.pageIndex * paginator.pageSize)}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Full name </th>
+                <td mat-cell *matCellDef="let applicant"> {{applicant.firstName}} {{applicant.lastName}} {{applicant.middleName}} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="rate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="rate"> Rate </th>
+                <td mat-cell *matCellDef="let applicant">
+                    5
+                </td>
+            </ng-container>
         
-        <ng-container matColumnDef="rate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header="rate"> Rate </th>
-            <td mat-cell *matCellDef="let applicant">
-                5
-            </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
-            <td mat-cell *matCellDef="let applicant"> {{applicant.email}} </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="active_vacancies">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header="active_vacancies"> Active vacancies </th>
-            <td mat-cell *matCellDef="let applicant" class="active-vac-cell">{{applicant.vacancies.length}}</td>
-        </ng-container>
-      
-        <ng-container matColumnDef="jobs_list">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header="jobs_list"> Jobs </th>
-            <td mat-cell *matCellDef="let applicant" class="jobs-list-cell" [class.jobs-pop-up-list]="applicant.vacancies.length > 3">
-                <mat-list class="jobs-list">
-                    <mat-list-item *ngFor="let vacancy of applicant.vacancies">
-                        {{vacancy.Title}} ({{vacancy.stage}})
-                    </mat-list-item>
-                </mat-list>
-            </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-            <td mat-cell *matCellDef="let applicant"> Status </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="tags">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header="tags"> Tags </th>
-            <td mat-cell *matCellDef="let applicant" class="tags-list-cell" [style.min-width]="isShowAllTags ? '150px' : '50px'">
-                <mat-list *ngIf="!isShowAllTags" class="tags-list">
-                    <mat-list-item *ngFor="let tag of getFirstTags(applicant)">{{tag.tagName}}</mat-list-item>
-                    <mat-list-item class="more-button" *ngIf="applicant.tags.tagDtos.length > 6" (click)="toggleAllTags()">
-                        +{{applicant.tags.tagDtos.length - 5}} more
-                    </mat-list-item>
-                </mat-list>
-                
-                <div class="absolute-tags-list-container" *ngIf="isShowAllTags">
-                    <div class="tags-pop-up-actions">
-                        <button mat-icon-button (click)="toggleAllTags()">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div><mat-list class="tags-list">
-                        <mat-list-item *ngFor="let tag of applicant.tags.tagDtos">{{tag.tagName}}</mat-list-item>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
+                <td mat-cell *matCellDef="let applicant"> {{applicant.email}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="active_vacancies">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="active_vacancies"> Active vacancies </th>
+                <td mat-cell *matCellDef="let applicant" class="active-vac-cell">{{applicant.vacancies.length}}</td>
+            </ng-container>
+        
+            <ng-container matColumnDef="jobs_list">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="jobs_list"> Jobs </th>
+                <td mat-cell *matCellDef="let applicant" class="jobs-list-cell">
+                    <mat-list class="jobs-list" [class.jobs-pop-up-list]="applicant.vacancies.length > 3">
+                        <mat-list-item *ngFor="let vacancy of applicant.vacancies">
+                            {{vacancy.title}} ({{vacancy.stage}})
+                        </mat-list-item>
+                    </mat-list>
+                </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                <td mat-cell *matCellDef="let applicant"> Status </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="tags">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="tags"> Tags </th>
+                <td mat-cell *matCellDef="let applicant" class="tags-list-cell" [style.min-width]="applicant.isShowAllTags ? '150px' : '50px'">
+                    <div class="outside-wrapper" *ngIf="applicant.isShowAllTags" (click)="toggleTags(applicant)"></div>
+                    <mat-list *ngIf="!applicant.isShowAllTags" class="tags-list">
+                        <mat-list-item *ngFor="let tag of getFirstTags(applicant)">{{tag.tagName}}</mat-list-item>
+                        <mat-list-item class="more-button" *ngIf="applicant.tags.tagDtos.length > 6" (click)="toggleTags(applicant)">
+                            +{{applicant.tags.tagDtos.length - 5}} more
+                        </mat-list-item>
                     </mat-list>
                     
-                </div>
-            </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="control_buttons">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let applicant" class="control-buttons-cell">
-                <div class="buttons-wrap">
-                <button mat-icon-button class="applicant-control-btn">
-                    <mat-icon>turned_in</mat-icon>
-                </button>
-                <button (click)="showApplicantUpdateDialog(applicant)" mat-icon-button class="applicant-control-btn">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button class="applicant-control-btn">
-                    <mat-icon>more_horiz</mat-icon>
-                </button>
-                </div>
-            </td>
-        </ng-container>
-      
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let myRowData; columns: displayedColumns"></tr>
-    </table>
-    <mat-paginator [pageSize]="10" [showTotalPages]="5" appStylePaginator hidePageSize></mat-paginator>
+                    <div class="absolute-tags-list-container" *ngIf="applicant.isShowAllTags">
+                        <div class="tags-pop-up-actions">
+                            <button mat-icon-button (click)="toggleTags(applicant)">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div><mat-list class="tags-list">
+                            <mat-list-item *ngFor="let tag of applicant.tags.tagDtos">{{tag.tagName}}</mat-list-item>
+                        </mat-list>
+                        
+                    </div>
+                </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="control_buttons">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let applicant" class="control-buttons-cell">
+                    <app-applicant-control [applicant]="applicant" (deleteApplicantEvent)="deleteApplicant($event)"></app-applicant-control>
+                </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let myRowData; columns: displayedColumns"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">
+                    <p *ngIf="searchValue === ''">No data to display</p>
+                    <p *ngIf="searchValue !== ''">No applicant name matching the filter "{{searchValue}}"</p>
+                </td>
+            </tr>
+
+        </table>
+        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15]" [showTotalPages]="5" [pageSize]="10" appStylePaginator></mat-paginator>
+    </div>
 </div>

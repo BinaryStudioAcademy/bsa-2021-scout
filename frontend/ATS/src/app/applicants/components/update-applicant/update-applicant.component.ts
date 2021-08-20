@@ -8,11 +8,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UpdateApplicant } from 'src/app/shared/models/applicant/update-applicant';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
+import { Tag } from 'src/app/shared/models/tags/tag';
 
 @Component({
   selector: 'app-update-applicant',
   templateUrl: 'update-applicant.component.html',
-  styleUrls: ['update-applicant.component.scss', '../../common/common.scss'],
+  styleUrls: [
+    'update-applicant.component.scss',
+    '../../common/common.scss',
+  ],
 })
 export class UpdateApplicantComponent implements OnDestroy {
   public validationGroup: FormGroup | undefined = undefined;
@@ -26,7 +30,14 @@ export class UpdateApplicantComponent implements OnDestroy {
     skype: '',
     linkedInUrl: '',
     experience: 0,
+    tags: {
+      id: '',
+      elasticType: 1,
+      tagDtos: [],
+    },
   };
+
+  public tags: Tag[] = [];
 
   private $unsubscribe = new Subject();
 
@@ -37,18 +48,21 @@ export class UpdateApplicantComponent implements OnDestroy {
     private readonly notificationsService: NotificationService,
   ) {
     this.validationGroup = applicantGroup;
-
     this.updatedApplicant.id = applicant.id;
     this.updatedApplicant.firstName = applicant.firstName;
     this.updatedApplicant.lastName = applicant.lastName;
     this.updatedApplicant.middleName = applicant.middleName;
     this.updatedApplicant.email = applicant.email;
     this.updatedApplicant.phone = applicant.phone;
+    this.updatedApplicant.linkedInUrl = applicant.linkedInUrl;
     this.updatedApplicant.skype = applicant.skype;
     this.updatedApplicant.experience = applicant.experience;
+    this.updatedApplicant.tags.id = applicant.tags.id;
+    this.updatedApplicant.tags.tagDtos = this.tags = applicant.tags.tagDtos;
   }
 
   public updateApplicant(): void {
+    this.updatedApplicant.tags.tagDtos = this.tags;
     this.applicantsService
       .updateApplicant(this.updatedApplicant)
       .pipe(takeUntil(this.$unsubscribe))
@@ -65,10 +79,14 @@ export class UpdateApplicantComponent implements OnDestroy {
       );
   }
 
+  public updateTags(tags: Tag[]): void {
+    this.tags = tags;
+  }
+
   public ngOnDestroy(): void {
+    this.validationGroup?.reset();
+
     this.$unsubscribe.next();
     this.$unsubscribe.complete();
-
-    this.validationGroup?.reset();
   }
 }
