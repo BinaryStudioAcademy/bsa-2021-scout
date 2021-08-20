@@ -26,20 +26,27 @@ namespace Infrastructure.EF.Seeds
             Tier tierTo = Tiers[_random.Next(Tiers.Count)];
             if((int)tierFrom > (int)tierTo)
                 (tierTo, tierFrom) = (tierFrom, tierTo);
+            DateTime creationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30));
+            DateTime dateOfOpening = creationDate.AddDays(20);
+            DateTime modificationDate = dateOfOpening.AddDays(2);
+            DateTime? completionDate = _random.Next() % 2 == 0 ?  creationDate.AddMonths(_random.Next(2, 4)): null;
+            DateTime plannedCompletionDate = creationDate.AddMonths(3);
+            int randomIndex = _random.Next(Titles.Count());
             return  new Vacancy
             {
                 Id = id,
-                Title = Titles[_random.Next(Titles.Count)],
+                Title = Titles[randomIndex],
                 Requirements = RequirementsList[_random.Next(RequirementsList.Count())],
                 Status = Statuses[_random.Next(Statuses.Count)],
-                CreationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, -10),
-                DateOfOpening = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 5),
-                ModificationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, -2),
+                CreationDate = creationDate,
+                Description = Descriptions[randomIndex],
+                DateOfOpening = dateOfOpening,
+                ModificationDate = modificationDate,
                 IsRemote = _random.Next() % 2 == 0,
                 IsHot = _random.Next() % 2 == 0,
                 SalaryFrom = _random.Next(1200, 1300),
                 SalaryTo = _random.Next(1300, 56000),
-                CompletionDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 20),
+                CompletionDate = completionDate,
                 PlannedCompletionDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 21),
                 TierFrom = tierFrom,
                 TierTo = tierTo,
@@ -67,7 +74,7 @@ namespace Infrastructure.EF.Seeds
             "Be a cat lover",
             "Be a dog lover",
             "Speak German",
-            "No work/life balace"
+            "Excellent communication and teamwork skills",
         };
         private IList<string> Titles = new List<string>{
             "Devops",
@@ -78,6 +85,16 @@ namespace Infrastructure.EF.Seeds
             "Developer",
             "Web Developer",
             "Project Manager"
+        };
+        private IList<string> Descriptions = new List<string>{
+            "Looking for Devops for maintaining current and developing new pipelines and some casual automation.",
+            "Looking for QA for manual, auto, unit, stress, durability and integration tests.",
+            "Looking for Software Enginner that can perform any wish from our clients.",
+            "Looking for Project Designer, that design products whitch customers will love.",
+            "Looking not only for UI/UX Designer but also for a Frontend developer to maintain from idea to project pipeline.",
+            "Looking for orinary Developer for microservice based applicantion, language doesn't matter.",
+            "Looking for modern Web Developer with skill to perform not template based magic.",
+            "Looking for efficient Project Manger with SCRUM/KANBAN/AGILE principles in mind."
         };
         private  IList<string> ProjectIds = new List<string>{
             "p9e10160-0522-4c2f-bfcf-a07e9faf0c04",
