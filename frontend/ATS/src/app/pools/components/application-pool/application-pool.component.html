@@ -45,10 +45,10 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
             <td mat-cell *matCellDef="let row">
                 <mat-icon (click)="editPool(row)" >edit</mat-icon>                
-<!--                <mat-icon (click)="poolDetails(row.id)">more_horiz</mat-icon>-->
-                <a [routerLink]="row.id">
+                <mat-icon (click)="onDetails(row.id)">more_horiz</mat-icon>
+<!--                                <a [routerLink]="row.id">
                     <mat-icon>more_horiz</mat-icon>
-                </a>
+                </a> -->
             </td>
         </ng-container>
 

@@ -16,6 +16,7 @@ import { CreatePool } from 'src/app/shared/models/applicants-pool/create-pool';
 import { UpdatePool } from 'src/app/shared/models/applicants-pool/update-pool';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { Router } from '@angular/router';
+import { PoolDetailsModalComponent } from '../pool-details-modal/pool-details-modal.component';
 
 
 
@@ -155,6 +156,13 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
     });
   }
 
+  onDetails(id: string)
+  {
+    this.dialogService.open(PoolDetailsModalComponent, {
+      width: '800px',
+      data: id,
+    });
+  }
 
   editPool(pool : ApplicantsPool)
   {

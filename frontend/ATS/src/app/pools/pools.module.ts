@@ -9,6 +9,7 @@ import { CreateTalentpoolModalComponent }
   from './components/create-talentpool-modal/create-talentpool-modal.component';
 import { EditAppPoolModalComponent } 
   from './components/edit-app-pool-modal/edit-app-pool-modal.component';
+import{PoolDetailsModalComponent}from'./components/pool-details-modal/pool-details-modal.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { EditAppPoolModalComponent }
     CreateTalentpoolModalComponent,
     EditAppPoolModalComponent,
     ApplicationPoolDetailsComponent,
+    PoolDetailsModalComponent,    
   ],
   imports: [SharedModule,RouterModule],
   providers: [
