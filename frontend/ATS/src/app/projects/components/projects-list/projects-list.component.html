@@ -80,7 +80,9 @@
                     <div class="icons">
                         <mat-icon>bookmark</mat-icon>
                         <mat-icon (click)="OnEdit(row)">edit</mat-icon>
-                        <mat-icon>more_horiz</mat-icon>
+                        <mat-select panelClass="project-options">
+                            <mat-option class="delete" (click)="OnDelete(row)"><mat-icon>delete</mat-icon>Delete</mat-option>
+                        </mat-select>
                     </div>
                 </td>
             </ng-container>

@@ -37,6 +37,7 @@ namespace WebAPI.Extensions
             await ApplyPoolToApplicantSeeding(host);
             await ApplyStageSeeding(host);
             await ApplyVacancyCandidateSeeding(host);
+            await ApplyCandidateToStagesSeeding(host);
             return host;
         }
         public static IHost ApplyDatabaseMigrations(this IHost host)
@@ -108,6 +109,21 @@ namespace WebAPI.Extensions
                     context.PoolToApplicants.Update(poolToApplicant);
                 else
                     await context.PoolToApplicants.AddAsync(poolToApplicant);
+                await context.SaveChangesAsync();
+            }
+
+            return host;
+        }
+        public async static Task<IHost> ApplyCandidateToStagesSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            foreach (var candidateToStage in CandidateToStagesSeeds.CandidateToStages())
+            {
+                if(await context.CandidateToStages.AnyAsync(c=>c.Id == candidateToStage.Id))
+                    context.CandidateToStages.Update(candidateToStage);
+                else
+                    await context.CandidateToStages.AddAsync(candidateToStage);
                 await context.SaveChangesAsync();
             }
 

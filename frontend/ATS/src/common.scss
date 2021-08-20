@@ -33,11 +33,12 @@ $primary-font: Nunito;
 
 //accent button
 .mat-button.mat-accent {
-    line-height: 31px;
-    width: 165px;
-    background-color: $primary-color-white;
-    border: 2px solid $primary-color;
-    color: $primary-color;
+  line-height: 31px;
+  width: auto;
+  padding: auto 30px ;
+  background-color: $primary-color-white;
+  border: 2px solid $primary-color;
+  color: $primary-color;
 }
 
 // disabled button

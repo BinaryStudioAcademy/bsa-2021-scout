@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Domain.Entities;
-using Domain.Enums;
 
 namespace Infrastructure.EF.Seeds
 {
@@ -9,20 +8,20 @@ namespace Infrastructure.EF.Seeds
     {
         public static IEnumerable<User> Users { get; } = new List<User>
         {
-            new User { 
-                Id = "1", 
-                FirstName = "Hr", 
-                LastName = "Lead", 
-                Email = "hrlead@gmail.com", 
-                CompanyId = "1", 
-                IsEmailConfirmed = true, 
+            new User {
+                Id = "1",
+                FirstName = "Hr",
+                LastName = "Lead",
+                Email = "hrlead@gmail.com",
+                CompanyId = "1",
+                IsEmailConfirmed = true,
                 Password = "hrlead",
                 BirthDate = new DateTime(1990, 1, 11),
                 CreationDate = new DateTime(2019, 3, 4)
             },
-            new User { 
+            new User {
                 Id = "2",
-                FirstName = "Dominic", 
+                FirstName = "Dominic",
                 LastName = "Torreto",
                 Email = "family@gmail.com",
                 CompanyId = "1",
@@ -173,7 +172,7 @@ namespace Infrastructure.EF.Seeds
                 Password = "Something8",
                 BirthDate = new DateTime(1997, 5, 5),
                 CreationDate = new DateTime(2021, 4, 1)
-            },
+            }
         };
     }
 }

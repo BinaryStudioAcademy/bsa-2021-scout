@@ -9,6 +9,8 @@ import { VacancyStatus } from 'src/app/shared/models/vacancy/vacancy-status';
 import { VacancyData } from 'src/app/shared/models/vacancy/vacancy-data';
 import { VacancyDataService } from 'src/app/shared/services/vacancy-data.service';
 import { Router } from '@angular/router';
+import { VacancyCreate } from 'src/app/shared/models/vacancy/vacancy-create';
+import { EditVacancyComponent } from '../edit-vacancy/edit-vacancy.component';
 
 ​
 const HRs: string[] = [
@@ -37,33 +39,56 @@ const STATUES: VacancyStatus[] = [
 export class VacanciesTableComponent implements AfterViewInit {
   displayedColumns: string[] =
   ['position', 'title', 'candidates', 'teamInfo',
-    'responsible', 'creationDate', 'status', 'actions'];
-  dataSource: MatTableDataSource<VacancyData>;
+    'responsible', 'creationDate', 'status',  'project', 'actions'];
+  dataSource: MatTableDataSource<VacancyData> = new MatTableDataSource<VacancyData>();
 ​
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild('input') serachField!: ElementRef;
-  private randomRequiredCandidatesAmounts: number[] = [60, 30, 6, 29, 44, 34, 55, 30, 6, 32];
-  private randomCurrentApplicantsAmounts: number[] = [130, 34, 56, 34];
   constructor(private router:Router, private cd: ChangeDetectorRef,
-    private dialog: MatDialog, private service: VacancyDataService) {
-    // const vacancies =  Array.from({ length: 99 }, (_, k) => createNewVacancy());
+    private dialog: MatDialog, private service: VacancyDataService){
     service.getList().subscribe(data=>{
-      data.forEach(d=>{
-        d.requiredCandidatesAmount = this.randomRequiredCandidatesAmounts[
-          Math.round(Math.random() * (this.randomRequiredCandidatesAmounts.length - 1))
-        ];
-        d.currentApplicantsAmount = this.randomCurrentApplicantsAmounts[
-          Math.round(Math.random() * (this.randomCurrentApplicantsAmounts.length - 1))
-        ];
-      });
+
+      this.getVacancies();
+   
+    });
+  }
+
+
+  getVacancies(){
+    this.service.getList().subscribe(data=>{
       this.dataSource.data = data;
       this.directive.applyFilter$.emit();
+      console.log(data);
     },
     );
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource<VacancyData>();
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(EditVacancyComponent, {
+      width: '914px',
+      height: 'auto',
+      data: {},
+    });
+
+    this.dialog.afterAllClosed.subscribe(_ =>
+      this.getVacancies());
+
+  }
+
+  onEdit(vacancyEdit: VacancyCreate): void {
+    this.dialog.open(EditVacancyComponent, {
+      data: {
+        vacancyToEdit: vacancyEdit,
+      },
+    });
+    this.dialog.afterAllClosed.subscribe(_ =>
+      this.getVacancies());
+  }
+  
+  saveVacancy(changedVacancy: VacancyData){
+    this.dataSource.data.unshift(changedVacancy);
   }
   public getStatus(index:number): string{
     return VacancyStatus[index];
