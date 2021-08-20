@@ -64,7 +64,6 @@ export class RateCandidateModalComponent implements OnInit, OnDestroy {
   }
 
   public submit(): void {
-    console.log(this.rateData);
     this.candidateReviewService
       .bulkReview(
         this.data.stageId,
