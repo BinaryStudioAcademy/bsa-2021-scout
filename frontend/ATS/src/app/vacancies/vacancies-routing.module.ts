@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MainContentComponent } from '../shared/components/main-content/main-content.component';
 import { AuthGuard } from '../users/guards/auth.guard';
 
 // This line can't be shorter
@@ -9,10 +10,16 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
 
 const routes: Routes = [
   {
-    path: 'candidates/:id',
-    pathMatch: 'full',
-    component: VacanciesStagesBoardComponent,
+    path: '',
+    component: MainContentComponent,
     canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'candidates/:id',
+        pathMatch: 'full',
+        component: VacanciesStagesBoardComponent,
+      },
+    ],
   },
 ];
 
