@@ -85,24 +85,6 @@
     }
 }
 
-.error-border {
-    border: 1px solid #f00;
-    border-radius: 10px;
-    
-    .mat-input-element {
-        color: #f00;
-    }
-}
-
-.custom-error {
-    font-family: Nunito;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 19px;
-    color: #f00;
-    max-width: fit-content;
-}
-
 :host ::ng-deep .mat-form-field-wrapper {
     height: 50px;
 }

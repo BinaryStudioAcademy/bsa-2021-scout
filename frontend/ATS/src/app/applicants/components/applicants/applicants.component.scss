@@ -26,6 +26,12 @@ $tag-font-color: rgba($color: (#291965), $alpha: 0.8);
     height: 100vh;
 }
 
+.mat-paginator-sticky {
+    bottom: 0px;
+    position: sticky;
+    z-index: 4;
+}
+
 /* Table */
 :host ::ng-deep .mat-table {
     width: 100%;
@@ -65,6 +71,7 @@ $tag-font-color: rgba($color: (#291965), $alpha: 0.8);
         &:not(.control-buttons-cell) {
             min-width: 0px;
             max-width: 300px;
+            width: fit-content;
 
             overflow: hidden;
             white-space: nowrap;
@@ -72,24 +79,20 @@ $tag-font-color: rgba($color: (#291965), $alpha: 0.8);
         }
 
         &.index-cell {
-            min-width: fit-content;
             max-width: 30px;
         }
 
         &.active-vac-cell {
-            width: fit-content;
             text-align: center;
         }
         
         &.tags-list-cell {
             overflow: visible;
-            min-width: 300px;
-            width: fit-content;
+            max-width: 400px;
         }
 
         &.jobs-list-cell {
             overflow: visible;
-            width: fit-content;
         }
 
         .mat-list-base {
@@ -103,10 +106,9 @@ $tag-font-color: rgba($color: (#291965), $alpha: 0.8);
         .jobs-list {
             overflow-y: hidden;
             height: min-content;
-            width: fit-content;
 
             max-height: $row-height - 15px;
-            margin: auto;
+            margin: auto 0;
 
             .mat-list-item {
                 font-size: 15px;
