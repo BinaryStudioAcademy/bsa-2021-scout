@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import moment from 'moment';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { FullVacancyCandidate } from 'src/app/shared/models/vacancy-candidates/full';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candidate.service';
@@ -37,14 +38,17 @@ export class OneCandidateComponent implements OnInit, OnDestroy {
   }
 
   private loadData(id: string): void {
-    this.service.getFull(id).subscribe(
-      (data) => {
-        this.loading = false;
-        this.data = data;
-      },
-      () => {
-        this.notificationService.showErrorMessage('Failed to load', 'Error');
-      },
-    );
+    this.service
+      .getFull(id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (data) => {
+          this.loading = false;
+          this.data = data;
+        },
+        () => {
+          this.notificationService.showErrorMessage('Failed to load', 'Error');
+        },
+      );
   }
 }

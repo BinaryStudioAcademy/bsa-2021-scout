@@ -9,7 +9,7 @@
     </mat-form-field>
 </div>
 
-<app-spinner *ngIf="loading"></app-spinner>
+<app-spinner [loading]="loading"></app-spinner>
 <div class="user-list">
     <div class="mat-elevation-z8">
         <table #mytable mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">

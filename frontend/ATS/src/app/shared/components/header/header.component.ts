@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import _ from 'lodash';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/users/services/auth.service';
 import { NotificationService } from '../../services/notification.service';
 
@@ -8,20 +10,40 @@ import { NotificationService } from '../../services/notification.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnDestroy {
   public value: string = '';
   public dropdownOpened: boolean = false;
   @Input() removeButton = false;
+
+  public loading: boolean = false;
+
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   public constructor(
     private readonly service: AuthenticationService,
     private readonly notifications: NotificationService,
   ) {}
 
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   public logout(): void {
-    this.service.logout().subscribe(
-      () => window.location.replace('/login'),
-      () => this.notifications.showErrorMessage('Failed to log out.'),
-    );
+    this.loading = true;
+
+    this.service
+      .logout()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        () => {
+          this.loading = false;
+          window.location.replace('/login');
+        },
+        () => {
+          this.loading = false;
+          this.notifications.showErrorMessage('Failed to log out.');
+        },
+      );
   }
 }
