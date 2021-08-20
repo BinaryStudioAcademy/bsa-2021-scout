@@ -1,5 +1,5 @@
 import { Observable, Subject } from 'rxjs';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,7 +19,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: 'applicants.component.html',
   styleUrls: ['applicants.component.scss'],
 })
-export class ApplicantsComponent implements OnInit, AfterViewInit {
+export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public displayedColumns: string[] = [
     'position',
     'name',
@@ -35,13 +35,14 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
   public dataSource = new MatTableDataSource<ViewableApplicant>();
   public cashedData: ViewableApplicant[] = [];
   public searchValue = '';
+  public loading: boolean = true;
 
   @ViewChild(MatPaginator) public paginator: MatPaginator|undefined = undefined;
   @ViewChild(StylePaginatorDirective) public directive: StylePaginatorDirective|undefined 
   = undefined;
 
 
-  private $unsubscribe = new Subject();
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
     private readonly dialog: MatDialog,
@@ -53,7 +54,7 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
   public ngOnInit(): void {
     this.applicantsService.getApplicants()
       .pipe(
-        takeUntil(this.$unsubscribe),
+        takeUntil(this.unsubscribe$),
         map(arr => arr.map(a => {
           let viewableApplicant = (a as unknown) as ViewableApplicant;
           viewableApplicant.isShowAllTags = false;
@@ -70,6 +71,7 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
         })),
       )
       .subscribe((result: ViewableApplicant[]) => {
+        this.loading = false;
         this.dataSource.data = result;
         this.cashedData = result;
         this.directive!.applyFilter$.emit();
@@ -79,6 +81,11 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
           'Cannot download applicants from the host');
       },
       );
+  }
+
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   public applySearchValue(searchValue: string) {

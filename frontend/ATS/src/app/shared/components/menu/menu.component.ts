@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { animateText, onSideNavChange } from 'src/app/shared/animations/animation';
+import {
+  animateText,
+  onSideNavChange,
+} from 'src/app/shared/animations/animation';
 import { SidenavService } from 'src/app/shared/services/sidenav.service';
 import { User } from 'src/app/users/models/user';
 import { AuthUserEventService } from 'src/app/users/services/auth-user-event.service';
@@ -13,33 +16,33 @@ import { AuthenticationService } from 'src/app/users/services/auth.service';
   styleUrls: ['./menu.component.scss'],
   animations: [onSideNavChange, animateText],
 })
-export class MenuComponent implements OnInit, OnDestroy{
-
+export class MenuComponent implements OnInit, OnDestroy {
   public hideMenu = false;
-
   public sideNavState: boolean = true;
-
   public linkText: boolean = true;
-
   public isHrLead: boolean = false;
-  
-  private unsubscribe$ = new Subject<void>();
+  public loading: boolean = true;
+
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
     private _sidenavService: SidenavService,
     private authService: AuthenticationService,
-    private authUserEventService: AuthUserEventService) {
-  }
+    private authUserEventService: AuthUserEventService,
+  ) {}
 
   public ngOnInit() {
     this.authService
       .getUser()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(user => this.checkIsHrLead(user));
+      .subscribe((user) => {
+        this.loading = false;
+        this.checkIsHrLead(user);
+      });
 
     this.authUserEventService.userChangedEvent$
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(user => this.checkIsHrLead(user));
+      .subscribe((user) => this.checkIsHrLead(user));
   }
 
   public ngOnDestroy() {
@@ -49,7 +52,7 @@ export class MenuComponent implements OnInit, OnDestroy{
 
   onSinenavToggle() {
     this.sideNavState = !this.sideNavState;
-    
+
     setTimeout(() => {
       this.linkText = this.sideNavState;
     }, 200);
@@ -57,6 +60,8 @@ export class MenuComponent implements OnInit, OnDestroy{
   }
 
   public checkIsHrLead(user: User | null): void {
-    this.isHrLead = user?.roles?.find(role => role.name === 'HrLead') ? true : false;
+    this.isHrLead = user?.roles?.find((role) => role.name === 'HrLead')
+      ? true
+      : false;
   }
 }

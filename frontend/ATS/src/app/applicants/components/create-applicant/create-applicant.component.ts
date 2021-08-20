@@ -13,13 +13,11 @@ import { Tag } from 'src/app/shared/models/tags/tag';
 @Component({
   selector: 'app-create-applicant',
   templateUrl: 'create-applicant.component.html',
-  styleUrls: [
-    'create-applicant.component.scss',
-    '../../common/common.scss',
-  ],
+  styleUrls: ['create-applicant.component.scss', '../../common/common.scss'],
 })
 export class CreateApplicantComponent implements OnInit, OnDestroy {
   public validationGroup: FormGroup | undefined = undefined;
+  public loading: boolean = false;
 
   public createdApplicant: CreateApplicant = {
     firstName: '',
@@ -37,7 +35,7 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
     },
   };
 
-  private $unsubscribe = new Subject();
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
     private readonly applicantsService: ApplicantsService,
@@ -49,11 +47,14 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
   }
 
   public createApplicant(): void {
+    this.loading = true;
+
     this.applicantsService
       .addApplicant(this.createdApplicant)
-      .pipe(takeUntil(this.$unsubscribe))
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (result: Applicant) => {
+          this.loading = false;
           this.dialogRef.close(result);
         },
         (error: Error) => {
@@ -79,8 +80,8 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.$unsubscribe.next();
-    this.$unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
 
     this.validationGroup?.reset();
   }

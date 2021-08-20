@@ -13,13 +13,12 @@ import { Tag } from 'src/app/shared/models/tags/tag';
 @Component({
   selector: 'app-update-applicant',
   templateUrl: 'update-applicant.component.html',
-  styleUrls: [
-    'update-applicant.component.scss',
-    '../../common/common.scss',
-  ],
+  styleUrls: ['update-applicant.component.scss', '../../common/common.scss'],
 })
 export class UpdateApplicantComponent implements OnDestroy {
   public validationGroup: FormGroup | undefined = undefined;
+  public loading: boolean = false;
+
   public updatedApplicant: UpdateApplicant = {
     id: '',
     firstName: '',
@@ -39,7 +38,7 @@ export class UpdateApplicantComponent implements OnDestroy {
 
   public tags: Tag[] = [];
 
-  private $unsubscribe = new Subject();
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
   @Inject(MAT_DIALOG_DATA) applicant: Applicant,
@@ -63,11 +62,14 @@ export class UpdateApplicantComponent implements OnDestroy {
 
   public updateApplicant(): void {
     this.updatedApplicant.tags.tagDtos = this.tags;
+    this.loading = true;
+
     this.applicantsService
       .updateApplicant(this.updatedApplicant)
-      .pipe(takeUntil(this.$unsubscribe))
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (result: Applicant) => {
+          this.loading = false;
           this.dialogRef.close(result);
         },
         (error: Error) => {
@@ -86,7 +88,7 @@ export class UpdateApplicantComponent implements OnDestroy {
   public ngOnDestroy(): void {
     this.validationGroup?.reset();
 
-    this.$unsubscribe.next();
-    this.$unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
