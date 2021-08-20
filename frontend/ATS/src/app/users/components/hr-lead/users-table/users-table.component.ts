@@ -6,7 +6,10 @@ import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginat
 import { User } from 'src/app/users/models/user';
 import { UserDataService } from 'src/app/users/services/user-data.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
+import { SendingRegisterLinkDialogComponent } 
+  from '../send-registration-link-dialog/sending-register-link-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -15,15 +18,9 @@ import { Subject } from 'rxjs';
   styleUrls: ['./users-table.component.scss'],
 })
 export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
-  public displayedColumns: string[] = [
-    'position',
-    'full-name',
-    'email',
-    'creation-date',
-    'birth-date',
-    'email-confirmed',
-    'actions',
-  ];
+  public displayedColumns: string[] =
+  ['position', 'full-name', 'email', 'birth-date', 
+    'creation-date', 'email-confirmed', 'actions'];
   private users: User[] = [];
   public dataSource: MatTableDataSource<User>;
   public loading: boolean = true;
@@ -35,7 +32,7 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
   constructor(
     private userDataService: UserDataService,
     private notificationService: NotificationService,
-  ) {
+    private dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<User>();
   }
 
@@ -105,11 +102,15 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
     });
   }
 
-  private compareRows(
-    a: number | string | Date | boolean,
-    b: number | string | Date | boolean,
-    isAsc: boolean,
-  ): number {
+  public OpenSendRegistrationLinkDialog(): void {
+    this.dialog.open(SendingRegisterLinkDialogComponent, {
+      disableClose: true,
+      maxWidth: '400px',
+    });
+  }
+
+  private compareRows(a: number|string|Date|boolean, b: number|string|Date|boolean, isAsc: boolean)
+    : number {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }

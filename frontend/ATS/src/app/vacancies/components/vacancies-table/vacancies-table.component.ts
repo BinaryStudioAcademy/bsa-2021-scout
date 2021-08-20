@@ -18,6 +18,7 @@ import { VacancyCreate } from 'src/app/shared/models/vacancy/vacancy-create';
 import { EditVacancyComponent } from '../edit-vacancy/edit-vacancy.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { property } from 'lodash';
 
 const HRs: string[] = ['Livia Baptista', 'Emery Culhain', 'Mira Workham'];
 const NAMES: string[] = [
@@ -34,27 +35,22 @@ const STATUES: VacancyStatus[] = [
   VacancyStatus.Invited,
   VacancyStatus.Vacation,
 ];
+​
+export interface IIndexable {
+  [key: string]: any;
+}
+
 @Component({
   selector: 'app-vacancies-table',
   templateUrl: './vacancies-table.component.html',
   styleUrls: ['./vacancies-table.component.scss'],
 })
 export class VacanciesTableComponent implements AfterViewInit {
-  displayedColumns: string[] = [
-    'position',
-    'title',
-    'candidates',
-    'teamInfo',
-    'responsible',
-    'creationDate',
-    'status',
-    'project',
-    'actions',
-  ];
-
-  dataSource: MatTableDataSource<VacancyData> =
-  new MatTableDataSource<VacancyData>();
-
+  displayedColumns: string[] =
+  ['position', 'title', 'candidatesAmount', 'project', 'teamInfo',
+    'responsible', 'creationDate', 'status',  'actions'];
+  dataSource: MatTableDataSource<VacancyData> = new MatTableDataSource<VacancyData>();
+​
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
@@ -62,24 +58,26 @@ export class VacanciesTableComponent implements AfterViewInit {
 
   public loading: boolean = true;
 
-  private readonly unsubscribe$: Subject<void> = new Subject<void>();
-
-  constructor(
-    private router: Router,
-    private cd: ChangeDetectorRef,
-    private dialog: MatDialog,
-    private service: VacancyDataService,
-  ) {
-    this.getVacancies();
+  constructor(private router:Router, private cd: ChangeDetectorRef,
+    private dialog: MatDialog, private service: VacancyDataService){
+    service.getList().subscribe(data=>{
+      this.getVacancies();
+   
+    });
   }
 
-  getVacancies() {
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
+  getVacancies(){
     this.service
       .getList()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((data) => {
+      .subscribe(data => {
         this.loading = false;
         this.dataSource.data = data;
+        data.forEach((d, i)=>{
+          d.position = i+1;
+        });
         this.directive.applyFilter$.emit();
       });
   }
@@ -123,6 +121,15 @@ export class VacanciesTableComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sortingDataAccessor = (item, property)=>{
+      switch(property){
+        case 'project': return item.project.name;
+        case 'teamInfo': return item.project.teamInfo;
+        case 'responsible': return item.responsibleHr.firstName + ' ' + item.responsibleHr.lastName;
+        default: return (item as IIndexable)[property];
+      
+      }
+    };
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

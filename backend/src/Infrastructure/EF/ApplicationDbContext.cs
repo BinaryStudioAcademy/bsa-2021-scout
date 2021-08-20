@@ -27,6 +27,7 @@ namespace Infrastructure.EF
         public DbSet<CandidateToStage> CandidateToStages { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<CandidateReview> CandidateReviews { get; set; }
+        public DbSet<RegisterPermission> RegisterPermissions { get; set; }
 
         private readonly IDomainEventService _domainEventService;
 

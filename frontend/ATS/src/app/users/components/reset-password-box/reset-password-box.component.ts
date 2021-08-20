@@ -35,6 +35,7 @@ export class ResetPasswordBoxComponent implements OnDestroy {
   public loading: boolean = false;
   public isPasswordHide = true;
   public isPasswordConfirmHide = true;
+  public isRequestFinished = true;
 
   public resetPasswordForm: FormGroup = new FormGroup(
     {
@@ -49,32 +50,35 @@ export class ResetPasswordBoxComponent implements OnDestroy {
   );
 
   public resetPassword() {
-    this.loading = true;
-
-    this.route.queryParams
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        mergeMap((params) => {
-          const resetPasswordDto: ResetPasswordDto = {
-            password: this.resetPasswordForm.get('userPassword')?.value,
-            email: params.email,
-            token: params.token,
-          };
-          return this.authService.resetPassword(resetPasswordDto);
-        }),
-      )
-      .subscribe(
-        () => {
+    if (this.resetPasswordForm.valid) {
+      this.loading = true;
+      this.route.queryParams
+        .pipe(
+          takeUntil(this.unsubscribe$),
+          mergeMap(params => {
+            const resetPasswordDto: ResetPasswordDto = {
+              password: this.resetPasswordForm.get('userPassword')?.value,
+              email: params.email,
+              token: params.token,
+            };
+            return this.authService.resetPassword(resetPasswordDto);
+          }),
+        )
+        .subscribe(() => {
           this.loading = false;
-          this.notificationService.showSuccessMessage(
-            'Your password has been changed',
-          );
+          this.notificationService.showSuccessMessage('Your password has been changed');
           this.router.navigate(['/login']);
         },
-        () => {
+        (error) => {
           this.loading = false;
-          this.notificationService.showErrorMessage('Something went wrong');
-        },
-      );
+
+          if (error.description != null) {
+            this.notificationService.showErrorMessage(error.description, 'Something went wrong');
+          }
+          else {
+            this.notificationService.showErrorMessage(error.message, 'Something went wrong');
+          }
+        });
+    }
   }
 }

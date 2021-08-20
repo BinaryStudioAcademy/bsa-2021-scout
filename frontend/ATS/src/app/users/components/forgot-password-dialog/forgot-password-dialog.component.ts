@@ -2,7 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, Subject } from 'rxjs';
-import { mergeMap, takeUntil } from 'rxjs/operators';
+import { takeUntil, mergeMap } from 'rxjs/operators';
+import { AppRoute } from 'src/app/routing/AppRoute';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { environment } from 'src/environments/environment';
 import { ForgotPasswordDto } from '../../models/forgot-password-dto';
@@ -21,6 +22,8 @@ export class ForgotPasswordDialogComponent implements OnDestroy {
     private notificationService: NotificationService,
     private authService: AuthenticationService,
   ) {}
+
+  public isRequestFinished = true;
 
   public emailForm: FormGroup = new FormGroup({
     userEmail: new FormControl('', [
@@ -42,32 +45,35 @@ export class ForgotPasswordDialogComponent implements OnDestroy {
   }
 
   public resetPassword(): void {
-    this.authService
-      .isEmailExist(this.emailForm.get('userEmail')?.value)
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        mergeMap((isEmailExist) => {
-          if (isEmailExist) {
-            const forgotPasswordDto: ForgotPasswordDto = {
-              email: this.emailForm.get('userEmail')?.value,
-              clientURI: `${environment.clientUrl}/reset-password`,
-            };
-            return this.authService.sendPasswordResetRequest(forgotPasswordDto);
-          }
-          this.notificationService.showErrorMessage(
-            'There is no user with such email address.',
-          );
-          return EMPTY;
-        }),
-      )
-      .subscribe(
-        () => {
+    if (this.emailForm.valid) {
+      this.loading = true;
+      this.authService
+        .isEmailExist(this.emailForm.get('userEmail')?.value)
+        .pipe(
+          takeUntil(this.unsubscribe$),
+          mergeMap(isEmailExist => {
+            if (isEmailExist) {
+              const forgotPasswordDto: ForgotPasswordDto = 
+              { 
+                email: this.emailForm.get('userEmail')?.value, 
+                clientURI: `${environment.clientUrl}/${AppRoute.ResetPassword}`, 
+              };
+              return this.authService.sendPasswordResetRequest(forgotPasswordDto);      
+            }
+            this.notificationService.showErrorMessage('There is no user with such email address.');
+            return EMPTY;
+          }),
+        )
+        .subscribe(() => {
+          this.loading = false;
           this.notificationService.showSuccessMessage(
-            'Please check your email to reset your password',
-          );
+            'Please check your email to reset your password');
           this.dialogRef.close();
         },
-        () => this.notificationService.showErrorMessage('Something went wrong'),
-      );
+        () => {
+          this.loading = false;
+          this.notificationService.showErrorMessage('Something went wrong');
+        });
+    }  
   }
 }
