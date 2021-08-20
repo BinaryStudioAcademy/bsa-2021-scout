@@ -111,6 +111,10 @@ $primary-font: Nunito;
         overflow: hidden;
     }
 
+    td.mat-cell.mat-column-email-confirmed {
+        padding-left: 45px;
+    }
+
     /* Angular Materials */
 
     ::ng-deep {

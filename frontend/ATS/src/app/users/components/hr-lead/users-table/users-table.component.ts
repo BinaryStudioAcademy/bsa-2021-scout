@@ -19,8 +19,8 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class UsersTableComponent implements AfterViewInit, OnInit {
   public displayedColumns: string[] =
-  ['position', 'full-name', 'email', 'creation-date', 
-    'birth-date', 'email-confirmed', 'actions'];
+  ['position', 'full-name', 'email', 'birth-date', 
+    'creation-date', 'email-confirmed', 'actions'];
   private users: User[] = [];
   public dataSource: MatTableDataSource<User>;
   public loading: boolean = true;
