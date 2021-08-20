@@ -1,17 +1,8 @@
 $row-height: 55px;
 $header-height: 30px;
-$tag-background-color: rgba(
-  $color: (
-    #291965,
-  ),
-  $alpha: 0.1,
-);
-$tag-font-color: rgba(
-  $color: (
-    #291965,
-  ),
-  $alpha: 0.8,
-);
+$tag-background-color: rgba($color: (#291965), $alpha: 0.1);
+$tag-font-color: rgba($color: (#291965), $alpha: 0.8);
+$primary-color: #ee2a64;
 
 :host {
   width: 100%;
@@ -26,6 +17,48 @@ $tag-font-color: rgba(
   flex-direction: column;
   justify-content: stretch;
   position: relative;
+}
+
+::ng-deep{
+    .applicants-options .delete{
+        color: #EF5350;
+    }
+
+    .mat-select-panel-wrap .applicants-options .mat-option {
+        height: 40px;
+        font-size: 15px;
+        line-height: 20px;
+        .mat-icon{
+            font-size: 20px;
+            margin-right: 5px;
+        }
+    }
+}
+
+
+::ng-deep .page-content{
+    .mat-select{
+        height: 40px;
+        width: 40px;
+        line-height: 40px;
+        font-size: 22px;
+        color: #808080;
+    }
+    .mat-select-arrow::after{
+        font-family: 'Material Icons';
+        content: "\e5d3";
+        font-size: 24px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+    .mat-select-arrow:hover::after{
+        color: $primary-color;
+    }
+    .mat-select-arrow{
+        border: none;
+        margin: 0;
+        height: 100%;
+    }
 }
 
 .outside-wrapper {

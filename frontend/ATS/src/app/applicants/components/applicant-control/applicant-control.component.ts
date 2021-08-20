@@ -10,6 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+import { AddCandidateModalComponent } 
+  from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
 import { Applicant } from 'src/app/shared/models/applicant/applicant';
 import { ViewableApplicant } from 'src/app/shared/models/applicant/viewable-applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
@@ -31,7 +33,6 @@ export class ApplicantControlComponent implements OnDestroy {
   @Output() public deleteApplicantEvent = new EventEmitter<string>();
   @Output() public updateApplicantEvent = new EventEmitter<ViewableApplicant>();
 
-  public isDotMenuVisible = false;
   public loading: boolean = false;
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
@@ -46,10 +47,6 @@ export class ApplicantControlComponent implements OnDestroy {
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-  }
-
-  public toggleDotMenu(): void {
-    this.isDotMenuVisible = !this.isDotMenuVisible;
   }
 
   public showApplicantUpdateDialog(): void {
@@ -120,5 +117,16 @@ export class ApplicantControlComponent implements OnDestroy {
           );
         },
       );
+  }
+
+  public openVacancyAddModal(): void {
+    this.dialog.open(AddCandidateModalComponent, {
+      width: '400px',
+      autoFocus: false,
+      panelClass: 'applicants-options',
+      data: {
+        applicantId: this.applicant!.id,
+      },
+    });
   }
 }

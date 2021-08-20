@@ -2,6 +2,7 @@
 
 <div class="projects-page">
     <app-spinner [loading]="loading"></app-spinner>
+
     <div class="projects-header">
         <button class="tub">All</button>
         <button class="tub">Followed</button>
@@ -11,6 +12,7 @@
         </mat-form-field>
         <button mat-button (click)="OnCreate()">+ New Project</button>
     </div>
+
     <div class="project-list">
 
         <div class="mat-elevation-z8">
@@ -18,7 +20,8 @@
                 <!-- Position Column -->
                 <ng-container matColumnDef="position">
                     <th mat-header-cell *matHeaderCellDef> # </th>
-                    <td mat-cell *matCellDef="let i = index"> {{ (i+1) + (paginator.pageIndex * paginator.pageSize)}} </td>
+                    <td mat-cell *matCellDef="let i = index"> {{ (i+1) + (paginator.pageIndex * paginator.pageSize)}}
+                    </td>
                 </ng-container>
 
                 <!-- Name Column -->
@@ -26,7 +29,9 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
                     <td mat-cell *matCellDef="let row">
                         <div class="name-logo">
-                            <img src="{{row.logo}}" onError="this.src='https://dostyqhotel.kz/wp-content/themes/dostyq/img/no-image.png'" /> {{row.name}}
+                            <img src="{{row.logo}}"
+                                onError="this.src='https://dostyqhotel.kz/wp-content/themes/dostyq/img/no-image.png'" />
+                            {{row.name}}
                         </div>
                     </td>
                 </ng-container>
@@ -79,7 +84,9 @@
                             <mat-icon>bookmark</mat-icon>
                             <mat-icon (click)="OnEdit(row)">edit</mat-icon>
                             <mat-select panelClass="project-options">
-                                <mat-option class="delete" (click)="OnDelete(row)"><mat-icon>delete</mat-icon>Delete</mat-option>
+                                <mat-option class="delete" (click)="showDeleteConfirmDialog(row)">
+                                    <mat-icon>delete</mat-icon>Delete
+                                </mat-option>
                             </mat-select>
                         </div>
                     </td>
@@ -97,7 +104,7 @@
                 </tr>
 
             </table>
-            <mat-paginator class="mat-paginator-sticky" #paginator appStylePaginator [showTotalPages]="5" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            <mat-paginator class="mat-paginator-sticky" #paginator appStylePaginator [showTotalPages]="5"
+                [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
         </div>
     </div>
-</div>

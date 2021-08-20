@@ -262,7 +262,6 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       x.index = index;
       index++;
     });
-    console.log(this.stageList);
     return this.stageList;
   }
 
@@ -300,7 +299,6 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   onDeleteStage(selectedStage: Stage) {
     let id = this.stageList.findIndex((a) => a.index == selectedStage.index);
     this.stageList.splice(id, 1);
-    console.log(this.stageList);
   }
 
   displayCreateStage() {

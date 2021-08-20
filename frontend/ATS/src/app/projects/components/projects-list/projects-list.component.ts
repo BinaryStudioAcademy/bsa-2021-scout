@@ -1,11 +1,11 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
+
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,6 +18,8 @@ import { ProjectsEditComponent } from '../projects-edit/projects-edit.component'
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ProjectDeleteConfirmComponent } 
+  from '../project-delete-confirm/project-delete-confirm.component';
 
 const TAGS: string[] = ['ASP.NET', 'WPF', 'Angular'];
 
@@ -108,12 +110,25 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
     this.dialog.afterAllClosed.subscribe((_) => this.getProjects());
   }
 
-  public OnDelete(projectToDelete: ProjectInfo): void {
-    this.projectService.deleteProject(projectToDelete).subscribe((_) => {
-      this.notificationService.showSuccessMessage(
-        `Project ${projectToDelete.name} deleted!`,
-      );
-      this.getProjects();
+  public showDeleteConfirmDialog(projectToDelete: ProjectInfo): void {
+    const dialogRef = this.dialog.open(ProjectDeleteConfirmComponent, {
+      width: '400px',
+      height: 'min-content',
+      autoFocus: false,
     });
+
+    dialogRef.afterClosed()
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.projectService
+            .deleteProject(projectToDelete)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(_ => {
+              this.notificationService
+                .showSuccessMessage(`Project ${projectToDelete.name} deleted!`);
+              this.getProjects();
+            });
+        }
+      });
   }
 }

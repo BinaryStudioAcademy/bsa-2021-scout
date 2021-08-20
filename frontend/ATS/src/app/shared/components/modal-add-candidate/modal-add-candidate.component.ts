@@ -22,8 +22,8 @@ import { GetShortApplicant } from '../../models/applicant/get-short-applicant';
 })
 export class AddCandidateModalComponent implements OnDestroy {
   public vacancyId: string = '';
-  public disableApplicantsForm: boolean = true;
   public disableVacanciesForm: boolean = true;
+  public disableAddButton: boolean=true;
 
   applicantsForm = new FormControl();
   filteredApplicants: MarkedApplicant[] = [];
@@ -40,19 +40,17 @@ export class AddCandidateModalComponent implements OnDestroy {
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
+ 
   constructor(
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      vacancyId: string;
-      applicantId: string;
-      applicantsIds: string[];
-    },
+    @Inject(MAT_DIALOG_DATA) public data:
+    { vacancyId: string, applicantId: string, applicantsIds: string[] },
     private readonly applicantsService: ApplicantsService,
     private readonly vacancyService: VacancyDataService,
     private readonly vacancyCandidateService: VacancyCandidateService,
     private notificationService: NotificationService,
-    private modal: MatDialogRef<AddCandidateModalComponent>,
-  ) {
+    private modal: MatDialogRef<AddCandidateModalComponent>) {
+
+    this.applicantsForm.disable();
     this.applicantsIds = data.applicantsIds;
 
     if (data.vacancyId) {
@@ -64,9 +62,17 @@ export class AddCandidateModalComponent implements OnDestroy {
         .subscribe((value) => {
           this.loading = false;
           this.selectedVacancy = value;
-        });
+        },
+        (error) => (this.OnError(error)));
 
-      this.disableApplicantsForm = false;
+      this.applicantsForm.enable();
+      this.applicantsForm.valueChanges.subscribe(_=>{
+        if(this.applicantsForm.value.length==0){
+          this.disableAddButton=true;
+        } else {
+          this.disableAddButton=false;
+        }
+      });
 
       this.GetApplicants();
     } else if (data.applicantId) {
@@ -91,33 +97,27 @@ export class AddCandidateModalComponent implements OnDestroy {
           this.applicantsForm.setValue([applicant]);
         });
 
-      this.vacancyService
-        .getNotAppliedVacanciesByApplicant(data.applicantId)
+      this.applicantsService
+        .getApplicantByCompany(data.applicantId)
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((vacancies) => {
-          if (!oneCompleted) {
-            oneCompleted = true;
-          } else {
-            this.loading = false;
-          }
-
-          this.vacancies = vacancies;
-
-          this.filteredVacancies = this.vacanciesForm.valueChanges.pipe(
-            startWith(''),
-            map((value) => (typeof value === 'string' ? value : value.title)),
-            map((title) =>
-              title ? this._filter(title) : this.vacancies.slice(),
-            ),
-          );
-        });
+        .subscribe(value => {
+          this.selectedApplicant = value;
+          let applicant: MarkedApplicant = new MarkedApplicant(this.selectedApplicant);
+          this.filteredApplicants.push(applicant);
+          this.applicantsForm.setValue([applicant]);
+        },
+        (error) => (this.OnError(error)));
 
       this.vacanciesForm.valueChanges.subscribe((vacancy) => {
         if (typeof vacancy !== 'string') {
           this.selectedVacancy = vacancy;
           this.vacancyId = this.selectedVacancy.id;
+          this.disableAddButton=false;
+        } else {
+          this.disableAddButton=true;
         }
-      });
+      },
+      (error) => (this.OnError(error)));
     } else {
       this.disableVacanciesForm = false;
 
@@ -127,28 +127,33 @@ export class AddCandidateModalComponent implements OnDestroy {
         .subscribe((vacancies) => {
           this.vacancies = vacancies;
           this.loading = false;
+        });
 
+      this.vacancyService.getVacancies().pipe(takeUntil(this.unsubscribe$))
+        .subscribe(vacancies => {
+          this.vacancies = vacancies;
           this.filteredVacancies = this.vacanciesForm.valueChanges.pipe(
             startWith(''),
-            map((value) => (typeof value === 'string' ? value : value.title)),
-            map((title) =>
-              title ? this._filter(title) : this.vacancies.slice(),
-            ),
+            map(value => typeof value === 'string' ? value : value.title),
+            map(title => title ? this._filter(title) : this.vacancies.slice()),
           );
-        });
+        },
+        (error) => (this.OnError(error)));
 
       this.vacanciesForm.valueChanges.subscribe((vacancy) => {
         if (typeof vacancy !== 'string') {
-          this.disableApplicantsForm = false;
+          this.applicantsForm.enable();
 
           this.selectedVacancy = vacancy;
           this.vacancyId = this.selectedVacancy.id;
 
           this.GetApplicants();
-        } else {
-          this.disableApplicantsForm = true;
         }
-      });
+        else {
+          this.applicantsForm.disable();
+        }
+      },
+      (error) => (this.OnError(error)));
     }
   }
 
@@ -163,9 +168,9 @@ export class AddCandidateModalComponent implements OnDestroy {
     this.applicantsService
       .getMarkedApplicants(this.vacancyId)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((value) => {
-        this.loading = false;
+      .subscribe(value => {
         this.filteredApplicants = value;
+        this.loading = false;
 
         this.applicantsIds?.forEach((applicantId) => {
           this.filteredApplicants.forEach((applicant) => {
@@ -174,23 +179,17 @@ export class AddCandidateModalComponent implements OnDestroy {
             }
           });
         });
-      });
+      },
+      (error) => (this.OnError(error)));
   }
 
   public OnCreate() {
     let markedApplicants: MarkedApplicant[] = this.applicantsForm.value;
-    this.loading = true;
 
-    this.vacancyCandidateService
-      .postRangeOfCandidates(
-        this.vacancyId,
-        markedApplicants.map((applicant) => applicant.id),
-      )
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((_) => {
-        this.loading = false;
-        this.notificationService.showSuccessMessage('Successfully added');
-      });
+    this.vacancyCandidateService.postRangeOfCandidates(this.vacancyId,
+      markedApplicants.map(applicant => applicant.id))
+      .subscribe(_ => this.notificationService.showSuccessMessage('Successfully added')
+        , (error) => (this.OnError(error)));
 
     this.modal.close();
   }
@@ -204,12 +203,17 @@ export class AddCandidateModalComponent implements OnDestroy {
   }
 
   displayFn(vacancy: ShortVacancyWithDepartment): string {
-    return vacancy && vacancy.title && vacancy.department
-      ? `${vacancy.title} / ${vacancy.department}`
-      : '';
+    return vacancy && vacancy.title && vacancy.department ?
+      `${vacancy.title} / ${vacancy.department}` : '';
   }
 
   public onFormClose() {
+    this.modal.close();
+  }
+
+  public OnError(error: Error) {
+    this.notificationService.showErrorMessage(error?.message ? 
+      error.message : 'Apply vacancy failed');
     this.modal.close();
   }
 }

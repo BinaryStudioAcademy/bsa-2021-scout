@@ -1,9 +1,6 @@
 import {
-  AfterViewInit,
-  Component,
-  ViewChild,
-  ElementRef,
-  ChangeDetectorRef,
+  AfterViewInit, Component,
+  ViewChild, ElementRef, ChangeDetectorRef,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -20,14 +17,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { property } from 'lodash';
 
-const HRs: string[] = ['Livia Baptista', 'Emery Culhain', 'Mira Workham'];
-const NAMES: string[] = [
-  'Interface Designer',
-  'Software Enginner',
-  'Project Manager',
-  'Developer',
-  'QA',
-];
 
 const STATUES: VacancyStatus[] = [
   VacancyStatus.Active,
@@ -35,7 +24,7 @@ const STATUES: VacancyStatus[] = [
   VacancyStatus.Invited,
   VacancyStatus.Vacation,
 ];
-​
+
 export interface IIndexable {
   [key: string]: any;
 }
@@ -47,10 +36,10 @@ export interface IIndexable {
 })
 export class VacanciesTableComponent implements AfterViewInit {
   displayedColumns: string[] =
-  ['position', 'title', 'candidatesAmount', 'project', 'teamInfo',
-    'responsible', 'creationDate', 'status',  'actions'];
+  ['position', 'title', 'candidatesAmount', 'responsible', 'project', 
+    'teamInfo', 'creationDate', 'status', 'actions'];
   dataSource: MatTableDataSource<VacancyData> = new MatTableDataSource<VacancyData>();
-​
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
@@ -60,26 +49,24 @@ export class VacanciesTableComponent implements AfterViewInit {
 
   constructor(private router:Router, private cd: ChangeDetectorRef,
     private dialog: MatDialog, private service: VacancyDataService){
-    service.getList().subscribe(data=>{
-      this.getVacancies();
-   
-    });
+    service.getList().pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data=>{
+        this.getVacancies();
+      });
   }
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
-  getVacancies(){
-    this.service
-      .getList()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => {
-        this.loading = false;
-        this.dataSource.data = data;
-        data.forEach((d, i)=>{
-          d.position = i+1;
-        });
-        this.directive.applyFilter$.emit();
+  getVacancies() {
+    this.service.getList().subscribe(data => {
+      this.dataSource.data = data;
+      this.loading = false;
+      data.forEach((d, i) => {
+        d.position = i + 1;
       });
+      this.directive.applyFilter$.emit();
+    },
+    );
   }
 
   openDialog(): void {
@@ -121,16 +108,17 @@ export class VacanciesTableComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.dataSource.sortingDataAccessor = (item, property)=>{
-      switch(property){
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
         case 'project': return item.project.name;
         case 'teamInfo': return item.project.teamInfo;
         case 'responsible': return item.responsibleHr.firstName + ' ' + item.responsibleHr.lastName;
         default: return (item as IIndexable)[property];
-      
+
       }
     };
   }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -140,17 +128,3 @@ export class VacanciesTableComponent implements AfterViewInit {
     }
   }
 }
-/** Builds and returns a new User. */
-// function createNewVacancy(): VacancyData {
-//   const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))];
-// ​
-//   return {
-//     title: name,
-//     requiredCandidatesAmount: Math.round(Math.random()*4+1),
-//     currentApplicantsAmount: Math.round(Math.random()*10 +1),
-//     responsible: HRs[Math.round(Math.random() * (HRs.length - 1))],
-//     department: 'Lorem ipsum dorot sit',
-//     creationDate: new Date(),
-//     status: STATUES[Math.round(Math.random()*(STATUES.length - 1))],
-//   };
-// }

@@ -15,12 +15,15 @@ import { SharedModule } from '../shared/shared.module';
 import { ProjectsAddComponent } from './components/projects-add/projects-add.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProjectsEditComponent } from './components/projects-edit/projects-edit.component';
+import { ProjectDeleteConfirmComponent } 
+  from './components/project-delete-confirm/project-delete-confirm.component';
 
 @NgModule({
   declarations: [
     ProjectsListComponent,
     ProjectsAddComponent,
     ProjectsEditComponent,
+    ProjectDeleteConfirmComponent,
   ],
   imports:[
     CommonModule,
