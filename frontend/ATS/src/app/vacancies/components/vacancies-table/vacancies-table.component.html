@@ -8,9 +8,9 @@
         <mat-icon class="search">search</mat-icon>
             <input matInput type="text" (keyup)="applyFilter($event)" placeholder="Search..." #input>
     </mat-form-field>
-    <button mat-button class="create-button" (click)="openDialog()">
+    <app-button class="create-button" (click)="openDialog()">
         + New vacancy
-    </button>
+    </app-button>
 </div>
 
 <div class="mat-elevation-z8">
