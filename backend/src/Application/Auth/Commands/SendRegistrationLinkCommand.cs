@@ -6,6 +6,8 @@ using Application.Mail;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -54,8 +56,14 @@ namespace Application.Auth.Commands
             };
             await _registerPermissionWriteRepository.CreateAsync(registerPermission);
 
+            var queryParam = new Dictionary<string, string>
+            {
+                {"email", command.RegistrationLinkDto.Email }
+            };
+
+            var callback = QueryHelpers.AddQueryString(command.RegistrationLinkDto.ClientUri, queryParam);
             var body = MailBodyFactory.BODY_REGISTRATION_LINK;
-            body = body.Replace("{{CALLBACK}}", command.RegistrationLinkDto.ClientUri);
+            body = body.Replace("{{CALLBACK}}", callback);
             var sendMailCommand = new SendMailCommand(command.RegistrationLinkDto.Email, MailSubjectFactory.SUBJECT_REGISTRATION_LINK, body);
             await _mediator.Send(sendMailCommand);
 
