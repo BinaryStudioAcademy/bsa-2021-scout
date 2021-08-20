@@ -4,18 +4,18 @@
         <div class="login-input-email form-group">
             <div class="login-input-title"><span>Email</span></div>
             <mat-form-field floatLabel="never"
-                [ngClass]="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userEmail') ? 'logo-invalid-input' : ''">
+                [ngClass]="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userEmail') ? 'invalid-input' : ''">
                 <input matInput type="email" formControlName="userEmail" placeholder="Enter your Email" [(ngModel)]="userLoginDto.email">
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userEmail')">
-                <div class="logo-validation-message" *ngIf="loginForm.controls['userEmail'].errors?.pattern
+                <div class="validation-error" *ngIf="loginForm.controls['userEmail'].errors?.pattern
                 || loginForm.controls['userEmail'].errors?.onlyoneatsign">
                     Please enter a valid email address.
                 </div>
-                <div class="logo-validation-message" *ngIf="this.loginForm.controls['userEmail'].errors?.required">
+                <div class="validation-error" *ngIf="this.loginForm.controls['userEmail'].errors?.required">
                     Please enter your email address.
                 </div>
-                <div class="logo-validation-message"
+                <div class="validation-error"
                     *ngIf="loginForm.controls['userEmail'].errors?.unallowedcharacters">
                     Your email must contain only latin letters, digits and special characters.
                 </div>
@@ -27,14 +27,14 @@
                 <div class="login-input-title"><a (click)="openDialog()">Forgot password</a></div>
             </div>
             <mat-form-field floatLabel="never"
-                [ngClass]="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userPassword') ? 'logo-invalid-input' : ''">
+                [ngClass]="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userPassword') ? 'invalid-input' : ''">
                 <input matInput [type]="isPasswordHide ? 'password' : 'text'" formControlName="userPassword"
                     [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'" autocomplete="on" [(ngModel)]="userLoginDto.password">
                 <mat-icon class="login-show-password" matSuffix (click)="isPasswordHide = !isPasswordHide">
                     {{isPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(loginForm,'userPassword')">
-                <div class="logo-validation-message" *ngIf="loginForm.controls['userPassword'].errors?.required">
+                <div class="validation-error" *ngIf="loginForm.controls['userPassword'].errors?.required">
                     Please enter your password.
                 </div>
             </div>

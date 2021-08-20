@@ -6,12 +6,16 @@ $primary-font: Nunito;
 
 .vacancies-page{
 /* Header */
-
 .mat-form-field {
     font-size: 14px;
     width: 100%;
 }
-
+.clicable{
+    cursor: pointer;
+}
+.clicable{
+    text-indent: 1.4em;
+}
 button.tub {
     background: transparent;
     border: none;
@@ -40,175 +44,184 @@ button.tub:focus {
     height: 60px;
     padding: 10px 20px 10px 20px;
     background: $primary-color-white;
-}
 
-
-/* Table */
-
-.project-list {
-    overflow: scroll;
-    height: calc(100vh - 200px);
-}
-
-table {
-    width: 100%;
-}
-
-th.mat-header-cell,
-td.mat-cell {
-    width: 20%;
-    padding-right: 20px;
-    padding-left: 20px;
-}
-
-th:first-child,
-td:first-child {
-    width: 9%;
-}
-
-tr {
-    height: 55px;
-}
-
-tr:nth-child(2n) {
-    background-color: $primary-color-white;
-}
-
-.icons {
-    display: flex;
-    flex-direction: row;
-}
-
-.icons .mat-icon:hover {
-    cursor: pointer;
-    color: $primary-color;
-}
-
-
-/* Project Logo */
-
-.name-logo {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    justify-content: flex-start;
-    align-items: center;
-    img {
-        margin-right: 10px;
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px white inset;
     }
 }
 
-img {
-    object-fit: cover;
-    width: 30px;
-    height: 30px;
-    min-width: 30px;
-    min-height: 30px;
-    max-width: 30px;
-    max-height: 30px;
-    border-radius: 50%;
-    border: 1px solid $primary-color;
-    overflow: hidden;
-}
 
 
-/* Description + Team info */
-
-.mat-icon{
-    cursor: pointer;
-}
-
-.module {
-    position: relative;
-    overflow: hidden;
-}
-
-.line-clamp {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
-
-.module:hover {
-    cursor: pointer;
-}
-
-.module:hover::after {
-    content: attr(data-title);
-}
-
-
-/* Angular Materials */
-
-::ng-deep {
-    /* Scroll Bar */
-     ::-webkit-scrollbar {
-        width: 5px;
-    }
-     ::-webkit-scrollbar-track {
-        display: none;
-    }
-     ::-webkit-scrollbar-thumb {
-        background: rgb(41, 25, 101, 0.5);
-        border-radius: 20px;
-    }
-     ::-webkit-scrollbar-thumb:hover {
-        background: $primary-color-blue;
-    }
-    app-search-form {
-        display: none;
-    }
-    /* Mat Form Field */
-    .mat-form-field-wrapper.mat-form-field-wrapper {
-        width: 350px;
-        padding: 0px 5px 0px 5px;
-        border-radius: 50px;
-        margin-left: 30px;
-        max-width: 200px;
-        background: white;
-    }
-    .mat-form-field-appearance-fill .mat-form-field-infix {
-        display: flex;
-        align-items: center;
-        padding: 0;
-    }
-    .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
-        padding: 0;
-    }
-    .mat-paginator-container .mat-paginator-page-size {
-        margin-right: auto;
-        .mat-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-form-field-flex {
-            width: 40px;
-        }
-    }
-    .mat-form-field-flex .mat-form-field-infix {
-        background: white;
-    }
-    .mat-button.mat-button {
-        width: 170px;
-    }
     /* Table */
-    thead tr.mat-header-row {
-        height: 30px;
+
+    .vacancy-page {
+        overflow: scroll;
+        height: calc(100vh - 200px);
     }
-    tbody tr.mat-row {
+
+    table {
+        width: 100%;
+    }
+
+    th.mat-header-cell,
+    td.mat-cell {
+        width: 20%;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+    td.mat-cell:first-child {
+        width: 20%;
+        text-indent: 1.35em;
+    }
+    th:first-child,
+    td:first-child {
+        width: 9%;
+        text-indent: 1.4em;
+        justify-content: center;
+    }
+
+    tr {
         height: 55px;
     }
-    td.mat-cell {
-        padding: 0;
+
+    tr:nth-child(2n) {
+        background-color: $primary-color-white;
     }
-    td.mat-cell:last-of-type {
-        padding-left: 100px;
+
+    .icons {
+        display: flex;
+        flex-direction: row;
     }
-    .icons > .mat-icon,
-    .vacancies-header .mat-icon {
-        margin-left: 10px;
-        margin-right: 10px;
-        color: gray;
+
+    .icons .mat-icon:hover {
+        cursor: pointer;
+        color: $primary-color;
     }
-    .search.mat-icon {
-        line-height: 25px;
-        font-size: 16px;
+
+    /* Project Logo */
+
+    .name-logo {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        justify-content: flex-start;
+        align-items: center;
+        img {
+            margin-right: 10px;
+        }
     }
-}
+
+    img {
+        object-fit: cover;
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        min-height: 30px;
+        max-width: 30px;
+        max-height: 30px;
+        border-radius: 50%;
+        border: 1px solid $primary-color;
+        overflow: hidden;
+    }
+
+
+    /* Description + Team info */
+
+    .mat-icon{
+        cursor: pointer;
+    }
+
+    .module {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .line-clamp {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .module:hover {
+        cursor: pointer;
+    }
+
+    .module:hover::after {
+        content: attr(data-title);
+    }
+
+
+    /* Angular Materials */
+
+    ::ng-deep {
+        /* Scroll Bar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            display: none;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgb(41, 25, 101, 0.5);
+            border-radius: 20px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: $primary-color-blue;
+        }
+        app-search-form {
+            display: none;
+        }
+        /* Mat Form Field */
+        .mat-form-field-wrapper.mat-form-field-wrapper {
+            width: 350px;
+            padding: 0px 5px 0px 5px;
+            border-radius: 50px;
+            margin-left: 30px;
+            max-width: 200px;
+            background: white;
+        }
+        .mat-form-field-appearance-fill .mat-form-field-infix {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+            padding: 0;
+        }
+        .mat-paginator-container .mat-paginator-page-size {
+            margin-right: auto;
+            .mat-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-form-field-flex {
+                width: 40px;
+            }
+        }
+        .mat-form-field-flex .mat-form-field-infix {
+            background: white;
+        }
+        .mat-button.mat-button {
+            width: 170px;
+        }
+        /* Table */
+        thead tr.mat-header-row {
+            height: 30px;
+        }
+        tbody tr.mat-row {
+            height: 55px;
+        }
+        td.mat-cell {
+            padding: 0;
+        }
+        td.mat-cell:last-of-type {
+            padding-left: 70px;
+        }
+        .icons > .mat-icon,
+        .vacancies-header .mat-icon {
+            margin-left: 10px;
+            margin-right: 10px;
+            color: gray;
+        }
+        .search.mat-icon {
+            line-height: 25px;
+            font-size: 16px;
+        }
+    }
 }

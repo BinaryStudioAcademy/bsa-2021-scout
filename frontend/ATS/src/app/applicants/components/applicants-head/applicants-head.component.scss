@@ -24,6 +24,7 @@ button.tub:focus {
 
 :host {
     display: flex;
+    width: 100%;
     box-sizing: border-box;
     justify-content: space-between;
     align-items: center;
@@ -37,36 +38,39 @@ button.tub:focus {
     text-align: left;
 }
 
-:host ::ng-deep .mat-form-field-wrapper.mat-form-field-wrapper{
+:host ::ng-deep .mat-form-field-wrapper {
     height: 40px;
     padding: 0;
     width: 260px;
     margin-left: 30px;
+    border-radius: 50px;
 }
 
 :host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-infix{
     display:flex;
     align-items: center;
-    padding: 0.75em 0.25em;
+    padding: 0;
+    height: 24px;
+    background: none;
 }
 
 :host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex{
-    padding: .75em .75em .75em .75em;
+    padding: 0 5px;
 }
 
 :host ::ng-deep .mat-icon{
-    color: #4d4d4d;
-    font-size: 15px;
-    height:16px;
+    display: inline-block;
+    color: gray;
+    font-size: 16px;
+    height: 24px;
+    width: 24px;
+    line-height: 25px;
+    vertical-align: middle;
+    margin: 0 10px;
 }
 
 :host ::ng-deep .mat-icon-button .mat-icon {
     line-height: 1;
-}
-
-:host ::ng-deep .create-button {
-    width: fit-content;
-    min-width: 150px;
 }
 
 :host ::ng-deep .mat-form-field-wrapper {

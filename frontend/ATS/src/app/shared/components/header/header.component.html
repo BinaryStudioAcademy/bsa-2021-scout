@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <app-button>
+  <app-button *ngIf="!removeButton">
     + New vacancy
   </app-button>
   <app-search-form>
@@ -13,13 +13,13 @@
       src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg"
       alt="Avatar"
     />
-    <button mat-icon-button (click)="toggleDropdown()">
+    <button mat-icon-button [matMenuTriggerFor]="dropdown">
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
-    <div class="dropdown-menu" *ngIf="dropdownOpened">
-      <div class="element" (click)="logout()">
+    <mat-menu #dropdown="matMenu">
+      <button mat-menu-item (click)="logout()">
         Log out
-      </div>
-    </div>
+      </button>
+    </mat-menu>
   </div>
 </mat-toolbar>

@@ -10,5 +10,7 @@ namespace Domain.Interfaces.Read
         Task<IEnumerable<ApplicantVacancyInfo>> GetApplicantVacancyInfoListAsync(string applicantId);
         Task<IEnumerable<Applicant>> GetCompanyApplicants();
         Task<Applicant> GetByIdAsync(string applicantId);
+        Task<IEnumerable<(Applicant, bool)>> GetApplicantsWithAppliedMark(string vacancyId);
+        Task<Applicant> GetByCompanyIdAsync(string id);
     }
 }
