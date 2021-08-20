@@ -33,6 +33,11 @@ namespace Infrastructure.Files.Read
             await _fileWriteRepository.UpdateFileAsync(cvFileInfo, cvFileContent);
         }
 
+        public async Task DeleteAsync(FileInfo cvFileInfo)
+        {
+            await _fileWriteRepository.DeleteFileAsync(cvFileInfo);
+        }
+
         private static string GetFilePath()
         {
             return "applicants";

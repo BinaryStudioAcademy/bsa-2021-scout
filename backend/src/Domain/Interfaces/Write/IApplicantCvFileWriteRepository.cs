@@ -8,5 +8,6 @@ namespace Domain.Interfaces.Write
     {
         Task<FileInfo> UploadAsync(string applicantId, Stream cvFileContent);
         Task UpdateAsync(string applicantId, Stream cvFileContent);
+        Task DeleteAsync(FileInfo fileInfo);
     }
 }
