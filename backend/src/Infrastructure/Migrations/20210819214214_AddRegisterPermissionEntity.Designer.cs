@@ -4,14 +4,16 @@ using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210819214214_AddRegisterPermissionEntity")]
+    partial class AddRegisterPermissionEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,31 +87,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Applicants");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CandidateComment", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CandidateId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("StageId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CandidateId");
-
-                    b.HasIndex("StageId");
-
-                    b.ToTable("CandidateComments");
                 });
 
             modelBuilder.Entity("Domain.Entities.CandidateReview", b =>
@@ -354,27 +331,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Reviews");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ReviewToStage", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ReviewId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("StageId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReviewId");
-
-                    b.HasIndex("StageId");
-
-                    b.ToTable("ReviewToStages");
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
@@ -634,25 +590,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CandidateComment", b =>
-                {
-                    b.HasOne("Domain.Entities.VacancyCandidate", "Candidate")
-                        .WithMany("CandidateComments")
-                        .HasForeignKey("CandidateId")
-                        .HasConstraintName("candidate_comment_candidate_FK")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Domain.Entities.Stage", "Stage")
-                        .WithMany("CandidateComments")
-                        .HasForeignKey("StageId")
-                        .HasConstraintName("candidate_comment_stage_FK")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Candidate");
-
-                    b.Navigation("Stage");
-                });
-
             modelBuilder.Entity("Domain.Entities.CandidateReview", b =>
                 {
                     b.HasOne("Domain.Entities.VacancyCandidate", "Candidate")
@@ -760,25 +697,6 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ReviewToStage", b =>
-                {
-                    b.HasOne("Domain.Entities.Review", "Review")
-                        .WithMany("ReviewToStages")
-                        .HasForeignKey("ReviewId")
-                        .HasConstraintName("review_to_stage_review_FK")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Domain.Entities.Stage", "Stage")
-                        .WithMany("ReviewToStages")
-                        .HasForeignKey("StageId")
-                        .HasConstraintName("review_to_stage_stage_FK")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Review");
-
-                    b.Navigation("Stage");
                 });
 
             modelBuilder.Entity("Domain.Entities.RegisterPermission", b =>
@@ -912,8 +830,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Review", b =>
                 {
                     b.Navigation("CandidateReviews");
-
-                    b.Navigation("ReviewToStages");
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
@@ -925,13 +841,9 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("Actions");
 
-                    b.Navigation("CandidateComments");
-
                     b.Navigation("CandidateToStages");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("ReviewToStages");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -954,8 +866,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.VacancyCandidate", b =>
                 {
-                    b.Navigation("CandidateComments");
-
                     b.Navigation("CandidateToStages");
 
                     b.Navigation("Reviews");

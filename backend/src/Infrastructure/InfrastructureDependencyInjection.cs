@@ -121,6 +121,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
             services.AddScoped<IWriteRepository<Role>, WriteRepository<Role>>();
             services.AddScoped<IWriteRepository<UserToRole>, WriteRepository<UserToRole>>();
+            services.AddScoped<IWriteRepository<RegisterPermission>, WriteRepository<RegisterPermission>>();
 
             services.AddScoped<IWriteRepository<Applicant>, ApplicantsWriteRepository>();
             services.AddScoped<IWriteRepository<ApplicantCv>, MongoWriteRepository<ApplicantCv>>();
@@ -156,6 +157,7 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<UserToRole>, UserToRoleReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
+            services.AddScoped<IReadRepository<RegisterPermission>, RegisterPermissionReadRepository>();
 
             services.AddScoped<IReadRepository<ApplicantCv>, MongoReadRespoitory<ApplicantCv>>();
             services.AddScoped<IElasticReadRepository<ElasticEntity>, ElasticReadRepository<ElasticEntity>>();
@@ -167,7 +169,7 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
-    
+
             services.AddScoped<IVacancyTableReadRepository, VacancyTableReadRepository>();
             services.AddScoped<IVacancyReadRepository, VacancyReadRepository>();
 
