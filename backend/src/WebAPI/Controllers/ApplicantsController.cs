@@ -40,6 +40,22 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
+        [HttpGet("company/{id}")]
+        public async Task<IActionResult> GetApplicantByCompanyAsync(string id)
+        {
+            var query = new GetApplicantByIdByCompanyQuery(id);
+
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpGet("marked/{vacancyId}")]
+        public async Task<IActionResult> GetApplicantsWithAppliedMark(string vacancyId)
+        {
+            var query = new GetApplicantsWithAppliedMark(vacancyId);
+
+            return Ok(await Mediator.Send(query));
+        }
+
         [HttpGet("to_tags/{searchRequest}")]
         public async Task<IActionResult> SearchElasticAsync(string searchRequest, CancellationToken token)
         {

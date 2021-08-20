@@ -13,6 +13,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from './components/button/button.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -30,6 +33,8 @@ import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
+import { AddCandidateModalComponent }
+  from './components/modal-add-candidate/modal-add-candidate.component';
 
 @NgModule({
   exports: [
@@ -56,12 +61,16 @@ import { StylePaginatorDirective } from './directives/style-paginator.directive'
     MultiselectComponent,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    MatChipsModule,
     TopicComponent,
     FileInputComponent,
     MenuComponent,
     MatProgressBarModule,
     SpinnerComponent,
     StylePaginatorDirective,
+    AddCandidateModalComponent,
   ],
   imports: [
     MatButtonModule,
@@ -81,6 +90,9 @@ import { StylePaginatorDirective } from './directives/style-paginator.directive'
     MatProgressBarModule,
     MatDialogModule,
     MatListModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    MatChipsModule,
     BrowserAnimationsModule,
     BrowserModule,
     MatSelectModule,
@@ -99,6 +111,7 @@ import { StylePaginatorDirective } from './directives/style-paginator.directive'
     MainContentComponent,
     SpinnerComponent,
     StylePaginatorDirective,
+    AddCandidateModalComponent,
   ],
 })
-export class SharedModule {}
+export class SharedModule { }

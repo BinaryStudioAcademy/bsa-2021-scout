@@ -16,6 +16,8 @@ import { AuthGuard } from '../users/guards/auth.guard';
 import { ApplicantsComponent } from '../applicants/components/applicants/applicants.component';
 import { ProjectsListComponent } from 
   '../projects/components/projects-list/projects-list.component';
+import { VacanciesStagesBoardComponent } 
+  from '../vacancies/components/vacancies-stages-board/vacancies-stages-board.component';
 
 
 
@@ -30,7 +32,14 @@ const routes: Routes = [
       { path: AppRoute.Analytics, component: VacanciesListComponent, pathMatch: 'full' },
       { path: AppRoute.TaskManagement, component: VacanciesListComponent, pathMatch: 'full' },
       { path: AppRoute.Templates, component: VacanciesListComponent, pathMatch: 'full' },
+      {
+        path: 'candidates/:id',
+        pathMatch: 'full',
+        component: VacanciesStagesBoardComponent,
+        canActivate: [AuthGuard],
+      },
       { path: '**', redirectTo: AppRoute.Home },
+      
     ],
   },
 ];
