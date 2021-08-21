@@ -14,7 +14,6 @@ namespace Application.Projects.Dtos
         public string CompanyId { get; set; }
         public DateTime CreationDate { get; set; }
         public ICollection<VacancyTableDto> Vacancies { get; set; }
-        public ElasticEnitityDto Tags { get; set; }
     }
     public class ProjectGetDtoValidator : AbstractValidator<ProjectGetDto>
     {
