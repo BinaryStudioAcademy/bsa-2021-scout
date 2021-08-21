@@ -68,7 +68,7 @@ namespace Infrastructure.Repositories.Read
 
             SqlConnection connection = _connectionFactory.GetSqlConnection();
 
-            string sql = @$"SELECT AllApplicants.*, CASE WHEN Applied.[Index] IS NULL THEN CAST(0 AS BIT) ELSE CAST(1 AS BIT) END IsApplied FROM Applicants AS AllApplicants
+            string sql = @$"SELECT DISTINCT AllApplicants.*, CASE WHEN Applied.[Index] IS NULL THEN CAST(0 AS BIT) ELSE CAST(1 AS BIT) END IsApplied FROM Applicants AS AllApplicants
                            LEFT OUTER JOIN
                            (SELECT VacancyCandidates.ApplicantId, Stages.[Index]
                            From Stages 

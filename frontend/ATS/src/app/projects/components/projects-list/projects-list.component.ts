@@ -11,6 +11,7 @@ import { ProjectsEditComponent } from '../projects-edit/projects-edit.component'
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ProjectDeleteConfirmComponent } 
   from '../project-delete-confirm/project-delete-confirm.component';
+import { Tag } from 'src/app/shared/models/tags/tag';
 
 const TAGS: string[] = [
   'ASP.NET', 'WPF','Angular',
@@ -29,7 +30,7 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
   projects: ProjectInfo[] = [];
   dataSource: MatTableDataSource<ProjectInfo>;
   tags: string[] = TAGS;
-
+  isFollowedPage: boolean = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
@@ -47,6 +48,9 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
       .subscribe(
         (resp) => {
           this.projects = resp.body!;
+          this.projects.forEach((d, i) => {
+            d.position = i + 1;
+          });
           this.dataSource.data = this.projects;
           this.directive.applyFilter$.emit();
         },
@@ -61,7 +65,27 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     this.getProjects();
   }
+  public switchToFollowed(){
+    this.isFollowedPage = true;
+    this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    this.directive.applyFilter$.emit();
+  }
+  public getFirstTags(project: ProjectInfo): Tag[] {
+    return project.tags!.tagDtos.length > 6
+      ? project.tags!.tagDtos.slice(0, 5)
+      : project.tags!.tagDtos;
+  }
 
+  public toggleTags(project: ProjectInfo): void {
+    project.isShowAllTags = project.isShowAllTags
+      ? false
+      : true;
+  }
+  public switchAwayToAll(){
+    this.isFollowedPage = false;
+    this.dataSource.data = this.projects;
+    this.directive.applyFilter$.emit();
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -72,7 +96,15 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
+  public onBookmark(data: ProjectInfo, perfomToFollowCleanUp: boolean = false){
+    let projetIndex:number = this.dataSource.data.findIndex(project=>project.id === data.id)!;
+    data.isFollowed = !data.isFollowed;
+    this.dataSource.data[projetIndex] = data;
+    if(perfomToFollowCleanUp){
+      this.dataSource.data = this.dataSource.data.filter(project=>project.isFollowed);
+    }
+    this.directive.applyFilter$.emit();
+  }
   public OnCreate(): void {
     this.dialog.open(ProjectsAddComponent);
 

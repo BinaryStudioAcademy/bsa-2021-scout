@@ -3,7 +3,8 @@ $primary-color: #ee2a64;
 $primary-color-white: #f6f7f9;
 $primary-color-blue: #291965;
 $primary-font: Nunito;
-
+$tag-background-color: rgba($color: (#291965), $alpha: 0.1);
+$tag-font-color: rgba($color: (#291965), $alpha: 0.8);
  
 
 ::ng-deep{
@@ -247,6 +248,9 @@ img {
         width: 170px;
     }
     /* Table */
+    .applyPrimaryColor{
+        color: $primary-color !important;
+    }
     thead tr.mat-header-row {
         height: 30px;
     }
@@ -259,6 +263,59 @@ img {
     td.mat-cell:last-of-type {
         padding-left: 100px;
     }
+    .absolute-tags-list-container {
+        position: absolute;
+        width: 350px;
+        max-height: 300px;
+        animation: fadeIn 0.5s;
+        padding: 3px 0 15px 20px;
+
+        .mat-list-item {
+            font-size: 1.1em;
+            margin: 5px 5px;
+        }
+
+        .tags-pop-up-actions {
+            display: flex;
+            justify-content: flex-end;
+            height: 25px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .tags-list {
+        margin-left: -3px;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        overflow: hidden;
+
+        .mat-list-item {
+            width: min-content;
+            height: min-content;
+            padding: 4px 0;
+            line-height: 1;
+            font-size: 0.9em;
+            color: $tag-font-color;
+            background-color: $tag-background-color;
+            font-weight: 700;
+            border-radius: 15px;
+            margin: 3px;
+        
+            &.more-button {
+                background: none;
+                cursor: pointer;
+                padding: 1px 0;
+                border: $tag-font-color;
+
+                &:hover {
+                    box-shadow: 0 0 4px rgba($color: (#291965), $alpha: 0.5);
+                    text-shadow: 0 0 1px 1px $tag-font-color;
+                }
+            }
+        }
+    }
+
     .icons > .mat-icon,
     .projects-header .mat-icon {
         margin-left: 10px;
