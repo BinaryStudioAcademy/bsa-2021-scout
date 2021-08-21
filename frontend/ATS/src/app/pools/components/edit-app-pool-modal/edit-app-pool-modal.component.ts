@@ -7,10 +7,11 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import { map, startWith, takeUntil} from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Applicant } from 'src/app/shared/models/applicant/applicant';
+import { ApplicantIsSelected } from 'src/app/shared/models/applicant/applicant-select';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { ApplicantsPool } from 'src/app/shared/models/applicants-pool/applicants-pool'; 
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 
 @Component({
@@ -30,24 +31,26 @@ export class EditAppPoolModalComponent implements OnInit{
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];  
-  filteredApplicants: Observable<Applicant[]>;
+  filteredApplicants: Observable<ApplicantIsSelected[]>;
   filterValue : string = '';
+  loading = true;
 
-  public allapplicants : Applicant [] = [
-  ];
+  public allapplicants : ApplicantIsSelected [] = [];
 
-  public applicants : Applicant [] = this.data.applicants;  
+  public applicants : ApplicantIsSelected [] = this.data.applicants;
 
   applicantsCtrl = new FormControl();
   private unsubscribe$ = new Subject<void>();
    
 
   public editPool: FormGroup = new FormGroup({
-    'name': new FormControl(this.data.name, [
-      Validators.required,            
-    ]),
-    'description': new FormControl(this.data.description, [
+    'name': new FormControl('', [
       Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(20)]),
+    'description': new FormControl('', [
+      Validators.required,
+      Validators.minLength(10),
     ]),
     applicants : this.applicantsCtrl,
   });
@@ -58,6 +61,7 @@ export class EditAppPoolModalComponent implements OnInit{
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ApplicantsPool,
     public dialogRef: MatDialogRef<EditAppPoolModalComponent>,
+    private notificationService:NotificationService,
     private applicantsService: ApplicantsService,
   ) {
     this.filteredApplicants = this.applicantsCtrl.valueChanges.pipe(
@@ -91,7 +95,7 @@ export class EditAppPoolModalComponent implements OnInit{
     this.applicantsCtrl.setValue(null);
   }
 
-  remove(applicant: Applicant): void {
+  remove(applicant: ApplicantIsSelected): void {
     const index = this.applicants.indexOf(applicant);
 
     if (index >= 0) {
@@ -117,7 +121,7 @@ export class EditAppPoolModalComponent implements OnInit{
     }
   }
 
-  private _filter(value: string): Applicant[] {    
+  private _filter(value: string): ApplicantIsSelected[] {    
     console.log(value);
     const filterValue = value ? value.toLowerCase() : '';    
 
@@ -127,7 +131,7 @@ export class EditAppPoolModalComponent implements OnInit{
     ));
   }
 
-  getStyle(applicant :Applicant)
+  getStyle(applicant :ApplicantIsSelected)
   {
     return applicant.isSelected ? 'used' : '';
   }
@@ -145,15 +149,18 @@ export class EditAppPoolModalComponent implements OnInit{
   }
 
 
-  getApplicants() {
-    //this.loading = true;
+  getApplicants() {    
     this.applicantsService
       .getApplicants()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        (resp) => {
-          //this.loading = false;
-          this.allapplicants = resp;
+        (resp) => {          
+          this.allapplicants = resp.map(
+            value => {
+              return {
+                ...value, isSelected : false};                
+            },            
+          );
           this.id = this.data.id;
           this.applicants.forEach(x=> {
             x.isSelected = true;
@@ -162,11 +169,17 @@ export class EditAppPoolModalComponent implements OnInit{
           });
           
         },
-        (error) => {
-          //this.loading = false; 
-          //this.notificationService.showErrorMessage(error);
+        (error) => {          
+          this.notificationService.showErrorMessage(error);
         },
+        () => {this.loading = false;},
       );
+  }
+
+  getClass(control:string)
+  {
+    return this.editPool.controls[control].dirty && this.editPool.controls[control].errors?
+      'invalid-input':'';
   }
 
   

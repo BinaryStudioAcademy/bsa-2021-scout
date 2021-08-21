@@ -6,15 +6,21 @@
 </div>
 <div class="form-control">
     <form [formGroup]="editPool">
-        <label>Pool name</label>
-        <mat-form-field floatLabel='never' class="al-subscribe-form-field">
+        <h5>Pool name</h5>
+        <mat-form-field floatLabel='never' class="al-subscribe-form-field" [ngClass]="getClass('name')">
           <input matInput type="text" formControlName="name" placeholder="Enter name of pool">
         </mat-form-field>
         <div class="custom-error" *ngIf="this.editPool.controls['name'].dirty && this.editPool.controls['name'].errors?.required">
           Please fill name of pool.
         </div>
-        <label>Description</label>
-        <mat-form-field floatLabel='never' class="al-subscribe-form-field">
+        <div class="custom-error" *ngIf="this.editPool.controls['name'].dirty && this.editPool.controls['name'].errors?.minlength">
+          Name must be at least 3 characters long.
+        </div>
+        <div class="custom-error" *ngIf="this.editPool.controls['name'].dirty && this.editPool.controls['name'].errors?.maxlength">
+          Name must be not greater than 20 characters long.
+        </div>
+        <h5>Description</h5>
+        <mat-form-field floatLabel='never' class="al-subscribe-form-field" class="textarea" [ngClass]="getClass('description')">
             <textarea matInput type="text" autocomplete="off" formControlName="description" placeholder="Enter description"
             cdkTextareaAutosize
             #autosize="cdkTextareaAutosize"
@@ -22,9 +28,12 @@
             cdkAutosizeMaxRows="12"></textarea>
         </mat-form-field>
         <div class="custom-error" *ngIf="this.editPool.controls['description'].dirty && this.editPool.controls['description'].errors?.required">
-          Please fill description for pool.
+          Please fill description of pool.
         </div>
-        <label>Applicants</label>
+        <div class="custom-error" *ngIf="this.editPool.controls['description'].dirty && this.editPool.controls['description'].errors?.minlength">
+          Pool description must be at least 10 characters long.
+        </div>
+        <h5>Applicants</h5>
         <mat-form-field class="example-chip-list" floatLabel='never' placeholder="New applicant">
             <mat-label>Pool applicnts</mat-label>
             <mat-chip-list #applicantsList aria-label="Applicants selection">

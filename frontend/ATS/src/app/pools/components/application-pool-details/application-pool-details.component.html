@@ -1,4 +1,3 @@
-<app-header></app-header>
 <div class="dialog-title" mat-dialog-title>
     <h1>Edit pool</h1>
     <button mat-icon-button mat-dialog-close="none">
@@ -7,9 +6,11 @@
 </div>
 <div class= modal-content>
     <div class='pool-create-info-wrapper'>
-        <div>created by</div>
-        <mat-icon>user</mat-icon>
-        <span>{{pool.createdBy}} </span>
+        <div class='creator'>
+            <div>created by</div>
+            <mat-icon>user</mat-icon>
+            <span>{{pool.createdBy}} </span>
+        </div>
         <span>{{pool.dateCreated | date:"dd.MM.yyyy"}}</span>
     </div>
     <div class="name">

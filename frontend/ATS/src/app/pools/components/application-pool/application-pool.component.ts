@@ -42,7 +42,7 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
     'name',
     'createdBy',
     'dateCreated',
-    'applicantsCount',
+    'count',
     'description',
     'actions',
   ];
@@ -112,17 +112,16 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
       .createPool(pool)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        (resp) => {
-          this.loading = false;
+        (resp) => {          
           this.dataSource.data.push(resp);          
           this.table.renderRows();          
           this.updatePaginator();
           this.notificationService.showSuccessMessage('Pool successfully added');
         },
-        (error) => {
-          this.loading = false;
+        (error) => {          
           this.notificationService.showSuccessMessage(`Create pool error: ${error}`);
         },
+        () => { this.loading = false;},
       );
   }
 
@@ -133,10 +132,13 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
-          this.loading = false;
           this.updateRowData(resp.body!);
         },
-        (error) => (this.loading = false),
+        (error) => {
+          this.notificationService.showSuccessMessage('Update pool error');
+          console.log(error);
+        },
+        () => (this.loading = false),
       );
   }
 
@@ -190,6 +192,7 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
       source.description = row.description;
       source.dateCreated = row.dateCreated;
       source.createdBy = row.createdBy;
+      source.count = row.applicants.length;
     }    
   }
 

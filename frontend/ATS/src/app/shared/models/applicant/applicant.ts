@@ -13,6 +13,7 @@ export interface Applicant {
   experience: number;
 
   tags: ElasticEntity;
-  vacancies: ApplicantVacancyInfo[];
-  isSelected?:boolean;
+  vacancies: ApplicantVacancyInfo[];  
 }
+
+

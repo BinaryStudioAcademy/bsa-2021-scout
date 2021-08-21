@@ -4,7 +4,6 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
-import { MatDialog } from '@angular/material/dialog';
 import { ApplicantsPool } from 'src/app/shared/models/applicants-pool/applicants-pool';
 import { Subject } from 'rxjs';
 import { PoolService } from 'src/app/shared/services/poolService';
@@ -12,7 +11,7 @@ import { takeUntil} from 'rxjs/operators';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { Applicant } from 'src/app/shared/models/applicant/applicant';
 import { Tag } from 'src/app/shared/models/tags/tag';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 const DATA: Applicant[] = [];
 
@@ -75,17 +74,21 @@ export class PoolDetailsModalComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
-          this.loading = false;
           this.pool = resp;
-          this.dataSource.data = resp.applicants;          
+          this.dataSource.data = resp.applicants;
+          this.updatePaginator();
         },
-        (error) => {
-          this.loading = false; 
-          this.notificationService.showErrorMessage(error);
+        (error) => {          
+          this.notificationService.showErrorMessage(error);        
         },
+        () => this.loading = false,
       );
   }
 
+  updatePaginator() {
+    this.dataSource.paginator = this.paginator;
+    this.directive?.applyFilter$.emit();
+  }
   public getFirstTags(applicant: Applicant): Tag[] {
     return applicant.tags.tagDtos.length > 6
       ? applicant.tags.tagDtos.slice(0, 5)
