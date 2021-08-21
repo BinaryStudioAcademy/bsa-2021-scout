@@ -26,7 +26,7 @@ namespace Infrastructure.EF.Seeds
             Tier tierTo = Tiers[_random.Next(Tiers.Count)];
             if((int)tierFrom > (int)tierTo)
                 (tierTo, tierFrom) = (tierFrom, tierTo);
-            DateTime creationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30));
+            DateTime creationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), new DateTime(2021, 7, 30));
             DateTime dateOfOpening = creationDate.AddDays(20);
             DateTime modificationDate = dateOfOpening.AddDays(2);
             DateTime? completionDate = _random.Next() % 2 == 0 ?  creationDate.AddMonths(_random.Next(2, 4)): null;
