@@ -50,7 +50,7 @@ namespace Infrastructure.Repositories.Read
 
            SqlConnection connection = _connectionFactory.GetSqlConnection();
 
-           string sql = @$"SELECT a*, fi.* FROM {_tableName} a
+           string sql = @$"SELECT a.*, fi.* FROM {_tableName} a
                            LEFT JOIN FileInfos fi ON a.CvFileInfoId = fi.Id
                            WHERE a.CompanyId = @companyId";
 

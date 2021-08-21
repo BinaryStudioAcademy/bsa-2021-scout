@@ -10,6 +10,8 @@ export interface UpdateApplicant {
   skype: string;
   linkedInUrl: string;
   experience: number;
+  hasCv: boolean;
+  cv: File | null;
 
   tags: ElasticEntity;
 }

@@ -27,16 +27,21 @@ export class ApplicantsService {
   }
 
   public addApplicant(createApplicant: CreateApplicant): Observable<Applicant> {
-    const bodyFormData = new FormData();
-    bodyFormData.append('body', JSON.stringify(createApplicant));
+    const formData = new FormData();
+    formData.append('body', JSON.stringify(createApplicant));
     if (createApplicant.cv) {
-      bodyFormData.append('cvFile', createApplicant.cv, createApplicant.cv.name);
+      formData.append('cvFile', createApplicant.cv, createApplicant.cv.name);
     }
-    return this.httpClient.postRequest<Applicant>('/applicants', bodyFormData);
+    return this.httpClient.postRequest<Applicant>('/applicants', formData);
   }
 
   public updateApplicant(updateApplicant: UpdateApplicant): Observable<Applicant> {
-    return this.httpClient.putRequest<Applicant>('/applicants', updateApplicant);
+    const formData = new FormData();
+    formData.append('body', JSON.stringify(updateApplicant));
+    if (updateApplicant.cv) {
+      formData.append('cvFile', updateApplicant.cv, updateApplicant.cv.name);
+    }
+    return this.httpClient.putRequest<Applicant>('/applicants', formData);
   }
 
   public deleteApplicant(applicantId: string): Observable<Applicant> {

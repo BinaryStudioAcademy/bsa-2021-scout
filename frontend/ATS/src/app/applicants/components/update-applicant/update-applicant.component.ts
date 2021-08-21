@@ -9,6 +9,7 @@ import { UpdateApplicant } from 'src/app/shared/models/applicant/update-applican
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { Tag } from 'src/app/shared/models/tags/tag';
+import { FileType } from 'src/app/shared/enums/file-type.enum';
 
 @Component({
   selector: 'app-update-applicant',
@@ -35,7 +36,10 @@ export class UpdateApplicantComponent implements OnDestroy {
       elasticType: 1,
       tagDtos: [],
     },
+    hasCv: false,
+    cv: null,
   };
+  public allowedCvFileType = FileType.Pdf;
 
   public tags: Tag[] = [];
 
@@ -59,6 +63,7 @@ export class UpdateApplicantComponent implements OnDestroy {
     this.updatedApplicant.experience = applicant.experience;
     this.updatedApplicant.tags.id = applicant.tags.id;
     this.updatedApplicant.tags.tagDtos = this.tags = applicant.tags.tagDtos;
+    this.updatedApplicant.hasCv = applicant.hasCv;
   }
 
   public updateApplicant(): void {
@@ -81,6 +86,10 @@ export class UpdateApplicantComponent implements OnDestroy {
 
   public updateTags(tags: Tag[]): void {
     this.tags = tags;
+  }
+
+  public uploadApplicantCv(files: File[]): void {
+    this.updatedApplicant.cv = files[0];
   }
 
   public ngOnDestroy(): void {

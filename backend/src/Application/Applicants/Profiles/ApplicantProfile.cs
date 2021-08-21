@@ -26,6 +26,7 @@ namespace Application.Applicants.Profiles
             CreateMap<ApplicantCsvDto, Applicant>();
 
             CreateMap<UpdateApplicantDto, ApplicantDto>();
+            CreateMap<UpdateApplicantDto, Applicant>();
             CreateMap<ApplicantVacancyInfo, ApplicantVacancyInfoDto>();
         }
     }

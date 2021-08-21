@@ -8,6 +8,9 @@ using Application.Common.Commands;
 using Application.ElasticEnities.Dtos;
 using Application.Common.Files.Dtos;
 using Domain.Interfaces.Read;
+using Domain.Interfaces.Abstractions;
+using Domain.Entities;
+using System;
 
 namespace Application.Applicants.Commands
 {
@@ -28,41 +31,43 @@ namespace Application.Applicants.Commands
         private readonly ISender _mediator;
         private readonly IMapper _mapper;
         private readonly IApplicantReadRepository _repository;
+        private readonly IWriteRepository<Applicant> _writeRepository;
 
-        public UpdateApplicantCommandHandler(IApplicantReadRepository repository, ISender mediator, IMapper mapper)
+        public UpdateApplicantCommandHandler(IApplicantReadRepository repository, IWriteRepository<Applicant> writeRepository, ISender mediator, IMapper mapper)
         {
+            _repository = repository;
+            _writeRepository = writeRepository;
             _mediator = mediator;
             _mapper = mapper;
-            _repository = repository;
         }
 
         public async Task<ApplicantDto> Handle(UpdateApplicantCommand command, CancellationToken _)
         {
-            var updatableApplicant = _mapper.Map<ApplicantDto>(command.Entity);
-            var query = new UpdateEntityCommand<ApplicantDto>(updatableApplicant);
-            var updatedApplicant = await _mediator.Send(query);
+            var updatableApplicant = _mapper.Map<Applicant>(command.Entity);
+            var updatedApplicantEntity = await _writeRepository.UpdateAsync(updatableApplicant);
+            var updatedApplicant = _mapper.Map<ApplicantDto>(updatedApplicantEntity);
 
             var elasticQuery = new UpdateElasticDocumentCommand<UpdateApplicantToTagsDto>(
                 _mapper.Map<UpdateApplicantToTagsDto>(command.Entity.Tags)
             );
-            
+
             updatedApplicant.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));
             updatedApplicant.Vacancies = _mapper.Map<IEnumerable<ApplicantVacancyInfoDto>>
                 (await _repository.GetApplicantVacancyInfoListAsync(updatedApplicant.Id));
 
-            await UploadCvFileIfExists(updatableApplicant, command);
+            await UploadCvFileIfExists(command);
 
             return updatedApplicant;
         }
 
-        private async Task UploadCvFileIfExists(ApplicantDto updatableApplicant, UpdateApplicantCommand command)
+        private async Task UploadCvFileIfExists(UpdateApplicantCommand command)
         {
-            if (command.CvFileDto != null)
+            if (command.CvFileDto == null)
             {
                 return;
             }
 
-            await _mediator.Send(new UpdateApplicantCvCommand(updatableApplicant.Id, command.CvFileDto!));
+            await _mediator.Send(new UpdateApplicantCvCommand(command.Entity.Id, command.CvFileDto!));
         }
     }
 }
