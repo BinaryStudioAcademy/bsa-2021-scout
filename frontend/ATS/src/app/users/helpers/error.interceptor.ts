@@ -8,11 +8,13 @@ import { TokenErrorType } from '../models/auth/token-error-type';
 import { EmailIsNotConfirmedErrorType } from '../models/auth/emai-is-not-confirmed-error-type';
 import { EmailIsAlreadyConfirmedErrorType } from
   '../models/auth/emai-is-already-confirmed-error-type';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private authService: AuthenticationService) { }
+  constructor(private router: Router, private authService: AuthenticationService,
+    private notificationService: NotificationService) { }
 
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
@@ -34,6 +36,31 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
 
         if (response.status === 401) {
+
+          if (response.error?.message) {
+            const errorInfo: { type: string; description: string }
+              = JSON.parse(response.error.message);
+            if (errorInfo.type === TokenErrorType.InvalidToken) {
+              if (this.authService.areTokensExist()) {
+                this.authService.removeTokensFromStorage();
+              }
+              this.router.navigate(['/login']);
+              this.authService.setUser(null);     
+              this.notificationService.showWarningMessage('You need to re-login. Sorry.');
+              return throwError(errorInfo);
+            }
+            if (errorInfo.type === TokenErrorType.ExpiredRefreshToken) {
+              this.router.navigate(['/login']);
+              this.authService.logout().subscribe(
+                () => console.log('expired refresh token is deleted'));
+              this.notificationService.showWarningMessage('You need to re-login. Sorry.');
+              return throwError(errorInfo);
+            }
+            if (errorInfo.type === EmailIsNotConfirmedErrorType.EmailIsNotConfirmed) {
+              return throwError(errorInfo);
+            }
+          }
+
           if (response.headers.has('Token-Expired')) {
             return this.authService.refreshTokens().pipe(
               switchMap((resp) => {
@@ -54,25 +81,6 @@ export class ErrorInterceptor implements HttpInterceptor {
                 return next.handle(req);
               }),
             );
-          }
-
-          if (response.error?.message) {
-            const errorInfo: { type: string; description: string }
-              = JSON.parse(response.error.message);
-            if (errorInfo.type === TokenErrorType.InvalidToken &&
-              !this.authService.areTokensExist()) {
-              return throwError(errorInfo);
-            }
-            if (errorInfo.type === TokenErrorType.ExpiredRefreshToken) {
-              this.router.navigate(['/']);
-              this.authService.logout().subscribe(
-                () => console.log('expired refresh token is deleted'),
-                (error) => console.log(error));
-              return throwError(errorInfo);
-            }
-            if (errorInfo.type === EmailIsNotConfirmedErrorType.EmailIsNotConfirmed) {
-              return throwError(errorInfo);
-            }
           }
         }
 

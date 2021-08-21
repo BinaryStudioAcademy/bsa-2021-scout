@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import _ from 'lodash';
 import { AuthenticationService } from 'src/app/users/services/auth.service';
-import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -15,13 +14,11 @@ export class HeaderComponent {
 
   public constructor(
     private readonly service: AuthenticationService,
-    private readonly notifications: NotificationService,
   ) {}
 
   public logout(): void {
     this.service.logout().subscribe(
       () => window.location.replace('/login'),
-      () => this.notifications.showErrorMessage('Failed to log out.'),
     );
   }
 }
