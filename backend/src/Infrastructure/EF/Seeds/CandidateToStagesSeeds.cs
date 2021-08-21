@@ -17,10 +17,10 @@ namespace Infrastructure.EF.Seeds
             foreach(var candidate in VacancyCandidateSeeds.VacancyCandidates)
             {
                 foreach(var vacancyId in vacancyIds){
-                    bool isAppliedForVacancy = _random.Next() % 4 == 0;
+                    bool isAppliedForVacancy = _random.Next() % 3 == 0;
                     if(!isAppliedForVacancy)
                         continue;
-                    string stageId = vacancyId.Substring(0, vacancyId.Length - 1) + _random.Next(StageSeeds.Types.Count());
+                    string stageId = vacancyId.Substring(0, vacancyId.Length - 1) + _random.Next(StageSeeds.Types.Count()-1);
    
                     var date = Common.GetRandomDateTime(new DateTime(2021, 04, 03), new DateTime(2021, 08, 29));
                     var dateRemoved = date.AddDays(_random.Next(20));

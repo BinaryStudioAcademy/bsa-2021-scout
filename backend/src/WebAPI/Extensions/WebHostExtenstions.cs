@@ -118,6 +118,8 @@ namespace WebAPI.Extensions
         {
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            context.CandidateToStages.RemoveRange(context.CandidateToStages);
+            await context.SaveChangesAsync();
             foreach (var candidateToStage in CandidateToStagesSeeds.CandidateToStages())
             {
                 if(await context.CandidateToStages.AnyAsync(c=>c.Id == candidateToStage.Id))
