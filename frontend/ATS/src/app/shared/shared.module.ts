@@ -16,6 +16,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from './components/button/button.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -39,6 +40,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
+import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 
 @NgModule({
   exports: [
@@ -68,6 +70,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatAutocompleteModule,
     MatCheckboxModule,
     MatChipsModule,
+    MatExpansionModule,
     TopicComponent,
     FileInputComponent,
     MenuComponent,
@@ -79,6 +82,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatPaginatorModule,
     MatSortModule,
     MatMenuModule,
+    TagsEditComponent,
   ],
   imports: [
     MatButtonModule,
@@ -101,6 +105,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatAutocompleteModule,
     MatCheckboxModule,
     MatChipsModule,
+    MatExpansionModule,
     BrowserAnimationsModule,
     BrowserModule,
     MatSelectModule,
@@ -109,7 +114,6 @@ import { MatMenuModule } from '@angular/material/menu';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatChipsModule,
     MatAutocompleteModule,
     MatCheckboxModule,
     MatMenuModule,
@@ -127,6 +131,7 @@ import { MatMenuModule } from '@angular/material/menu';
     SpinnerComponent,
     StylePaginatorDirective,
     AddCandidateModalComponent,
+    TagsEditComponent,
   ],
 })
 export class SharedModule { }

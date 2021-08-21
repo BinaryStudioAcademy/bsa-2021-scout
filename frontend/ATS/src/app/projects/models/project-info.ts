@@ -13,7 +13,7 @@ export class ProjectInfo{
   websiteLink  : string='';
   companyId  : string='';
   creationDate : Date=new Date();
-  tags: ElasticEntity | undefined;
+  tags: ElasticEntity = new ElasticEntity();
   isShowAllTags: boolean = false;
   vacancies : VacancyInfo[]=[];
 }

@@ -61,21 +61,20 @@
 
             <ng-container matColumnDef="tags">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Tags </th>
-                <td mat-cell *matCellDef="let project" class="tags-list-cell" [style.min-width]="project.isShowAllTags ? '150px' : '50px'">
+                <td mat-cell *matCellDef="let project" class="tags-list-cell" >
                     <div class="outside-wrapper" *ngIf="project.isShowAllTags" (click)="toggleTags(project)"></div>
                     <mat-list *ngIf="!project.isShowAllTags" class="tags-list">
                         <mat-list-item *ngFor="let tag of getFirstTags(project)">{{tag.tagName}}</mat-list-item>
-                        <mat-list-item class="more-button" *ngIf="project.tags.tagDtos.length > 6" (click)="toggleTags(project)">
-                            +{{project.tags.tagDtos.length - 5}} more
+                        <mat-list-item class="more-button" *ngIf="project.tags.tagDtos.length > 3" (click)="toggleTags(project)">
+                            +{{project.tags.tagDtos.length - 2}} more
                         </mat-list-item>
                     </mat-list>
                     
                     <div class="absolute-tags-list-container" *ngIf="project.isShowAllTags">
-                        <div class="tags-pop-up-actions">
-                            <button mat-icon-button (click)="toggleTags(project)">
+                            <button mat-icon-button class="close-dialog" (click)="toggleTags(project)">
                                 <mat-icon>close</mat-icon>
                             </button>
-                        </div><mat-list class="tags-list">
+                        <mat-list class="tags-list">
                             <mat-list-item *ngFor="let tag of project.tags.tagDtos">{{tag.tagName}}</mat-list-item>
                         </mat-list>
                         

@@ -11,7 +11,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ApplicantsHeadComponent } from './components/applicants-head/applicants-head.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { TagsEditComponent } from './components/tags-edit/tags-edit.component';
+import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { ApplicantControlComponent } 
   from './components/applicant-control/applicant-control.component';
 import { ApplicantDeleteConfirmComponent }
@@ -23,7 +23,7 @@ import { ApplicantDeleteConfirmComponent }
     CreateApplicantComponent,
     UpdateApplicantComponent,
     ApplicantsHeadComponent,
-    TagsEditComponent,
+    
     ApplicantControlComponent,
     ApplicantDeleteConfirmComponent,
   ],

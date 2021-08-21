@@ -113,10 +113,14 @@ table {
 }
 
 th.mat-header-cell,
-td.mat-cell {
+td.mat-cell{
+    width: 10%;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+td.mat-cell.tags-list-cell{
     width: 20%;
-    padding-right: 20px;
-    padding-left: 20px;
 }
 
 .mat-paginator-sticky {
@@ -127,7 +131,13 @@ td.mat-cell {
 
 th:first-child,
 td:first-child {
-    width: 9%;
+    padding-left: 20px;
+    width: 1%;
+}
+
+th:last-child,
+td:last-child{
+    padding-right: 40px;
 }
 
 tr {
@@ -261,7 +271,7 @@ img {
         padding: 0;
     }
     td.mat-cell:last-of-type {
-        padding-left: 100px;
+        padding-left: 10px;
     }
     .absolute-tags-list-container {
         position: absolute;
@@ -329,3 +339,72 @@ img {
 }
 
 }
+
+
+::ng-deep .project-list{
+    .absolute-tags-list-container {
+        position: absolute;
+        width: 350px;
+        max-height: 300px;
+        animation: fadeIn 0.5s;
+        padding: 3px 15px 15px 20px;
+        background: white;
+        opacity: 1;
+        z-index: 100;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        .mat-list-item {
+            font-size: 1.1em;
+            margin: 5px 5px;
+        }
+    }
+
+    .tags-list {
+        margin-left: -3px;
+        margin-right: 10px;
+        margin-left: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        overflow: hidden;
+
+        .mat-list-item {
+            width: min-content;
+            height: min-content;
+            padding: 4px 0;
+            line-height: 1;
+            font-size: 0.9em;
+            color: $tag-font-color;
+            background-color: $tag-background-color;
+            font-weight: 700;
+            border-radius: 15px;
+            margin: 3px;
+        
+            &.more-button {
+                background: none;
+                cursor: pointer;
+                padding: 1px 0;
+                border: $tag-font-color;
+
+                &:hover {
+                    box-shadow: 0 0 4px rgba($color: (#291965), $alpha: 0.5);
+                    text-shadow: 0 0 1px 1px $tag-font-color;
+                }
+            }
+        }
+    }
+}
+
+/* Close Button */
+.close-dialog {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+}
+.close-dialog:hover {
+    cursor: pointer;
+    color: $primary-color;
+}
+.mat-dialog-actions {
+    min-height: 0;
+}
+

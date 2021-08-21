@@ -11,6 +11,7 @@ import { ProjectInfo } from 'src/app/projects/models/project-info';
 import { ProjectService } from 'src/app/projects/services/projects.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { Tag } from 'src/app/shared/models/tags/tag';
 
 @Component({
   selector: 'app-projects-edit',
@@ -91,6 +92,11 @@ export class ProjectsEditComponent {
       });
   }
 
+  public updateTags(tags: Tag[]): void {
+    this.projectCreateForm.markAsDirty();
+    this.project.tags.tagDtos = tags;
+  }
+  
 }
 
 function URLValidator(): ValidatorFn {

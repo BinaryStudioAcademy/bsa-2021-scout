@@ -11,6 +11,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ProjectInfo } from 'src/app/projects/models/project-info';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ProjectService } from 'src/app/projects/services/projects.service';
+import { Tag } from 'src/app/shared/models/tags/tag';
 
 @Component({
   selector: 'app-projects-add',
@@ -43,6 +44,7 @@ export class ProjectsAddComponent {
     'websiteLink': new FormControl(this.project.websiteLink,
       [Validators.required,
         URLValidator()]),
+    'tags':new FormControl(this.project.tags,[]),
   });
 
 
@@ -69,7 +71,7 @@ export class ProjectsAddComponent {
 
   public onSubmited() {
     this.project = this.projectCreateForm.value;
-
+    console.log(this.project);
     this.projectService.createProject(this.project)
       .subscribe(_ => {
         this.notificationService.showSuccessMessage(`Project ${this.project.name} created!`);
@@ -77,6 +79,10 @@ export class ProjectsAddComponent {
       (error) => (this.notificationService.showErrorMessage(error.message)));
 
     this.dialogRef.close();
+  }
+
+  public updateTags(tags: Tag[]): void {
+    this.project.tags.tagDtos = tags;
   }
 
 }

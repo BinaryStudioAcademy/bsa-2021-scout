@@ -71,8 +71,8 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
     this.directive.applyFilter$.emit();
   }
   public getFirstTags(project: ProjectInfo): Tag[] {
-    return project.tags!.tagDtos.length > 6
-      ? project.tags!.tagDtos.slice(0, 5)
+    return project.tags!.tagDtos.length > 3
+      ? project.tags!.tagDtos.slice(0, 2)
       : project.tags!.tagDtos;
   }
 
