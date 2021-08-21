@@ -274,8 +274,9 @@ img {
         padding-left: 10px;
     }
     .absolute-tags-list-container {
-        position: absolute;
+        position: relative;
         width: 350px;
+        z-index:  1;
         max-height: 300px;
         animation: fadeIn 0.5s;
         padding: 3px 0 15px 20px;
