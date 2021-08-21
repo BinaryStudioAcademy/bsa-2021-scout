@@ -23,10 +23,10 @@ namespace Application.Applicants.Queries
 
     public class GetVacancyByIdQueryHandler : IRequestHandler<GetApplicantByIdByCompanyQuery, GetShortApplicantDto>
     {
-        protected readonly IApplicantsReadRepository _repository;
+        protected readonly IApplicantReadRepository _repository;
         protected readonly IMapper _mapper;
 
-        public GetVacancyByIdQueryHandler(IApplicantsReadRepository repository, IMapper mapper)
+        public GetVacancyByIdQueryHandler(IApplicantReadRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

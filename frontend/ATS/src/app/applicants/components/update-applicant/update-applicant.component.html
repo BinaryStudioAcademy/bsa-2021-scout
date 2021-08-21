@@ -97,6 +97,9 @@
     <p>Tags</p>
     <app-tags-edit [tags]="tags" (updateTags)="updateTags($event)"></app-tags-edit>
 
+    <p>{{ updatedApplicant.hasCv ? 'Update Cv' : "Add cv" }}</p>
+    <app-file-input (upload)="uploadApplicantCv($event)" [accept]="allowedCvFileType"></app-file-input>
+
     <mat-dialog-actions class="edit-action">
         <button [disabled]="validationGroup!.invalid" (click)="updateApplicant()" mat-button>
             Publish

@@ -11,4 +11,6 @@ export interface CreateApplicant {
   experience: number;
 
   tags: ElasticEntity;
+
+  cv: File | null;
 }
