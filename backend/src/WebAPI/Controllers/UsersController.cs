@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Application.Interfaces;
 using System.Collections.Generic;
 using Application.Users.Queries;
+using Application.Projects.Commands;
 
 namespace WebAPI.Controllers
 {
@@ -56,6 +57,13 @@ namespace WebAPI.Controllers
         {
             var command = new CreateEntityCommand<UserDto>(user);
             return StatusCode(201, await Mediator.Send(command));
+        }
+
+        [HttpGet("current/company/projects")]
+        public async Task<IActionResult> CurrentHRProjects()
+        {
+            var query = new GetProjectsByCurrentHRCompanyCommand();
+            return Ok(await Mediator.Send(query));
         }
     }
 }

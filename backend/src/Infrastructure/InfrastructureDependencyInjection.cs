@@ -145,7 +145,7 @@ namespace Infrastructure
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
             services.AddScoped<IReadRepository<Vacancy>, VacancyReadRepository>();
-            services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
+            services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
             services.AddScoped<IReadRepository<Company>, CompanyReadRepository>();
             services.AddScoped<IReadRepository<Role>, RoleReadRepository>();
             services.AddScoped<IReadRepository<UserToRole>, UserToRoleReadRepository>();
@@ -169,6 +169,9 @@ namespace Infrastructure
 
             services.AddScoped<IReadRepository<Pool>, PoolReadRepository>();
             services.AddScoped<IPoolReadRepository, PoolReadRepository>();
+
+            services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();
+
 
 
             return services;
