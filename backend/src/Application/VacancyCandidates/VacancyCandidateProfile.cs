@@ -47,8 +47,7 @@ namespace Application.VacancyCandidates
                 )
                 .ForMember(dto => dto.StagesHistory, opt => opt.MapFrom(vc => vc.CandidateToStages))
                 .ForMember(dto => dto.Email, opt => opt.MapFrom(vc => vc.Applicant.Email))
-                .ForMember(dto => dto.Phone, opt => opt.MapFrom(vc => vc.Applicant.Phone))
-                .ForMember(dto => dto.Cv, opt => opt.Ignore());
+                .ForMember(dto => dto.Phone, opt => opt.MapFrom(vc => vc.Applicant.Phone));
         }
     }
 }

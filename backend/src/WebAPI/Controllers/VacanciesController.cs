@@ -26,10 +26,17 @@ namespace WebAPI.Controllers
             var command = new GetVacancyTablesListQuery();
             return Ok(await Mediator.Send(command));
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetVacancy(string id)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetVacancy(
+            [FromRoute] string Id)
         {
-            var command = new GetVacancyByIdQuery(id);
+            var query = new GetVacancyByIdQuery(Id);
+            return StatusCode(201, await Mediator.Send(query));
+        }
+        [HttpGet("applicant/{applicantId}")]
+        public async Task<IActionResult> GetAllNotAppliedVacanciesByApplicant(string applicantId)
+        {
+            var command = new GetNotAppliedVacanciesByApplicantIdQuery(applicantId);
             return Ok(await Mediator.Send(command));
         }
         [HttpPost]

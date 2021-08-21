@@ -1,7 +1,7 @@
 <app-header></app-header>
+<app-applicants-head (search)="applySearchValue($event)" (applicantCreated)="createApplicant($event)" #head></app-applicants-head>
 <div class="page-content">
     <div class="mat-elevation-z8">
-        <app-applicants-head (search)="applySearchValue($event)" (applicantCreated)="createApplicant($event)" #head></app-applicants-head>
         <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
             <ng-container matColumnDef="position">
                 <th mat-header-cell *matHeaderCellDef> # </th>
@@ -52,7 +52,7 @@
                     <div class="outside-wrapper" *ngIf="applicant.isShowAllTags" (click)="toggleTags(applicant)"></div>
                     <mat-list *ngIf="!applicant.isShowAllTags" class="tags-list">
                         <mat-list-item *ngFor="let tag of getFirstTags(applicant)">{{tag.tagName}}</mat-list-item>
-                        <mat-list-item class="more-button" *ngIf="applicant.tags.tagDtos.length > 6" (click)="toggleTags(applicant)">
+                        <mat-list-item class="more-button" *ngIf="applicant.tags?.tagDtos.length > 6" (click)="toggleTags(applicant)">
                             +{{applicant.tags.tagDtos.length - 5}} more
                         </mat-list-item>
                     </mat-list>
@@ -73,7 +73,7 @@
             <ng-container matColumnDef="control_buttons">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let applicant" class="control-buttons-cell">
-                    <app-applicant-control [applicant]="applicant" (deleteApplicantEvent)="deleteApplicant($event)"></app-applicant-control>
+                    <app-applicant-control [applicant]="applicant" (updateApplicantEvent)="updateApplicant($event)" (deleteApplicantEvent)="deleteApplicant($event)"></app-applicant-control>
                 </td>
             </ng-container>
         
@@ -88,6 +88,6 @@
             </tr>
 
         </table>
-        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15]" [showTotalPages]="5" [pageSize]="10" appStylePaginator></mat-paginator>
+        <mat-paginator class="mat-paginator-sticky" #paginator [pageSizeOptions]="[5, 10, 15]" [showTotalPages]="5" [pageSize]="10" appStylePaginator></mat-paginator>
     </div>
 </div>

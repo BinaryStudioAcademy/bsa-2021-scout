@@ -9,6 +9,7 @@ import { CreateApplicant } from 'src/app/shared/models/applicant/create-applican
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { Tag } from 'src/app/shared/models/tags/tag';
+import { FileType } from 'src/app/shared/enums/file-type.enum';
 
 @Component({
   selector: 'app-create-applicant',
@@ -20,7 +21,6 @@ import { Tag } from 'src/app/shared/models/tags/tag';
 })
 export class CreateApplicantComponent implements OnInit, OnDestroy {
   public validationGroup: FormGroup | undefined = undefined;
-
   public createdApplicant: CreateApplicant = {
     firstName: '',
     lastName: '',
@@ -35,7 +35,9 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
       elasticType: 1,
       tagDtos: [],
     },
+    cv: null,
   };
+  public allowedCvFileType = FileType.Pdf;
 
   private $unsubscribe = new Subject();
 
@@ -76,6 +78,10 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
 
   public updateTags(tags: Tag[]): void {
     this.createdApplicant.tags.tagDtos = tags;
+  }
+
+  public uploadApplicantCv(files: File[]): void {
+    this.createdApplicant.cv = files[0];
   }
 
   public ngOnDestroy(): void {
