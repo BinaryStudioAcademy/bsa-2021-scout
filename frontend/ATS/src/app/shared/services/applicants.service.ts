@@ -6,6 +6,7 @@ import { Applicant } from '../models/applicant/applicant';
 import { HttpClientService } from './http-client.service';
 import { MarkedApplicant } from 'src/app/shared/models/applicant/marked-applicant';
 import { GetShortApplicant } from '../models/applicant/get-short-applicant';
+import { File } from '../models/file/file';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantsService {
@@ -40,5 +41,9 @@ export class ApplicantsService {
 
   public deleteApplicant(applicantId: string): Observable<Applicant> {
     return this.httpClient.deleteRequest<Applicant>('/applicants/' + applicantId);
+  }
+
+  public getCv(applicantId: string): Observable<File> {
+    return this.httpClient.getRequest<File>(`/applicants/${applicantId}/cv`);
   }
 }

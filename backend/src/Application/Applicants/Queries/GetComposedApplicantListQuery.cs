@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Application.Applicants.Dtos;
 using Domain.Interfaces.Abstractions;
 using Domain.Interfaces.Read;
+using System;
 
 namespace Application.Applicants.Queries
 {

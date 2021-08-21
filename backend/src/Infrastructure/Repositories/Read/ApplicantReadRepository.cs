@@ -46,15 +46,27 @@ namespace Infrastructure.Repositories.Read
 
         public async Task<IEnumerable<Applicant>> GetCompanyApplicants()
         {
-            var companyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
+           var companyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
 
-            var connection = _connectionFactory.GetSqlConnection();
-            await connection.OpenAsync();
-            string sql = $"SELECT * FROM {_tableName} WHERE [CompanyId] = @companyId";
-            var entities = await connection.QueryAsync<Applicant>(sql, new { companyId });
-            await connection.CloseAsync();
+           SqlConnection connection = _connectionFactory.GetSqlConnection();
 
-            return entities;
+           string sql = @$"SELECT a*, fi.* FROM {_tableName} a
+                           LEFT JOIN FileInfos fi ON a.CvFileInfoId = fi.Id
+                           WHERE a.CompanyId = @companyId";
+
+           await connection.OpenAsync();
+           var entities = await connection.QueryAsync<Applicant, FileInfo, Applicant>(sql,
+           (a, fi) =>
+           {
+               a.CvFileInfo = fi;
+               return a;
+           },
+           splitOn: "Id,Id",
+           param: new { companyId });
+
+           await connection.CloseAsync();
+
+           return entities;
         }
 
         public async Task<IEnumerable<ApplicantVacancyInfo>> GetApplicantVacancyInfoListAsync(string applicantId)
@@ -87,28 +99,28 @@ namespace Infrastructure.Repositories.Read
         public async Task<Applicant> GetByIdAsync(string applicantId)
         {
             SqlConnection connection = _connectionFactory.GetSqlConnection();
-            
-            string sql = $"SELECT * FROM {_tableName} WHERE Id = @id";
+
+            string sql = @$"SELECT a.*, fi.* FROM {_tableName} a
+                            LEFT JOIN FileInfos fi ON a.CvFileInfoId = fi.Id
+                            WHERE a.Id = @applicantId";
 
             await connection.OpenAsync();
+            var entities = await connection.QueryAsync<Applicant, FileInfo, Applicant>(sql,
+            (a, fi) =>
+            {
+                a.CvFileInfo = fi;
+                return a;
+            },
+            splitOn: "Id,Id",
+            param: new { applicantId });
 
-            var applicant = await connection.QueryFirstOrDefaultAsync<Applicant>(sql, new { id = applicantId });
+            await connection.CloseAsync();
+
+            var applicant = entities.FirstOrDefault();
 
             if (applicant == null)
             {
                 throw new NotFoundException(typeof(Applicant), applicantId);
-            }
-
-            await connection.CloseAsync();
-
-            try
-            {
-                // TODO: move to one query
-                var cvFileInfo = await GetCvFileInfoAsync(applicantId);
-                applicant.CvFileInfo = cvFileInfo;
-            } catch (Exception _)
-            {
-
             }
 
             return applicant;
