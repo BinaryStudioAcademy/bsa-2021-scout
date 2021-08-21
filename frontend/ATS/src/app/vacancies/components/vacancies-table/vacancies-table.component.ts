@@ -15,7 +15,6 @@ import { VacancyCreate } from 'src/app/shared/models/vacancy/vacancy-create';
 import { EditVacancyComponent } from '../edit-vacancy/edit-vacancy.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { property } from 'lodash';
 
 
 const STATUES: VacancyStatus[] = [
