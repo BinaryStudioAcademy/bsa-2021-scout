@@ -38,10 +38,21 @@ $primary-font: Nunito;
     color: #808080;
 }
 
-::ng-deep .icons .mat-select-arrow::after{
-    font-family: 'Material Icons';
-    content: "\e5d3";
+::ng-deep .icons {
+    .mat-select-arrow::after{
+        font-family: 'Material Icons';
+        content: "\e5d3";
+        font-size: 24px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+    .mat-select-arrow:hover::after{
+        color: $primary-color;
+    }
 }
+
+
 
 ::ng-deep .icons .mat-select-arrow {
     border: none;
