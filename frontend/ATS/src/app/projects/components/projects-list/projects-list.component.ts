@@ -9,6 +9,8 @@ import { ProjectInfo } from 'src/app/projects/models/project-info';
 import { ProjectService } from 'src/app/projects/services/projects.service';
 import { ProjectsEditComponent } from '../projects-edit/projects-edit.component';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { ProjectDeleteConfirmComponent } 
+  from '../project-delete-confirm/project-delete-confirm.component';
 
 const TAGS: string[] = [
   'ASP.NET', 'WPF','Angular',
@@ -89,4 +91,21 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
       this.getProjects());
   }
 
+  public showDeleteConfirmDialog(projectToDelete: ProjectInfo): void {
+    const dialogRef = this.dialog.open(ProjectDeleteConfirmComponent, {
+      width: '400px',
+      height: 'min-content',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed()
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.projectService.deleteProject(projectToDelete).subscribe(_ => {
+            this.notificationService.showSuccessMessage(`Project ${projectToDelete.name} deleted!`);
+            this.getProjects();
+          });
+        }
+      });
+  }
 }

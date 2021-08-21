@@ -20,7 +20,10 @@ namespace Application.Vacancies
 
             CreateMap<VacancyUpdateDto, Vacancy>();
             CreateMap<Vacancy, VacancyDto>();
+            CreateMap<Vacancy, VacancyTableDto>();
             CreateMap<Vacancy, VacancyUpdateDto>();
+
+            CreateMap<VacancyTable, VacancyTableDto>();
 
             CreateMap<Vacancy, ShortVacancyWithStagesDto>();
 

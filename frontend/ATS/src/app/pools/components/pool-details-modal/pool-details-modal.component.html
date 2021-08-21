@@ -1,5 +1,5 @@
 <div class="dialog-title" mat-dialog-title>
-    <h1>Pool details</h1>
+    <h1>Pool details form</h1>
     <button mat-icon-button mat-dialog-close="none">
       <mat-icon>close</mat-icon>
     </button>
@@ -67,8 +67,8 @@
                 </tr>       
         
             </table>
-        <mat-paginator #paginator appStylePaginator hidePageSize [showTotalPages]="5" [pageSize]="5"></mat-paginator>
+ <!--       <mat-paginator #paginator appStylePaginator hidePageSize [showTotalPages]="5" [pageSize]="5"></mat-paginator>-->
         </div>    
     </div>
-    <div *ngIf="!pool.applicants.length">No applicants in this pool yet</div>
+    <div *ngIf="!pool.applicants.length" style="padding-top:5px">No applicants in this pool yet</div>
 </div>

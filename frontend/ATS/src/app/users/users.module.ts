@@ -24,6 +24,8 @@ import { UsersTableComponent } from './components/hr-lead/users-table/users-tabl
 import { LoggedInUserGuard } from './guards/logged-in-user.guard';
 import { ResendEmailAfterLoginComponent } from
   './components/resend-email-after-login/resend-email-after-login.component';
+import { SendingRegisterLinkDialogComponent } from 
+  './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { ResendEmailAfterLoginComponent } from
     SuccessfulRegistrationComponent,
     UsersTableComponent,
     ResendEmailAfterLoginComponent,
-    SuccessfulRegistrationComponent,    
+    SuccessfulRegistrationComponent,
+    SendingRegisterLinkDialogComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
