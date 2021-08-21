@@ -22,10 +22,15 @@ namespace Infrastructure.Mongo.Services
 
         public IAmazonS3 GetAwsS3()
         {
-            return _clientAmazonS3 ??= new AmazonS3Client(
-                awsAccessKeyId: _awsAccessKeyId,
-                awsSecretAccessKey: _awsSecretAccessKey,
-                region: Amazon.RegionEndpoint.GetBySystemName(_awsRegion));
+            if (_awsAccessKeyId != null && _awsSecretAccessKey != null && _awsRegion != null)
+            {
+                return _clientAmazonS3 ??= new AmazonS3Client(
+                    awsAccessKeyId: _awsAccessKeyId,
+                    awsSecretAccessKey: _awsSecretAccessKey,
+                    region: Amazon.RegionEndpoint.GetBySystemName(_awsRegion));
+            }
+
+            return _clientAmazonS3 ??= new AmazonS3Client();
         }
 
         public string GetBucketName()
