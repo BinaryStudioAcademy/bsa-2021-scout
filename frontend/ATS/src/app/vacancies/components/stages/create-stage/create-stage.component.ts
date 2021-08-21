@@ -1,5 +1,6 @@
 import {Component,EventEmitter,Input,OnChanges,OnInit,Output,SimpleChanges} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { compact } from 'lodash';
 import { Stage } from 'src/app/shared/models/stages/stage';
 
 @Component({
@@ -20,17 +21,18 @@ export class CreateStageComponent implements OnChanges {
     this.stageForm = this.fb.group({
       name: ['', [Validators.required]],
       action: ['', [Validators.required]],
-      isReviewRequired: [''],
+      isReviewable: [''],
       rates: ['', [Validators.required]],
     },
     );
   }
 
   ngOnChanges(changes: SimpleChanges){
+    console.log(changes.stage.currentValue);
     if(changes.stage && this.stageForm){
       this.stageForm.get('name')?.setValue(changes.stage.currentValue.name);
       this.stageForm.get('action')?.setValue(changes.stage.currentValue.action);
-      this.stageForm.get('isReviewRequired')?.setValue(changes.stage.currentValue.isReviewRequired);
+      this.stageForm.get('isReviewable')?.setValue(changes.stage.currentValue.isReviewable);
       this.stageForm.get('rates')?.setValue(changes.stage.currentValue.rates);
       this.editModeItemIndex = changes.stage.currentValue.index;
     }

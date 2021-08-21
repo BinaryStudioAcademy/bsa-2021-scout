@@ -3,7 +3,7 @@ export interface Stage{
   name: string,
   // stageType Type { get; set; }
   index:number,
-  isReviewRequired:Boolean,
+  IsReviewable:Boolean,
   vacancyId:string,
   action:string, //?
   rates: string //?
