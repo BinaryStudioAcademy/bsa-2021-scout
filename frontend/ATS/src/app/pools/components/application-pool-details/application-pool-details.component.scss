@@ -34,3 +34,31 @@
         }
     }
 }
+
+.dialog-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-content {
+    padding: 5px;
+}
+
+.modal-content h3 {
+    margin: 5px 0;
+}
+
+.pool-creat-info-wrapper {
+    display: flex;
+    /* text-align: right; */
+    justify-content: flex-end;
+    padding-bottom: 10px;
+}
+
+.description {
+    height: 50px;
+    border: 1px solid lightgray;
+    padding: 5px;
+    border-radius: 9px;
+}
+
