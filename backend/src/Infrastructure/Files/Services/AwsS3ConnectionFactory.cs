@@ -18,9 +18,6 @@ namespace Infrastructure.Mongo.Services
             _awsSecretAccessKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
             _awsRegion = Environment.GetEnvironmentVariable("AWS_REGION");
             _bucketName = Environment.GetEnvironmentVariable("AWS_S3_BUCKET_NAME");
-
-            if (_bucketName is null)
-                throw new Exception("AWS S3 Bucket name is not specified");
         }
 
         public IAmazonS3 GetAwsS3()
