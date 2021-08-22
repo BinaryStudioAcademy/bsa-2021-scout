@@ -1,16 +1,16 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { VacancyDataService } from 'src/app/shared/services/vacancy-data.service';
-import { MarkedApplicant } from 'src/app/shared/models/applicant/marked-applicant';
+import { MarkedApplicant } from 'src/app/shared/models/applicants/marked-applicant';
 import { ShortVacancyWithDepartment }
   from 'src/app/shared/models/vacancy/short-vacancy-with-department';
 import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candidate.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { GetShortApplicant } from '../../models/applicant/get-short-applicant';
+import { GetShortApplicant } from '../../models/applicants/get-short-applicant';
 
 @Component({
   selector: 'app-modal-add-candidate',
