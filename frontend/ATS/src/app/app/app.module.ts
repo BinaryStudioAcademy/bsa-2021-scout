@@ -16,13 +16,14 @@ import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { ApplicationPoolComponent } from '../users/components/application-pool/application-pool.component';
+import { ApplicationPoolComponent } from '../pools/components/application-pool/application-pool.component';
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
 import { AuthGuard } from '../users/guards/auth.guard';
 import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 
 import { ProjectsModule } from '../projects/projects.module';
+import { PoolsModule } from '../pools/pools.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ProjectsModule } from '../projects/projects.module';
     ApplicantsModule,
     VacanciesModule,
     UsersModule,
-    ProjectsModule,    
+    ProjectsModule,
+    PoolsModule,
   ],
   providers: [
     SidenavService,

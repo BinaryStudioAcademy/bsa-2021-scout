@@ -13,8 +13,8 @@ import { map, takeUntil } from 'rxjs/operators';
 import { AddCandidateModalComponent } 
   from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
 import { openFileFromUrl } from 'src/app/shared/helpers/openFileFromUrl';
-import { Applicant } from 'src/app/shared/models/applicant/applicant';
-import { ViewableApplicant } from 'src/app/shared/models/applicant/viewable-applicant';
+import { Applicant } from 'src/app/shared/models/applicants/applicant';
+import { ViewableApplicant } from 'src/app/shared/models/applicants/viewable-applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
