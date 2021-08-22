@@ -36,7 +36,7 @@ export class VacancyDataService {
 
   public getVacancy(vacancyId: string): Observable<ShortVacancyWithDepartment> {
     return this.http.getRequest<ShortVacancyWithDepartment>(
-      this.routePrefix + `${vacancyId}`,
+      this.routePrefix + `/${vacancyId}`,
     );
   }
 
