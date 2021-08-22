@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
+#nullable enable
 namespace Application.Applicants.Commands
 {
     public class CreateApplicantCommand : IRequest<ApplicantDto>

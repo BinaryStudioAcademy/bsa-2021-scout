@@ -1,0 +1,78 @@
+<div class="space-between" mat-dialog-title>
+  <h1>Review required</h1>
+  <button mat-icon-button mat-dialog-close="none">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div mat-dialog-content class="content">
+  <div class="attention">
+    <h3>Fixed criterias</h3>
+    <div class="padding">
+      <div class="label">Rates</div>
+      <div class="topics">
+        <app-topic [text]="crit.name" *ngFor="let crit of data.fixedCriterias"></app-topic>
+      </div>
+    </div>
+    <div class="criterias">
+      <div class="criteria" *ngFor="let crit of data.fixedCriterias">
+        <div class="label">
+          {{ crit.name }}
+        </div>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="0-10"
+            min="0"
+            max="10"
+            type="number"
+            [(ngModel)]="rateData[crit.id]"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <h3>Additional criterias</h3>
+  <div class="padding">
+    <div class="label">Rates</div>
+    <app-multiselect
+      [data]="optionalCriteriaOptions"
+      [selected]="selectedOptionalCriteriaOptions"
+      (selectedChange)="onChangeOptionalCriterias($event)"
+    ></app-multiselect>
+  </div>
+  <div class="padding" *ngIf="selectedOptionalCriterias.length">
+    <div class="criterias">
+      <div class="criteria" *ngFor="let crit of selectedOptionalCriterias">
+        <div class="label">
+          {{ crit.name }}
+        </div>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="0-10"
+            min="0"
+            max="10"
+            type="number"
+            [(ngModel)]="rateData[crit.id]"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="label">Comment</div>
+      <textarea 
+        matInput
+        placeholder="Enter comment"
+        class="textarea"
+        [(ngModel)]="comment"
+      >
+        {{ comment }}
+      </textarea>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [disabled]="isButtonDisabled()" class="button" color="primary" (click)="submit()">
+    Save
+  </button>
+</div>
