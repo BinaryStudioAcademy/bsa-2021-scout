@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { DeleteConfirmComponent } 
+  from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 import { AddCandidateModalComponent } 
   from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
 import { openFileFromUrl } from 'src/app/shared/helpers/openFileFromUrl';
@@ -9,8 +11,6 @@ import { Applicant } from 'src/app/shared/models/applicant/applicant';
 import { ViewableApplicant } from 'src/app/shared/models/applicant/viewable-applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { ApplicantDeleteConfirmComponent }
-  from '../applicant-delete-confirm/applicant-delete-confirm.component';
 import { UpdateApplicantComponent } from '../update-applicant/update-applicant.component';
 
 @Component({
@@ -68,10 +68,13 @@ export class ApplicantControlComponent {
   }
 
   public showDeleteConfirmDialog(): void {
-    const dialogRef = this.dialog.open(ApplicantDeleteConfirmComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmComponent, {
       width: '400px',
       height: 'min-content',
       autoFocus: false,
+      data:{
+        entityName: 'Applicant',
+      },
     });
 
     dialogRef.afterClosed()

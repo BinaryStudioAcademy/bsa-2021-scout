@@ -68,11 +68,12 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let row">
                 <div class="icons" >
-
                     <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="row.isFollowedPage" (click)="onBookmark(row, true)" class="applyPrimaryColor">bookmark</mat-icon>
                     <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="!row.isFollowedPage" (click)="onBookmark(row)">bookmark</mat-icon>
                     <mat-icon (click)="onEdit(row)">edit</mat-icon>
-                    <mat-icon>more_horiz</mat-icon>
+                    <mat-select panelClass="vacancy-options">
+                        <mat-option class="delete" (click)="showDeleteConfirmDialog(row)"><mat-icon>delete</mat-icon>Delete</mat-option>
+                    </mat-select>
                 </div>
             </td>
         </ng-container>

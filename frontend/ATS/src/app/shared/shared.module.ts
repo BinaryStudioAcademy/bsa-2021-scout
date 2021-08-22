@@ -41,6 +41,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
+import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 
 @NgModule({
   exports: [
@@ -83,6 +84,7 @@ import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.compo
     MatSortModule,
     MatMenuModule,
     TagsEditComponent,
+    DeleteConfirmComponent,
   ],
   imports: [
     MatButtonModule,
@@ -132,6 +134,7 @@ import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.compo
     StylePaginatorDirective,
     AddCandidateModalComponent,
     TagsEditComponent,
+    DeleteConfirmComponent,
   ],
 })
 export class SharedModule { }

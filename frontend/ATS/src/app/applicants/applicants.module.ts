@@ -11,11 +11,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ApplicantsHeadComponent } from './components/applicants-head/applicants-head.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { ApplicantControlComponent } 
   from './components/applicant-control/applicant-control.component';
-import { ApplicantDeleteConfirmComponent }
-  from './components/applicant-delete-confirm/applicant-delete-confirm.component';
 
 @NgModule({
   declarations: [
@@ -23,9 +20,7 @@ import { ApplicantDeleteConfirmComponent }
     CreateApplicantComponent,
     UpdateApplicantComponent,
     ApplicantsHeadComponent,
-    
     ApplicantControlComponent,
-    ApplicantDeleteConfirmComponent,
   ],
   imports: [
     BrowserModule,

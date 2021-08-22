@@ -9,9 +9,9 @@ import { ProjectInfo } from 'src/app/projects/models/project-info';
 import { ProjectService } from 'src/app/projects/services/projects.service';
 import { ProjectsEditComponent } from '../projects-edit/projects-edit.component';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { ProjectDeleteConfirmComponent } 
-  from '../project-delete-confirm/project-delete-confirm.component';
 import { Tag } from 'src/app/shared/models/tags/tag';
+import { DeleteConfirmComponent } 
+  from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 
 const TAGS: string[] = [
   'ASP.NET', 'WPF','Angular',
@@ -124,10 +124,13 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
   }
 
   public showDeleteConfirmDialog(projectToDelete: ProjectInfo): void {
-    const dialogRef = this.dialog.open(ProjectDeleteConfirmComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmComponent, {
       width: '400px',
       height: 'min-content',
       autoFocus: false,
+      data:{
+        entityName: 'Project',
+      },
     });
 
     dialogRef.afterClosed()

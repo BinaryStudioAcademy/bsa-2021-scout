@@ -20,6 +20,7 @@ using Nest;
 using Domain.Interfaces;
 using Infrastructure.Files.Abstraction;
 using Infrastructure.Files.Read;
+using Action = Domain.Entities.Action;
 
 namespace Infrastructure
 {
@@ -138,6 +139,8 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<Role>, WriteRepository<Role>>();
             services.AddScoped<IWriteRepository<UserToRole>, WriteRepository<UserToRole>>();
             services.AddScoped<IWriteRepository<RegisterPermission>, WriteRepository<RegisterPermission>>();
+            services.AddScoped<IWriteRepository<Action>, ActionWriteRepository>();
+            services.AddScoped<IWriteRepository<CandidateReview>, CandidateReviewWriteRepository>();
 
             services.AddScoped<IWriteRepository<Applicant>, ApplicantsWriteRepository>();
             services.AddScoped<IApplicantsFromCsvWriteRepository, ApplicantsFromCsvWriteRepository>();
@@ -166,6 +169,9 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<Company>, CompanyReadRepository>();
             services.AddScoped<IReadRepository<Role>, RoleReadRepository>();
             services.AddScoped<IReadRepository<UserToRole>, UserToRoleReadRepository>();
+            services.AddScoped<IReadRepository<Action>, ActionReadRepository>();
+            services.AddScoped<IReadRepository<CandidateReview>, CandidateReviewReadRepository>();
+            services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
             services.AddScoped<IReadRepository<RegisterPermission>, RegisterPermissionReadRepository>();
@@ -174,6 +180,7 @@ namespace Infrastructure
 
             services.AddScoped<IApplicantReadRepository, ApplicantReadRepository>();
 
+            //services.AddScoped<IReadRepository<CandidateToStage>, ReadRepository<CandidateToStage>>();
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();

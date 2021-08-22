@@ -14,6 +14,9 @@ import { Router } from '@angular/router';
 import { VacancyCreate } from 'src/app/shared/models/vacancy/vacancy-create';
 import { EditVacancyComponent } from '../edit-vacancy/edit-vacancy.component';
 import { property } from 'lodash';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { DeleteConfirmComponent } 
+  from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 
 
 
@@ -46,7 +49,8 @@ export class VacanciesTableComponent implements AfterViewInit {
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild('input') serachField!: ElementRef;
   constructor(private router: Router, private cd: ChangeDetectorRef,
-    private dialog: MatDialog, private service: VacancyDataService) {
+    private dialog: MatDialog, private service: VacancyDataService,
+    private notificationService: NotificationService) {
     service.getList().subscribe(data => {
       this.getVacancies();
       
@@ -137,6 +141,27 @@ export class VacanciesTableComponent implements AfterViewInit {
     };
   }
 
+  public showDeleteConfirmDialog(vacancyToDelete: VacancyData): void {
+    const dialogRef = this.dialog.open(DeleteConfirmComponent, {
+      width: '400px',
+      height: 'min-content',
+      autoFocus: false,
+      data:{
+        entityName: 'Vacancy',
+      },
+    });
+
+    dialogRef.afterClosed()
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.service.deleteVacancy(vacancyToDelete.id).subscribe(_ => {
+            this.notificationService
+              .showSuccessMessage(`Vacancy ${vacancyToDelete.title} deleted!`);
+            this.getVacancies();
+          });
+        }
+      });
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
