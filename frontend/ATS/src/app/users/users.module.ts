@@ -24,14 +24,8 @@ import { UsersTableComponent } from './components/hr-lead/users-table/users-tabl
 import { LoggedInUserGuard } from './guards/logged-in-user.guard';
 import { ResendEmailAfterLoginComponent } from
   './components/resend-email-after-login/resend-email-after-login.component';
-import { ApplicationPoolComponent } from './components/application-pool/application-pool.component';
-import { CreateTalentpoolModalComponent } 
-  from './components/create-talentpool-modal/create-talentpool-modal.component';
-import { EditAppPoolModalComponent } 
-  from './components/edit-app-pool-modal/edit-app-pool-modal.component';
-import { SendingRegisterLinkDialogComponent } 
-  from './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
-
+import { SendingRegisterLinkDialogComponent } from 
+  './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
 
 @NgModule({
   declarations: [
@@ -48,10 +42,7 @@ import { SendingRegisterLinkDialogComponent }
     SuccessfulRegistrationComponent,
     UsersTableComponent,
     ResendEmailAfterLoginComponent,
-    SuccessfulRegistrationComponent,    
-    ApplicationPoolComponent,
-    CreateTalentpoolModalComponent,
-    EditAppPoolModalComponent,    
+    SuccessfulRegistrationComponent,
     SendingRegisterLinkDialogComponent,
   ],
   imports: [UserRoutingModule, SharedModule],

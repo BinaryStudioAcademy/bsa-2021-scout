@@ -1,11 +1,12 @@
-import { Applicant } from '../applicants/applicant';
+import { ApplicantIsSelected } from '../applicant/applicant-select';
 import { Model } from '../model';
 
 export interface ApplicantsPool extends Model{
   name: string;
   position: number;
-  description?: string;
+  description: string;
   createdBy: string;
   dateCreated: Date;
-  applicants: Applicant [];
+  applicants: ApplicantIsSelected [];
+  count: number;
 }

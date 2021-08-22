@@ -14,5 +14,7 @@ export interface Applicant {
   hasCv: boolean;
 
   tags: ElasticEntity;
-  vacancies: ApplicantVacancyInfo[];
+  vacancies: ApplicantVacancyInfo[];  
 }
+
+
