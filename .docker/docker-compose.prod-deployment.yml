@@ -72,7 +72,6 @@ volumes:
   ats_mongodb-data: {}
   esdata1:
     driver: local
-
 networks:
   backend:
     driver: bridge

@@ -21,14 +21,14 @@ namespace Infrastructure.EF.Seeds
                     bool isAppliedForVacancy = _random.Next() % 3 == 0;
                     if(!isAppliedForVacancy)
                         continue;
-                    string stageId = vacancyId.Substring(0, vacancyId.Length - 3) + "00" + _random.Next(StageSeeds.types.Count());
+                    string stageId = vacancyId.Substring(0, vacancyId.Length - 3) + "00" + (_random.Next(StageSeeds.types.Count()-1)+1);
    
                     var date = Common.GetRandomDateTime(new DateTime(2021, 04, 03), new DateTime(2021, 08, 29));
                     var dateRemoved = date.AddDays(_random.Next(20));
                     candidateToStages.Add(
                     new CandidateToStage{
                         Id = candidate.Id.Substring(0, candidate.Id.Length-5) + "stage" + vacancyId.Substring(0, 3),
-                        StageId = vacancyId.Substring(0, vacancyId.Length - 1)+"0",
+                        StageId = vacancyId.Substring(0, vacancyId.Length - 3) + "000",
                         CandidateId = candidate.Id,
                         DateAdded = date,
                         DateRemoved = dateRemoved,
