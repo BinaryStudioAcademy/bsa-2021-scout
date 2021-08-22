@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Domain.Entities;
-using Domain.Enums;
 
 namespace Infrastructure.EF.Seeds
 {
@@ -31,8 +30,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "732f84f8-0625-5098-adbf-4aabcabb5b0c",
               Experience = 2.4,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -43,8 +42,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "bffcc629-77ef-5304-9d4a-d9b44b5739d6",
               Experience = 1.9,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -55,8 +54,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "4e5d00dc-f1ab-5a74-9e6f-4edae70fca02",
               Experience = 3.4,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -67,8 +66,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "3e84df9f-f6c3-50d8-8787-d0e2a94af2b6",
               Experience = 2.3,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -79,8 +78,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "8bf07b5b-af46-58be-b536-58eeca69f661",
               Experience = 1.3,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -91,8 +90,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "8be38dd0-8767-54c5-8f78-aa33e11997e9",
               Experience = 5,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -103,8 +102,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "c8698455-0a05-503f-a6a6-b8557093a67e",
               Experience = 1.2,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -115,8 +114,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "32e88c57-7a44-51fa-abeb-b9253dacc14f",
               Experience = 1.3,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -127,8 +126,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "6a9e4cf9-1a02-50dd-9d32-d82fa566c5a2",
               Experience = 1.5,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -139,8 +138,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "5f08c0b7-e605-5672-acce-328b8d660989",
               Experience = 2.4,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -151,8 +150,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "342f8205-6c3f-5b33-8148-bf6fa9ebda64",
               Experience = 1.6,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -163,8 +162,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "8f906dbd-f7dd-54fc-b59f-17d7b1a153dc",
               Experience = 4.3,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -175,8 +174,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "eec0eb4b-1999-5b4a-8dad-5f41c8b3e83c",
               Experience = 3.7,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -187,8 +186,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "388b41ec-993a-5196-9dee-fe831257dda7",
               Experience = 2.8,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -199,8 +198,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "d6f8a112-c9bb-5e0e-a960-53a9da2495ab",
               Experience = 4.6,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -211,8 +210,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "eccf7842-db64-5e70-b010-67cb3806f2e4",
               Experience = 5.6,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -223,8 +222,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "aa2d6886-ef45-5d0e-a2fa-4c839f5f6e99",
               Experience = 1.9,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -235,8 +234,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "98954928-1256-557a-b79f-7058641f0b4b",
               Experience = 3.7,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -247,8 +246,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "74c1dac0-d4bb-51d9-a2e2-647952974ad6",
               Experience = 3.6,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
           new VacancyCandidate{
@@ -259,8 +258,8 @@ namespace Infrastructure.EF.Seeds
               SalaryExpectation = _random.Next(1200, 56000),
               ApplicantId = "91f8c039-6798-5692-9bb9-68bc16bc4a82",
               Experience = 2.6,
-              ContactedById = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
-              HrWhoAddedId = UserSeeds.Users.Select(x=>x.Id).ToList()[_random.Next(UserSeeds.Users.Count())],
+              ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
+              HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
           },
 

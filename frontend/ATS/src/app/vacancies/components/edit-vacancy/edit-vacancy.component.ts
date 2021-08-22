@@ -1,7 +1,16 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, NumberValueAccessor, Validators } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { C, COMMA, ENTER, R } from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Project } from 'src/app/shared/models/projects/project';
 import { Stage } from 'src/app/shared/models/stages/stage';
 import { VacancyCreate } from 'src/app/shared/models/vacancy/vacancy-create';
@@ -14,14 +23,16 @@ import { VacancyData } from 'src/app/shared/models/vacancy/vacancy-data';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { ElasticEntity } from 'src/app/shared/models/elastic-entity/elastic-entity';
 import { ElasticType } from 'src/app/shared/models/elastic-entity/elastic-type';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Component({
   selector: 'app-edit-vacancy',
   templateUrl: './edit-vacancy.component.html',
   styleUrls: ['./edit-vacancy.component.scss'],
 })
-export class EditVacancyComponent implements OnInit {
-
+export class EditVacancyComponent implements OnInit, OnDestroy {
   vacancyForm!: FormGroup;
   isOpenCreateStage: Boolean = false;
   submitted: Boolean = false;
@@ -41,34 +52,64 @@ export class EditVacancyComponent implements OnInit {
 
   @Output() vacancyChange = new EventEmitter<VacancyFull>();
 
+  public loading: boolean = true;
+
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
   constructor(
     public dialogRef: MatDialogRef<EditVacancyComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { vacancyToEdit: VacancyData },
     private fb: FormBuilder,
     public projectService: ProjectService,
-    public vacancyService: VacancyService) {
-    this.vacancyForm = this.fb.group({
-      title: [this.vacancy.title, [Validators.required]],
-      description: ['', [Validators.required]],
-      requirements: ['', [Validators.required]],
-      projectId: ['', [Validators.required]],
-      salaryFrom: ['', [Validators.required]],
-      salaryTo: ['', [Validators.required]],
-      tierFrom: ['', [Validators.required]],
-      tierTo: ['', [Validators.required]],
-      link: ['', [Validators.required]],
-      isHot: [''],
-      isRemote: [''],
-      tags: [''],
-      stages: [''],
-    }, { validator: this.customSalaryValidation },
+    public vacancyService: VacancyService,
+    public notificationService: NotificationService,
+  ) {
+    this.vacancyForm = this.fb.group(
+      {
+        title: ['', [Validators.required]],
+        description: ['', [Validators.required]],
+        requirements: ['', [Validators.required]],
+        projectId: ['', [Validators.required]],
+        salaryFrom: ['', [Validators.required]],
+        salaryTo: ['', [Validators.required]],
+        tierFrom: ['', [Validators.required]],
+        tierTo: ['', [Validators.required]],
+        link: ['', [Validators.required]],
+        isHot: [''],
+        isRemote: [''],
+        tags: [''],
+        stages: this.stageList,
+      },
+      { validator: this.customSalaryValidation },
     );
+  }
+
+  ngOnInit() {
+    this.projectService
+      .getByCompany()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (response) => {
+          this.loading = false;
+          this.projects = response;
+          this.selectedProjects = this.projects;
+        },
+        () => {
+          this.loading = false;
+          this.notificationService.showErrorMessage('Failed to load projects.');
+        },
+      );
+  }
+
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   customSalaryValidation(formGroup: FormGroup): any {
     let salaryFrom = formGroup.controls['salaryFrom'].value;
     let salaryTo = formGroup.controls['salaryTo'].value;
-    let error = (parseInt(salaryFrom, 10) > parseInt(salaryTo, 10));
+    let error = parseInt(salaryFrom, 10) > parseInt(salaryTo, 10);
     if (error) {
       formGroup.controls['salaryTo'].setErrors({ salaryRangeIsWrong: true });
     }
@@ -128,6 +169,8 @@ export class EditVacancyComponent implements OnInit {
   //------------------VACANCY------------------
   createVacancy() {
     this.submitted = true;
+    this.loading = true;
+
 
     this.elasticEntity.tagDtos = this.tags;
     this.elasticEntity.elasticType = ElasticType.VacancyTags;
@@ -146,18 +189,33 @@ export class EditVacancyComponent implements OnInit {
       tags : this.elasticEntity,
       stages: this.stageList,
     };
-    console.log(this.vacancy);
     if (!this.data.vacancyToEdit) {
-      console.log(this.vacancy);
-      this.vacancyService.postVacancy(this.vacancy)
+      this.vacancyService
+        .postVacancy(this.vacancy)
+        .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
-          response => this.vacancyChange.emit(response),
+          (response) => {
+            this.loading = false;
+            this.vacancyChange.emit(response);
+          },
+          () => {
+            this.loading = false;
+            this.notificationService.showErrorMessage('Failed to create vacancy.');
+          },
         );
     } else {
-      console.log(this.vacancy);
-      this.vacancyService.putVacancy(this.vacancy, this.data.vacancyToEdit.id)
+      this.vacancyService
+        .putVacancy(this.vacancy, this.data.vacancyToEdit.id)
+        .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
-          response => this.vacancyChange.emit(response),
+          (response) => {
+            this.loading = false;
+            this.vacancyChange.emit(response);
+          },
+          () => {
+            this.loading = false;
+            this.notificationService.showErrorMessage('Failed to update vacancy.');
+          },
         );
     }
 
@@ -200,7 +258,9 @@ export class EditVacancyComponent implements OnInit {
 
   search(value: string) {
     let filter = value.toLowerCase();
-    return this.projects.filter(option => option.name.toLowerCase().startsWith(filter));
+    return this.projects.filter((option) =>
+      option.name.toLowerCase().startsWith(filter),
+    );
   }
 
   stageList: Stage[] = [
@@ -294,11 +354,7 @@ export class EditVacancyComponent implements OnInit {
       IsReviewable: true,
       vacancyId: '',
     },
-  ]
-
-
-
-
+  ];
 
   ///-----------------STAGES-----------------
   onEditStage(stageToEdit: Stage) {
@@ -359,7 +415,9 @@ export class EditVacancyComponent implements OnInit {
 
   //moving stages
   dropStage(event: CdkDragDrop<any>) {
-    this.stageList[event.previousContainer.data.index] = event.container.data.item;
-    this.stageList[event.container.data.index] = event.previousContainer.data.item;
+    this.stageList[event.previousContainer.data.index] =
+      event.container.data.item;
+    this.stageList[event.container.data.index] =
+      event.previousContainer.data.item;
   }
 }

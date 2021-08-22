@@ -52,7 +52,9 @@ namespace Infrastructure.Repositories.Read
             SqlConnection connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
 
-            string sql = @$"(SELECT * FROM Vacancies)
+            string sql = @$"(SELECT Vacancies.* FROM Vacancies
+							JOIN Projects ON Projects.Id=Vacancies.ProjectId
+							WHERE Projects.IsDeleted='0')
                             EXCEPT
                             (SELECT V.* FROM Vacancies AS V
                             LEFT OUTER JOIN Stages AS S ON S.VacancyId=V.Id

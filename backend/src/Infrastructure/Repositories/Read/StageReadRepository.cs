@@ -25,11 +25,17 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" Vacancies.Id,");
             sql.Append(" Vacancies.Title,");
             sql.Append(" Stages.*,");
+            sql.Append(" Reviews.*,");
             sql.Append(" VacancyCandidates.*,");
             sql.Append(" CandidateReviews.*,");
             sql.Append(" Applicants.*");
             sql.Append(" FROM Vacancies");
             sql.Append(" LEFT JOIN Stages ON Stages.VacancyId = Vacancies.Id");
+            sql.Append(" LEFT JOIN Reviews ON EXISTS");
+            sql.Append("(SELECT Id");
+            sql.Append(" FROM ReviewToStages");
+            sql.Append(" WHERE ReviewToStages.StageId = Stages.Id");
+            sql.Append(" AND ReviewToStages.ReviewId = Reviews.Id)");
             sql.Append(" LEFT JOIN VacancyCandidates ON EXISTS");
             sql.Append("(SELECT Id");
             sql.Append(" FROM CandidateToStages");
@@ -42,18 +48,20 @@ namespace Infrastructure.Repositories.Read
 
             Dictionary<string, Stage> stageDict = new Dictionary<string, Stage>();
             Dictionary<string, VacancyCandidate> candidateDict = new Dictionary<string, VacancyCandidate>();
+            Dictionary<string, Review> reviewDict = new Dictionary<string, Review>();
             Vacancy cachedVacancy = null;
 
             IEnumerable<Vacancy> resultAsEnumerable = await connection
-                .QueryAsync<Vacancy, Stage, VacancyCandidate, CandidateReview, Applicant, Vacancy>(
+                .QueryAsync<Vacancy, Stage, Review, VacancyCandidate, CandidateReview, Applicant, Vacancy>(
                     sql.ToString(),
-                    (vacancy, stage, candidate, review, applicant) =>
+                    (vacancy, stage, stageReview, candidate, review, applicant) =>
                     {
                         if (cachedVacancy == null)
                         {
                             cachedVacancy = vacancy;
                             cachedVacancy.Stages = new List<Stage>();
                         }
+
                         if (stage != null)
                         {
                             Stage stageEntry;
@@ -62,8 +70,21 @@ namespace Infrastructure.Repositories.Read
                             {
                                 stageEntry = stage;
                                 stageEntry.CandidateToStages = new List<CandidateToStage>();
+                                stageEntry.ReviewToStages = new List<ReviewToStage>();
                                 stageDict.Add(stageEntry.Id, stageEntry);
                                 cachedVacancy.Stages.Add(stageEntry);
+                            }
+
+                            if (stageReview != null)
+                            {
+                                Review reviewEntry;
+
+                                if (!reviewDict.TryGetValue(stageReview.Id, out reviewEntry))
+                                {
+                                    reviewEntry = stageReview;
+                                    reviewDict.Add(reviewEntry.Id, reviewEntry);
+                                    stageEntry.ReviewToStages.Add(new ReviewToStage { Review = reviewEntry });
+                                }
                             }
 
                             if (candidate != null && applicant != null)
@@ -75,7 +96,7 @@ namespace Infrastructure.Repositories.Read
                                     candidateEntry = candidate;
                                     candidateDict.Add(candidateEntry.Id, candidateEntry);
                                     candidateEntry.Reviews = new List<CandidateReview>();
-                                    stageEntry.CandidateToStages.Add(new CandidateToStage { Candidate = candidate });
+                                    stageEntry.CandidateToStages.Add(new CandidateToStage { Candidate = candidateEntry });
                                 }
 
                                 candidateEntry.Applicant = applicant;
@@ -89,7 +110,7 @@ namespace Infrastructure.Repositories.Read
 
                         return cachedVacancy;
                     },
-                    splitOn: "Id,Id,Id,Id"
+                    splitOn: "Id,Id,Id,Id,Id"
                 );
 
             Vacancy result = resultAsEnumerable.Distinct().FirstOrDefault();

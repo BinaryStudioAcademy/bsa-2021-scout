@@ -20,6 +20,7 @@ using Nest;
 using Domain.Interfaces;
 using Infrastructure.Files.Abstraction;
 using Infrastructure.Files.Read;
+using Action = Domain.Entities.Action;
 
 namespace Infrastructure
 {
@@ -56,7 +57,11 @@ namespace Infrastructure
                 .DefaultMappingFor<ElasticEntity>(m => m
                 .IndexName("elastic_entity")
             );
-            services.AddSingleton<IElasticClient>(new ElasticClient(settings));
+            var elastic = new ElasticClient(settings);
+            var exception = elastic.Ping().OriginalException;
+            if (exception != null)
+                throw exception;
+            services.AddSingleton<IElasticClient>(elastic);
 
             return services;
         }
@@ -138,6 +143,8 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<Role>, WriteRepository<Role>>();
             services.AddScoped<IWriteRepository<UserToRole>, WriteRepository<UserToRole>>();
             services.AddScoped<IWriteRepository<RegisterPermission>, WriteRepository<RegisterPermission>>();
+            services.AddScoped<IWriteRepository<Action>, ActionWriteRepository>();
+            services.AddScoped<IWriteRepository<CandidateReview>, CandidateReviewWriteRepository>();
 
             services.AddScoped<IWriteRepository<Applicant>, ApplicantsWriteRepository>();
             services.AddScoped<IApplicantsFromCsvWriteRepository, ApplicantsFromCsvWriteRepository>();
@@ -148,12 +155,18 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
             services.AddScoped<IWriteRepository<CandidateToStage>, CandidateToStageWriteRepository>();
             services.AddScoped<ICandidateToStageWriteRepository, CandidateToStageWriteRepository>();
+            services.AddScoped<IWriteRepository<CandidateReview>, CandidateReviewWriteRepository>();
+            services.AddScoped<ICandidateReviewWriteRepository, CandidateReviewWriteRepository>();
             services.AddScoped<IVacancyCandidateWriteRepository, VacancyCandidateWriteRepository>();
             services.AddScoped<IWriteRepository<EmailToken>, WriteRepository<EmailToken>>();
             services.AddScoped<IWriteRepository<Project>, WriteRepository<Project>>();
+            services.AddScoped<IWriteRepository<Review>, WriteRepository<Review>>();
+            services.AddScoped<IWriteRepository<ReviewToStage>, WriteRepository<ReviewToStage>>();
+            services.AddScoped<IWriteRepository<CandidateComment>, WriteRepository<CandidateComment>>();
             services.AddScoped<IWriteRepository<Pool>, WriteRepository<Pool>>();
             services.AddScoped<IWriteRepository<PoolToApplicant>, PoolToApplicantWriteRepository>();
             services.AddScoped<IPoolToApplicantWriteRepository, PoolToApplicantWriteRepository>();
+            services.AddScoped<IWriteRepository<MailTemplate>, MongoWriteRepository<MailTemplate>>();
 
             services.AddScoped<IWriteRepository<Domain.Entities.Action>, WriteRepository<Domain.Entities.Action>>();
 
@@ -169,6 +182,9 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<Company>, CompanyReadRepository>();
             services.AddScoped<IReadRepository<Role>, RoleReadRepository>();
             services.AddScoped<IReadRepository<UserToRole>, UserToRoleReadRepository>();
+            services.AddScoped<IReadRepository<Action>, ActionReadRepository>();
+            services.AddScoped<IReadRepository<CandidateReview>, CandidateReviewReadRepository>();
+            services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
             services.AddScoped<IReadRepository<RegisterPermission>, RegisterPermissionReadRepository>();
@@ -177,17 +193,19 @@ namespace Infrastructure
 
             services.AddScoped<IApplicantReadRepository, ApplicantReadRepository>();
 
+            //services.AddScoped<IReadRepository<CandidateToStage>, ReadRepository<CandidateToStage>>();
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
             services.AddScoped<IVacancyCandidateReadRepository, VacancyCandidateReadRepository>();
-    
+
             services.AddScoped<IVacancyTableReadRepository, VacancyTableReadRepository>();
             services.AddScoped<IVacancyReadRepository, VacancyReadRepository>();
 
             services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
             services.AddScoped<IReadRepository<MailTemplate>, MongoReadRespoitory<MailTemplate>>();
             services.AddScoped<IReadRepository<EmailToken>, EmailTokenReadRepository>();
+            services.AddScoped<IReadRepository<Review>, ReviewReadRepository>();
 
             services.AddScoped<IReadRepository<Pool>, PoolReadRepository>();
             services.AddScoped<IPoolReadRepository, PoolReadRepository>();

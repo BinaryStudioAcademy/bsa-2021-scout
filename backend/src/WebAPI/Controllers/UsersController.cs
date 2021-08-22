@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Application.Interfaces;
 using System.Collections.Generic;
 using Application.Users.Queries;
-using Application.Projects.Commands;
+using System;
 
 namespace WebAPI.Controllers
 {
@@ -33,8 +33,6 @@ namespace WebAPI.Controllers
             }
             return Ok(user);
         }
-
-
 
         [AllowAnonymous]
         [HttpGet, Route("Email/{email}")]

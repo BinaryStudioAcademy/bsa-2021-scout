@@ -7,14 +7,13 @@ namespace WebAPI
 {
     public class Program
     {
-        public async static Task Main(string[] args)
+        public static void Main(string[] args)
         {
-                (                  
-                await CreateHostBuilder(args)
-                    .Build()
-                    .ApplyDatabaseMigrations()  
-                    .SeedingManager()                
-            ).Run();
+            CreateHostBuilder(args)
+                .Build()
+                .ApplyDatabaseMigrations()
+                .ApplyAllSeedingSync()
+                .Run();
         }
         public static IHostBuilder CreateHostBuilder(string[] args)
         {

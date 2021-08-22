@@ -1,6 +1,6 @@
 import {
   AfterViewInit, Component,
-  ViewChild, ElementRef, ChangeDetectorRef,
+  ViewChild, ElementRef, ChangeDetectorRef, OnDestroy,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -14,6 +14,12 @@ import { Router } from '@angular/router';
 import { VacancyCreate } from 'src/app/shared/models/vacancy/vacancy-create';
 import { EditVacancyComponent } from '../edit-vacancy/edit-vacancy.component';
 import { property } from 'lodash';
+import { DeleteConfirmComponent } 
+  from 'src/app/shared/components/delete-confirm/delete-confirm.component';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 
 const STATUES: VacancyStatus[] = [
@@ -26,41 +32,59 @@ const STATUES: VacancyStatus[] = [
 export interface IIndexable {
   [key: string]: any;
 }
+
 @Component({
   selector: 'app-vacancies-table',
   templateUrl: './vacancies-table.component.html',
   styleUrls: ['./vacancies-table.component.scss'],
 })
-
-
-export class VacanciesTableComponent implements AfterViewInit {
+export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   displayedColumns: string[] =
-  ['position', 'title', 'candidatesAmount', 'responsible', 'project', 
-    'teamInfo', 'creationDate', 'status', 'actions'];
+  ['position', 'title', 'candidatesAmount', 'responsible', 'teamInfo', 
+    'project', 'creationDate', 'status', 'actions'];
   dataSource: MatTableDataSource<VacancyData> = new MatTableDataSource<VacancyData>();
-
+  mainData!: VacancyData[];
+  isFollowedPage: boolean = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild('input') serachField!: ElementRef;
-  constructor(private router: Router, private cd: ChangeDetectorRef,
-    private dialog: MatDialog, private service: VacancyDataService) {
-    service.getList().subscribe(data => {
-      this.getVacancies();
 
-    });
+  public loading: boolean = true;
+
+  constructor(
+    private router: Router, private cd: ChangeDetectorRef,
+    private dialog: MatDialog, private service: VacancyDataService,
+    private notificationService: NotificationService,
+  ) {
+    this.getVacancies();
   }
 
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   getVacancies() {
-    this.service.getList().subscribe(data => {
-      this.dataSource.data = data;
-      data.forEach((d, i) => {
-        d.position = i + 1;
-      });
-      this.directive.applyFilter$.emit();
-    },
-    );
+    this.service
+      .getList()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        data => {
+          this.dataSource.data = data;
+          data.forEach((d, i) => {
+            d.position = i + 1;
+          });
+          this.mainData = data;
+          this.directive.applyFilter$.emit();
+        },
+        () => {
+          this.loading = false;
+          this.notificationService.showErrorMessage('Failed to get vacancies.');
+        },
+      );
   }
 
   openDialog(): void {
@@ -70,19 +94,34 @@ export class VacanciesTableComponent implements AfterViewInit {
       data: {},
     });
 
-    this.dialog.afterAllClosed.subscribe(_ =>
-      this.getVacancies());
-
+    dialogRef.afterClosed().subscribe(() => this.getVacancies());
   }
-
+  public switchToFollowed(){
+    this.isFollowedPage = true;
+    this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    this.directive.applyFilter$.emit();
+  }
+  public switchAwayToAll(){
+    this.isFollowedPage = false;
+    this.dataSource.data = this.mainData;
+    this.directive.applyFilter$.emit();
+  }
+  public onBookmark(data: VacancyData, perfomToFollowCleanUp: boolean = false){
+    let vacancyIndex:number = this.dataSource.data.findIndex(vacancy=>vacancy.id === data.id)!;
+    data.isFollowed = !data.isFollowed;
+    this.dataSource.data[vacancyIndex] = data;
+    if(perfomToFollowCleanUp){
+      this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    }
+    this.directive.applyFilter$.emit();
+  }
   onEdit(vacancyEdit: VacancyCreate): void {
     this.dialog.open(EditVacancyComponent, {
       data: {
         vacancyToEdit: vacancyEdit,
       },
     });
-    this.dialog.afterAllClosed.subscribe(_ =>
-      this.getVacancies());
+    this.dialog.afterAllClosed.subscribe(() => this.getVacancies());
   }
 
   saveVacancy(changedVacancy: VacancyData) {
@@ -116,6 +155,33 @@ export class VacanciesTableComponent implements AfterViewInit {
     };
   }
 
+  public showDeleteConfirmDialog(vacancyToDelete: VacancyData): void {
+    const dialogRef = this.dialog.open(DeleteConfirmComponent, {
+      width: '400px',
+      height: 'min-content',
+      autoFocus: false,
+      data:{
+        entityName: 'Vacancy',
+      },
+    });
+
+    dialogRef.afterClosed()
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.loading = true;
+          this.service.deleteVacancy(vacancyToDelete.id)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(_ => {
+              this.loading = false;
+              this.notificationService
+                .showSuccessMessage(`Vacancy ${vacancyToDelete.title} deleted!`);
+              this.getVacancies();
+            }, ()=>{
+              this.loading = false;
+            });
+        }
+      });
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -125,6 +191,4 @@ export class VacanciesTableComponent implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
-
 }

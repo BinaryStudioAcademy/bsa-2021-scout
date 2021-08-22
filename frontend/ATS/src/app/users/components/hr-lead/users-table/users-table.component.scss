@@ -5,6 +5,8 @@ $primary-color-blue: #291965;
 $primary-font: Nunito;
 
 .users-page {
+    position: relative;
+
     .mat-form-field {
         font-size: 14px;
         width: 100%;
@@ -65,6 +67,7 @@ $primary-font: Nunito;
     th:first-child,
     td:first-child {
         width: 9%;
+        padding-left: 30px;
     }
 
     tr {
@@ -134,6 +137,9 @@ $primary-font: Nunito;
         }
         app-search-form {
             display: none;
+        }
+        .applyPrimaryColor{
+            color: $primary-color !important;
         }
         /* Mat Form Field */
         .mat-form-field-wrapper.mat-form-field-wrapper {

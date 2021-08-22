@@ -12,6 +12,7 @@ using Domain.Interfaces.Abstractions;
 using Domain.Entities;
 using System;
 
+#nullable enable
 namespace Application.Applicants.Commands
 {
     public class UpdateApplicantCommand : IRequest<ApplicantDto>

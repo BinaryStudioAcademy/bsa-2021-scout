@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { Applicant } from 'src/app/shared/models/applicant/applicant';
+import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { CreateApplicantComponent } from '../create-applicant/create-applicant.component';
 
 @Component({
@@ -15,9 +15,7 @@ export class ApplicantsHeadComponent {
   @Output() public search = new EventEmitter<string>();
   @Output() public applicantCreated = new EventEmitter<Observable<Applicant>>();
 
-  constructor(
-    private readonly dialog: MatDialog,
-  ) {}
+  constructor(private readonly dialog: MatDialog) {}
 
   public applySearchValue(): void {
     this.search.emit(this.searchValue);

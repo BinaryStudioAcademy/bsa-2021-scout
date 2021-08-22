@@ -1,3 +1,4 @@
+<app-spinner [loading]="loading"></app-spinner>
 <div class="login-container">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="login-text"><span>Log In</span></div>
@@ -5,7 +6,8 @@
             <div class="login-input-title"><span>Email</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userEmail') ? 'invalid-input' : ''">
-                <input matInput type="email" formControlName="userEmail" placeholder="Enter your Email" [(ngModel)]="userLoginDto.email">
+                <input matInput type="email" formControlName="userEmail" placeholder="Enter your Email"
+                    [(ngModel)]="userLoginDto.email">
             </mat-form-field>
             <div *ngIf="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userEmail')">
                 <div class="validation-error" *ngIf="loginForm.controls['userEmail'].errors?.pattern
@@ -15,8 +17,7 @@
                 <div class="validation-error" *ngIf="this.loginForm.controls['userEmail'].errors?.required">
                     Please enter your email address.
                 </div>
-                <div class="validation-error"
-                    *ngIf="loginForm.controls['userEmail'].errors?.unallowedcharacters">
+                <div class="validation-error" *ngIf="loginForm.controls['userEmail'].errors?.unallowedcharacters">
                     Your email must contain only latin letters, digits and special characters.
                 </div>
             </div>
@@ -29,7 +30,8 @@
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(loginForm, 'userPassword') ? 'invalid-input' : ''">
                 <input matInput [type]="isPasswordHide ? 'password' : 'text'" formControlName="userPassword"
-                    [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'" autocomplete="on" [(ngModel)]="userLoginDto.password">
+                    [placeholder]="isPasswordHide ? '••••••••' : 'Enter your password'" autocomplete="on"
+                    [(ngModel)]="userLoginDto.password">
                 <mat-icon class="login-show-password" matSuffix (click)="isPasswordHide = !isPasswordHide">
                     {{isPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
@@ -40,7 +42,7 @@
             </div>
         </div>
         <div class="login-button form-group">
-            <button mat-button color="primary" [disabled]="!(isRequestFinished && loginForm?.valid)">Log In</button>
+            <button mat-button color="primary" [disabled]="loading || !loginForm?.valid">Log In</button>
         </div>
     </form>
 </div>

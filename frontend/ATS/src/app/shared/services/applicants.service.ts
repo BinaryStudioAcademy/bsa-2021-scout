@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CreateApplicant } from '../models/applicant/create-applicant';
-import { UpdateApplicant } from '../models/applicant/update-applicant';
-import { Applicant } from '../models/applicant/applicant';
+import { CreateApplicant } from '../models/applicants/create-applicant';
+import { UpdateApplicant } from '../models/applicants/update-applicant';
+import { Applicant } from '../models/applicants/applicant';
 import { HttpClientService } from './http-client.service';
-import { MarkedApplicant } from 'src/app/shared/models/applicant/marked-applicant';
-import { GetShortApplicant } from '../models/applicant/get-short-applicant';
+import { MarkedApplicant } from 'src/app/shared/models/applicants/marked-applicant';
+import { GetShortApplicant } from '../models/applicants/get-short-applicant';
 import { File } from '../models/file/file';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantsService {
-  constructor(
-    private readonly httpClient: HttpClientService)
-  { }
+  constructor(private readonly httpClient: HttpClientService) {}
 
   public getApplicants(): Observable<Applicant[]> {
     return this.httpClient.getRequest<Applicant[]>('/applicants');
@@ -45,7 +43,9 @@ export class ApplicantsService {
   }
 
   public deleteApplicant(applicantId: string): Observable<Applicant> {
-    return this.httpClient.deleteRequest<Applicant>('/applicants/' + applicantId);
+    return this.httpClient.deleteRequest<Applicant>(
+      '/applicants/' + applicantId,
+    );
   }
 
   public getCv(applicantId: string): Observable<File> {

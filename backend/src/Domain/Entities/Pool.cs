@@ -14,6 +14,7 @@ namespace Domain.Entities
         public string Description { get; set; }
         public string CompanyId { get; set; }
         public Company Company { get; set; }
+        public User CreatedBy { get; set; }
         public ICollection<PoolToApplicant> PoolApplicants { get; set; } 
     }
 }

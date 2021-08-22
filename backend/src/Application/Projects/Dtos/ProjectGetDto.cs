@@ -1,4 +1,5 @@
-﻿using Application.Vacancies.Dtos;
+﻿using Application.ElasticEnities.Dtos;
+using Application.Vacancies.Dtos;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

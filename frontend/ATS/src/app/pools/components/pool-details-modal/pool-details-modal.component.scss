@@ -1,0 +1,120 @@
+@import '/src/common.scss';
+
+.mat-table {
+    width: 100%;
+}
+
+.applicants-table .mat-list-base{
+    padding: unset;
+}
+
+.dialog-title {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 5px;
+}
+
+.dialog-title  button:hover {
+    color: $primary-color;    
+}
+
+.dialog-title h1 {
+    font-weight: 700;
+}
+
+.pool-create-info-wrapper {
+    display: flex;    
+    justify-content: flex-end;    
+    padding-bottom: 5px;
+    flex-direction: column;
+    text-align: right;
+}
+
+.creator-info {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.dialog-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-content {
+    padding: 5px;
+}
+
+.modal-content h3 {
+    margin: 5px 0 0;
+}
+
+
+.description {
+    min-height: 50px;
+    border: 1px solid lightgray;
+    padding: 5px;
+    border-radius: 9px;
+    background-color: $primary-color-white;
+}
+
+.modal-content .mat-icon {
+    vertical-align: middle;    
+    border-radius: 50%;
+    border: 1px solid $primary-color;
+    color: white;
+    background-color: lightgray;
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+    margin: 0 3px;
+}
+
+.mat-column-username {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 28% !important;
+    width: 28% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  :host ::ng-deep {
+      .mat-button-focus-overlay { background-color: transparent!important; }       
+  }
+
+.tags-list {
+    display: flex;
+
+    .mat-list-item {
+        width: min-content;
+        height: min-content;
+        padding: 4px 0;
+        line-height: 1;
+        font-size: 0.9em;
+        color: rgba($color: (#291965), $alpha: 0.8);
+        background-color: rgba($color: (#291965), $alpha: 0.1);
+        font-weight: 700;
+        border-radius: 15px;
+        margin: 3px;
+    
+        &.more-button {
+            background: none;
+            cursor: pointer;
+            padding: 1px 0;
+            border: 2px solid rgba($color: (#291965), $alpha: 0.8);
+
+            &:hover {
+                box-shadow: 0 0 4px rgba($color: (#291965), $alpha: 0.5);
+                text-shadow: 0 0 1px 1px rgba($color: (#291965), $alpha: 0.8);
+            }
+        }
+    }
+}
