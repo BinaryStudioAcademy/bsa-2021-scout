@@ -20,20 +20,15 @@ namespace Application.Vacancies.Queries
 
     public class GetVacancyTablesQueryHandler : IRequestHandler<GetVacancyTablesListQuery, IEnumerable<VacancyTableDto>>
     {
-        protected readonly IReadRepository<Vacancy> _vacancyRepo;
-        protected readonly IReadRepository<Project> _projectRepo;
-        protected readonly IReadRepository<User> _userRepo;
+        protected readonly IVacancyTableReadRepository _vacancyTableRepo;
         protected readonly ICurrentUserContext _context;
 
         protected readonly IMapper _mapper;
 
-        public GetVacancyTablesQueryHandler(ICurrentUserContext context, IReadRepository<Vacancy> vacancyRepo,
-         IReadRepository<Project> projectRepo, IReadRepository<User> userRepo,
+        public GetVacancyTablesQueryHandler(ICurrentUserContext context, IVacancyTableReadRepository vacancyTableRepo,
          IMapper mapper)
         {
-            _vacancyRepo = vacancyRepo;
-            _projectRepo = projectRepo;
-            _userRepo = userRepo;
+            _vacancyTableRepo = vacancyTableRepo;
             _context = context;
             _mapper = mapper;
         }
@@ -44,13 +39,9 @@ namespace Application.Vacancies.Queries
 
             companyId = (await _context.GetCurrentUser())?.CompanyId ?? "";
           
-            IEnumerable<Vacancy> result = (await _vacancyRepo.GetEnumerableAsync()).Where(x=>x.CompanyId == companyId);
+            IEnumerable<VacancyTable> result = await _vacancyTableRepo.GetVacancyTablesByCompanyIdAsync(companyId);
             IEnumerable<VacancyTableDto> dtos = _mapper.Map<IEnumerable<VacancyTableDto>>(result);
-            foreach (var dto in dtos){
-                dto.Department = (await _projectRepo.GetAsync(dto.ProjectId)).TeamInfo;
-                dto.ResponsibleHr =  _mapper.Map<UserDto>((await _userRepo.GetAsync(dto.ResponsibleHrId)));
-            }
-
+            //HERE!!!!
             // .ForMember(dest => dest.Department, opt => opt.MapFrom(v => v.Project.TeamInfo))
             // .ForMember(dest => dest.CurrentApplicantsAmount, opt => opt.MapFrom(
             //     v => v.Stages.Sum<Stage>(s => s.CandidateToStages.Count())))

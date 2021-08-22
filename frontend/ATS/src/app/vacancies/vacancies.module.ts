@@ -10,6 +10,7 @@ import { CandidateColumnComponent } from './components/candidate-column/candidat
 import { VacanciesListComponent } from './components/vacancies-list/vacancies-list.component';
 import { OneCandidateComponent } from './components/one-candidate/one-candidate.component';
 
+
 // This line can't be shorter
 // eslint-disable-next-line max-len
 import { OneCandidateModalComponent } from './components/one-candidate-modal/one-candidate-modal.component';
@@ -24,6 +25,9 @@ import { MatButtonModule } from '@angular/material/button';
 // This line can't be shorter
 // eslint-disable-next-line max-len
 import { VacanciesStagesBoardComponent } from './components/vacancies-stages-board/vacancies-stages-board.component';
+import { EditVacancyComponent } from './components/edit-vacancy/edit-vacancy.component';
+import { CreateStageComponent } from './components/stages/create-stage/create-stage.component';
+import { StageComponent } from './components/stages/stage/stage.component';
 @NgModule({
   declarations: [
     CandidateCardComponent,
@@ -33,6 +37,9 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     OneCandidateComponent,
     OneCandidateModalComponent,
     VacanciesTableComponent,
+    EditVacancyComponent,
+    CreateStageComponent,
+    StageComponent,
   ],
   imports: [
     MatDialogModule,

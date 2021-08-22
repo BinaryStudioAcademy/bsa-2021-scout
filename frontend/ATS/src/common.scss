@@ -7,46 +7,60 @@ $primary-color-extradarkgrey: #818388;
 $primary-color-blue: #291965;
 $accent-color: #4f1cb1;
 $primary-font: Nunito;
-
 .mat-toolbar {
-  background-color: #291965;
-  height: 120px;
+    background-color: #291965;
+    height: 120px;
 }
+
 //button
 .mat-button.mat-button {
-  border-radius: 70px;
-  font-family: $primary-font;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  text-align: center;
-  line-height: 40px;
-  width: 140px;
-  background-color: $primary-color;
-  color: $primary-color-white;
+    border-radius: 70px;
+    font-family: $primary-font;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    line-height: 40px;
+    width: 140px;
+    background-color: $primary-color;
+    color: $primary-color-white;
 }
 
 //primary button
 .mat-button.mat-primary {
-  line-height: 35px;
+    line-height: 35px;
 }
 
 //accent button
 .mat-button.mat-accent {
   line-height: 31px;
-  width: 165px;
+  width: auto;
+  padding: auto 30px ;
   background-color: $primary-color-white;
   border: 2px solid $primary-color;
   color: $primary-color;
 }
 
 // disabled button
-.mat-button.mat-button-disabled{
-  background: $primary-color-darkgrey;
-  color: $primary-color-white !important;
+.mat-button.mat-button-disabled {
+    background: $primary-color-darkgrey;
+    color: $primary-color-white !important;
 }
 
 //input
+::ng-deep .mat-form-field-wrapper.mat-form-field-wrapper {
+    color: #000;
+}
+
+input:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px $primary-color-white inset;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label,
+.mat-form-field.mat-form-field-invalid .mat-form-field-label {
+    color: gray;
+}
+
 .mat-form-field-wrapper.mat-form-field-wrapper {
     display: flex;
     align-items: center;
@@ -61,53 +75,74 @@ $primary-font: Nunito;
     border-radius: 10px;
     padding: 0px 20px 0px 20px;
     height: 40px;
-    color: $primary-color;
+    color: black;
+    z-index: 10;
 }
 
 .mat-form-field-underline {
-  display: none;
+    display: none;
 }
 
 .mat-form-field-infix {
-  border: none;
+    border: none;
 }
 
 a {
-  color: $accent-color;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
+    color: $accent-color;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .meta {
-  color: $primary-color-darkgrey;
-
-  &.dark {
-    color: $primary-color-extradarkgrey;
-  }
-
-  &:not(&.only-color) {
-    font-size: 12px;
-  }
+    color: $primary-color-darkgrey;
+    &.dark {
+        color: $primary-color-extradarkgrey;
+    }
+    &:not(&.only-color) {
+        font-size: 12px;
+    }
 }
 
 .mat-pseudo-checkbox.mat-pseudo-checkbox-checked {
-  background-color: $primary-color;
+    background-color: $primary-color;
 }
 
+
 /* Scroll Bar */
+
 ::-webkit-scrollbar {
-  width: 5px;
+    width: 5px;
 }
+
 ::-webkit-scrollbar-track {
-  display: none;
+    display: none;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: rgb(41, 25, 101, 0.5);
-  border-radius: 20px;
+    background: rgb(41, 25, 101, 0.5);
+    border-radius: 20px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: $primary-color-blue;
+    background: $primary-color-blue;
+}
+
+
+/* Validation errors */
+
+.invalid-input {
+    border-radius: 10px;
+    border: 1px solid #EF5350;
+}
+
+.validation-error {
+    font-family: $primary-font;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 19px;
+    margin-top: 5px;
+    color: #EF5350;
+    max-width: fit-content;
 }

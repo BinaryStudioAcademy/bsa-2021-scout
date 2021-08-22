@@ -4,8 +4,61 @@ $primary-color-white: #f6f7f9;
 $primary-color-blue: #291965;
 $primary-font: Nunito;
 
+ 
+
+::ng-deep{
+    .project-options .delete{
+        color: #EF5350;
+    }
+
+    .mat-select-panel-wrap .project-options .mat-option {
+        height: 40px;
+        .mat-icon{
+            font-size: 20px;
+            margin-right: 5px;
+        }
+    }
+
+    .project-options .mat-option-text{
+        font-size: 15px;
+        line-height: 20px;
+    }
+}
+
 .projects-page{
 /* Header */
+
+
+.icons .mat-select{
+    font-size: 20px;
+    height: 24px;
+    width: 24px;
+    line-height: 25px;
+    font-size: 22px;
+    color: #808080;
+}
+
+::ng-deep .icons {
+    .mat-select-arrow::after{
+        font-family: 'Material Icons';
+        content: "\e5d3";
+        font-size: 24px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+    .mat-select-arrow:hover::after{
+        color: $primary-color;
+    }
+}
+
+
+
+::ng-deep .icons .mat-select-arrow {
+    border: none;
+    margin: 0;
+    height: 100%;
+}
 
 .mat-form-field {
     font-size: 14px;
@@ -40,6 +93,10 @@ button.tub:focus {
     height: 60px;
     padding: 10px 20px 10px 20px;
     background: $primary-color-white;
+
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px white inset;
+    }
 }
 
 
@@ -59,6 +116,12 @@ td.mat-cell {
     width: 20%;
     padding-right: 20px;
     padding-left: 20px;
+}
+
+.mat-paginator-sticky {
+    bottom: 0px;
+    position: sticky;
+    z-index: 10;
 }
 
 th:first-child,

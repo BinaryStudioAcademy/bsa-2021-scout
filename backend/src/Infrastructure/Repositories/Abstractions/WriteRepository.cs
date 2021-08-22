@@ -3,6 +3,8 @@ using Domain.Interfaces.Abstractions;
 using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Abstractions
@@ -16,7 +18,7 @@ namespace Infrastructure.Repositories.Abstractions
             _context = context;
         }
 
-        public async Task<Entity> CreateAsync(T entity)
+        public virtual async Task<Entity> CreateAsync(T entity)
         {
             _context.Add(entity);
             await _context.SaveChangesAsync();
@@ -24,7 +26,7 @@ namespace Infrastructure.Repositories.Abstractions
             return entity;
         }
 
-        public async Task<Entity> UpdateAsync(T entity)
+        public virtual async Task<Entity> UpdateAsync(T entity)
         {
             _context.Update(entity);
             await _context.SaveChangesAsync();
@@ -32,7 +34,8 @@ namespace Infrastructure.Repositories.Abstractions
             return entity;
         }
 
-        public async Task DeleteAsync(string id)
+        public virtual async Task DeleteAsync(string id)
+
         {
             var entity = await _context.Set<T>().FirstOrDefaultAsync(_ => _.Id == id);
 

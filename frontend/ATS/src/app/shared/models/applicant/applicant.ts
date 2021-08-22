@@ -11,6 +11,7 @@ export interface Applicant {
   phone: string;
   skype: string;
   experience: number;
+  hasCv: boolean;
 
   tags: ElasticEntity;
   vacancies: ApplicantVacancyInfo[];
