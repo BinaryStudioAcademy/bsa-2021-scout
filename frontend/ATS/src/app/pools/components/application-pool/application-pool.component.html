@@ -46,6 +46,7 @@
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef> </th>
                 <td mat-cell *matCellDef="let row">
+                    <mat-icon>bookmark</mat-icon>
                     <mat-icon (click)="$event.stopPropagation();editPool(row)" >edit</mat-icon>                
                     <mat-icon (click)="onDetails(row.id)">more_horiz</mat-icon>
                 </td>

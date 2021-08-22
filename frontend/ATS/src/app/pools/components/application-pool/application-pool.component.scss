@@ -72,10 +72,9 @@ button.tub:focus {
 
 
 
-
 :host ::ng-deep {
 //  .mat-input-element,
-    .mat-form-field-wrapper.mat-form-field-wrapper,
+    .pool-page .mat-form-field-wrapper.mat-form-field-wrapper,
     .mat-form-field.mat-focused .mat-form-field-label
     {
       color : $primary-color-darkgrey;
@@ -94,8 +93,28 @@ button.tub:focus {
         align-items: center;
     }
 
-    .mat-form-field-label-wrapper {
-        left: 40px;
+     .pool-page .mat-form-field-label-wrapper {
+        position: absolute;
+        left: 0;
+        box-sizing: content-box;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+     }
+
+     .pool-page .mat-form-field-label:focus {
+        left: 0px;
+    }
+
+    .pool-page .mat-focused .mat-form-field-label-wrapper {
+        left: 5px;        
+    }
+    
+
+    .pool-page .mat-form-field-label-wrapper {
+        left: 40px;        
+        max-width: 200px;
     }
 
     .mat-form-field-appearance-fill .mat-form-field-infix {
@@ -126,6 +145,7 @@ button.tub:focus {
     }
 
 }
+
 
 
         
