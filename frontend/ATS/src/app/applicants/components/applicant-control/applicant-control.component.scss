@@ -42,6 +42,10 @@ $primary-color: #ee2a64;
     }
 }
 
+.applyPrimaryColor{
+    color: $primary-color !important;
+}
+
 :host ::ng-deep .dot-menu {
     position: relative;
 
