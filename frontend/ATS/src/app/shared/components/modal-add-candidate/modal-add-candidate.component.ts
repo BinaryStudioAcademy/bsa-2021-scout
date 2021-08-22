@@ -90,6 +90,20 @@ export class AddCandidateModalComponent implements OnDestroy {
           (error) => this.OnError(error),
         );
 
+      this.vacancyService.getNotAppliedVacanciesByApplicant(data.applicantId)
+        .subscribe(vacancies => {
+          this.vacancies = vacancies;
+          if (vacancies.length == 0) {
+            this.OnError(new Error('No vacancies for this applicant'));
+          }
+          this.filteredVacancies = this.vacanciesForm.valueChanges.pipe(
+            startWith(''),
+            map(value => typeof value === 'string' ? value : value.title),
+            map(title => title ? this._filter(title) : this.vacancies.slice()),
+          );
+        },
+        (error) => (this.OnError(error)));
+        
       this.vacanciesForm.valueChanges.subscribe((vacancy) => {
         if (typeof vacancy !== 'string') {
           this.selectedVacancy = vacancy;
@@ -100,6 +114,7 @@ export class AddCandidateModalComponent implements OnDestroy {
         }
       },
       (error) => (this.OnError(error)));
+
     } else {
       this.disableVacanciesForm = false;
 
@@ -109,6 +124,7 @@ export class AddCandidateModalComponent implements OnDestroy {
         .subscribe(
           vacancies => {
             this.loading = false;
+            console.log(vacancies);
             this.vacancies = vacancies;
             this.filteredVacancies = this.vacanciesForm.valueChanges.pipe(
               startWith(''),

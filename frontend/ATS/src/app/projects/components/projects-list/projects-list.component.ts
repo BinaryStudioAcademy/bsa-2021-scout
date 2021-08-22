@@ -22,8 +22,6 @@ import { DeleteConfirmComponent }
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-const TAGS: string[] = ['ASP.NET', 'WPF', 'Angular'];
-
 @Component({
   selector: 'app-projects-list',
   templateUrl: './projects-list.component.html',
@@ -42,7 +40,6 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   ];
   projects: ProjectInfo[] = [];
   dataSource: MatTableDataSource<ProjectInfo>;
-  tags: string[] = TAGS;
   isFollowedPage: boolean = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -90,9 +87,13 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
     this.directive.applyFilter$.emit();
   }
   public getFirstTags(project: ProjectInfo): Tag[] {
-    return project.tags!.tagDtos.length > 3
-      ? project.tags!.tagDtos.slice(0, 2)
-      : project.tags!.tagDtos;
+    if (!project.tags?.tagDtos) {
+      return [];
+    }
+
+    return project.tags.tagDtos.length > 3
+      ? project.tags.tagDtos.slice(0, 2)
+      : project.tags.tagDtos;
   }
 
   public toggleTags(project: ProjectInfo): void {
