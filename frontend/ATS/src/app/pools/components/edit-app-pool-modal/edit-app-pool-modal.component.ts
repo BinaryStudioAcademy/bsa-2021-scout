@@ -1,14 +1,17 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 // eslint-disable-next-line max-len
 import {Component, ElementRef, ViewChild, Inject, OnInit, Output, EventEmitter} from '@angular/core';
+import {Subject} from 'rxjs';
 import {MatAutocompleteSelectedEvent,MatAutocomplete} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { map, startWith, takeUntil} from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Applicant } from 'src/app/shared/models/applicants/applicant';
+import { ApplicantIsSelected } from 'src/app/shared/models/applicant/applicant-select';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { ApplicantsPool } from 'src/app/shared/models/applicants-pool/applicants-pool'; 
+import { ApplicantsService } from 'src/app/shared/services/applicants.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 
 @Component({
@@ -28,30 +31,26 @@ export class EditAppPoolModalComponent implements OnInit{
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];  
-  filteredApplicants: Observable<Applicant[]>;
-  filterValue : string = '';  
-  
+  filteredApplicants: Observable<ApplicantIsSelected[]>;
+  filterValue : string = '';
+  loading = true;
 
-  public allapplicants : Applicant [] = [
-    {id: '1',firstName : 'Igor', lastName: 'One', email:'ivan@email.com'},
-    {id: '2',firstName : 'Petr', lastName: 'Two', email:'ivan@email.com'},
-    {id: '3',firstName : 'Sam', lastName: 'Jackson', email:'ivan@email.com'},
-  //  {id: '4',firstName : 'Vladimir', lastName: 'Lenin', email:'ivan@email.com'},
-  //  {id: '5',firstName : 'Alex', lastName: 'Sergeev', email:'ivan@email.com'},
-  //  {id: '6',firstName : 'Ivan', lastName: 'Notch', email:'ivan@email.com'},    
-  ];
+  public allapplicants : ApplicantIsSelected [] = [];
 
-  public applicants : Applicant [] = this.data.applicants;  
+  public applicants : ApplicantIsSelected [] = this.data.applicants;
 
   applicantsCtrl = new FormControl();
+  private unsubscribe$ = new Subject<void>();
    
 
   public editPool: FormGroup = new FormGroup({
-    'name': new FormControl(this.data.name, [
-      Validators.required,            
-    ]),
-    'description': new FormControl(this.data.description, [
+    'name': new FormControl('', [
       Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(20)]),
+    'description': new FormControl('', [
+      Validators.required,
+      Validators.minLength(10),
     ]),
     applicants : this.applicantsCtrl,
   });
@@ -59,8 +58,12 @@ export class EditAppPoolModalComponent implements OnInit{
   
   @ViewChild('applicantInput') applicantInput!: ElementRef<HTMLInputElement>;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ApplicantsPool,
-    public dialogRef: MatDialogRef<EditAppPoolModalComponent>) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: ApplicantsPool,
+    public dialogRef: MatDialogRef<EditAppPoolModalComponent>,
+    private notificationService:NotificationService,
+    private applicantsService: ApplicantsService,
+  ) {
     this.filteredApplicants = this.applicantsCtrl.valueChanges.pipe(
       startWith(null),
       map((filterValue: string | null) => 
@@ -69,12 +72,7 @@ export class EditAppPoolModalComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.id = this.data.id;
-    this.applicants.forEach(x=> {
-      x.isSelected = true;
-      const all = this.allapplicants.find(y=> y.id == x.id);
-      if(all) all.isSelected = true;    
-    });    
+    this.getApplicants();        
   }
 
 
@@ -96,7 +94,7 @@ export class EditAppPoolModalComponent implements OnInit{
     this.applicantsCtrl.setValue(null);
   }
 
-  remove(applicant: Applicant): void {
+  remove(applicant: ApplicantIsSelected): void {
     const index = this.applicants.indexOf(applicant);
 
     if (index >= 0) {
@@ -120,7 +118,8 @@ export class EditAppPoolModalComponent implements OnInit{
     }
   }
 
-  private _filter(value: string): Applicant[] {    
+  private _filter(value: string): ApplicantIsSelected[] {    
+    console.log(value);
     const filterValue = value ? value.toLowerCase() : '';    
 
     return this.allapplicants.filter(applicant => (
@@ -129,7 +128,7 @@ export class EditAppPoolModalComponent implements OnInit{
     ));
   }
 
-  getStyle(applicant :Applicant)
+  getStyle(applicant :ApplicantIsSelected)
   {
     return applicant.isSelected ? 'used' : '';
   }
@@ -147,7 +146,40 @@ export class EditAppPoolModalComponent implements OnInit{
   }
 
 
+  getApplicants() {    
+    this.applicantsService
+      .getApplicants()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (resp) => {          
+          this.allapplicants = resp.map(
+            value => {
+              return {
+                ...value, isSelected : false};                
+            },            
+          );
+          this.id = this.data.id;
+          this.editPool.controls['name'].setValue(this.data.name);
+          this.editPool.controls['description'].setValue(this.data.description);
+          this.applicants.forEach(x=> {
+            x.isSelected = true;
+            const all = this.allapplicants.find(y=> y.id == x.id);
+            if(all) all.isSelected = true;    
+          });
+          
+        },
+        (error) => {          
+          this.notificationService.showErrorMessage(error);
+        },
+        () => {this.loading = false;},
+      );
+  }
 
+  getClass(control:string)
+  {
+    return this.editPool.controls[control].dirty && this.editPool.controls[control].errors?
+      'invalid-input':'';
+  }
 
   
 

@@ -12,10 +12,12 @@ namespace Application.VacancyCandidates.Queries
     public class GetFullVacancyCandidateByIdQuery : IRequest<VacancyCandidateFullDto>
     {
         public string Id { get; set; }
+        public string VacancyId { get; set; }
 
-        public GetFullVacancyCandidateByIdQuery(string id)
+        public GetFullVacancyCandidateByIdQuery(string id, string vacancyId)
         {
             Id = id;
+            VacancyId = vacancyId;
         }
     }
 
@@ -36,7 +38,7 @@ namespace Application.VacancyCandidates.Queries
 
         public async Task<VacancyCandidateFullDto> Handle(GetFullVacancyCandidateByIdQuery query, CancellationToken _)
         {
-            VacancyCandidate candidate = await _readRepository.GetFullAsync(query.Id);
+            VacancyCandidate candidate = await _readRepository.GetFullAsync(query.Id, query.VacancyId);
             VacancyCandidateFullDto candidateFullDto = _mapper.Map<VacancyCandidate, VacancyCandidateFullDto>(candidate);
 
             return candidateFullDto;

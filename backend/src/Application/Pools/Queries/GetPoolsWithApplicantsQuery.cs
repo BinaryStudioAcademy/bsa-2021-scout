@@ -9,6 +9,7 @@ using Domain.Interfaces.Read;
 using Application.Common.Exceptions;
 using Application.Pools.Dtos;
 using System.Collections.Generic;
+using Application.ElasticEnities.Dtos;
 
 namespace Application.Common.Queries
 {
@@ -23,11 +24,13 @@ namespace Application.Common.Queries
     {
         protected readonly IPoolReadRepository _repository;
         protected readonly IMapper _mapper;
+        protected readonly ISender _mediator;
 
-        public GetPoolWithApplicantsQueryHandler(IPoolReadRepository repository, IMapper mapper)
+        public GetPoolWithApplicantsQueryHandler(IPoolReadRepository repository, ISender mediator, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         public async Task<List<PoolDto>> Handle(GetPoolsWithApplicantsQuery query, CancellationToken _)

@@ -6,6 +6,7 @@ export interface CandidateModalProps {
   hasPrevious: boolean;
   vacancyName: string;
   candidateId: string;
+  vacancyId: string;
 }
 
 @Component({
