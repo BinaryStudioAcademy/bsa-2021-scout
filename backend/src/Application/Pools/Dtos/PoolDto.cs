@@ -12,7 +12,7 @@ namespace Application.Pools.Dtos
         public DateTime DateCreated { get; set; }
         public string CreatedBy { get; set; }
         public string Description { get; set; }
-        public string Company { get; set; }
+        public string Company { get; set; }        
         public ICollection<PoolApplicantDto> Applicants { get; set; }
 
     }

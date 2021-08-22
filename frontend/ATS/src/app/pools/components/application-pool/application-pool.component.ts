@@ -15,6 +15,8 @@ import { PoolService } from 'src/app/shared/services/poolService';
 import { CreatePool } from 'src/app/shared/models/applicants-pool/create-pool';
 import { UpdatePool } from 'src/app/shared/models/applicants-pool/update-pool';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { Router } from '@angular/router';
+import { PoolDetailsModalComponent } from '../pool-details-modal/pool-details-modal.component';
 
 const DATA: ApplicantsPool[] = [];
 
@@ -25,23 +27,24 @@ const DATA: ApplicantsPool[] = [];
 })
 export class ApplicationPoolComponent implements OnInit, AfterViewInit {
   constructor(
-    private readonly dialogService: MatDialog,
-    private poolService: PoolService,
+    private readonly dialogService: MatDialog, 
+    private poolService : PoolService,
     private notificationService: NotificationService,
   ) {}
+    
 
   displayedColumns: string[] = [
     'position',
     'name',
-    //  'createdBy',
+    'createdBy',
     'dateCreated',
-    'applicantsCount',
+    'count',
     'description',
     'actions',
   ];
 
-  loading: boolean = false;
-  dataSource = new MatTableDataSource(DATA);
+  loading : boolean = false;
+  dataSource = new MatTableDataSource(DATA);  
   private unsubscribe$ = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -51,6 +54,10 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+    this.updatePaginator();
+  }
+
+  updatePaginator() {
     this.dataSource.paginator = this.paginator;
     this.directive?.applyFilter$.emit();
   }
@@ -65,8 +72,8 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit(): void {
-    this.loadData();
+  ngOnInit() : void {
+    this.loadData();    
   }
 
   loadData() {
@@ -76,8 +83,15 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
-          this.loading = false;
-          this.dataSource.data = resp;
+          this.loading = false;          
+          const dataWithTotal = resp.map(
+            value => {
+              return {
+                ...value, count: value.applicants.length};                
+            },            
+          );
+          this.dataSource.data = dataWithTotal;
+          this.updatePaginator();
         },
         (error) => {
           this.loading = false;
@@ -86,28 +100,22 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       );
   }
 
-  createPool(pool: CreatePool) {
+  createPool(pool : CreatePool) {
     this.loading = true;
     this.poolService
       .createPool(pool)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        (resp) => {
-          this.loading = false;
-          this.dataSource.data.push(resp);
-          this.directive?.applyFilter$.emit();
-          this.table.renderRows();
-          this.dataSource.paginator = this.paginator;
-          this.notificationService.showSuccessMessage(
-            'Pool successfully added',
-          );
+        (resp) => {          
+          this.dataSource.data.push(resp);          
+          this.table.renderRows();          
+          this.updatePaginator();
+          this.notificationService.showSuccessMessage('Pool successfully added');
         },
-        (error) => {
-          this.loading = false;
-          this.notificationService.showSuccessMessage(
-            `Create pool error: ${error}`,
-          );
+        (error) => {          
+          this.notificationService.showSuccessMessage(`Create pool error: ${error}`);
         },
+        () => { this.loading = false; },
       );
   }
 
@@ -118,10 +126,13 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
-          this.loading = false;
           this.updateRowData(resp.body!);
         },
-        (error) => (this.loading = false),
+        (error) => {
+          this.notificationService.showSuccessMessage('Update pool error');
+          console.log(error);
+        },
+        () => (this.loading = false),
       );
   }
 
@@ -131,12 +142,14 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
     });
 
     createDialog.afterClosed().subscribe((result) => {});
+  }
 
-    const dialogSubmitSubscription =
-      createDialog.componentInstance.submitClicked.subscribe((result) => {
-        this.createPool(result);
-        dialogSubmitSubscription.unsubscribe();
-      });
+  onDetails(id: string)
+  {
+    this.dialogService.open(PoolDetailsModalComponent, {
+      width: '800px',
+      data: id,
+    });
   }
 
   editPool(pool: ApplicantsPool) {
@@ -160,6 +173,9 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       source.applicants = row.applicants;
       source.name = row.name;
       source.description = row.description;
-    }
+      source.dateCreated = row.dateCreated;
+      source.createdBy = row.createdBy;
+      source.count = row.applicants.length;
+    }    
   }
 }

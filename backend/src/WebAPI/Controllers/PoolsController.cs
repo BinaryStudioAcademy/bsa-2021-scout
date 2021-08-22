@@ -39,11 +39,6 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
-        private async Task<UserDto> GetUserFromTokenAsync(ICurrentUserContext currentUserContext)
-        {
-            return await currentUserContext.GetCurrentUser();
-        }
-
         [HttpPut]
         public async Task<IActionResult> PutPooltAsync([FromBody] UpdatePoolDto updateDto)
         {

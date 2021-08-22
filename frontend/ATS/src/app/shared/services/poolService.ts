@@ -16,8 +16,14 @@ export class PoolService {
     return this.http.getRequest<ApplicantsPool[]>(`${this.routePrefix}`);
   }
 
-  public createPool(pool: CreatePool) {
-    return this.http.postRequest<ApplicantsPool>(`${this.routePrefix}`, pool);
+  public getPool(id: string) {
+    return this.http.getRequest<ApplicantsPool>(
+      `${this.routePrefix}/${id}`);
+  }
+
+  public createPool(pool : CreatePool) {
+    return this.http.postRequest<ApplicantsPool>(
+      `${this.routePrefix}`, pool);
   }
 
   public updatePool(pool: UpdatePool) {

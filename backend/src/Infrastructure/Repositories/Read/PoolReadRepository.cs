@@ -21,19 +21,21 @@ namespace Infrastructure.Repositories.Read
 
             await connection.OpenAsync();
             string sql = $@"
-                            SELECT p.*, pa.*, a.*
+                            SELECT p.*, pa.*, a.*,u.*,c.*
                             FROM Pools p left outer join 
                             PoolToApplicants pa ON pa.PoolId = p.Id left outer join
-                            Applicants a on a.Id = pa.ApplicantId
+                            Applicants a on a.Id = pa.ApplicantId inner join
+                            Companies c on c.Id = p.CompanyId inner join
+                            Users u on u.Id = p.CreatedById
                             where p.id = @id";
 
             var poolDictionary = new Dictionary<string, Pool>();
             var poolToApplicantDictionary = new Dictionary<string, PoolToApplicant>();
             Pool cachedPool = null;
 
-            var pool = (await connection.QueryAsync<Pool, PoolToApplicant, Applicant, Pool>(
+            var pool = (await connection.QueryAsync<Pool, PoolToApplicant, Applicant, User, Company, Pool>(
                 sql,
-                (pool, poolToApplicant, applicant) =>
+                (pool, poolToApplicant, applicant, User, Company) =>
                 {
                     if (cachedPool == null)
                     {
@@ -45,6 +47,8 @@ namespace Infrastructure.Repositories.Read
                     {
                         poolEntry = pool;
                         poolEntry.PoolApplicants = new List<PoolToApplicant>();
+                        poolEntry.Company = Company;
+                        poolEntry.CreatedBy = User;
                         poolDictionary.Add(poolEntry.Id, poolEntry);
                     }
 
@@ -79,19 +83,21 @@ namespace Infrastructure.Repositories.Read
 
             await connection.OpenAsync();
             string sql = $@"
-                            SELECT p.*, pa.*, a.*
+                            SELECT p.*, pa.*, a.*,u.*,c.*
                             FROM Pools p left outer join 
                             PoolToApplicants pa ON pa.PoolId = p.Id left outer join
-                            Applicants a on a.Id = pa.ApplicantId";
+                            Applicants a on a.Id = pa.ApplicantId inner join
+                            Companies c on c.Id = p.CompanyId inner join
+                            Users u on u.Id = p.CreatedById";
                             
 
             var poolDictionary = new Dictionary<string, Pool>();
             var poolToApplicantDictionary = new Dictionary<string, PoolToApplicant>();
             List<Pool> allPools = new List<Pool>();
 
-            var pool = (await connection.QueryAsync<Pool, PoolToApplicant, Applicant, Pool>(
+            var pool = (await connection.QueryAsync<Pool, PoolToApplicant, Applicant, User, Company, Pool>(
                 sql,
-                (pool, poolToApplicant, applicant) =>
+                (pool, poolToApplicant, applicant, User, Company) =>
                 {
                     
                     if (!poolDictionary.TryGetValue(pool.Id, out Pool poolEntry))
@@ -99,6 +105,8 @@ namespace Infrastructure.Repositories.Read
 
                         poolEntry = pool;
                         poolEntry.PoolApplicants = new List<PoolToApplicant>();
+                        poolEntry.Company = Company;
+                        poolEntry.CreatedBy = User;
 
                         poolDictionary.Add(poolEntry.Id, poolEntry);
                     }

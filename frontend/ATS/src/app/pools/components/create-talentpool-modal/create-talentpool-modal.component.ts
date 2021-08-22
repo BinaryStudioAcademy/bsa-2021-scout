@@ -13,10 +13,12 @@ export class CreateTalentpoolModalComponent {
 
   public createPool: FormGroup = new FormGroup({
     'name': new FormControl('', [
-      Validators.required,            
-    ]),
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(20)]),
     'description': new FormControl('', [
       Validators.required,
+      Validators.minLength(10),
     ]),
   });
 
@@ -30,6 +32,12 @@ export class CreateTalentpoolModalComponent {
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+  getClass(control:string)
+  {
+    return this.createPool.controls[control].dirty && this.createPool.controls[control].errors?
+      'invalid-input':'';
   }
 
 }
