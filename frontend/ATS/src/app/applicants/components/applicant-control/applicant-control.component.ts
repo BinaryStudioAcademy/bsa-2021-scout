@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { AddCandidateModalComponent } 
   from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
+import { openFileFromUrl } from 'src/app/shared/helpers/openFileFromUrl';
 import { Applicant } from 'src/app/shared/models/applicant/applicant';
 import { ViewableApplicant } from 'src/app/shared/models/applicant/viewable-applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
@@ -36,6 +37,10 @@ export class ApplicantControlComponent implements OnDestroy {
   public loading: boolean = false;
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
+  get isCvAvailable(): boolean {
+    return this.applicant?.hasCv ?? false;
+  }
 
   constructor(
     private readonly dialog: MatDialog,
@@ -126,5 +131,21 @@ export class ApplicantControlComponent implements OnDestroy {
         applicantId: this.applicant!.id,
       },
     });
+  }
+
+  public openCv(): void {
+    this.applicantsService
+      .getCv(this.applicant!.id)
+      .subscribe(
+        (cvFile) => {
+          openFileFromUrl(cvFile.url);
+        },
+        (error: Error) => {
+          this.notificationsService.showErrorMessage(
+            error.message,
+            'Cannot download cv',
+          );
+        },
+      );
   }
 }

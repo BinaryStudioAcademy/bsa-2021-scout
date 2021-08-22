@@ -53,7 +53,7 @@
                     <div class="outside-wrapper" *ngIf="applicant.isShowAllTags" (click)="toggleTags(applicant)"></div>
                     <mat-list *ngIf="!applicant.isShowAllTags" class="tags-list">
                         <mat-list-item *ngFor="let tag of getFirstTags(applicant)">{{tag.tagName}}</mat-list-item>
-                        <mat-list-item class="more-button" *ngIf="applicant.tags.tagDtos.length > 6" (click)="toggleTags(applicant)">
+                        <mat-list-item class="more-button" *ngIf="applicant.tags?.tagDtos.length > 6" (click)="toggleTags(applicant)">
                             +{{applicant.tags.tagDtos.length - 5}} more
                         </mat-list-item>
                     </mat-list>

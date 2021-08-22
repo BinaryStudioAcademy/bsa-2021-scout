@@ -37,7 +37,7 @@ export class HeaderComponent implements OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         () => window.location.replace('/login'),
-        () => this.notifications.showErrorMessage('Failed to log out.'),
+        () => window.location.replace('/login'),
         () => (this.loading = false),
       );
   }

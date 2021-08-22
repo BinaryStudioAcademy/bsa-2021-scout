@@ -98,6 +98,9 @@
     <p>Tags</p>
     <app-tags-edit [tags]="createdApplicant.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
 
+    <p>CV</p>
+    <app-file-input (upload)="uploadApplicantCv($event)" [accept]="allowedCvFileType"></app-file-input>
+
     <mat-dialog-actions class="publish-action">
         <button [disabled]="validationGroup!.invalid" (click)="createApplicant()" mat-button>
             Publish

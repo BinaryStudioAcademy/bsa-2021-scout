@@ -8,6 +8,8 @@ import {
   ViewChild,
 } from '@angular/core';
 
+import { FileType } from '../../enums/file-type.enum';
+
 @Component({
   selector: 'app-file-input',
   templateUrl: './file-input.component.html',
@@ -15,7 +17,7 @@ import {
 })
 export class FileInputComponent implements OnInit {
   @Input() public image: boolean = false;
-  @Input() public accept?: string;
+  @Input() public accept?: FileType;
   @Input() public single: boolean = false;
   @Input() public default?: string[];
 

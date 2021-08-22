@@ -40,7 +40,7 @@ export class AuthenticationService {
       );
   }
 
-  public setUser(user: User) {
+  public setUser(user: User| null) {
     this.user = user;
     this.authUserEventService.userChanged(user);
   }
@@ -91,7 +91,7 @@ export class AuthenticationService {
     });
   }
 
-  private removeTokensFromStorage(): void {
+  public removeTokensFromStorage(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   }

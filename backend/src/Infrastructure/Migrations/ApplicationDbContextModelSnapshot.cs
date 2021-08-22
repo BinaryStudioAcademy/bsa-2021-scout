@@ -53,6 +53,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CompanyId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CvFileInfoId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -83,6 +86,8 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("CvFileInfoId");
 
                     b.ToTable("Applicants");
                 });
@@ -182,6 +187,26 @@ namespace Infrastructure.Migrations
                         .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("EmailToken");
+                });
+
+            modelBuilder.Entity("Domain.Entities.FileInfo", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PublicUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileInfos");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pool", b =>
@@ -585,7 +610,13 @@ namespace Infrastructure.Migrations
                         .HasConstraintName("applicant_company_FK")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("Domain.Entities.FileInfo", "CvFileInfo")
+                        .WithMany()
+                        .HasForeignKey("CvFileInfoId");
+
                     b.Navigation("Company");
+
+                    b.Navigation("CvFileInfo");
                 });
 
             modelBuilder.Entity("Domain.Entities.CandidateReview", b =>

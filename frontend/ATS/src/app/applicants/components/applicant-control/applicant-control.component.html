@@ -8,4 +8,5 @@
 <mat-select panelClass="applicants-options">
     <mat-option class="delete" (click)="showDeleteConfirmDialog()"><mat-icon>delete</mat-icon>Delete</mat-option>
     <mat-option (click)="openVacancyAddModal()"><mat-icon>add</mat-icon>Apply Vacancy</mat-option>
+    <mat-option *ngIf="isCvAvailable" (click)="openCv()"><mat-icon>open_in_new</mat-icon>Open CV</mat-option>
 </mat-select>
