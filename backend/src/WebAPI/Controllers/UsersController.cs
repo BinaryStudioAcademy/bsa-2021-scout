@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Application.Interfaces;
 using System.Collections.Generic;
 using Application.Users.Queries;
+using System;
 
 namespace WebAPI.Controllers
 {
@@ -33,7 +34,11 @@ namespace WebAPI.Controllers
             return Ok(user);
         }
 
-
+        [AllowAnonymous]
+        [HttpGet("check-connection-env")]
+        public ActionResult<string> Check(){
+            return Environment.GetEnvironmentVariable("ELASTIC_CONNECTION_STRING");
+        }
 
         [AllowAnonymous]
         [HttpGet, Route("Email/{email}")]
