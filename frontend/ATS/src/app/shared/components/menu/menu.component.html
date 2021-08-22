@@ -11,6 +11,10 @@
                 <mat-icon matListIcon>home</mat-icon>
                 <a [@animateText]="linkText ? 'show' : 'hide'" matLine>Home</a>
             </mat-list-item>
+            <mat-list-item *ngIf="isHrLead" routerLink='/user-management' routerLinkActive='active'>
+                <mat-icon matListIcon>people</mat-icon>
+                <a [@animateText]="linkText ? 'show' : 'hide'" matLine>User Management</a>
+            </mat-list-item>
             <mat-list-item routerLink='/vacancies' routerLinkActive='active'>
                 <mat-icon matListIcon>work</mat-icon>
                 <a [@animateText]="linkText ? 'show' : 'hide'" matLine>Vacancies</a>
@@ -38,6 +42,10 @@
             <mat-list-item routerLink='/templates' routerLinkActive='active'>
                 <mat-icon matListIcon>dashboard</mat-icon>
                 <a [@animateText]="linkText ? 'show' : 'hide'" matLine>Templates</a>
+            </mat-list-item>
+            <mat-list-item routerLink='/pools' routerLinkActive='active'>
+                <mat-icon matListIcon>group</mat-icon>
+                <a [@animateText]="linkText ? 'show' : 'hide'" matLine>Pools</a>
             </mat-list-item>
         </mat-nav-list>
     </div>

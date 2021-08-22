@@ -1,3 +1,5 @@
+import { ElasticEntity } from '../elastic-entity/elastic-entity';
+
 export interface UpdateApplicant {
   id: string;
   firstName: string;
@@ -8,4 +10,8 @@ export interface UpdateApplicant {
   skype: string;
   linkedInUrl: string;
   experience: number;
+  hasCv: boolean;
+  cv: File | null;
+
+  tags: ElasticEntity;
 }

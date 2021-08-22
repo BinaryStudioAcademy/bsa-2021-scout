@@ -1,14 +1,67 @@
-$row-height: 65px;
+$row-height: 55px;
 $header-height: 30px;
+$tag-background-color: rgba($color: (#291965), $alpha: 0.1);
+$tag-font-color: rgba($color: (#291965), $alpha: 0.8);
+$primary-color: #ee2a64;
+
+:host {
+    width: 100%;
+}
 
 .page-content {
-    padding: 45px 51px 0 0;
-    background-color: #f6f7f9;
-    height: calc(100% - 120px);
+    width: 100%;
+    overflow: scroll;
+    background-color: #fafafa;
+    height: calc(100% - 200px);
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+}
+
+::ng-deep{
+    .applicants-options .delete{
+        color: #EF5350;
+    }
+
+    .mat-select-panel-wrap .applicants-options .mat-option {
+        height: 40px;
+        font-size: 15px;
+        line-height: 20px;
+        .mat-icon{
+            font-size: 20px;
+            margin-right: 5px;
+        }
+    }
+}
+
+
+::ng-deep .page-content{
+    .mat-select{
+        height: 40px;
+        width: 40px;
+        line-height: 40px;
+        font-size: 22px;
+        color: #808080;
+    }
+    .mat-select-arrow::after{
+        font-family: 'Material Icons';
+        content: "\e5d3";
+        font-size: 24px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+    .mat-select-arrow:hover::after{
+        color: $primary-color;
+    }
+    .mat-select-arrow{
+        border: none;
+        margin: 0;
+        height: 100%;
+    }
 }
 
 .outside-wrapper {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 5;
@@ -16,51 +69,29 @@ $header-height: 30px;
     height: 100vh;
 }
 
-:host ::ng-deep .applicants-header-bar {
-    display: flex;
-    background: none;
-    justify-content: space-between;
-    padding: 0 0 30px 51px;
-
-    .mat-form-field-wrapper.mat-form-field-wrapper{
-        height: 45px;
-    }
-    
-    .mat-form-field-appearance-fill .mat-form-field-infix{
-        display:flex;
-        align-items: center;
-        padding: 0.75em 0.25em;
-    }
-    
-    .mat-form-field-appearance-fill .mat-form-field-flex{
-        padding: .75em .75em .75em .75em;
-    }
-    
-    .mat-icon{
-        color: #4d4d4d;
-        font-size: 15px;
-        height:16px;
-    }
-    
-    .mat-icon-button .mat-icon {
-        line-height: 1;
-    }
-
-    .create-button {
-        width: 153px;
-    }
-
-    .mat-form-field-wrapper {
-        background-color: #fff;
-    
-        .mat-form-field-flex {
-            background: none;
-        }
-    }
+.mat-paginator-sticky {
+    bottom: 0px;
+    position: sticky;
+    z-index: 4;
 }
 
+/* Table */
 :host ::ng-deep .mat-table {
     width: 100%;
+
+    &::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
+      
+    &::-webkit-scrollbar-track {
+        display: none;
+    }
+      
+    &::-webkit-scrollbar-thumb {
+        background: rgb(41, 25, 101, 0.5);
+        border-radius: 20px;
+    }
 
     .mat-header-row {
         height: $header-height;
@@ -70,40 +101,41 @@ $header-height: 30px;
         height: $row-height;
     }
 
+    /* Cells */
     .mat-cell {
-        border: none;
-        font-size: 1.2em;
+        font-size: 14px;
+        padding-right: 15px;
         position: relative;
 
+        &:last-of-type {
+            padding-left: 100px;
+        }
+
         &:not(.control-buttons-cell) {
+            min-width: 0px;
+            max-width: 300px;
+            width: fit-content;
+
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
         }
 
-        &:not(.active-vac-cell, .jobs-list-cell, .tags-list-cell) {
-            min-width: 50px;
-            max-width: 200px;
+        &.index-cell {
+            max-width: 30px;
         }
 
         &.active-vac-cell {
-            min-width: 20px;
-            max-width: 100px;
-        }
-
-        &.jobs-list-cell {
-            overflow: visible;
-            width: 200px;
+            text-align: center;
         }
         
         &.tags-list-cell {
             overflow: visible;
-            width: 300px;
+            max-width: 400px;
         }
 
         &.jobs-list-cell {
             overflow: visible;
-            width: 200;
         }
 
         .mat-list-base {
@@ -116,26 +148,37 @@ $header-height: 30px;
 
         .jobs-list {
             overflow-y: hidden;
-            height: $row-height - 10px;
-            margin-left: -16px;
+            height: min-content;
+
+            max-height: $row-height - 15px;
+            margin: auto 0;
 
             .mat-list-item {
-                font-size: 13px;
+                font-size: 15px;
                 height: 20px;
+                
+                .mat-list-item-content {
+                    padding-left: 0;
+                }
             }
         }
 
+        /* Jobs list pop up */
         .jobs-pop-up-list:hover {
             position: absolute;
             min-height: 250px;
             max-height: 350px;
             animation: fadeIn 0.5s;
             padding: 10px;
-            width: 200px;
+            width: min-content;
 
             .mat-list-item {
                 height: 30px;
                 margin-bottom: 15px;
+
+                .mat-list-item-content {
+                    padding: 5px 15px;
+                }
             }
         }
 
@@ -150,11 +193,12 @@ $header-height: 30px;
             z-index: 5;
         }
 
+        /* Extended tags list */
         .absolute-tags-list-container {
             position: absolute;
             width: 350px;
             max-height: 300px;
-            animation: appearance 0.5s;
+            animation: fadeIn 0.5s;
             padding: 3px 0 15px 20px;
 
             .mat-list-item {
@@ -175,6 +219,7 @@ $header-height: 30px;
             display: flex;
             flex-wrap: wrap;
             align-content: center;
+            overflow: hidden;
 
             .mat-list-item {
                 width: min-content;
@@ -182,8 +227,8 @@ $header-height: 30px;
                 padding: 4px 0;
                 line-height: 1;
                 font-size: 0.9em;
-                color: rgba($color: (#291965), $alpha: 0.8);
-                background-color: rgba($color: (#291965), $alpha: 0.1);
+                color: $tag-font-color;
+                background-color: $tag-background-color;
                 font-weight: 700;
                 border-radius: 15px;
                 margin: 3px;
@@ -192,11 +237,11 @@ $header-height: 30px;
                     background: none;
                     cursor: pointer;
                     padding: 1px 0;
-                    border: 2px solid rgba($color: (#291965), $alpha: 0.8);
+                    border: $tag-font-color;
 
                     &:hover {
                         box-shadow: 0 0 4px rgba($color: (#291965), $alpha: 0.5);
-                        text-shadow: 0 0 1px 1px rgba($color: (#291965), $alpha: 0.8);
+                        text-shadow: 0 0 1px 1px $tag-font-color;
                     }
                 }
             }
@@ -206,29 +251,33 @@ $header-height: 30px;
     .mat-row:nth-child(even) {
         background-color: #F0F3F9;
     }
+}
 
-    .control-buttons-cell .buttons-wrap {
-        display: flex;
-        justify-content: flex-end;
-        align-content: center;
-
-        .applicant-control-btn {
-            color: #8E8E8E;
+/* Paginator */
+:host ::ng-deep .mat-paginator {
+    box-sizing: border-box;
+    outline: 1px solid rgba(0, 0, 0, 0.12);
+    //width: calc(100vw - 225px - 5px);
+    
+    .mat-paginator-container {
+        justify-content: space-between;
+    
+        .mat-paginator-page-size {
+            margin-right: auto;
+            
+            .mat-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-form-field-flex {
+                width: 40px;
+                margin-left: 15px;
+    
+                .mat-selector {
+                    background: none;
+                }
+            }
         }
     }
-}
 
-:host ::ng-deep .mat-paginator {
-    background: none;
-}
-
-@keyframes appearance {
-    0% {
-        transform: scale(0);
-    }
-
-    100% {
-        transform: scale(1);
+    .mat-form-field-wrapper {
+        background: none;
     }
 }
 

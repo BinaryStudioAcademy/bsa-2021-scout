@@ -1,18 +1,21 @@
-using Application.Common.Commands;
-using Application.Common.Queries;
+using Application.Applicants.Commands;
+using Application.Applicants.Commands.DeleteApplicant;
 using Application.Applicants.Dtos;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
+using Application.Applicants.Queries;
+using Application.Common.Commands;
+using Application.Common.Files.Dtos;
+using Application.Common.Queries;
 using Application.ElasticEnities.CommandQuery.AddTagCommand;
 using Application.ElasticEnities.CommandQuery.DeleteTagCommand;
-using Application.Applicants.Queries;
 using Application.ElasticEnities.Dtos;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Threading;
-using Domain.Entities;
-using Application.Applicants.Commands;
+using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
@@ -40,18 +43,82 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
-        [HttpGet("to_tags/{searchRequest}")]
-        public async Task<IActionResult> SearchElasticAsync(string searchRequest, CancellationToken token)
+        [HttpGet("company/{id}")]
+        public async Task<IActionResult> GetApplicantByCompanyAsync(string id)
         {
-            var query = new GetElasticDocumentsListBySearchRequestQuery<ElasticEnitityDto>(searchRequest, token);
+            var query = new GetApplicantByIdByCompanyQuery(id);
+
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpGet("marked/{vacancyId}")]
+        public async Task<IActionResult> GetApplicantsWithAppliedMark(string vacancyId)
+        {
+            var query = new GetApplicantsWithAppliedMark(vacancyId);
 
             return Ok(await Mediator.Send(query));
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostApplicantAsync([FromBody] CreateApplicantDto createDto)
+        public async Task<IActionResult> PostApplicantAsync([FromForm] string body, [FromForm] IFormFile cvFile = null)
         {
-            var query = new CreateComposedApplicantCommand(createDto);
+            var createApplicantDto = JsonConvert.DeserializeObject<CreateApplicantDto>(body);
+
+            var cvFileDto = cvFile != null ? new FileDto(cvFile.OpenReadStream(), cvFile.FileName) : null;
+
+            var query = new CreateApplicantCommand(createApplicantDto!, cvFileDto);
+
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutApplicantAsync([FromForm] string body, [FromForm] IFormFile cvFile = null)
+        {
+            var updateApplicantDto = JsonConvert.DeserializeObject<UpdateApplicantDto>(body);
+
+            var cvFileDto = cvFile != null ? new FileDto(cvFile.OpenReadStream(), cvFile.FileName) : null;
+
+            var query = new UpdateApplicantCommand(updateApplicantDto!, cvFileDto);
+
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteApplicantAsync(string id)
+        {
+            var query = new DeleteApplicantCommand(id);
+            await Mediator.Send(query);
+
+            var elasticQuery = new DeleteElasticDocumentCommand(id);
+            await Mediator.Send(elasticQuery);
+
+            return StatusCode(204);
+        }
+
+        [HttpGet("{id}/cv")]
+        public async Task<IActionResult> GetApplicantCvAsync(string id)
+        {
+            var query = new GetApplicantCvUrlQuery(id);
+
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpPut("{id}/cv")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateApplicantCvAsync(string id, [FromForm] IFormFile cvFile)
+        {
+            var cvFileDto = new FileDto(cvFile.OpenReadStream(), cvFile.FileName);
+
+            var query = new UpdateApplicantCvCommand(id, cvFileDto);
+
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpGet("to_tags/{searchRequest}")]
+        public async Task<IActionResult> SearchElasticAsync(string searchRequest, CancellationToken token)
+        {
+            var query = new GetElasticDocumentsListBySearchRequestQuery<ElasticEnitityDto>(searchRequest, token);
 
             return Ok(await Mediator.Send(query));
         }
@@ -94,32 +161,12 @@ namespace WebAPI.Controllers
             return StatusCode(204, await Mediator.Send(query));
         }
 
-        [HttpPut]
-        public async Task<IActionResult> PutApplicantAsync([FromBody] UpdateApplicantDto updateDto)
-        {
-            var query = new UpdateComposedApplicantCommand(updateDto);
-
-            return Ok(await Mediator.Send(query));
-        }
         [HttpPut("to_tags/")]
         public async Task<IActionResult> PutElasticAsync([FromBody] UpdateApplicantToTagsDto updateDto)
         {
             var query = new UpdateElasticDocumentCommand<UpdateApplicantToTagsDto>(updateDto);
 
             return Ok(await Mediator.Send(query));
-        }
-
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> DeleteApplicantAsync(string id)
-        {
-            var query = new DeleteEntityCommand(id);
-            await Mediator.Send(query);
-
-            var elasticQuery = new DeleteElasticDocumentCommand(id);
-            await Mediator.Send(elasticQuery);
-
-            return StatusCode(204);
         }
 
         [HttpDelete("to_tags/{id}")]
