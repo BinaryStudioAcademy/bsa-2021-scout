@@ -57,7 +57,11 @@ namespace Infrastructure
                 .DefaultMappingFor<ElasticEntity>(m => m
                 .IndexName("elastic_entity")
             );
-            services.AddSingleton<IElasticClient>(new ElasticClient(settings));
+            var elastic = new ElasticClient(settings);
+            var exception = elastic.Ping().OriginalException;
+            if(exception!=null)
+                throw exception;
+            services.AddSingleton<IElasticClient>(elastic);
 
             return services;
         }
