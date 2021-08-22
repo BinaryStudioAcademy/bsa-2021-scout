@@ -46,14 +46,11 @@ namespace WebAPI.Extensions
                                   builder =>
                                   {
                                       builder
-                                        .AllowAnyMethod()
-                                        .AllowAnyHeader()
-                                        .AllowAnyOrigin();
-                                        //.WithHeaders("Authorization")
-                                        //.WithHeaders("Content-Type")
-                                        //.WithMethods("GET", "POST", "PUT", "DELETE")
-                                        //.WithExposedHeaders("Token-Expired")
-                                        //.WithOrigins(frontendUrl);
+                                        .WithHeaders("Authorization")
+                                        .WithHeaders("Content-Type")
+                                        .WithMethods("GET", "POST", "PUT", "DELETE")
+                                        .WithExposedHeaders("Token-Expired")
+                                        .WithOrigins(frontendUrl);
                                   });
             });
 
