@@ -15,8 +15,7 @@ namespace Application.Stages.Dtos
         public StageType Type { get; set; }
         public int Index { get; set; }
         public bool IsReviewable { get; set; }
-        public string VacancyId { get; set; }
-        public ICollection<ActionDto> Actions { get; set; }
+        public ICollection<ActionCreateDto> Actions { get; set; }
     }
     public class StageCreateDtoValidator : AbstractValidator<StageCreateDto>
     {
@@ -26,7 +25,7 @@ namespace Application.Stages.Dtos
             RuleFor(_ => _.Type).NotNull().NotEmpty();
             RuleFor(_ => _.Index).NotNull().NotEmpty();
             RuleFor(_ => _.IsReviewable).NotNull().NotEmpty();
-            RuleFor(_ => _.VacancyId).NotNull().NotEmpty();
+
             RuleFor(_ => _.Actions).NotNull().NotEmpty();
         }
     }

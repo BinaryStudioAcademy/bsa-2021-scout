@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NumberValueAccessor, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { C, COMMA, ENTER, R } from '@angular/cdk/keycodes';
 import { Project } from 'src/app/shared/models/projects/project';
 import { Stage } from 'src/app/shared/models/stages/stage';
 import { VacancyCreate } from 'src/app/shared/models/vacancy/vacancy-create';
@@ -34,6 +34,10 @@ export class EditVacancyComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   elasticEntity : ElasticEntity = {} as ElasticEntity; 
+  vacancyId : string = '';
+  tierFrom: number = 0;
+  tierTo: number = 0;
+
 
   @Output() vacancyChange = new EventEmitter<VacancyFull>();
 
@@ -83,12 +87,16 @@ export class EditVacancyComponent implements OnInit {
     if (this.data.vacancyToEdit) {
       this.vacancyService.getById(this.data.vacancyToEdit.id).subscribe(
         response => {
+          console.log(response);
           if (!response.tags) {
             response.tags = {
               id: '',
               elasticType: 1,
               tagDtos: [],
             };
+          }
+          else{
+            this.elasticEntity.id = response.tags.id;
           }
           this.vacancyForm.setValue({
             title: response.title,
@@ -97,14 +105,15 @@ export class EditVacancyComponent implements OnInit {
             projectId: response.projectId,
             salaryFrom: response.salaryFrom,
             salaryTo: response.salaryTo,
-            tierFrom: response.tierFrom,
-            tierTo: response.tierTo,
+            tierFrom: response.tierFrom.toString(),
+            tierTo: response.tierTo.toString(),
             link: response.sources,
             isHot: response.isHot,
             isRemote: response.isRemote,
             tags: '',
             stages: response.stages,
           });
+          response.stages.sort((a,b) => a.index - b.index);
           this.stageList = response.stages;
           this.tags = response.tags.tagDtos;
         });
@@ -119,6 +128,7 @@ export class EditVacancyComponent implements OnInit {
   //------------------VACANCY------------------
   createVacancy() {
     this.submitted = true;
+
     this.elasticEntity.tagDtos = this.tags;
     this.elasticEntity.elasticType = ElasticType.VacancyTags;
     this.vacancy = {
@@ -137,12 +147,13 @@ export class EditVacancyComponent implements OnInit {
       stages: this.stageList,
     };
     if (!this.data.vacancyToEdit) {
+      console.log(this.vacancy);
       this.vacancyService.postVacancy(this.vacancy)
         .subscribe(
           response => this.vacancyChange.emit(response),
         );
     } else {
-
+      console.log(this.vacancy);
       this.vacancyService.putVacancy(this.vacancy, this.data.vacancyToEdit.id)
         .subscribe(
           response => this.vacancyChange.emit(response),
@@ -193,58 +204,94 @@ export class EditVacancyComponent implements OnInit {
 
   stageList: Stage[] = [
     {
-      id: 'aaaa',
-      name: 'Test',
-      index: 2,
-      action: 'Prepare questions for interview',
+      id: '',
+      name: 'Contacted',
+      index: 0,
+      type: 0,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
       rates: 'English',
       IsReviewable: true,
-      vacancyId: '1',
+      vacancyId: '',
     },
     {
-      id: 'bbbb',
-      name: 'Interview',
+      id: '',
+      name: 'Hr interview',
       index: 1,
-      action: 'Prepare questions for interview',
+      type: 1,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
       rates: 'English',
       IsReviewable: true,
-      vacancyId: '2',
+      vacancyId: '',
     },
     {
-      id: 'ccccc',
-      name: 'Technical test',
+      id: '',
+      name: 'Tech interview',
+      index: 2,
+      type: 2,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
+      rates: 'English',
+      IsReviewable: true,
+      vacancyId: '',
+    },
+    {
+      id: '',
+      name: 'Live coding session',
       index: 3,
-      action: 'Prepare questions for interview',
+      type: 3,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
       rates: 'English',
       IsReviewable: true,
-      vacancyId: '1',
+      vacancyId: '',
     },
     {
       id: '',
-      name: 'Interview',
+      name: 'Pre-offer',
       index: 4,
-      action: 'Prepare questions for interview',
+      type: 4,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
       rates: 'English',
       IsReviewable: true,
-      vacancyId: '2',
+      vacancyId: '',
     },
     {
       id: '',
-      name: '5',
+      name: 'Offer',
       index: 5,
-      action: 'Prepare questions for interview',
+      type: 5,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
       rates: 'English',
       IsReviewable: true,
-      vacancyId: '1',
-    },
-    {
-      id: 'bbbb',
-      name: 'Interview',
-      index: 6,
-      action: 'Prepare questions for interview',
-      rates: 'English',
-      IsReviewable: true,
-      vacancyId: '2',
+      vacancyId: '',
     },
   ]
 
@@ -271,6 +318,7 @@ export class EditVacancyComponent implements OnInit {
 
   //common func for saving
   toSave(newStage: Stage) {
+    newStage.vacancyId = this.vacancyId;
     if (this.isEditStageMode) {
       let stage = this.stageList.find(x => x.index === newStage.index);
       if (stage?.index) {

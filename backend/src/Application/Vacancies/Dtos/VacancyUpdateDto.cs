@@ -11,7 +11,7 @@ using FluentValidation;
 
 namespace Application.Vacancies.Dtos
 {
-    public class VacancyUpdateDto : Dto
+    public class VacancyUpdateDto
     {
         public string Title { get; set; }
         public string Description { get; set; }
@@ -26,6 +26,7 @@ namespace Application.Vacancies.Dtos
         public bool IsRemote { get; set; }
         public ElasticEnitityDto Tags { get; set; }
         public ICollection<StageUpdateDto> Stages { get; set; }
+
     }
     public class VacancyUpdateDtoValidator : AbstractValidator<VacancyUpdateDto>
     {

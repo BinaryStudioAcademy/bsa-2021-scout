@@ -8,9 +8,8 @@ using Domain.Enums;
 
 namespace Application.Stages.Dtos
 {
-    public class ActionDto
+    public class ActionCreateDto
     {
-        public string? Id { get; set; }
         public string Name { get; set; }
         public ActionType ActionType { get; set; }
         public string StageId { get; set; }

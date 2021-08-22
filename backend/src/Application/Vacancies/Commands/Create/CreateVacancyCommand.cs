@@ -56,7 +56,7 @@ namespace Application.Vacancies.Commands.Create
                 throw new NotFoundException(typeof(User), "unknown");
             }
 
-             var newVacancy = _mapper.Map<Vacancy>(command.VacancyCreate);
+            var newVacancy = _mapper.Map<Vacancy>(command.VacancyCreate);
 
             newVacancy.CompanyId = user.CompanyId;
             newVacancy.ResponsibleHrId = user.Id;

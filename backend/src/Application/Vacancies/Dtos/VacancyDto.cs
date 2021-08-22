@@ -32,7 +32,7 @@ namespace Application.Vacancies.Dtos
         public DateTime ModificationDate { get; set; }
         public DateTime? CompletionDate { get; set; }
         public DateTime PlannedCompletionDate { get; set; }
-        public ICollection<StageWithCandidatesDto> Stages { get; set; }
+        public ICollection<StageDto> Stages { get; set; }
         public ElasticEnitityDto Tags { get; set; }
     }
     public class VacancyDtoValidator : AbstractValidator<VacancyDto>

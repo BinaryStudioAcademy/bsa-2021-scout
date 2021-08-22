@@ -9,14 +9,11 @@
           </mat-error>
           </mat-form-field>
         <mat-label>Action</mat-label>
-    <mat-form-field appearance="fill" [ngClass]="(stageFormControl.action.touched || submitted) && stageFormControl.action.invalid ? 'invalid-input' : ''">
-        <mat-select #fontSize placeholder="Select action" formControlName="action">
-            <mat-option >None</mat-option>
-          <mat-option value="Add task">Add task</mat-option>
-          <mat-option value="Prepare questions for interview">Prepare questions for interview</mat-option>
-          <mat-option value="Create a test">Create a test</mat-option>
+    <mat-form-field appearance="fill" [ngClass]="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.invalid ? 'invalid-input' : ''">
+        <mat-select #fontSize placeholder="Select action" formControlName="actions" multiple>
+          <mat-option *ngFor="let action of actions" [value]="action.actionType">{{action.name}}</mat-option>
         </mat-select>
-        <mat-error *ngIf="(stageFormControl.action.touched || submitted) && stageFormControl.action.errors?.required">
+        <mat-error *ngIf="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.errors?.required">
               This field shouldn't be empty
           </mat-error>
       </mat-form-field>

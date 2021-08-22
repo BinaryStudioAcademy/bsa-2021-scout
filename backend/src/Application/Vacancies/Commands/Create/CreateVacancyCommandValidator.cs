@@ -9,11 +9,11 @@ using FluentValidation;
 
 namespace Application.Vacancies.Commands.Create
 {
-    //public class CreateVacancyCommandValidator : AbstractValidator<CreateVacancyCommand>
-    //{
-    //    public CreateVacancyCommandValidator()
-    //    {
-    //        RuleFor(x=>x.VacancyCreate).NotNull().SetValidator(new VacancyCreateDtoValidator());
-    //    }
-    //}
+    public class CreateVacancyCommandValidator : AbstractValidator<CreateVacancyCommand>
+    {
+        public CreateVacancyCommandValidator()
+        {
+            RuleFor(x => x.VacancyCreate).NotNull().SetValidator(new VacancyCreateDtoValidator());
+        }
+    }
 }

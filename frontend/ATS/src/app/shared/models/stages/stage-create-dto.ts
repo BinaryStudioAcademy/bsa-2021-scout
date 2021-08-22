@@ -1,10 +1,10 @@
-import { Action } from '../action/action';
+import { ActionCreateDto } from '../action/action-create-dto';
 
-export interface Stage{
+export interface StageCreateDto{
   id:string,
   name: string,
   type: number,
-  actions : Action[],
+  actions : ActionCreateDto[],
   // stageType Type { get; set; }
   index:number,
   IsReviewable:Boolean,

@@ -1,6 +1,5 @@
 import { ElasticEntity } from '../elastic-entity/elastic-entity';
-import { Stage } from '../stages/stage';
-import { Tag } from '../tags/tag';
+import { StageCreateDto } from '../stages/stage-create-dto';
 
 export interface VacancyCreate{
   title:string
@@ -15,5 +14,5 @@ export interface VacancyCreate{
   isHot:boolean,
   isRemote:boolean,
   tags: ElasticEntity, //Elastic Entity???
-  stages:Stage[]
+  stages:StageCreateDto[]
 } 

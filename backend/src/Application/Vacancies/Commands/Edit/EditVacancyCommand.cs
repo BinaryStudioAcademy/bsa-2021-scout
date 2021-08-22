@@ -33,6 +33,9 @@ namespace Application.Vacancies.Commands.Edit
     {
         private readonly IWriteRepository<Vacancy> _writeRepository;
         private readonly IReadRepository<Vacancy> _readRepository;
+        private readonly IReadRepository<Domain.Entities.Action> _readActionRepository;
+        private readonly IWriteRepository<Domain.Entities.Action> _writeActionRepository;
+
         private readonly IMapper _mapper;
         private readonly ISender _mediator;
 
@@ -40,13 +43,17 @@ namespace Application.Vacancies.Commands.Edit
             IWriteRepository<Vacancy> writeRepository,
             IReadRepository<Vacancy> readRepository,
             IMapper mapper,
-            ISender mediator
+            ISender mediator,
+            IReadRepository<Domain.Entities.Action> readActionRepository,
+            IWriteRepository<Domain.Entities.Action> writeActionRepository
         )
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
             _mapper = mapper;
             _mediator = mediator;
+            _readActionRepository = readActionRepository;
+            _writeActionRepository = writeActionRepository;
         }
 
         public async Task<VacancyDto> Handle(EditVacancyCommand command, CancellationToken _)
@@ -69,6 +76,7 @@ namespace Application.Vacancies.Commands.Edit
             await _writeRepository.UpdateAsync(existedVacancy);
 
             var stages = (ICollection<StageWithCandidatesDto>)(await _mediator.Send(new GetStagesByVacancyQuery(command.Id))).Stages;
+            var actions = await _readActionRepository.GetEnumerableAsync();
             if(updateVacancy.Stages.Count != 0)
             {
                 foreach (var stage in updateVacancy.Stages)
@@ -79,6 +87,21 @@ namespace Application.Vacancies.Commands.Edit
                     }
                     if(stages.Any(x => x.Id == stage.Id))
                     {
+                        var thisStageActions = actions.Where(x=> x.StageId == stage.Id).ToList();
+                        foreach (var action in stage.Actions)
+                        {
+                            if(action.Id != null)
+                            {
+                                thisStageActions.Remove(thisStageActions.First(x => x.Id == action.Id));
+                            }
+                        }
+                        if(thisStageActions.Count() > 0)
+                        {
+                            foreach (var action in thisStageActions)
+                            {
+                                await _writeActionRepository.DeleteAsync(action.Id);
+                            }
+                        }
                         await _mediator.Send(new EditVacancyStageCommand(_mapper.Map<StageUpdateDto>(stage), command.Id, stage.Id));
                         stages.Remove(stages.FirstOrDefault(x => x.Id == stage.Id));
                     }

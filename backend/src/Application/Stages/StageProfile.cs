@@ -9,6 +9,12 @@ namespace Application.Stages
     {
         public StageProfile()
         {
+            CreateMap<ActionDto, Action>();
+            CreateMap<Action, ActionDto>();
+
+            CreateMap<ActionCreateDto, Action>();
+            CreateMap<Action, ActionCreateDto>();
+
             CreateMap<StageCreateDto, Stage>();
             CreateMap<StageUpdateDto, Stage>();
             CreateMap<Stage, StageUpdateDto>();

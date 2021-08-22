@@ -20,6 +20,11 @@ namespace WebAPI.Controllers
     [ApiController]
     public class VacanciesController : ApiController
     {
+
+        public VacanciesController()
+        {
+
+        }
         [HttpGet]
         public async Task<IActionResult> GetAllVacancies()
         {

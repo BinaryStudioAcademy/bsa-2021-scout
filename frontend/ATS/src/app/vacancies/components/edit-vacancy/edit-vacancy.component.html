@@ -42,11 +42,6 @@
             <mat-form-field appearance="fill" [ngClass]="(vacancyFormControl.projectId.touched || submitted) && vacancyFormControl.projectId.invalid ? 'invalid-input' : ''">
                   <mat-select formControlName="projectId" placeholder="Select project">
                     <input matInput class="search-input" type="text" autocomplete="off" placeholder="Search project..." (keyup)="onKey($event)">
-                   <mat-option>None</mat-option>
-                   <mat-option value="GMail">GMail</mat-option>
-                   <mat-option value="Google drive">Google drive</mat-option>
-                   <mat-option value="Google photos">Google photos</mat-option>
-                   <mat-option value="Google pay">Google pay</mat-option>
                    <mat-option *ngFor="let project of selectedProjects" [value]="project.id">{{project.name}}</mat-option>
                  </mat-select>
                 <mat-error *ngIf="(vacancyFormControl.projectId.touched || submitted) && vacancyFormControl.projectId.errors?.required">
@@ -103,7 +98,7 @@
                     <h1>-</h1>
                     </div>
                     <mat-form-field appearance="fill" [ngClass]="(vacancyFormControl.tierTo.touched || submitted) && vacancyFormControl.tierTo.invalid ? 'invalid-input' : ''">
-                        <mat-select formControlName="tierTo" placeholder="to">
+                        <mat-select formControlName="tierTo" placeholder="to" >
                            <mat-option >None</mat-option>
                            <mat-option *ngIf="isTierFromLessTierTo(1)" value="1">1</mat-option>
                            <mat-option *ngIf="isTierFromLessTierTo(2)" value="2">2</mat-option>
