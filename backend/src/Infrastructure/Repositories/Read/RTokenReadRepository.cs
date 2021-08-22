@@ -21,7 +21,7 @@ namespace Infrastructure.Repositories.Read
             await connection.OpenAsync();
             string sql = "SELECT * FROM RefreshTokens WHERE UserId = @userId AND Token = @token";
 
-            var tokenEntity = await connection.QueryFirstAsync<RefreshToken>(sql, new { userId = userId, token = token });
+            var tokenEntity = await connection.QueryFirstOrDefaultAsync<RefreshToken>(sql, new { userId = userId, token = token });
             await connection.CloseAsync();
             return tokenEntity;
         }

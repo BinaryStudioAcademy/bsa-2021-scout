@@ -1,0 +1,38 @@
+@import '/src/common.scss';
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 5px;
+}
+
+.header input {
+    color: $primary-color-darkgrey !important;
+}
+
+.mat-table {
+    width: 100%;
+}
+
+.mat-table .mat-icon {
+    color : $primary-color-darkgrey;
+    cursor: pointer;    
+}
+
+.mat-row:nth-child(even){
+    background-color:$primary-color-white;
+}
+
+
+:host ::ng-deep {
+    .mat-input-element,
+    .mat-form-field-wrapper.mat-form-field-wrapper,
+    .mat-form-field.mat-focused .mat-form-field-label
+    {
+      color : $primary-color-darkgrey;
+      caret-color: $primary-color-darkgrey;
+    }
+}
+
+
+        

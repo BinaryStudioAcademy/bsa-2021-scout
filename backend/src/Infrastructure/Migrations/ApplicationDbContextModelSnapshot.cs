@@ -53,6 +53,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CompanyId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CvFileInfoId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -83,6 +86,8 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("CvFileInfoId");
 
                     b.ToTable("Applicants");
                 });
@@ -184,6 +189,26 @@ namespace Infrastructure.Migrations
                     b.ToTable("EmailToken");
                 });
 
+            modelBuilder.Entity("Domain.Entities.FileInfo", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PublicUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileInfos");
+                });
+
             modelBuilder.Entity("Domain.Entities.Pool", b =>
                 {
                     b.Property<string>("Id")
@@ -193,8 +218,17 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CompanyId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -284,6 +318,28 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RegisterPermission", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("RegisterPermissions");
                 });
 
             modelBuilder.Entity("Domain.Entities.Review", b =>
@@ -423,7 +479,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CompanyId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("CompletionDate")
+                    b.Property<DateTime?>("CompletionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreationDate")
@@ -500,7 +556,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContactedBy")
+                    b.Property<string>("ContactedById")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateAdded")
@@ -509,7 +565,7 @@ namespace Infrastructure.Migrations
                     b.Property<double>("Experience")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("FirstContactDate")
+                    b.Property<DateTime?>("FirstContactDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("HrWhoAddedId")
@@ -518,10 +574,10 @@ namespace Infrastructure.Migrations
                     b.Property<int>("SalaryExpectation")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("SecondContactDate")
+                    b.Property<DateTime?>("SecondContactDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ThirdContactDate")
+                    b.Property<DateTime?>("ThirdContactDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -554,7 +610,13 @@ namespace Infrastructure.Migrations
                         .HasConstraintName("applicant_company_FK")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("Domain.Entities.FileInfo", "CvFileInfo")
+                        .WithMany()
+                        .HasForeignKey("CvFileInfoId");
+
                     b.Navigation("Company");
+
+                    b.Navigation("CvFileInfo");
                 });
 
             modelBuilder.Entity("Domain.Entities.CandidateReview", b =>
@@ -664,6 +726,17 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RegisterPermission", b =>
+                {
+                    b.HasOne("Domain.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .HasConstraintName("register_permission__company_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Domain.Entities.Stage", b =>

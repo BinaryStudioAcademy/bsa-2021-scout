@@ -1,0 +1,26 @@
+.dialog-header {
+    position: relative;
+
+    .close-btn {
+        position: absolute;
+        line-height: 32px;
+        cursor: pointer;
+    }
+
+    .mat-dialog-title {
+        text-align: center;
+        font-weight: 600;
+        color: #291965;
+    }
+}
+
+.mat-dialog-content p {
+    text-align: center;
+}
+
+.mat-dialog-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

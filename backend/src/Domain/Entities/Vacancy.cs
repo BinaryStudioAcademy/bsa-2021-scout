@@ -18,7 +18,7 @@ namespace Domain.Entities
         public bool IsHot { get; set; }
         public int SalaryFrom { get; set; }
         public int SalaryTo { get; set; }
-        public DateTime CompletionDate { get; set; }
+        public DateTime? CompletionDate { get; set; }
         public DateTime PlannedCompletionDate { get; set; }
         public Tier TierFrom { get; set; }
         public Tier TierTo { get; set; }
