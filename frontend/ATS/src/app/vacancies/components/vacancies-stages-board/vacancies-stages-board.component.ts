@@ -41,7 +41,6 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   public extraAvatarsCount: number = 0;
   public vacancyId: string = '';
 
-
   private readonly showingAvatarsCount: number = 7;
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -214,6 +213,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
         data: {
           vacancyName: this.title,
           candidateId: id,
+          vacancyId: this.vacancyId,
           hasPrevious,
           nextFullName,
         },
