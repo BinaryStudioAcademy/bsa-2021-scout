@@ -23,11 +23,9 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public displayedColumns: string[] = [
     'position',
     'name',
-    'rate',
     'email',
     'active_vacancies',
     'jobs_list',
-    'status',
     'tags',
     'control_buttons',
   ];
@@ -195,12 +193,6 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           case 'email':
             return this.compareRows(a.email, b.email, isAsc);
           case 'active_vacancies':
-            return this.compareRows(
-              a.vacancies.length,
-              b.vacancies.length,
-              isAsc,
-            );
-          case 'jobs_list':
             return this.compareRows(
               a.vacancies.length,
               b.vacancies.length,
