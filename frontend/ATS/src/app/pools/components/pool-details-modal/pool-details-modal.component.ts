@@ -90,9 +90,13 @@ export class PoolDetailsModalComponent implements OnInit, AfterViewInit {
     this.directive?.applyFilter$.emit();
   }
   public getFirstTags(applicant: Applicant): Tag[] {
-    return applicant.tags.tagDtos.length > 6
-      ? applicant.tags.tagDtos.slice(0, 5)
-      : applicant.tags.tagDtos;
+    if(applicant.tags)
+    {
+      return applicant.tags.tagDtos.length > 6
+        ? applicant.tags.tagDtos.slice(0, 5)
+        : applicant.tags.tagDtos;
+    }
+    return [];
   }
 
   public toggleAllTags(): void {
