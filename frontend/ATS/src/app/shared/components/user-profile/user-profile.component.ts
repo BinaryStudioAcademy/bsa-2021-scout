@@ -18,17 +18,29 @@ export class UserProfileComponent {
   constructor(public dialog: MatDialog) {
     
     this.user = {
-      image: "string.jpg",
+      image: "https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg",
       skype: "@string",
       phone:"+380123456789",
-      firstName: "Irina",
-      lastName: "K",
+      firstName: "Hanna",
+      lastName: "Roberts",
       roles: [{
-        name: "HR",
+        name: "HR Lead",
         key: 1
       }]
     }
   }
-
+  copyMessage(val: string){
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = val;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
   
 }

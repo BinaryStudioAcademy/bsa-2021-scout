@@ -40,6 +40,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UserRoleDirective } from './directives/user-role.directive';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 @NgModule({
   exports: [
@@ -80,6 +82,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     MatPaginatorModule,
     MatSortModule,
     MatMenuModule,
+    ClipboardModule,
   ],
   imports: [
     MatButtonModule,
@@ -114,6 +117,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     MatAutocompleteModule,
     MatCheckboxModule,
     MatMenuModule,
+    ClipboardModule,
   ],
   providers: [HttpClientService],
   declarations: [
@@ -129,6 +133,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     StylePaginatorDirective,
     AddCandidateModalComponent,
     UserProfileComponent,
+    UserRoleDirective,
   ],
 })
 export class SharedModule { }

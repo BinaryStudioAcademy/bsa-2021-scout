@@ -1,15 +1,16 @@
 <img class="small-image" src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg"
 [matMenuTriggerFor]="menu" #menuTrigger>
 <mat-menu #menu="matMenu" class="menu">
-    <img class="profile-image" alt="User profile photo" src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg">    
-    <div class="profile-content">
+    <img class="profile-image" alt="User profile photo" src="{{user.image}}" (click) = "$event.stopPropagation()">    
+    <div class="profile-content" (click) = "$event.stopPropagation()">
         <h1>{{user.firstName}} {{user.lastName}}</h1>
         <div *ngFor="let role of user.roles">
-            <span class="user-role">{{role.name}}</span>
+            <span class="user-role"  appUserRole value="{{role.name}}">{{role.name}}</span>
             <div class="contacts">
-                <h2>Contacts:</h2>
-                <h3><mat-icon>phone</mat-icon>{{user.phone}}</h3>
-                <h3><span class="iconify" data-icon="mdi:skype"></span>{{user.skype}}</h3>
+                <h2 *ngIf="user.phone || user.skype" >Contacts:</h2>
+                
+                <h3 *ngIf="user.phone"><mat-icon>phone</mat-icon>{{user.phone}}</h3>
+                <h3 *ngIf="user.skype"><span class="iconify" data-icon="mdi:skype"></span>{{user.skype}}</h3>
             </div>
         </div>
     </div>
