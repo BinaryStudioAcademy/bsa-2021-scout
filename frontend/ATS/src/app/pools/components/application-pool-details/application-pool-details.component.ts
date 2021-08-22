@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, Input} from '@angular/core';
+import {Component, ViewChild, OnInit, Input, AfterViewInit} from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 import { PoolService } from 'src/app/shared/services/poolService';
 import { takeUntil} from 'rxjs/operators';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { Applicant } from 'src/app/shared/models/applicant/applicant';
+import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { ActivatedRoute } from '@angular/router';
 import { Tag } from 'src/app/shared/models/tags/tag';
 
@@ -21,8 +21,7 @@ const DATA: Applicant[] = [];
   templateUrl: './application-pool-details.component.html',
   styleUrls: ['./application-pool-details.component.scss'],
 })
-export class ApplicationPoolDetailsComponent  {
-  //@Input() public id!: string;
+export class ApplicationPoolDetailsComponent implements AfterViewInit, OnInit {
   public id: string;
   public pool!: ApplicantsPool;
 

@@ -3,42 +3,44 @@ $primary-color-white: #f6f7f9;
 $primary-font: Nunito;
 
 .project-edit-container {
-    .form-container {
-        width: 480px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    h1 {
-        font-family: $primary-font;
-        font-size: 24px;
-        font-weight: 700;
-        font-style: normal;
-    }
-    
-    h5 {
-        margin-top: 10px;
-        margin-bottom: 0;
-        font-family: $primary-font;
-        font-size: 12px;
-        font-weight: 400;
-        font-style: normal;
-    }
-    
-    button[type=submit] {
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
+  position: relative;
+
+  .form-container {
+    width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  h1 {
+    font-family: $primary-font;
+    font-size: 24px;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  h5 {
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-family: $primary-font;
+    font-size: 12px;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  button[type="submit"] {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 }
 
 ::ng-deep {
-    .cdk-overlay-pane .mat-dialog-container .project-edit-container{
-        height: 90vh;
-    }
-    .mat-dialog-container .project-edit-container{
-        position: relative;
-    }
+  .cdk-overlay-pane .mat-dialog-container .project-edit-container {
+    height: 90vh;
+  }
+  .mat-dialog-container .project-edit-container {
+    position: relative;
+  }
 }
 
 ::ng-deep .mat-dialog-container .project-edit-container{

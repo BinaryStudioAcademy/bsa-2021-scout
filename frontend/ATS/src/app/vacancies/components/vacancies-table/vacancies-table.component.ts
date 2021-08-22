@@ -1,6 +1,6 @@
 import {
   AfterViewInit, Component,
-  ViewChild, ElementRef, ChangeDetectorRef,
+  ViewChild, ElementRef, ChangeDetectorRef, OnDestroy,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -14,10 +14,12 @@ import { Router } from '@angular/router';
 import { VacancyCreate } from 'src/app/shared/models/vacancy/vacancy-create';
 import { EditVacancyComponent } from '../edit-vacancy/edit-vacancy.component';
 import { property } from 'lodash';
-import { NotificationService } from 'src/app/shared/services/notification.service';
 import { DeleteConfirmComponent } 
   from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 
 const STATUES: VacancyStatus[] = [
@@ -30,14 +32,13 @@ const STATUES: VacancyStatus[] = [
 export interface IIndexable {
   [key: string]: any;
 }
+
 @Component({
   selector: 'app-vacancies-table',
   templateUrl: './vacancies-table.component.html',
   styleUrls: ['./vacancies-table.component.scss'],
 })
-
-
-export class VacanciesTableComponent implements AfterViewInit {
+export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   displayedColumns: string[] =
   ['position', 'title', 'candidatesAmount', 'responsible', 'teamInfo', 
     'project', 'creationDate', 'status', 'actions'];
@@ -48,26 +49,42 @@ export class VacanciesTableComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild('input') serachField!: ElementRef;
-  constructor(private router: Router, private cd: ChangeDetectorRef,
+
+  public loading: boolean = true;
+
+  constructor(
+    private router: Router, private cd: ChangeDetectorRef,
     private dialog: MatDialog, private service: VacancyDataService,
-    private notificationService: NotificationService) {
-    service.getList().subscribe(data => {
-      this.getVacancies();
-      
-    });
+    private notificationService: NotificationService,
+  ) {
+    this.getVacancies();
   }
 
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   getVacancies() {
-    this.service.getList().subscribe(data => {
-      this.dataSource.data = data;
-      data.forEach((d, i) => {
-        d.position = i + 1;
-      });
-      this.mainData = data;
-      this.directive.applyFilter$.emit();
-    },
-    );
+    this.service
+      .getList()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        data => {
+          this.dataSource.data = data;
+          data.forEach((d, i) => {
+            d.position = i + 1;
+          });
+          this.mainData = data;
+          this.directive.applyFilter$.emit();
+        },
+        () => {
+          this.loading = false;
+          this.notificationService.showErrorMessage('Failed to get vacancies.');
+        },
+      );
   }
 
   openDialog(): void {
@@ -77,9 +94,7 @@ export class VacanciesTableComponent implements AfterViewInit {
       data: {},
     });
 
-    this.dialog.afterAllClosed.subscribe(_ =>
-      this.getVacancies());
-
+    dialogRef.afterClosed().subscribe(() => this.getVacancies());
   }
   public switchToFollowed(){
     this.isFollowedPage = true;
@@ -106,8 +121,7 @@ export class VacanciesTableComponent implements AfterViewInit {
         vacancyToEdit: vacancyEdit,
       },
     });
-    this.dialog.afterAllClosed.subscribe(_ =>
-      this.getVacancies());
+    this.dialog.afterAllClosed.subscribe(() => this.getVacancies());
   }
 
   saveVacancy(changedVacancy: VacancyData) {
@@ -154,11 +168,17 @@ export class VacanciesTableComponent implements AfterViewInit {
     dialogRef.afterClosed()
       .subscribe((response: boolean) => {
         if (response) {
-          this.service.deleteVacancy(vacancyToDelete.id).subscribe(_ => {
-            this.notificationService
-              .showSuccessMessage(`Vacancy ${vacancyToDelete.title} deleted!`);
-            this.getVacancies();
-          });
+          this.loading = true;
+          this.service.deleteVacancy(vacancyToDelete.id)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(_ => {
+              this.loading = false;
+              this.notificationService
+                .showSuccessMessage(`Vacancy ${vacancyToDelete.title} deleted!`);
+              this.getVacancies();
+            }, ()=>{
+              this.loading = false;
+            });
         }
       });
   }
@@ -171,6 +191,4 @@ export class VacanciesTableComponent implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
-
 }

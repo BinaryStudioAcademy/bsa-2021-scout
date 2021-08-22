@@ -39,7 +39,7 @@ namespace Infrastructure.Services
                  new Claim("id", user.Id)
             };
 
-            foreach(var role in user.Roles)
+            foreach (var role in user.Roles)
             {
                 claims.Add(new Claim("roles", role.Name));
             }

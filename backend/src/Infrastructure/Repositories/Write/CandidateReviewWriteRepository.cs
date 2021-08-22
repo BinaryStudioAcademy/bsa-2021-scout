@@ -1,21 +1,26 @@
-﻿using Domain.Entities;
-using Infrastructure.Dapper.Interfaces;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Domain.Entities;
+using Domain.Interfaces.Write;
 using Infrastructure.EF;
 using Infrastructure.Repositories.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Write
 {
-    public class CandidateReviewWriteRepository : WriteRepository<CandidateReview>
+    public class CandidateReviewWriteRepository : WriteRepository<CandidateReview>, ICandidateReviewWriteRepository
     {
-        private readonly IConnectionFactory _connectionFactory;
-        public CandidateReviewWriteRepository(ApplicationDbContext context, IConnectionFactory connectionFactory) : base(context)
+        public CandidateReviewWriteRepository(ApplicationDbContext context) : base(context) { }
+
+        public async Task<IEnumerable<CandidateReview>> BulkCreateAsync(IEnumerable<CandidateReview> data)
         {
-            _connectionFactory = connectionFactory;
+            foreach (CandidateReview review in data)
+            {
+                _context.Add(review);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return data;
         }
     }
 }
