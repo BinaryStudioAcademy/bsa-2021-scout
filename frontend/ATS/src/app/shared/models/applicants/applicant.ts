@@ -15,6 +15,7 @@ export interface Applicant {
   toBeContacted?: Date;
   companyId?: string;
   isSelected?: boolean;
+  hasCv: boolean;
 
   tags: ElasticEntity;
   vacancies: ApplicantVacancyInfo[];

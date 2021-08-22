@@ -158,6 +158,10 @@ export class ApplicantsComponent implements OnInit, AfterViewInit {
   }
 
   public getFirstTags(applicant: ViewableApplicant): Tag[] {
+    if (!applicant.tags?.tagDtos) {
+      return [];
+    }
+
     return applicant.tags.tagDtos.length > 6
       ? applicant.tags.tagDtos.slice(0, 5)
       : applicant.tags.tagDtos;

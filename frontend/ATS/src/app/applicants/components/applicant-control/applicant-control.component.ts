@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { AddCandidateModalComponent }
   from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
+import { openFileFromUrl } from 'src/app/shared/helpers/openFileFromUrl';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { ViewableApplicant } from 'src/app/shared/models/applicants/viewable-applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
@@ -21,7 +22,11 @@ export class ApplicantControlComponent {
   @Input() public applicant: ViewableApplicant | undefined = undefined;
   @Output() public deleteApplicantEvent = new EventEmitter<string>();
   @Output() public updateApplicantEvent = new EventEmitter<ViewableApplicant>();
-  
+
+  get isCvAvailable(): boolean {
+    return this.applicant?.hasCv ?? false;
+  }
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly notificationsService: NotificationService,
@@ -101,5 +106,21 @@ export class ApplicantControlComponent {
         applicantId: this.applicant!.id,
       },
     });
+  }
+
+  public openCv(): void {
+    this.applicantsService
+      .getCv(this.applicant!.id)
+      .subscribe(
+        (cvFile) => {
+          openFileFromUrl(cvFile.url);
+        },
+        (error: Error) => {
+          this.notificationsService.showErrorMessage(
+            error.message,
+            'Cannot download cv',
+          );
+        },
+      );
   }
 }

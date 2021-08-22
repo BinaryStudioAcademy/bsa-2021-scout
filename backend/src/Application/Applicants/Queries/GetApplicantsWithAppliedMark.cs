@@ -24,10 +24,10 @@ namespace Application.Applicants.Queries
 
     public class GetApplicantsWithAppliedMarkHandler : IRequestHandler<GetApplicantsWithAppliedMark, IEnumerable<MarkedApplicantDto>>
     {
-        private readonly IApplicantsReadRepository _repository;
+        private readonly IApplicantReadRepository _repository;
         protected readonly IMapper _mapper;
 
-        public GetApplicantsWithAppliedMarkHandler(IApplicantsReadRepository repository, IMapper mapper)
+        public GetApplicantsWithAppliedMarkHandler(IApplicantReadRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/users/services/auth.service';
-import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +18,6 @@ export class HeaderComponent implements OnDestroy {
 
   public constructor(
     private readonly service: AuthenticationService,
-    private readonly notifications: NotificationService,
   ) {}
 
   public ngOnDestroy(): void {
@@ -33,7 +31,6 @@ export class HeaderComponent implements OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         () => window.location.replace('/login'),
-        () => this.notifications.showErrorMessage('Failed to log out.'),
       );
   }
 }

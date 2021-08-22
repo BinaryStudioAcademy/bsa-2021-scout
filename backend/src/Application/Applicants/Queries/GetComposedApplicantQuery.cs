@@ -8,6 +8,7 @@ using Application.Applicants.Dtos;
 using Domain.Interfaces.Read;
 using Application.ElasticEnities.Dtos;
 using System.Collections.Generic;
+using Domain.Interfaces.Abstractions;
 
 namespace Application.Applicants.Queries
 {
@@ -24,9 +25,10 @@ namespace Application.Applicants.Queries
     public class GetComposedApplicantQueryHandler : IRequestHandler<GetComposedApplicantQuery, ApplicantDto>
     {
         private readonly ISender _mediator;
-        private readonly IApplicantsReadRepository _repository;
+        private readonly IApplicantReadRepository _repository;
         private readonly IMapper _mapper;
-        public GetComposedApplicantQueryHandler(IApplicantsReadRepository repository, ISender mediator, IMapper mapper)
+
+        public GetComposedApplicantQueryHandler(IApplicantReadRepository repository, ISender mediator, IMapper mapper)
         {
             _mediator = mediator;
             _repository = repository;
@@ -35,12 +37,15 @@ namespace Application.Applicants.Queries
         public async Task<ApplicantDto> Handle(GetComposedApplicantQuery query, CancellationToken _)
         {
             var tagsQueryTask = _mediator.Send(new GetElasticDocumentByIdQuery<ElasticEnitityDto>(query.Id));
-            var applicant = await _mediator.Send(new GetEntityByIdQuery<ApplicantDto>(query.Id));
 
-            applicant.Tags = await tagsQueryTask;
-            applicant.Vacancies = _mapper.Map<IEnumerable<ApplicantVacancyInfoDto>>(await _repository.GetApplicantVacancyInfoListAsync(query.Id));
+            var applicant = await _repository.GetByIdAsync(query.Id);
 
-            return applicant;
+            var applicantDto = _mapper.Map<ApplicantDto>(applicant);
+
+            applicantDto.Tags = await tagsQueryTask;
+            applicantDto.Vacancies = _mapper.Map<IEnumerable<ApplicantVacancyInfoDto>>(await _repository.GetApplicantVacancyInfoListAsync(query.Id));
+
+            return applicantDto;
         }
     }
 }
