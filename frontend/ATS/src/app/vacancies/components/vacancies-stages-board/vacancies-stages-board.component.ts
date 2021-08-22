@@ -68,7 +68,8 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.route.params.subscribe(({ id }) => {
       this.loading = true;
-      this.loadData(id);
+      this.vacancyId = id;
+      this.loadData();
     });
   }
 
@@ -167,7 +168,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
         vacancyId: this.vacancyId,
       },
     }).afterClosed()
-      .subscribe(_ => this.loadData(this.vacancyId));
+      .subscribe(_ => this.loadData());
   }
 
 
@@ -297,9 +298,9 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     return indexes.map((i) => this.listIds[i]);
   }
 
-  private loadData(vacancyId: string): void {
+  private loadData(): void {
     const stages$: Observable<ShortVacancyWithStages> =
-      this.stageService.getByVacancyIdWithCandidates(vacancyId);
+      this.stageService.getByVacancyIdWithCandidates(this.vacancyId);
 
     const reviews$: Observable<Review[]> = this.reviewService.getAll();
 
