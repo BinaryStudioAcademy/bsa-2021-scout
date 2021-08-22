@@ -105,13 +105,15 @@ export class ProjectsEditComponent implements OnDestroy {
     this.projectService
       .updateProject(this.project)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => {
-        this.loading = false;
-
-        this.notificationService.showSuccessMessage(
-          `Project ${this.project.name} updated!`,
-        );
-      });
+      .subscribe(
+        () => {
+          this.notificationService.showSuccessMessage(
+            `Project ${this.project.name} updated!`,
+          );
+        },
+        () => {},
+        () => (this.loading = false),
+      );
   }
 }
 

@@ -68,16 +68,14 @@ export class UpdateApplicantComponent implements OnDestroy {
       .updateApplicant(this.updatedApplicant)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        (result: Applicant) => {
-          this.loading = false;
-          this.dialogRef.close(result);
-        },
+        (result: Applicant) => this.dialogRef.close(result),
         (error: Error) => {
           this.notificationsService.showErrorMessage(
             error.message,
             'Cannot update the applicant',
           );
         },
+        () => (this.loading = false),
       );
   }
 

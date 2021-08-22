@@ -243,9 +243,7 @@ $primary-color: #ee2a64;
           &:hover {
             box-shadow: 0 0 4px
               rgba(
-                $color: (
-                  #291965,
-                ),
+                $color: (#291965),
                 $alpha: 0.5
               );
             text-shadow: 0 0 1px 1px $tag-font-color;

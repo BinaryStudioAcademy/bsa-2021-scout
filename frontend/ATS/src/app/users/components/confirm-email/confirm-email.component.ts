@@ -35,14 +35,12 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
       .confirmEmail(dto)
       .pipe()
       .subscribe(
-        () => {
-          this.loading = false;
-          this.IsEmailConfirmed = true;
-        },
+        () => this.IsEmailConfirmed = true,
         (error) => {
           this.router.navigate(['/login']);
           this.notificationService.showErrorMessage(error.description);
         },
+        () => (this.loading = false),
       );
   }
 

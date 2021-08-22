@@ -72,13 +72,11 @@ export class LoginBoxComponent implements OnDestroy {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           () => {
-            this.loading = false;
             this.isRequestFinished = false;
             this.router.navigate(['/']);
           },
           (error) => {
             this.isRequestFinished = true;
-            this.loading = false;
 
             if (error.description != null) {
               if (
@@ -100,6 +98,7 @@ export class LoginBoxComponent implements OnDestroy {
               );
             }
           },
+          () => (this.loading = false),
         );
     }
   }

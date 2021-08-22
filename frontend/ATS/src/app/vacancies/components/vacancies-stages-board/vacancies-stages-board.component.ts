@@ -259,7 +259,6 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
           this.data = data.stages;
           this.title = data.title;
           this.vacancyId = vacancyId;
-          this.loading = false;
 
           this.filterData();
           this.prepareLists();
@@ -271,6 +270,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
             'Error',
           );
         },
+        () => (this.loading = false),
       );
   }
 

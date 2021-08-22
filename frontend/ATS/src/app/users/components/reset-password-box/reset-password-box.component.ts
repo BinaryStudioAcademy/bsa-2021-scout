@@ -64,21 +64,21 @@ export class ResetPasswordBoxComponent implements OnDestroy {
             return this.authService.resetPassword(resetPasswordDto);
           }),
         )
-        .subscribe(() => {
-          this.loading = false;
-          this.notificationService.showSuccessMessage('Your password has been changed');
-          this.router.navigate(['/login']);
-        },
-        (error) => {
-          this.loading = false;
-
-          if (error.description != null) {
-            this.notificationService.showErrorMessage(error.description, 'Something went wrong');
-          }
-          else {
-            this.notificationService.showErrorMessage(error.message, 'Something went wrong');
-          }
-        });
+        .subscribe(
+          () => {
+            this.notificationService.showSuccessMessage('Your password has been changed');
+            this.router.navigate(['/login']);
+          },
+          (error) => {
+            if (error.description != null) {
+              this.notificationService.showErrorMessage(error.description, 'Something went wrong');
+            }
+            else {
+              this.notificationService.showErrorMessage(error.message, 'Something went wrong');
+            }
+          },
+          () => (this.loading = false),
+        );
     }
   }
 }

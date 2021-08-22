@@ -1,6 +1,6 @@
 import {
   AfterViewInit, Component,
-  ViewChild, ElementRef, ChangeDetectorRef,
+  ViewChild, ElementRef, ChangeDetectorRef, OnDestroy,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -15,6 +15,7 @@ import { VacancyCreate } from 'src/app/shared/models/vacancy/vacancy-create';
 import { EditVacancyComponent } from '../edit-vacancy/edit-vacancy.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 
 const STATUES: VacancyStatus[] = [
@@ -33,7 +34,7 @@ export interface IIndexable {
   templateUrl: './vacancies-table.component.html',
   styleUrls: ['./vacancies-table.component.scss'],
 })
-export class VacanciesTableComponent implements AfterViewInit {
+export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   displayedColumns: string[] =
   ['position', 'title', 'candidatesAmount', 'responsible', 'project', 
     'teamInfo', 'creationDate', 'status', 'actions'];
@@ -46,26 +47,38 @@ export class VacanciesTableComponent implements AfterViewInit {
 
   public loading: boolean = true;
 
-  constructor(private router:Router, private cd: ChangeDetectorRef,
-    private dialog: MatDialog, private service: VacancyDataService){
-    service.getList().pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data=>{
-        this.getVacancies();
-      });
+  constructor(
+    private router: Router,
+    private cd: ChangeDetectorRef,
+    private dialog: MatDialog,
+    private service: VacancyDataService,
+    private notifications: NotificationService,
+  ) {
+    this.getVacancies();
   }
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   getVacancies() {
-    this.service.getList().subscribe(data => {
-      this.dataSource.data = data;
-      this.loading = false;
-      data.forEach((d, i) => {
-        d.position = i + 1;
-      });
-      this.directive.applyFilter$.emit();
-    },
-    );
+    this.service
+      .getList()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        data => {
+          this.dataSource.data = data;
+          data.forEach((d, i) => {
+            d.position = i + 1;
+          });
+          this.directive.applyFilter$.emit();
+        },
+        () => this.notifications.showErrorMessage('Failed to get vacancies.'),
+        () => (this.loading = false),
+      );
   }
 
   openDialog(): void {
@@ -75,7 +88,7 @@ export class VacanciesTableComponent implements AfterViewInit {
       data: {},
     });
 
-    dialogRef.afterClosed().subscribe((_) => this.getVacancies());
+    dialogRef.afterClosed().subscribe(() => this.getVacancies());
   }
 
   onEdit(vacancyEdit: VacancyCreate): void {
@@ -84,7 +97,7 @@ export class VacanciesTableComponent implements AfterViewInit {
         vacancyToEdit: vacancyEdit,
       },
     });
-    this.dialog.afterAllClosed.subscribe((_) => this.getVacancies());
+    this.dialog.afterAllClosed.subscribe(() => this.getVacancies());
   }
 
   saveVacancy(changedVacancy: VacancyData) {

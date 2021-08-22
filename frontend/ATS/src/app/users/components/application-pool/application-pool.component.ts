@@ -71,18 +71,14 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
 
   loadData() {
     this.loading = true;
+
     this.poolService
       .getPools()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        (resp) => {
-          this.loading = false;
-          this.dataSource.data = resp;
-        },
-        (error) => {
-          this.loading = false;
-          this.notificationService.showErrorMessage(error);
-        },
+        (resp) => (this.dataSource.data = resp),
+        (error) => this.notificationService.showErrorMessage(error),
+        () => (this.loading = false),
       );
   }
 
@@ -93,7 +89,6 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
-          this.loading = false;
           this.dataSource.data.push(resp);
           this.directive?.applyFilter$.emit();
           this.table.renderRows();
@@ -103,11 +98,11 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
           );
         },
         (error) => {
-          this.loading = false;
           this.notificationService.showSuccessMessage(
             `Create pool error: ${error}`,
           );
         },
+        () => (this.loading = false),
       );
   }
 
@@ -117,11 +112,9 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       .updatePool(pool)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        (resp) => {
-          this.loading = false;
-          this.updateRowData(resp.body!);
-        },
-        (error) => (this.loading = false),
+        (resp) => this.updateRowData(resp.body!),
+        () => {},
+        () => (this.loading = false),
       );
   }
 

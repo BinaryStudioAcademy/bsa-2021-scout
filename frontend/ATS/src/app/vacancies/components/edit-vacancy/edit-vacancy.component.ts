@@ -79,11 +79,14 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     this.projectService
       .getByCompany()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((response) => {
-        this.loading = false;
-        this.projects = response;
-        this.selectedProjects = this.projects;
-      });
+      .subscribe(
+        (response) => {
+          this.projects = response;
+          this.selectedProjects = this.projects;
+        },
+        () => {},
+        () => (this.loading = false),
+      );
   }
 
   public ngOnDestroy(): void {
@@ -134,18 +137,20 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       this.vacancyService
         .postVacancy(this.vacancy)
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((response) => {
-          this.loading = false;
-          this.vacancyChange.emit(response);
-        });
+        .subscribe(
+          (response) => this.vacancyChange.emit(response),
+          () => {},
+          () => (this.loading = false),
+        );
     } else {
       this.vacancyService
         .putVacancy(this.vacancy, this.data.vacancyToEdit.id)
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((response) => {
-          this.loading = false;
-          this.vacancyChange.emit(response);
-        });
+        .subscribe(
+          (response) => this.vacancyChange.emit(response),
+          () => {},
+          () => (this.loading = false),
+        );
     }
 
     this.dialogRef.close();

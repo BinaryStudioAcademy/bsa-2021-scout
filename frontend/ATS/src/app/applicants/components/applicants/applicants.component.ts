@@ -70,16 +70,17 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           return viewableApplicant;
         })),
       )
-      .subscribe((result: ViewableApplicant[]) => {
-        this.loading = false;
-        this.dataSource.data = result;
-        this.cashedData = result;
-        this.directive!.applyFilter$.emit();
-      },
-      (error: Error) => {
-        this.notificationsService.showErrorMessage(error.message,
-          'Cannot download applicants from the host');
-      },
+      .subscribe(
+        (result: ViewableApplicant[]) => {
+          this.dataSource.data = result;
+          this.cashedData = result;
+          this.directive!.applyFilter$.emit();
+        },
+        (error: Error) => {
+          this.notificationsService.showErrorMessage(error.message,
+            'Cannot download applicants from the host');
+        },
+        () => (this.loading = false),
       );
   }
 

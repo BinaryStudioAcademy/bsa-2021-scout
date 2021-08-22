@@ -59,11 +59,11 @@ export class AddCandidateModalComponent implements OnDestroy {
       this.vacancyService
         .getVacancy(this.vacancyId)
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((value) => {
-          this.loading = false;
-          this.selectedVacancy = value;
-        },
-        (error) => (this.OnError(error)));
+        .subscribe(
+          (value) => (this.selectedVacancy = value),
+          (error) => this.OnError(error),
+          () => (this.loading = false),
+        );
 
       this.applicantsForm.enable();
       this.applicantsForm.valueChanges.subscribe(_=>{
@@ -77,36 +77,22 @@ export class AddCandidateModalComponent implements OnDestroy {
       this.GetApplicants();
     } else if (data.applicantId) {
       this.disableVacanciesForm = false;
-      let oneCompleted: boolean = false;
 
       this.applicantsService
         .getApplicantByCompany(data.applicantId)
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((value) => {
-          if (!oneCompleted) {
-            oneCompleted = true;
-          } else {
-            this.loading = false;
-          }
-
-          this.selectedApplicant = value;
-          let applicant: MarkedApplicant = new MarkedApplicant(
-            this.selectedApplicant,
-          );
-          this.filteredApplicants.push(applicant);
-          this.applicantsForm.setValue([applicant]);
-        });
-
-      this.applicantsService
-        .getApplicantByCompany(data.applicantId)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(value => {
-          this.selectedApplicant = value;
-          let applicant: MarkedApplicant = new MarkedApplicant(this.selectedApplicant);
-          this.filteredApplicants.push(applicant);
-          this.applicantsForm.setValue([applicant]);
-        },
-        (error) => (this.OnError(error)));
+        .subscribe(
+          (value) => {
+            this.selectedApplicant = value;
+            let applicant: MarkedApplicant = new MarkedApplicant(
+              this.selectedApplicant,
+            );
+            this.filteredApplicants.push(applicant);
+            this.applicantsForm.setValue([applicant]);
+          },
+          () => {},
+          () => (this.loading = false),
+        );
 
       this.vacanciesForm.valueChanges.subscribe((vacancy) => {
         if (typeof vacancy !== 'string') {
@@ -124,21 +110,18 @@ export class AddCandidateModalComponent implements OnDestroy {
       this.vacancyService
         .getVacancies()
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((vacancies) => {
-          this.vacancies = vacancies;
-          this.loading = false;
-        });
-
-      this.vacancyService.getVacancies().pipe(takeUntil(this.unsubscribe$))
-        .subscribe(vacancies => {
-          this.vacancies = vacancies;
-          this.filteredVacancies = this.vacanciesForm.valueChanges.pipe(
-            startWith(''),
-            map(value => typeof value === 'string' ? value : value.title),
-            map(title => title ? this._filter(title) : this.vacancies.slice()),
-          );
-        },
-        (error) => (this.OnError(error)));
+        .subscribe(
+          vacancies => {
+            this.vacancies = vacancies;
+            this.filteredVacancies = this.vacanciesForm.valueChanges.pipe(
+              startWith(''),
+              map(value => typeof value === 'string' ? value : value.title),
+              map(title => title ? this._filter(title) : this.vacancies.slice()),
+            );
+          },
+          (error) => this.OnError(error),
+          () => (this.loading = false),
+        );
 
       this.vacanciesForm.valueChanges.subscribe((vacancy) => {
         if (typeof vacancy !== 'string') {
@@ -168,19 +151,21 @@ export class AddCandidateModalComponent implements OnDestroy {
     this.applicantsService
       .getMarkedApplicants(this.vacancyId)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(value => {
-        this.filteredApplicants = value;
-        this.loading = false;
+      .subscribe(
+        value => {
+          this.filteredApplicants = value;
 
-        this.applicantsIds?.forEach((applicantId) => {
-          this.filteredApplicants.forEach((applicant) => {
-            if (applicantId == applicant.id && !applicant.isApplied) {
-              this.applicantsForm.setValue([applicant]);
-            }
+          this.applicantsIds?.forEach((applicantId) => {
+            this.filteredApplicants.forEach((applicant) => {
+              if (applicantId == applicant.id && !applicant.isApplied) {
+                this.applicantsForm.setValue([applicant]);
+              }
+            });
           });
-        });
-      },
-      (error) => (this.OnError(error)));
+        },
+        (error) => this.OnError(error),
+        () => (this.loading = false),
+      );
   }
 
   public OnCreate() {

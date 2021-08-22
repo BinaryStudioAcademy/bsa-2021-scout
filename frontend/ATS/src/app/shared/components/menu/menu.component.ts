@@ -9,6 +9,7 @@ import { SidenavService } from 'src/app/shared/services/sidenav.service';
 import { User } from 'src/app/users/models/user';
 import { AuthUserEventService } from 'src/app/users/services/auth-user-event.service';
 import { AuthenticationService } from 'src/app/users/services/auth.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-menu',
@@ -29,16 +30,18 @@ export class MenuComponent implements OnInit, OnDestroy {
     private _sidenavService: SidenavService,
     private authService: AuthenticationService,
     private authUserEventService: AuthUserEventService,
+    private notifications: NotificationService,
   ) {}
 
   public ngOnInit() {
     this.authService
       .getUser()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((user) => {
-        this.loading = false;
-        this.checkIsHrLead(user);
-      });
+      .subscribe(
+        (user) => this.checkIsHrLead(user),
+        () => this.notifications.showErrorMessage('Failed to check user role.'),
+        () => (this.loading = false),
+      );
 
     this.authUserEventService.userChangedEvent$
       .pipe(takeUntil(this.unsubscribe$))

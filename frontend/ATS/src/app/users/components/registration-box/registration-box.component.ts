@@ -121,7 +121,6 @@ export class RegistrationBoxComponent implements AfterViewInit {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           () => {
-            this.loading = true;
             this.isRequestFinished = true;
             this.router.navigate(['/successful-registration'], {
               queryParams: { email: this.userRegisterDto.email },
@@ -129,7 +128,6 @@ export class RegistrationBoxComponent implements AfterViewInit {
           },
           (error) => {
             this.isRequestFinished = true;
-            this.loading = true;
 
             if (error.description != null) {
               this.notificationService.showErrorMessage(
@@ -143,6 +141,7 @@ export class RegistrationBoxComponent implements AfterViewInit {
               );
             }
           },
+          () => (this.loading = false),
         );
     }
   }
