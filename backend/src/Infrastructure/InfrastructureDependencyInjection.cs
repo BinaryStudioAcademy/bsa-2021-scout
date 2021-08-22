@@ -58,8 +58,9 @@ namespace Infrastructure
                 .IndexName("elastic_entity")
             );
             var elastic = new ElasticClient(settings);
-            elastic.Ping();
-           
+            var exception = elastic.Ping().OriginalException;
+            if(exception!=null)
+                throw exception;
             services.AddSingleton<IElasticClient>(elastic);
 
             return services;
