@@ -111,14 +111,18 @@ export class ApplicantControlComponent implements OnDestroy {
       .deleteApplicant(this.applicant!.id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        () => this.deleteApplicantEvent.emit(this.applicant!.id),
+        () => {
+          this.loading = false;
+          this.deleteApplicantEvent.emit(this.applicant!.id);
+        },
         (error: Error) => {
+          this.loading = false;
+
           this.notificationsService.showErrorMessage(
             error.message,
             'Cannot delete the applicant',
           );
         },
-        () => (this.loading = false),
       );
   }
 

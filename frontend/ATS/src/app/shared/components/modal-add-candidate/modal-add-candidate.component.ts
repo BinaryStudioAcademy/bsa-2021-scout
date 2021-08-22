@@ -59,7 +59,6 @@ export class AddCandidateModalComponent implements OnDestroy {
         .subscribe(
           (value) => (this.selectedVacancy = value),
           (error) => this.OnError(error),
-          () => (this.loading = false),
         );
 
       this.applicantsForm.enable();
@@ -80,6 +79,7 @@ export class AddCandidateModalComponent implements OnDestroy {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           (value) => {
+            this.loading = false;
             this.selectedApplicant = value;
             let applicant: MarkedApplicant = new MarkedApplicant(
               this.selectedApplicant,
@@ -88,7 +88,6 @@ export class AddCandidateModalComponent implements OnDestroy {
             this.applicantsForm.setValue([applicant]);
           },
           (error) => this.OnError(error),
-          () => (this.loading = false),
         );
 
       this.vacanciesForm.valueChanges.subscribe((vacancy) => {
@@ -109,6 +108,7 @@ export class AddCandidateModalComponent implements OnDestroy {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           vacancies => {
+            this.loading = false;
             this.vacancies = vacancies;
             this.filteredVacancies = this.vacanciesForm.valueChanges.pipe(
               startWith(''),
@@ -117,7 +117,6 @@ export class AddCandidateModalComponent implements OnDestroy {
             );
           },
           (error) => this.OnError(error),
-          () => (this.loading = false),
         );
 
       this.vacanciesForm.valueChanges.subscribe((vacancy) => {
@@ -150,6 +149,7 @@ export class AddCandidateModalComponent implements OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         value => {
+          this.loading = false;
           this.filteredApplicants = value;
 
           this.applicantsIds?.forEach((applicantId) => {
@@ -161,7 +161,6 @@ export class AddCandidateModalComponent implements OnDestroy {
           });
         },
         (error) => this.OnError(error),
-        () => (this.loading = false),
       );
   }
 
@@ -194,6 +193,7 @@ export class AddCandidateModalComponent implements OnDestroy {
   }
 
   public OnError(error: Error) {
+    this.loading = false;
     this.notificationService.showErrorMessage(error?.message ? 
       error.message : 'Apply vacancy failed');
     this.modal.close();

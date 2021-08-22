@@ -36,9 +36,14 @@ export class HeaderComponent implements OnDestroy {
       .logout()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        () => window.location.replace('/login'),
-        () => window.location.replace('/login'),
-        () => (this.loading = false),
+        () => {
+          this.loading = false;
+          window.location.replace('/login');
+        },
+        () => {
+          this.loading = false;
+          window.location.replace('/login');
+        },
       );
   }
 }

@@ -94,12 +94,16 @@ export class ProjectsAddComponent implements OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         () => {
+          this.loading = false;
+
           this.notificationService.showSuccessMessage(
             `Project ${this.project.name} created!`,
           );
         },
-        (error) => this.notificationService.showErrorMessage(error.message),
-        () => (this.loading = false),
+        (error) => {
+          this.loading = false;
+          this.notificationService.showErrorMessage(error.message);
+        },
       );
 
     this.dialogRef.close();

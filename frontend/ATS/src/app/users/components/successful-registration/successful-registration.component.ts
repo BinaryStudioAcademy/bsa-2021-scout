@@ -42,11 +42,15 @@ export class SuccessfulRegistrationComponent implements OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         () => {
+          this.loading = false;
+
           this.notificationService.showSuccessMessage(
             'Please check your email to confirm your email.',
           );
         },
         (error) => {
+          this.loading = false;
+
           if (error.description != null) {
             this.notificationService.showErrorMessage(
               error.description,
@@ -59,7 +63,6 @@ export class SuccessfulRegistrationComponent implements OnDestroy {
             );
           }
         },
-        () => (this.loading = false),
       );
   }
 }

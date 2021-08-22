@@ -308,6 +308,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
       vacancy: stages$,
     }).subscribe(
       ({ reviews, vacancy }) => {
+        this.loading = false;
         this.data = [...vacancy.stages];
         this.reviews = [...reviews];
         this.title = vacancy.title;
@@ -318,12 +319,13 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
         this.prepareAdditionalCriterias();
       },
       () => {
+        this.loading = false;
+
         this.notificationService.showErrorMessage(
           'Failed to load data',
           'Error',
         );
       },
-      () => (this.loading = false),
     );
 
     stages$.pipe(takeUntil(this.unsubscribe$)).subscribe();

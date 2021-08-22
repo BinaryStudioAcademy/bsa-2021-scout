@@ -83,11 +83,14 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (response) => {
+          this.loading = false;
           this.projects = response;
           this.selectedProjects = this.projects;
         },
-        () => this.notificationService.showErrorMessage('Failed to load projects.'),
-        () => (this.loading = false),
+        () => {
+          this.loading = false;
+          this.notificationService.showErrorMessage('Failed to load projects.');
+        },
       );
   }
 
@@ -140,18 +143,28 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         .postVacancy(this.vacancy)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
-          (response) => this.vacancyChange.emit(response),
-          () => this.notificationService.showErrorMessage('Failed to create vacancy.'),
-          () => (this.loading = false),
+          (response) => {
+            this.loading = false;
+            this.vacancyChange.emit(response);
+          },
+          () => {
+            this.loading = false;
+            this.notificationService.showErrorMessage('Failed to create vacancy.');
+          },
         );
     } else {
       this.vacancyService
         .putVacancy(this.vacancy, this.data.vacancyToEdit.id)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
-          (response) => this.vacancyChange.emit(response),
-          () => this.notificationService.showErrorMessage('Failed to update vacancy.'),
-          () => (this.loading = false),
+          (response) => {
+            this.loading = false;
+            this.vacancyChange.emit(response);
+          },
+          () => {
+            this.loading = false;
+            this.notificationService.showErrorMessage('Failed to update vacancy.');
+          },
         );
     }
 

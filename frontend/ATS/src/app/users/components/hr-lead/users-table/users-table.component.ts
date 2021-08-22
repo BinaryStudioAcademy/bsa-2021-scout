@@ -42,12 +42,15 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
+          this.loading = false;
           this.users = resp;
           this.dataSource.data = this.users;
           this.directive.applyFilter$.emit();
         },
-        () => this.notificationService.showErrorMessage('Something went wrong'),
-        () => (this.loading = false),
+        () => {
+          this.loading = false;
+          this.notificationService.showErrorMessage('Something went wrong');
+        },
       );
   }
 

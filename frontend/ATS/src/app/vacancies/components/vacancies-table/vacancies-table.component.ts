@@ -70,14 +70,17 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         data => {
+          this.loading = false;
           this.dataSource.data = data;
           data.forEach((d, i) => {
             d.position = i + 1;
           });
           this.directive.applyFilter$.emit();
         },
-        () => this.notifications.showErrorMessage('Failed to get vacancies.'),
-        () => (this.loading = false),
+        () => {
+          this.loading = false;
+          this.notifications.showErrorMessage('Failed to get vacancies.');
+        },
       );
   }
 

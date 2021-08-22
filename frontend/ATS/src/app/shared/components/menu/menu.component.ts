@@ -38,9 +38,14 @@ export class MenuComponent implements OnInit, OnDestroy {
       .getUser()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        (user) => this.checkIsHrLead(user),
-        () => this.notifications.showErrorMessage('Failed to check user role.'),
-        () => (this.loading = false),
+        (user) => {
+          this.loading = false;
+          this.checkIsHrLead(user);
+        },
+        () => {
+          this.loading = false;
+          this.notifications.showErrorMessage('Failed to check user role.');
+        },
       );
 
     this.authUserEventService.userChangedEvent$

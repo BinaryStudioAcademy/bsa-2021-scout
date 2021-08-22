@@ -66,12 +66,15 @@ export class ForgotPasswordDialogComponent implements OnDestroy {
         )
         .subscribe(
           () => {
+            this.loading = false;
             this.notificationService.showSuccessMessage(
               'Please check your email to reset your password');
             this.dialogRef.close();
           },
-          () => this.notificationService.showErrorMessage('Something went wrong'),
-          () => (this.loading = false),
+          () => {
+            this.loading = false;
+            this.notificationService.showErrorMessage('Something went wrong');
+          },
         );
     }  
   }

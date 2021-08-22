@@ -43,9 +43,14 @@ export class OneCandidateComponent implements OnInit, OnDestroy {
       .getFull(id, this.vacancyId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        (data) => (this.data = data),
-        () => this.notificationService.showErrorMessage('Failed to load', 'Error'),
-        () => (this.loading = false),
+        (data) => {
+          this.loading = false;
+          this.data = data;
+        },
+        () => {
+          this.loading = false;
+          this.notificationService.showErrorMessage('Failed to load', 'Error');
+        },
       );
   }
 }

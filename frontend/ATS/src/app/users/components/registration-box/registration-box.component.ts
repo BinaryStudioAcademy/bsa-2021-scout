@@ -56,7 +56,6 @@ export class RegistrationBoxComponent implements AfterViewInit {
   public userRegisterDto: UserRegisterDto = {} as UserRegisterDto;
   public isPasswordHide = true;
   public isPasswordConfirmHide = true;
-  public isRequestFinished = true;
   public loading: boolean = false;
 
   public registrationForm: FormGroup = new FormGroup(
@@ -113,7 +112,6 @@ export class RegistrationBoxComponent implements AfterViewInit {
         userRegisterDto: this.userRegisterDto,
         clientUrl: `${environment.clientUrl}/confirm-email`,
       };
-      this.isRequestFinished = false;
       this.loading = true;
 
       this.authenticationService
@@ -121,13 +119,13 @@ export class RegistrationBoxComponent implements AfterViewInit {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           () => {
-            this.isRequestFinished = true;
+            this.loading = false;
             this.router.navigate(['/successful-registration'], {
               queryParams: { email: this.userRegisterDto.email },
             });
           },
           (error) => {
-            this.isRequestFinished = true;
+            this.loading = false;
 
             if (error.description != null) {
               this.notificationService.showErrorMessage(
@@ -141,7 +139,6 @@ export class RegistrationBoxComponent implements AfterViewInit {
               );
             }
           },
-          () => (this.loading = false),
         );
     }
   }

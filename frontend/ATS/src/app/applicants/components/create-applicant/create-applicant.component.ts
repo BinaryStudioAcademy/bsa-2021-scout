@@ -56,14 +56,18 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
       .addApplicant(this.createdApplicant)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        (result: Applicant) => this.dialogRef.close(result),
+        (result: Applicant) => {
+          this.loading = false;
+          this.dialogRef.close(result);
+        },
         (error: Error) => {
+          this.loading = false;
+
           this.notificationsService.showErrorMessage(
             error.message,
             'Cannot create an applicant',
           );
         },
-        () => (this.loading = false),
       );
   }
 

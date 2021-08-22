@@ -66,10 +66,13 @@ export class ResetPasswordBoxComponent implements OnDestroy {
         )
         .subscribe(
           () => {
+            this.loading = false;
             this.notificationService.showSuccessMessage('Your password has been changed');
             this.router.navigate(['/login']);
           },
           (error) => {
+            this.loading = false;
+
             if (error.description != null) {
               this.notificationService.showErrorMessage(error.description, 'Something went wrong');
             }
@@ -77,7 +80,6 @@ export class ResetPasswordBoxComponent implements OnDestroy {
               this.notificationService.showErrorMessage(error.message, 'Something went wrong');
             }
           },
-          () => (this.loading = false),
         );
     }
   }
