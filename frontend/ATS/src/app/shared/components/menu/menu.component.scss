@@ -1,73 +1,76 @@
-  .logo{
-    width: 107px;
-    height: 54px;
-  }
-
-  .logo-container{
-    padding-top: 32px;
-    height: 15%;
-    max-width: 170px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: -7px;
-  }
-
-  .mat-icon{
-    color: #EE2A64;
-    font-weight: 500;
-  }
-
-.mat-list-item .mat-line{
-      font-weight: 600;
+.logo {
+  width: 107px;
+  height: 54px;
 }
 
-.mat-list-item.active{
-  .mat-line{
-    color: #EE2A64;
+.logo-container {
+  padding-top: 32px;
+  height: 15%;
+  max-width: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: -7px;
+}
+
+.mat-icon {
+  color: #ee2a64;
+  font-weight: 500;
+}
+
+.mat-list-item .mat-line {
+  font-weight: 600;
+}
+
+.mat-list-item.active {
+  .mat-line {
+    color: #ee2a64;
     font-weight: 700;
   }
-} 
+}
 
-  .mat-nav-list button{
-    font-size:15px;
-    margin-left: 26px;
-  }
-  
-  .minimized{
-      .mat-line{
-        display: none !important;
-      }
-  }
-  
-  .sidenav_container {
-    width:225px;
-    height: 100%;
-  }
+.mat-nav-list button {
+  font-size: 15px;
+  margin-left: 26px;
+}
 
- :host::ng-deep .mat-list-item-content{
-    font-size:18px;
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-    .mat-list-text{
-      padding-left:4px !important
-    }
+.minimized {
+  .mat-line {
+    display: none !important;
   }
+}
 
-  :host::ng-deep .mat-list-base .mat-list-item .mat-list-icon, .mat-list-base .mat-list-option .mat-list-icon{
-    font-size: 24px;
-    width: auto;
-    height: auto;
+.sidenav_container {
+  width: 225px;
+  height: 100%;
+  position: relative;
+}
+
+:host::ng-deep .mat-list-item-content {
+  font-size: 18px;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+  .mat-list-text {
+    padding-left: 4px !important;
   }
-  
-  :host ::ng-deep .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar{
-    height: 60px !important
-  }
-  
-  :host ::ng-deep .mat-list-base .mat-list-item .mat-line{
-    white-space: initial;
-    overflow: visible;
-    text-overflow: unset;
-    display: block;
-    box-sizing: border-box;
-  }
+}
+
+:host::ng-deep .mat-list-base .mat-list-item .mat-list-icon,
+.mat-list-base .mat-list-option .mat-list-icon {
+  font-size: 24px;
+  width: auto;
+  height: auto;
+}
+
+:host ::ng-deep .mat-list-base .mat-list-item.mat-list-item-with-avatar,
+.mat-list-base .mat-list-option.mat-list-item-with-avatar {
+  height: 60px !important;
+}
+
+:host ::ng-deep .mat-list-base .mat-list-item .mat-line {
+  white-space: initial;
+  overflow: visible;
+  text-overflow: unset;
+  display: block;
+  box-sizing: border-box;
+}

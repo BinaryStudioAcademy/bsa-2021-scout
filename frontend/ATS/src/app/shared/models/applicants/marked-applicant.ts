@@ -1,4 +1,4 @@
-import { GetShortApplicant } from 'src/app/shared/models/applicant/get-short-applicant';
+import { GetShortApplicant } from 'src/app/shared/models/applicants/get-short-applicant';
 
 export class MarkedApplicant {
   id: string='';

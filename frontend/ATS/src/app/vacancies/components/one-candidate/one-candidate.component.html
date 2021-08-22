@@ -1,5 +1,5 @@
 <div class="container">
-  <app-spinner *ngIf="loading"></app-spinner>
+  <app-spinner [loading]="loading"></app-spinner>
   <ng-container *ngIf="!loading">
     <div class="avatar-col">
       <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />

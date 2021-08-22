@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, Inject} from '@angular/core';
+import {Component, ViewChild, OnInit, Inject, AfterViewInit} from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import { PoolService } from 'src/app/shared/services/poolService';
 import { takeUntil} from 'rxjs/operators';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { Applicant } from 'src/app/shared/models/applicant/applicant';
+import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
@@ -20,7 +20,7 @@ const DATA: Applicant[] = [];
   templateUrl: './pool-details-modal.component.html',
   styleUrls: ['./pool-details-modal.component.scss'],
 })
-export class PoolDetailsModalComponent implements OnInit {
+export class PoolDetailsModalComponent implements OnInit, AfterViewInit {
 
   public id: string = '';
   public pool!: ApplicantsPool;

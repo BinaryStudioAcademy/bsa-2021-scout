@@ -17,7 +17,7 @@ namespace Infrastructure.Repositories.Read
         public VacancyCandidateReadRepository(IConnectionFactory connectionFactory)
             : base("VacancyCandidates", connectionFactory) { }
 
-        public async Task<VacancyCandidate> GetFullAsync(string id)
+        public async Task<VacancyCandidate> GetFullAsync(string id, string vacancyId)
         {
             SqlConnection connection = _connectionFactory.GetSqlConnection();
 
@@ -26,11 +26,16 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" FROM VacancyCandidates");
             sql.Append(" LEFT JOIN Applicants ON VacancyCandidates.ApplicantId = Applicants.Id");
             sql.Append(" LEFT JOIN CandidateToStages ON CandidateToStages.CandidateId = VacancyCandidates.Id");
+            sql.Append(" AND EXISTS");
+            sql.Append("(SELECT Id");
+            sql.Append(" FROM Stages");
+            sql.Append(" WHERE Stages.Id = CandidateToStages.StageId");
+            sql.Append(" AND Stages.VacancyId = @vacancyId)");
             sql.Append(" LEFT JOIN Stages ON CandidateToStages.StageId = Stages.Id");
             sql.Append(" LEFT JOIN Users ON VacancyCandidates.HrWhoAddedId = Users.Id");
             sql.Append(" LEFT JOIN CandidateReviews ON CandidateReviews.CandidateId = VacancyCandidates.Id");
             sql.Append(" LEFT JOIN Reviews ON CandidateReviews.ReviewId = Reviews.Id");
-            sql.Append($" WHERE VacancyCandidates.Id = '{id}'");
+            sql.Append(" WHERE VacancyCandidates.Id = @id");
 
             Dictionary<string, CandidateReview> candidateReviewDict = new Dictionary<string, CandidateReview>();
             Dictionary<string, CandidateToStage> candidateToStageDict = new Dictionary<string, CandidateToStage>();
@@ -83,6 +88,11 @@ namespace Infrastructure.Repositories.Read
                         }
 
                         return cachedCandidate;
+                    },
+                    new
+                    {
+                        id = id,
+                        vacancyId = vacancyId,
                     },
                     splitOn: "Id,Id,Id,Id,Id,Id"
                 );

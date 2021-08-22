@@ -3,16 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using Application.VacancyCandidates.Dtos;
 using Application.VacancyCandidates.Queries;
 using Application.VacancyCandidates.Commands;
-using Application.Common.Queries;
 
 namespace WebAPI.Controllers
 {
     public class VacancyCandidates : ApiController
     {
-        [HttpGet("{id}/full")]
-        public async Task<ActionResult<VacancyCandidateFullDto>> GetFull([FromRoute] string id)
+        [HttpGet("{vacancyId}/{id}/full")]
+        public async Task<ActionResult<VacancyCandidateFullDto>> GetFull(
+            [FromRoute] string id,
+            [FromRoute] string vacancyId
+        )
         {
-            var query = new GetFullVacancyCandidateByIdQuery(id);
+            var query = new GetFullVacancyCandidateByIdQuery(id, vacancyId);
             return Ok(await Mediator.Send(query));
         }
 

@@ -13,8 +13,7 @@ export class PoolService {
   public routePrefix = '/pools';
 
   public getPools() {
-    return this.http.getRequest<ApplicantsPool[]>(
-      `${this.routePrefix}`);
+    return this.http.getRequest<ApplicantsPool[]>(`${this.routePrefix}`);
   }
 
   public getPool(id: string) {
@@ -27,9 +26,10 @@ export class PoolService {
       `${this.routePrefix}`, pool);
   }
 
-  public updatePool(pool : UpdatePool) {
+  public updatePool(pool: UpdatePool) {
     return this.http.putFullRequest<ApplicantsPool>(
-      `${this.routePrefix}`, pool);
+      `${this.routePrefix}`,
+      pool,
+    );
   }
-
 }

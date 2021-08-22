@@ -1,4 +1,4 @@
-import { ApplicantIsSelected } from '../applicant/applicant-select';
+import { ApplicantIsSelected } from '../applicants/applicant-select';
 import { Model } from '../model';
 
 export interface ApplicantsPool extends Model{
