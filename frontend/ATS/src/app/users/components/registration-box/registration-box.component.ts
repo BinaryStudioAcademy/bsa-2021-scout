@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoginRegistCommonComponent } from '../login-regist-common/login-regist-common.component';
 import { RegisterDto } from '../../models/register-dto';
@@ -6,7 +6,7 @@ import { AuthenticationService } from '../../services/auth.service';
 import { UserRegisterDto } from '../../models/auth/user-register-dto';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { environment } from 'src/environments/environment';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
@@ -34,11 +34,10 @@ export const DATE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS },
   ],
 })
-export class RegistrationBoxComponent implements AfterViewInit {
+export class RegistrationBoxComponent {
   constructor(public loginRegistCommonComponent: LoginRegistCommonComponent,
     public authenticationService: AuthenticationService,
     private notificationService: NotificationService,
-    private route: ActivatedRoute,
     private router: Router) { }
 
   public userRegisterDto: UserRegisterDto = {} as UserRegisterDto;
@@ -81,16 +80,6 @@ export class RegistrationBoxComponent implements AfterViewInit {
     ]),
   }, { validators: this.loginRegistCommonComponent.passwordsMatch });
 
-  public ngAfterViewInit() {
-    this.route.queryParams
-      .subscribe(params => {
-        if (params.email) {
-          this.registrationForm.controls['userEmail'].setValue(params.email);
-          this.registrationForm.controls['userEmail'].disable();
-        }
-      },
-      );       
-  }
 
   public onSubmit() {
     if (this.registrationForm.valid) {
@@ -108,12 +97,7 @@ export class RegistrationBoxComponent implements AfterViewInit {
         },
         (error) => {
           this.isRequestFinished = true;
-          if(error.description != null){
-            this.notificationService.showErrorMessage(error.description, 'Something went wrong');
-          }
-          else{
-            this.notificationService.showErrorMessage(error.message, 'Something went wrong');
-          }
+          this.notificationService.showErrorMessage(error.description, 'Something went wrong');
         },
         );
     }

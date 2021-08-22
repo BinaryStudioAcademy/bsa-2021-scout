@@ -3,14 +3,11 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { EmailIsNotConfirmedErrorType } 
-  from '../../models/auth/emai-is-not-confirmed-error-type';
 import { UserLoginDto } from '../../models/auth/user-login-dto';
 import { AuthenticationService } from '../../services/auth.service';
 import { ForgotPasswordDialogComponent }
   from '../forgot-password-dialog/forgot-password-dialog.component';
-import { LoginRegistCommonComponent }
-  from '../login-regist-common/login-regist-common.component';
+import { LoginRegistCommonComponent } from '../login-regist-common/login-regist-common.component';
 
 @Component({
   selector: 'app-login-box',
@@ -57,7 +54,6 @@ export class LoginBoxComponent {
 
   public onSubmit() {
     if (this.loginForm.valid) {
-
       this.authenticationService.login(this.userLoginDto).pipe()
         .subscribe(() => {
           this.isRequestFinished = false;
@@ -65,18 +61,7 @@ export class LoginBoxComponent {
         },
         (error) => {
           this.isRequestFinished = true;
-          if (error.description != null) {
-            if (error.type === EmailIsNotConfirmedErrorType.EmailIsNotConfirmed) {
-              this.router.navigate(['/resend-email'],
-                { queryParams: { email: this.userLoginDto.email } });
-            }
-            else {
-              this.notificationService.showErrorMessage(error.description, 'Something went wrong');
-            }
-          }
-          else {
-            this.notificationService.showErrorMessage(error, 'Something went wrong');
-          }
+          this.notificationService.showErrorMessage(error.description);
         });
     }
   }

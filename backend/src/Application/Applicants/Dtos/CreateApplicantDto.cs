@@ -1,6 +1,5 @@
 using FluentValidation;
 using Application.Common.Models;
-using Application.ElasticEnities.Dtos;
 
 namespace Application.Applicants.Dtos
 {
@@ -10,7 +9,6 @@ namespace Application.Applicants.Dtos
         public string Skype { get; set; }
         public string LinkedInUrl { get; set; }
         public double Experience { get; set; }
-        public ElasticEnitityDto Tags { get; set; }
     }
 
     public class CreateApplicantDtoValidator : AbstractValidator<CreateApplicantDto>

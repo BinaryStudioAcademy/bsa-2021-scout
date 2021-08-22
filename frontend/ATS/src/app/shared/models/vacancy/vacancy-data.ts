@@ -1,15 +1,13 @@
-import { ProjectInfo } from './../../../projects/models/project-info';
 import { User } from 'src/app/users/models/user';
-import { Model } from '../model';
 import { VacancyStatus } from './vacancy-status';
 
-export interface VacancyData extends Model{
+export interface VacancyData {
   title: string;
-  position: number;
-  candidatesAmount: number;
+  currentApplicantsAmount: number;
+  requiredCandidatesAmount: number;
+  department: string;
   responsibleHr: User;
   creationDate: Date;
-  project: ProjectInfo,
   status: VacancyStatus;
 }
   ​

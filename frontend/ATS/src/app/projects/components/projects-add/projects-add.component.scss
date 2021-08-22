@@ -27,6 +27,19 @@ $primary-font: Nunito;
         margin-top: 20px;
         margin-bottom: 20px;
     }
+    /* Validation errors */
+    .error-border {
+        border: 1px solid red;
+        border-radius: 10px;
+    }
+    .custom-error {
+        font-family: $primary-font;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 19px;
+        color: red;
+        max-width: fit-content;
+    }
 }
 
 ::ng-deep {
@@ -55,7 +68,7 @@ $primary-font: Nunito;
         height: 185px;
     }
     .wide .mat-form-field-flex {
-        height: 90%;
+        height: 100%;
         margin-top: 20px;
         padding: 0;
         background-color: transparent;
@@ -71,8 +84,8 @@ $primary-font: Nunito;
     /* Close Button */
     .close-dialog {
         position: absolute;
-        top: 5px;
-        right: 5px;
+        top: 26px;
+        right: 26px;
     }
     .close-dialog:hover {
         cursor: pointer;

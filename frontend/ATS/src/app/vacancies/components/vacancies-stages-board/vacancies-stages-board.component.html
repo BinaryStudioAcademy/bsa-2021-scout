@@ -1,5 +1,3 @@
-<app-header></app-header>
-
 <div class="container">
   <app-spinner *ngIf="loading"></app-spinner>
   <ng-container *ngIf="!loading">
@@ -21,7 +19,7 @@
         </div>
       </div>
       <div class="buttons">
-        <button mat-stroked-button class="button" color="primary" (click)="openCandidateAddModal()">
+        <button mat-stroked-button class="button" color="primary">
           <mat-icon>add</mat-icon>
           <span>Add candidates</span>
         </button>

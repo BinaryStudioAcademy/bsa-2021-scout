@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Application.Interfaces;
-using System.Collections.Generic;
-using Application.Users.Queries;
 
 namespace WebAPI.Controllers
 {
@@ -40,14 +38,6 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> IsEmailAlreadyUsed(string email)
         {
             var query = new IsEntityWithPropertyExistQuery("Email", email);
-            return Ok(await Mediator.Send(query));
-        }
-
-        [Authorize(Roles = "HrLead")]
-        [HttpGet("for-hr-lead")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUserForHrLead()
-        {
-            var query = new GetUsersForHrLeadQuery();
             return Ok(await Mediator.Send(query));
         }
 

@@ -14,8 +14,7 @@ namespace Domain.Entities
     public enum ElasticType
     {
         ApplicantTags = 1,
-        VacancyTags = 2,
-        ProjectTags = 3,
+        VacancyTags = 2
     }
 
     public class ElasticEntity : Entity

@@ -1,11 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component } from '@angular/core';
 import { animateText, onSideNavChange } from 'src/app/shared/animations/animation';
 import { SidenavService } from 'src/app/shared/services/sidenav.service';
-import { User } from 'src/app/users/models/user';
-import { AuthUserEventService } from 'src/app/users/services/auth-user-event.service';
-import { AuthenticationService } from 'src/app/users/services/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -13,7 +8,7 @@ import { AuthenticationService } from 'src/app/users/services/auth.service';
   styleUrls: ['./menu.component.scss'],
   animations: [onSideNavChange, animateText],
 })
-export class MenuComponent implements OnInit, OnDestroy{
+export class MenuComponent {
 
   public hideMenu = false;
 
@@ -21,30 +16,8 @@ export class MenuComponent implements OnInit, OnDestroy{
 
   public linkText: boolean = true;
 
-  public isHrLead: boolean = false;
-  
-  private unsubscribe$ = new Subject<void>();
-
-  constructor(
-    private _sidenavService: SidenavService,
-    private authService: AuthenticationService,
-    private authUserEventService: AuthUserEventService) {
-  }
-
-  public ngOnInit() {
-    this.authService
-      .getUser()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(user => this.checkIsHrLead(user));
-
-    this.authUserEventService.userChangedEvent$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(user => this.checkIsHrLead(user));
-  }
-
-  public ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  constructor(private _sidenavService: SidenavService) { 
+    //
   }
 
   onSinenavToggle() {
@@ -54,9 +27,5 @@ export class MenuComponent implements OnInit, OnDestroy{
       this.linkText = this.sideNavState;
     }, 200);
     this._sidenavService.sideNavState$.next(this.sideNavState);
-  }
-
-  public checkIsHrLead(user: User | null): void {
-    this.isHrLead = user?.roles?.find(role => role.name === 'HrLead') ? true : false;
   }
 }
