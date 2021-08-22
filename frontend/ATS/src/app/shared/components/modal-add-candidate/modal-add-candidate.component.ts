@@ -124,7 +124,6 @@ export class AddCandidateModalComponent implements OnDestroy {
         .subscribe(
           vacancies => {
             this.loading = false;
-            console.log(vacancies);
             this.vacancies = vacancies;
             this.filteredVacancies = this.vacanciesForm.valueChanges.pipe(
               startWith(''),
