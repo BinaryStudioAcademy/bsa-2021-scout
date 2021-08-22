@@ -1,4 +1,4 @@
-import {Component,EventEmitter,Input,OnChanges,OnInit,Output,SimpleChanges} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Action } from 'src/app/shared/models/action/action';
 import { ActionType } from 'src/app/shared/models/action/action-type';
@@ -11,13 +11,13 @@ import { Stage } from 'src/app/shared/models/stages/stage';
 })
 export class CreateStageComponent implements OnChanges {
 
-  submitted:Boolean = false;
-  editModeItemIndex:number=-1;
+  submitted: Boolean = false;
+  editModeItemIndex: number = -1;
   @Output() stageChange = new EventEmitter<Stage>();
   @Output() stageCreateAndAddChange = new EventEmitter<Stage>();
   @Output() isClosedChange = new EventEmitter<Boolean>();
-  @Input() stage:Stage = {} as Stage;
-  stageId : string = '';
+  @Input() stage: Stage = {} as Stage;
+  stageId: string = '';
   constructor(private fb: FormBuilder) {
     this.stageForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -28,27 +28,28 @@ export class CreateStageComponent implements OnChanges {
     );
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    var finalArray = changes.stage.currentValue.actions.map(function (obj : Action) {
-      return obj.actionType;
-    });
-
-    if(changes.stage && this.stageForm){
-      changes.stage.currentValue.actions.forEach((element : Action)  => {
-        var index = this.actions.findIndex(x=> x.actionType == element.actionType);
-        this.actions[index] = element;
-      });
-      console.log(changes.stage.currentValue.id);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.stage && this.stageForm) {
+      console.log(changes.stage.currentValue.actions);
+      if(changes.stage.currentValue.actions){
+        var finalArray = changes.stage.currentValue.actions.map(function (obj: Action) {
+          return obj.actionType;
+        });
+        changes.stage.currentValue.actions.forEach((element: Action) => {
+          var index = this.actions.findIndex(x => x.actionType == element.actionType);
+          this.actions[index] = element;
+        });
+        this.stageForm.get('actions')?.setValue(finalArray);
+      }
       this.stageId = changes.stage.currentValue.id;
       this.stageForm.get('name')?.setValue(changes.stage.currentValue.name);
-      this.stageForm.get('actions')?.setValue(finalArray);
       this.stageForm.get('isReviewable')?.setValue(changes.stage.currentValue.isReviewable);
       this.stageForm.get('rates')?.setValue(changes.stage.currentValue.rates);
       this.editModeItemIndex = changes.stage.currentValue.index;
     }
   }
 
-  save(){
+  save() {
     this.submitted = true;
     this.stage = this.stageForm.value;
     this.stage.index = this.editModeItemIndex;
@@ -56,28 +57,30 @@ export class CreateStageComponent implements OnChanges {
   }
 
   actions: Action[] = [
-    { id: undefined, name:'None', actionType:ActionType.None, stageId: this.stageId  },
-    { id: undefined, name:'Send mail', actionType:ActionType.SendMail, stageId:  this.stageId },
-    { id: undefined, name:'Add task', actionType:ActionType.AddTask, stageId:  this.stageId },
-    { id: undefined, name:'Schedule interview action', 
-      actionType:ActionType.ScheduleInterviewAction, 
-      stageId: this.stageId  },
+    { id: undefined, name: 'None', actionType: ActionType.None, stageId: this.stageId },
+    { id: undefined, name: 'Send mail', actionType: ActionType.SendMail, stageId: this.stageId },
+    { id: undefined, name: 'Add task', actionType: ActionType.AddTask, stageId: this.stageId },
+    {
+      id: undefined, name: 'Schedule interview action',
+      actionType: ActionType.ScheduleInterviewAction,
+      stageId: this.stageId,
+    },
   ];
 
-  onStageSave(){
+  onStageSave() {
     this.submitted = true;
     this.stage = this.stageForm.value;
     this.stage.index = this.editModeItemIndex;
     this.stage.actions = [];
-    this.stageForm.get('actions')?.value.forEach((element : number) => {
-      this.stage.actions.push(this.actions.find(x=> x.actionType == element) as Action);
+    this.stageForm.get('actions')?.value.forEach((element: number) => {
+      this.stage.actions.push(this.actions.find(x => x.actionType == element) as Action);
     });
     this.stageForm.reset();
     this.stageChange.emit(this.stage);
     this.stage = {} as Stage;
   }
 
-  onSaveAndAdd(){
+  onSaveAndAdd() {
     this.submitted = true;
     this.stage = this.stageForm.value;
     this.stage.index = this.editModeItemIndex;
@@ -86,7 +89,7 @@ export class CreateStageComponent implements OnChanges {
     this.stage = {} as Stage;
   }
 
-  onStageClose(){
+  onStageClose() {
     this.submitted = false;
     this.stageForm.reset();
     this.isClosedChange.emit(true);

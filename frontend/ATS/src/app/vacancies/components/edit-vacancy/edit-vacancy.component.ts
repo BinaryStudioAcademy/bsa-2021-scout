@@ -146,6 +146,7 @@ export class EditVacancyComponent implements OnInit {
       tags : this.elasticEntity,
       stages: this.stageList,
     };
+    console.log(this.vacancy);
     if (!this.data.vacancyToEdit) {
       console.log(this.vacancy);
       this.vacancyService.postVacancy(this.vacancy)
@@ -308,7 +309,7 @@ export class EditVacancyComponent implements OnInit {
 
   //changes indexes of stages
   sortStageList() {
-    let index = 1;
+    let index = 0;
     this.stageList.forEach(x => {
       x.index = index;
       index++;
