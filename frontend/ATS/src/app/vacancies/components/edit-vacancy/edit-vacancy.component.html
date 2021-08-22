@@ -13,10 +13,10 @@
             <mat-label>Title</mat-label>
             <mat-form-field appearance="fill" [ngClass]="(vacancyFormControl.title.touched || submitted) && vacancyFormControl.title.invalid ? 'invalid-input' : ''">
                 <input matInput type="text" autocomplete="off" formControlName="title" placeholder="Enter title">
-                <mat-error *ngIf="(vacancyFormControl.title.touched || submitted) && vacancyFormControl.title.errors?.required">
-                    This field shouldn't be empty
-                </mat-error>    
             </mat-form-field>
+            <mat-error *ngIf="(vacancyFormControl.title.touched || submitted) && vacancyFormControl.title.errors?.required">
+                This field shouldn't be empty
+            </mat-error>    
             <mat-label>Description vacancy</mat-label>
             <mat-form-field appearance="fill" [ngClass]="(vacancyFormControl.description.touched || submitted) && vacancyFormControl.description.invalid ? 'invalid-input' : ''">
                 <textarea matInput type="text" autocomplete="off" formControlName="description" placeholder="Enter text"
@@ -24,10 +24,10 @@
                 #autosize="cdkTextareaAutosize"
                 cdkAutosizeMinRows="12"
                 cdkAutosizeMaxRows="12"></textarea>
-                <mat-error *ngIf="(vacancyFormControl.description.touched || submitted) && vacancyFormControl.description.errors?.required">
-                    This field shouldn't be empty
-                </mat-error>
             </mat-form-field>
+            <mat-error *ngIf="(vacancyFormControl.description.touched || submitted) && vacancyFormControl.description.errors?.required">
+                This field shouldn't be empty
+            </mat-error>
             <mat-label>Requirements</mat-label>
             <mat-form-field appearance="fill" [ngClass]="(vacancyFormControl.requirements.touched || submitted) && vacancyFormControl.requirements.invalid ? 'invalid-input' : ''">
                 <textarea matInput type="text" autocomplete="off" formControlName="requirements" placeholder="Enter text"
@@ -35,46 +35,43 @@
                 #autosize="cdkTextareaAutosize"
                 cdkAutosizeMinRows="12"
                 cdkAutosizeMaxRows="12"></textarea>
-                <mat-error *ngIf="(vacancyFormControl.requirements.touched || submitted) && vacancyFormControl.requirements.errors?.required">
-                    This field shouldn't be empty
-                </mat-error>
             </mat-form-field>
+            <mat-error *ngIf="(vacancyFormControl.requirements.touched || submitted) && vacancyFormControl.requirements.errors?.required">
+                This field shouldn't be empty
+            </mat-error>
                 <mat-label>Project</mat-label>
             <mat-form-field appearance="fill" [ngClass]="(vacancyFormControl.projectId.touched || submitted) && vacancyFormControl.projectId.invalid ? 'invalid-input' : ''">
                   <mat-select formControlName="projectId" placeholder="Select project">
                     <input matInput class="search-input" type="text" autocomplete="off" placeholder="Search project..." (keyup)="onKey($event)">
                    <mat-option *ngFor="let project of selectedProjects" [value]="project.id">{{project.name}}</mat-option>
                  </mat-select>
-                <mat-error *ngIf="(vacancyFormControl.projectId.touched || submitted) && vacancyFormControl.projectId.errors?.required">
-                    This field shouldn't be empty
-                </mat-error>
               </mat-form-field>
+              <mat-error *ngIf="(vacancyFormControl.projectId.touched || submitted) && vacancyFormControl.projectId.errors?.required">
+                This field shouldn't be empty
+            </mat-error>
               <div class="input-rows">
                 <div class="form-container">
                     <mat-label>Salary range</mat-label>
                     <div class="range-rows">
                     <mat-form-field appearance="fill" [ngClass]="(vacancyFormControl.salaryFrom.touched || submitted) && vacancyFormControl.salaryFrom.invalid ? 'invalid-input' : ''">
                         <input matInput type="text" autocomplete="off" formControlName="salaryFrom" placeholder="from">
-                        <mat-error *ngIf="(vacancyFormControl.salaryFrom.touched || submitted) && vacancyFormControl.salaryFrom.errors?.required">
-                            This field is required
-                        </mat-error>
-    
                     </mat-form-field>
+                    <mat-error *ngIf="(vacancyFormControl.salaryFrom.touched || submitted) && vacancyFormControl.salaryFrom.errors?.required">
+                        This field is required
+                    </mat-error>
                     <div class="center">
                         <h1>-</h1>
                         </div>
                     <mat-form-field appearance="fill" [ngClass]="(vacancyFormControl.salaryTo.touched || submitted) && (vacancyFormControl.salaryTo.invalid || vacancyForm.errors?.salaryRangeIsWrong) ? 'invalid-input' : ''">
                         <input matInput type="text" autocomplete="off" formControlName="salaryTo" placeholder="to">
-                         <mat-error *ngIf="(vacancyFormControl.salaryTo.touched || submitted) && vacancyFormControl.salaryTo.errors?.salaryRangeIsWrong">
-                            The first value of salary should be less
-                        </mat-error>
-                        <mat-error *ngIf="(vacancyFormControl.salaryTo.touched || submitted) && vacancyFormControl.salaryTo.errors?.required">
-                            This field is required
-                        </mat-error>
-    
                     </mat-form-field>
+                    <mat-error *ngIf="(vacancyFormControl.salaryTo.touched || submitted) && vacancyFormControl.salaryTo.errors?.salaryRangeIsWrong">
+                        The first value of salary should be less
+                    </mat-error>
+                    <mat-error *ngIf="(vacancyFormControl.salaryTo.touched || submitted) && vacancyFormControl.salaryTo.errors?.required">
+                        This field is required
+                    </mat-error>
                     </div>
-    
                 </div>
                 <div class="form-container">
                     <mat-label>Tier range</mat-label>
@@ -90,11 +87,10 @@
                            <mat-option value="6">6</mat-option>
                            <mat-option value="7">7</mat-option>
                          </mat-select>
-    
+                    </mat-form-field>
                     <mat-error *ngIf="(vacancyFormControl.tierFrom.touched || submitted) && vacancyFormControl.tierFrom.errors?.required">
                         This field is required
                     </mat-error>
-                    </mat-form-field>
                     <div class="center">
                     <h1>-</h1>
                     </div>
@@ -109,23 +105,23 @@
                            <mat-option *ngIf="isTierFromLessTierTo(6)" value="6">6</mat-option>
                            <mat-option *ngIf="isTierFromLessTierTo(7)" value="7">7</mat-option>
                          </mat-select>
+                        </mat-form-field>
                         <mat-error *ngIf="(vacancyFormControl.tierTo.touched || submitted) && vacancyFormControl.tierTo.errors?.required">
                             This field is required
                         </mat-error>
                         <mat-error *ngIf="(vacancyFormControl.tierTo.touched || submitted) && vacancyFormControl.tierTo.errors?.is">
                             This field is required
                         </mat-error>
-                        </mat-form-field>
                     </div>
                 </div>
             </div>
             <mat-label>Link to the jobs sites</mat-label>
             <mat-form-field appearance="fill" [ngClass]="(vacancyFormControl.link.touched || submitted) && vacancyFormControl.link.invalid ? 'invalid-input' : ''">
                 <input matInput type="text" autocomplete="off" formControlName="link" placeholder="Enter link">
-                <mat-error *ngIf="(vacancyFormControl.link.touched || submitted) && vacancyFormControl.link.errors?.required">
-                        This field shouldn't be empty
-                    </mat-error>
             </mat-form-field>
+            <mat-error *ngIf="(vacancyFormControl.link.touched || submitted) && vacancyFormControl.link.errors?.required">
+                This field shouldn't be empty
+            </mat-error>
                 <mat-label>Tags</mat-label>
             <mat-form-field appearance="fill">
                 <mat-chip-list #chipList >

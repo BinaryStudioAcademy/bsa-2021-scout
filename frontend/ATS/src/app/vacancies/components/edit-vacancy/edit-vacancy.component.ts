@@ -84,23 +84,6 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit() {
-    this.projectService
-      .getByCompany()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (response) => {
-          this.loading = false;
-          this.projects = response;
-          this.selectedProjects = this.projects;
-        },
-        () => {
-          this.loading = false;
-          this.notificationService.showErrorMessage('Failed to load projects.');
-        },
-      );
-  }
-
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -159,11 +142,20 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
           this.tags = response.tags.tagDtos;
         });
     }
-    this.projectService.getByCompany().subscribe(
-      response => {
-        this.projects = response;
-        this.selectedProjects = this.projects;
-      });
+    this.projectService
+      .getByCompany()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (response) => {
+          this.loading = false;
+          this.projects = response;
+          this.selectedProjects = this.projects;
+        },
+        () => {
+          this.loading = false;
+          this.notificationService.showErrorMessage('Failed to load projects.');
+        },
+      );
   }
 
   //------------------VACANCY------------------
