@@ -20,13 +20,11 @@ namespace Infrastructure.Mongo.Seeding
             body {
                 width: 100%;
             }
-
             .container {
                 width: 100%;
                 padding: 100px 0;
                 font-family: Arial;
             }
-
             .content-wrp {
                 margin: 0 auto;
                 width: 100%;
@@ -41,7 +39,6 @@ namespace Infrastructure.Mongo.Seeding
                 max-width: 200px;
                 margin-bottom: 30px;
             }
-
             .content {
                 background-color: #F6F7F9;
                 width: 100%;
