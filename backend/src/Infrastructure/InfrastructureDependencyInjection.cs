@@ -59,7 +59,7 @@ namespace Infrastructure
             );
             var elastic = new ElasticClient(settings);
             var exception = elastic.Ping().OriginalException;
-            if(exception!=null)
+            if (exception != null)
                 throw exception;
             services.AddSingleton<IElasticClient>(elastic);
 
@@ -166,6 +166,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<Pool>, WriteRepository<Pool>>();
             services.AddScoped<IWriteRepository<PoolToApplicant>, PoolToApplicantWriteRepository>();
             services.AddScoped<IPoolToApplicantWriteRepository, PoolToApplicantWriteRepository>();
+            services.AddScoped<IWriteRepository<MailTemplate>, MongoWriteRepository<MailTemplate>>();
 
             return services;
         }
