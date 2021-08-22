@@ -35,12 +35,6 @@ namespace WebAPI.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("check-connection-env")]
-        public ActionResult<string> Check(){
-            return Environment.GetEnvironmentVariable("ELASTIC_CONNECTION_STRING");
-        }
-
-        [AllowAnonymous]
         [HttpGet, Route("Email/{email}")]
         public async Task<IActionResult> IsEmailAlreadyUsed(string email)
         {
