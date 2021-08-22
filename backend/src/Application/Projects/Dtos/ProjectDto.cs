@@ -1,4 +1,5 @@
 ﻿using Application.Common.Models;
+using Application.ElasticEnities.Dtos;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace Application.Projects.Dtos
         public string Description { get; set; }
         public string TeamInfo { get; set; }
         public string WebsiteLink { get; set; }
+        public ElasticEnitityDto Tags { get; set; }
+
     }
 
     public class ProjectDtoValidator : AbstractValidator<ProjectDto>

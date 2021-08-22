@@ -1,8 +1,11 @@
+import { MatDialog } from '@angular/material/dialog';
 import { Component, Input, OnDestroy } from '@angular/core';
 import _ from 'lodash';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/users/services/auth.service';
+import { EditVacancyComponent } 
+  from 'src/app/vacancies/components/edit-vacancy/edit-vacancy.component';
 import { NotificationService } from '../../services/notification.service';
 
 @Component({
@@ -21,6 +24,7 @@ export class HeaderComponent implements OnDestroy {
 
   public constructor(
     private readonly service: AuthenticationService,
+    private readonly dialog: MatDialog,
     private readonly notifications: NotificationService,
   ) {}
 
@@ -46,4 +50,11 @@ export class HeaderComponent implements OnDestroy {
         },
       );
   }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(EditVacancyComponent, {
+      width: '914px',
+      height: 'auto',
+      data: {},
+    });
+  };
 }

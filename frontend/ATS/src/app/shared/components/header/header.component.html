@@ -1,6 +1,6 @@
 <app-spinner [loading]="loading"></app-spinner>
 <mat-toolbar>
-  <app-button *ngIf="!removeButton">
+  <app-button *ngIf="!removeButton" (click)="openDialog()">
     + New vacancy
   </app-button>
   <app-search-form>

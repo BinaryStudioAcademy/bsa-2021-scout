@@ -6,6 +6,7 @@ import { VacancyStatus } from './vacancy-status';
 export interface VacancyData extends Model{
   title: string;
   position: number;
+  isFollowed: boolean;
   candidatesAmount: number;
   responsibleHr: User;
   creationDate: Date;

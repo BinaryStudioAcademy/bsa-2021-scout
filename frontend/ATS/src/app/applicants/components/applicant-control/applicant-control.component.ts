@@ -8,6 +8,8 @@ import {
 
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { DeleteConfirmComponent } 
+  from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { AddCandidateModalComponent } 
@@ -18,9 +20,6 @@ import { ViewableApplicant } from 'src/app/shared/models/applicants/viewable-app
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
-import {
-  ApplicantDeleteConfirmComponent,
-} from '../applicant-delete-confirm/applicant-delete-confirm.component';
 
 import { UpdateApplicantComponent } from '../update-applicant/update-applicant.component';
 
@@ -91,10 +90,13 @@ export class ApplicantControlComponent implements OnDestroy {
   }
 
   public showDeleteConfirmDialog(): void {
-    const dialogRef = this.dialog.open(ApplicantDeleteConfirmComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmComponent, {
       width: '400px',
       height: 'min-content',
       autoFocus: false,
+      data:{
+        entityName: 'Applicant',
+      },
     });
 
     dialogRef.afterClosed().subscribe((response: boolean) => {

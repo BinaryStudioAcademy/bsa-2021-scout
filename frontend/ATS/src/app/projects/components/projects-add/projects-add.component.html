@@ -61,6 +61,9 @@
             <div class="validation-error" *ngIf="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors?.url">
                 Wrong url format
             </div>
+
+            <p>Tags</p>
+            <app-tags-edit [tags]="project.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
     
             <button mat-button mat-dialog-close type="submit" [disabled]="!projectCreateForm.valid || !this.projectCreateForm.dirty">Publish</button>
         </form>

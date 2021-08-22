@@ -1,4 +1,5 @@
 ﻿using Application.Common.Queries;
+using Application.ElasticEnities.Dtos;
 using Application.Projects.Dtos;
 using AutoMapper;
 using Domain.Entities;
@@ -20,9 +21,11 @@ namespace Application.Projects.Queries
     {
         protected readonly IReadRepository<Project> _repository;
         protected readonly IMapper _mapper;
+        private readonly ISender _mediator;
 
-        public GetProjectListQueryHandler(IReadRepository<Project> repository, IMapper mapper)
+        public GetProjectListQueryHandler(IReadRepository<Project> repository, ISender mediator, IMapper mapper)
         {
+            _mediator = mediator;
             _repository = repository;
             _mapper = mapper;
         }
@@ -30,8 +33,12 @@ namespace Application.Projects.Queries
         public async Task<IEnumerable<ProjectGetDto>> Handle(GetProjectListQuery query, CancellationToken _)
         {
             IEnumerable<Project> result = await _repository.GetEnumerableAsync();
-
-            return _mapper.Map<IEnumerable<ProjectGetDto>>(result);
+            IEnumerable<ProjectGetDto> projectGetDtos = _mapper.Map<IEnumerable<ProjectGetDto>>(result);
+            foreach(var entity in projectGetDtos){
+                var tagsQueryTask = await _mediator.Send(new GetElasticDocumentByIdQuery<ElasticEnitityDto>(entity.Id));
+                entity.Tags = tagsQueryTask;
+            }
+            return projectGetDtos;
         }
     }
 }

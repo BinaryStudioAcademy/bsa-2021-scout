@@ -16,10 +16,11 @@ import { ProjectInfo } from 'src/app/projects/models/project-info';
 import { ProjectService } from 'src/app/projects/services/projects.service';
 import { ProjectsEditComponent } from '../projects-edit/projects-edit.component';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { Tag } from 'src/app/shared/models/tags/tag';
+import { DeleteConfirmComponent } 
+  from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ProjectDeleteConfirmComponent } 
-  from '../project-delete-confirm/project-delete-confirm.component';
 
 const TAGS: string[] = ['ASP.NET', 'WPF', 'Angular'];
 
@@ -42,7 +43,7 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   projects: ProjectInfo[] = [];
   dataSource: MatTableDataSource<ProjectInfo>;
   tags: string[] = TAGS;
-
+  isFollowedPage: boolean = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
@@ -63,11 +64,16 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
     this.projectService
       .getProjects()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((resp) => {
-        this.projects = resp.body!;
-        this.dataSource.data = this.projects;
-        this.directive.applyFilter$.emit();
-      });
+      .subscribe(
+        (resp) => {
+          this.projects = resp.body!;
+          this.projects.forEach((d, i) => {
+            d.position = i + 1;
+          });
+          this.dataSource.data = this.projects;
+          this.directive.applyFilter$.emit();
+        },
+      );
   }
 
   ngAfterViewInit() {
@@ -78,7 +84,27 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnInit() {
     this.getProjects();
   }
+  public switchToFollowed(){
+    this.isFollowedPage = true;
+    this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    this.directive.applyFilter$.emit();
+  }
+  public getFirstTags(project: ProjectInfo): Tag[] {
+    return project.tags!.tagDtos.length > 3
+      ? project.tags!.tagDtos.slice(0, 2)
+      : project.tags!.tagDtos;
+  }
 
+  public toggleTags(project: ProjectInfo): void {
+    project.isShowAllTags = project.isShowAllTags
+      ? false
+      : true;
+  }
+  public switchAwayToAll(){
+    this.isFollowedPage = false;
+    this.dataSource.data = this.projects;
+    this.directive.applyFilter$.emit();
+  }
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -93,7 +119,15 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
       this.dataSource.paginator.firstPage();
     }
   }
-
+  public onBookmark(data: ProjectInfo, perfomToFollowCleanUp: boolean = false){
+    let projetIndex:number = this.dataSource.data.findIndex(project=>project.id === data.id)!;
+    data.isFollowed = !data.isFollowed;
+    this.dataSource.data[projetIndex] = data;
+    if(perfomToFollowCleanUp){
+      this.dataSource.data = this.dataSource.data.filter(project=>project.isFollowed);
+    }
+    this.directive.applyFilter$.emit();
+  }
   public OnCreate(): void {
     this.dialog.open(ProjectsAddComponent);
 
@@ -111,10 +145,13 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public showDeleteConfirmDialog(projectToDelete: ProjectInfo): void {
-    const dialogRef = this.dialog.open(ProjectDeleteConfirmComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmComponent, {
       width: '400px',
       height: 'min-content',
       autoFocus: false,
+      data:{
+        entityName: 'Project',
+      },
     });
 
     dialogRef.afterClosed()

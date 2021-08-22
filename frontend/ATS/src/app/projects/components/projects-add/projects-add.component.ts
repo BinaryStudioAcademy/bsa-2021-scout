@@ -11,6 +11,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ProjectInfo } from 'src/app/projects/models/project-info';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ProjectService } from 'src/app/projects/services/projects.service';
+import { Tag } from 'src/app/shared/models/tags/tag';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -37,24 +38,22 @@ export class ProjectsAddComponent implements OnDestroy {
   urlRegEx: string = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
 
   projectCreateForm = new FormGroup({
-    name: new FormControl(this.project.name, [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(15),
-    ]),
-    logo: new FormControl(this.project.logo, [Validators.required]),
-    description: new FormControl(this.project.description, [
-      Validators.required,
-      Validators.minLength(10),
-    ]),
-    teamInfo: new FormControl(this.project.description, [
-      Validators.required,
-      Validators.minLength(10),
-    ]),
-    websiteLink: new FormControl(this.project.websiteLink, [
-      Validators.required,
-      URLValidator(),
-    ]),
+    'name': new FormControl(this.project.name,
+      [Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(15)]),
+    'logo': new FormControl(this.project.logo,
+      [Validators.required]),
+    'description': new FormControl(this.project.description,
+      [Validators.required,
+        Validators.minLength(10)]),
+    'teamInfo': new FormControl(this.project.description,
+      [Validators.required,
+        Validators.minLength(10)]),
+    'websiteLink': new FormControl(this.project.websiteLink,
+      [Validators.required,
+        URLValidator()]),
+    'tags':new FormControl(this.project.tags,[]),
   });
 
   public loading: boolean = false;
@@ -107,6 +106,10 @@ export class ProjectsAddComponent implements OnDestroy {
       );
 
     this.dialogRef.close();
+  }
+  
+  public updateTags(tags: Tag[]): void {
+    this.project.tags.tagDtos = tags;
   }
 }
 

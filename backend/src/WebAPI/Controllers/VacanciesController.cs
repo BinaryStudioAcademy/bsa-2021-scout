@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Common.Commands;
 using Application.Common.Queries;
 using Application.Vacancies.Commands.Create;
+using Application.Vacancies.Commands.Delete;
 using Application.Vacancies.Commands.Edit;
 using Application.Vacancies.Dtos;
 using Application.Vacancies.Queries;
@@ -44,6 +45,12 @@ namespace WebAPI.Controllers
         {
             var command = new EditVacancyCommand(vacancy, id);
             return StatusCode(201, await Mediator.Send(command));
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteVacancy(string id)
+        {
+            var command = new DeleteVacancyCommand(id);
+            return StatusCode(204, await Mediator.Send(command));
         }
     }
 }

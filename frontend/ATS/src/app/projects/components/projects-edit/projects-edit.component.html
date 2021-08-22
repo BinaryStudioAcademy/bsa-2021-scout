@@ -51,16 +51,19 @@
                 Team info must be at least 10 characters long.
             </div>
 
-            <h5>Website Link</h5>
-            <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors? 'invalid-input': ''">
-                <input matInput type="text" formControlName="websiteLink" placeholder="Enter website link project">
-            </mat-form-field>
-            <div class="validation-error" *ngIf="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors?.required">
-                Is required.
-            </div>
-            <div class="validation-error" *ngIf="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors?.url">
-                Wrong url format
-            </div>
+        <h5>Website Link</h5>
+        <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors? 'invalid-input': ''">
+            <input matInput type="text" formControlName="websiteLink" placeholder="Enter website link project">
+        </mat-form-field>
+        <div class="validation-error" *ngIf="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors?.required">
+            Is required.
+        </div>
+        <div class="validation-error" *ngIf="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors?.url">
+            Wrong url format
+        </div>
+        
+        <p>Tags</p>
+        <app-tags-edit [tags]="project.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
 
             <button mat-button mat-dialog-close type="submit" [disabled]="!projectCreateForm.valid || !this.projectCreateForm.dirty">Submit</button>
         </form>
