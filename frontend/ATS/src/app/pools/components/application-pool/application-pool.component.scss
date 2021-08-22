@@ -70,6 +70,10 @@ button.tub:focus {
     z-index: 10;
 }
 
+.actions .mat-icon {
+    margin: 0 8px;
+}
+
 
 
 :host ::ng-deep {
