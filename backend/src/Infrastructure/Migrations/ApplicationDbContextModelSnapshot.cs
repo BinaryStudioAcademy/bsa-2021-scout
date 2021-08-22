@@ -168,6 +168,25 @@ namespace Infrastructure.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CvParsingJob", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AWSJobId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TriggerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TriggerId");
+
+                    b.ToTable("CvParsingJobs");
+                });
+
             modelBuilder.Entity("Domain.Entities.EmailToken", b =>
                 {
                     b.Property<string>("Id")
@@ -663,6 +682,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Candidate");
 
                     b.Navigation("Stage");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CvParsingJob", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "Trigger")
+                        .WithMany("CvParsingJobs")
+                        .HasForeignKey("TriggerId")
+                        .HasConstraintName("cv_parsing_job_user_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Trigger");
                 });
 
             modelBuilder.Entity("Domain.Entities.EmailToken", b =>
