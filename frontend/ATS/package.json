@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "postinstall": "ngcc"
-    },
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~12.1.2",
