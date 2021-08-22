@@ -1,4 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,23 +16,29 @@ import { ProjectInfo } from 'src/app/projects/models/project-info';
 import { ProjectService } from 'src/app/projects/services/projects.service';
 import { ProjectsEditComponent } from '../projects-edit/projects-edit.component';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ProjectDeleteConfirmComponent } 
   from '../project-delete-confirm/project-delete-confirm.component';
 
-const TAGS: string[] = [
-  'ASP.NET', 'WPF','Angular',
-];
-
+const TAGS: string[] = ['ASP.NET', 'WPF', 'Angular'];
 
 @Component({
   selector: 'app-projects-list',
   templateUrl: './projects-list.component.html',
   styleUrls: ['./projects-list.component.scss'],
 })
-
-export class ProjectsListComponent implements AfterViewInit, OnInit {
-  displayedColumns: string[] =
-  ['position', 'name', 'description', 'teamInfo', 'creationDate', 'tags', 'vacancies', 'actions'];
+export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
+  displayedColumns: string[] = [
+    'position',
+    'name',
+    'description',
+    'teamInfo',
+    'creationDate',
+    'tags',
+    'vacancies',
+    'actions',
+  ];
   projects: ProjectInfo[] = [];
   dataSource: MatTableDataSource<ProjectInfo>;
   tags: string[] = TAGS;
@@ -34,23 +47,27 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
 
+  public loading: boolean = false;
+
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
   constructor(
     private projectService: ProjectService,
     private dialog: MatDialog,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+  ) {
     this.dataSource = new MatTableDataSource<ProjectInfo>();
   }
 
   public getProjects() {
     this.projectService
       .getProjects()
-      .subscribe(
-        (resp) => {
-          this.projects = resp.body!;
-          this.dataSource.data = this.projects;
-          this.directive.applyFilter$.emit();
-        },
-      );
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        this.projects = resp.body!;
+        this.dataSource.data = this.projects;
+        this.directive.applyFilter$.emit();
+      });
   }
 
   ngAfterViewInit() {
@@ -62,6 +79,10 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
     this.getProjects();
   }
 
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -76,8 +97,7 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
   public OnCreate(): void {
     this.dialog.open(ProjectsAddComponent);
 
-    this.dialog.afterAllClosed.subscribe(_ =>
-      this.getProjects());
+    this.dialog.afterAllClosed.subscribe((_) => this.getProjects());
   }
 
   public OnEdit(projectToEdit: ProjectInfo): void {
@@ -87,8 +107,7 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
       },
     });
 
-    this.dialog.afterAllClosed.subscribe(_ =>
-      this.getProjects());
+    this.dialog.afterAllClosed.subscribe((_) => this.getProjects());
   }
 
   public showDeleteConfirmDialog(projectToDelete: ProjectInfo): void {
@@ -101,10 +120,14 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
     dialogRef.afterClosed()
       .subscribe((response: boolean) => {
         if (response) {
-          this.projectService.deleteProject(projectToDelete).subscribe(_ => {
-            this.notificationService.showSuccessMessage(`Project ${projectToDelete.name} deleted!`);
-            this.getProjects();
-          });
+          this.projectService
+            .deleteProject(projectToDelete)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(_ => {
+              this.notificationService
+                .showSuccessMessage(`Project ${projectToDelete.name} deleted!`);
+              this.getProjects();
+            });
         }
       });
   }

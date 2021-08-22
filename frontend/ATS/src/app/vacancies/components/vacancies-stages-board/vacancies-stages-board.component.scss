@@ -7,6 +7,7 @@
   justify-content: flex-start;
   padding: 40px 60px 20px 60px;
   box-sizing: border-box;
+  position: relative;
 
   & > * {
     width: 100%;
@@ -93,7 +94,7 @@
         display: flex;
         align-items: center;
         padding-left: 10px;
-        
+
         mat-icon {
           font-size: 16px;
           width: 16px;

@@ -48,6 +48,7 @@ export class OneCandidateComponent implements OnInit, OnDestroy {
           this.data = data;
         },
         () => {
+          this.loading = false;
           this.notificationService.showErrorMessage('Failed to load', 'Error');
         },
       );

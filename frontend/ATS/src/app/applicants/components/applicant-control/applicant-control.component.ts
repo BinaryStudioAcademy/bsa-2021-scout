@@ -1,16 +1,27 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
+
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { AddCandidateModalComponent }
+import { Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { AddCandidateModalComponent } 
   from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
 import { openFileFromUrl } from 'src/app/shared/helpers/openFileFromUrl';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { ViewableApplicant } from 'src/app/shared/models/applicants/viewable-applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { ApplicantDeleteConfirmComponent }
-  from '../applicant-delete-confirm/applicant-delete-confirm.component';
+
+import {
+  ApplicantDeleteConfirmComponent,
+} from '../applicant-delete-confirm/applicant-delete-confirm.component';
+
 import { UpdateApplicantComponent } from '../update-applicant/update-applicant.component';
 
 @Component({
@@ -18,10 +29,14 @@ import { UpdateApplicantComponent } from '../update-applicant/update-applicant.c
   templateUrl: './applicant-control.component.html',
   styleUrls: ['./applicant-control.component.scss'],
 })
-export class ApplicantControlComponent {
+export class ApplicantControlComponent implements OnDestroy {
   @Input() public applicant: ViewableApplicant | undefined = undefined;
   @Output() public deleteApplicantEvent = new EventEmitter<string>();
   @Output() public updateApplicantEvent = new EventEmitter<ViewableApplicant>();
+
+  public loading: boolean = false;
+
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   get isCvAvailable(): boolean {
     return this.applicant?.hasCv ?? false;
@@ -33,6 +48,11 @@ export class ApplicantControlComponent {
     private readonly applicantsService: ApplicantsService,
     private readonly route: ActivatedRoute,
   ) {}
+
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   public showApplicantUpdateDialog(): void {
     const dialogRef = this.dialog.open(UpdateApplicantComponent, {
@@ -46,26 +66,28 @@ export class ApplicantControlComponent {
       .afterClosed()
       .pipe(
         map((a: Applicant) => {
-          let viewableApplicant = (a as unknown) as ViewableApplicant;
-          
+          let viewableApplicant = a as unknown as ViewableApplicant;
+
           if (viewableApplicant) {
             viewableApplicant.isShowAllTags = false;
           }
-  
+
           return viewableApplicant;
         }),
       )
-      .subscribe((result: ViewableApplicant) => {
-        if (result) {
-          this.updateApplicantEvent.emit(result);
-        }
-      },
-      (error: Error) => {
-        this.notificationsService.showErrorMessage(
-          error.message,
-          'Cannot update the applicant',
-        );
-      });
+      .subscribe(
+        (result: ViewableApplicant) => {
+          if (result) {
+            this.updateApplicantEvent.emit(result);
+          }
+        },
+        (error: Error) => {
+          this.notificationsService.showErrorMessage(
+            error.message,
+            'Cannot update the applicant',
+          );
+        },
+      );
   }
 
   public showDeleteConfirmDialog(): void {
@@ -75,26 +97,33 @@ export class ApplicantControlComponent {
       autoFocus: false,
     });
 
-    dialogRef.afterClosed()
-      .subscribe((response: boolean) => {
-        if (response) {
-          this.deleteApplicant();
-        }
-      });
+    dialogRef.afterClosed().subscribe((response: boolean) => {
+      if (response) {
+        this.deleteApplicant();
+      }
+    });
   }
 
   public deleteApplicant(): void {
-    this.applicantsService.deleteApplicant(this.applicant!.id).subscribe(
-      () => {
-        this.deleteApplicantEvent.emit(this.applicant!.id);
-      },
-      (error: Error) => {
-        this.notificationsService.showErrorMessage(
-          error.message,
-          'Cannot delete the applicant',
-        );
-      },
-    );
+    this.loading = true;
+
+    this.applicantsService
+      .deleteApplicant(this.applicant!.id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        () => {
+          this.loading = false;
+          this.deleteApplicantEvent.emit(this.applicant!.id);
+        },
+        (error: Error) => {
+          this.loading = false;
+
+          this.notificationsService.showErrorMessage(
+            error.message,
+            'Cannot delete the applicant',
+          );
+        },
+      );
   }
 
   public openVacancyAddModal(): void {

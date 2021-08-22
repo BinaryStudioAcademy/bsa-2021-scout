@@ -18,6 +18,8 @@ import { FileType } from 'src/app/shared/enums/file-type.enum';
 })
 export class CreateApplicantComponent implements OnInit, OnDestroy {
   public validationGroup: FormGroup | undefined = undefined;
+  public loading: boolean = false;
+
   public createdApplicant: CreateApplicant = {
     firstName: '',
     lastName: '',
@@ -36,7 +38,7 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
   };
   public allowedCvFileType = FileType.Pdf;
 
-  private $unsubscribe = new Subject();
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
     private readonly applicantsService: ApplicantsService,
@@ -48,14 +50,19 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
   }
 
   public createApplicant(): void {
+    this.loading = true;
+
     this.applicantsService
       .addApplicant(this.createdApplicant)
-      .pipe(takeUntil(this.$unsubscribe))
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (result: Applicant) => {
+          this.loading = false;
           this.dialogRef.close(result);
         },
         (error: Error) => {
+          this.loading = false;
+
           this.notificationsService.showErrorMessage(
             error.message,
             'Cannot create an applicant',
@@ -82,8 +89,8 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.$unsubscribe.next();
-    this.$unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
 
     this.validationGroup?.reset();
   }

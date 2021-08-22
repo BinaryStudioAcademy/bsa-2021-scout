@@ -78,12 +78,14 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
 
   loadData() {
     this.loading = true;
+
     this.poolService
       .getPools()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
-          this.loading = false;          
+          this.loading = false;
+
           const dataWithTotal = resp.map(
             value => {
               return {
@@ -100,7 +102,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       );
   }
 
-  createPool(pool : CreatePool) {
+  createPool(pool: CreatePool) {
     this.loading = true;
     this.poolService
       .createPool(pool)
@@ -126,13 +128,13 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
+          this.loading = false;
           this.updateRowData(resp.body!);
         },
         (error) => {
+          this.loading = false;
           this.notificationService.showSuccessMessage('Update pool error');
-          console.log(error);
         },
-        () => (this.loading = false),
       );
   }
 
