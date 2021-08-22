@@ -1,7 +1,7 @@
-import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { MatTable } from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,8 +18,6 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { Router } from '@angular/router';
 import { PoolDetailsModalComponent } from '../pool-details-modal/pool-details-modal.component';
 
-
-
 const DATA: ApplicantsPool[] = [];
 
 @Component({
@@ -27,9 +25,7 @@ const DATA: ApplicantsPool[] = [];
   templateUrl: './application-pool.component.html',
   styleUrls: ['./application-pool.component.scss'],
 })
-
-export class ApplicationPoolComponent implements OnInit , AfterViewInit{
-
+export class ApplicationPoolComponent implements OnInit, AfterViewInit {
   constructor(
     private readonly dialogService: MatDialog, 
     private poolService : PoolService,
@@ -50,7 +46,7 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
   loading : boolean = false;
   dataSource = new MatTableDataSource(DATA);  
   private unsubscribe$ = new Subject<void>();
-  
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
@@ -70,7 +66,7 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if(this.dataSource.paginator) {
+    if (this.dataSource.paginator) {
       this.directive?.applyFilter$.emit();
       this.dataSource.paginator.firstPage();
     }
@@ -79,7 +75,7 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
   ngOnInit() : void {
     this.loadData();    
   }
-  
+
   loadData() {
     this.loading = true;
     this.poolService
@@ -98,13 +94,11 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
           this.updatePaginator();
         },
         (error) => {
-          this.loading = false; 
+          this.loading = false;
           this.notificationService.showErrorMessage(error);
         },
       );
   }
-
-  
 
   createPool(pool : CreatePool) {
     this.loading = true;
@@ -121,11 +115,11 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
         (error) => {          
           this.notificationService.showSuccessMessage(`Create pool error: ${error}`);
         },
-        () => { this.loading = false;},
+        () => { this.loading = false; },
       );
   }
 
-  updatePool(pool : UpdatePool) {
+  updatePool(pool: UpdatePool) {
     this.loading = true;
     this.poolService
       .updatePool(pool)
@@ -142,20 +136,12 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
       );
   }
 
-  onCreate()
-  {
+  onCreate() {
     let createDialog = this.dialogService.open(CreateTalentpoolModalComponent, {
       width: '600px',
     });
 
-    createDialog.afterClosed().subscribe(result => {      
-    });
-    
-    const dialogSubmitSubscription = 
-    createDialog.componentInstance.submitClicked.subscribe(result => {
-      this.createPool(result);      
-      dialogSubmitSubscription.unsubscribe();
-    });
+    createDialog.afterClosed().subscribe((result) => {});
   }
 
   onDetails(id: string)
@@ -166,27 +152,24 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
     });
   }
 
-  editPool(pool : ApplicantsPool)
-  {
+  editPool(pool: ApplicantsPool) {
     let editDialog = this.dialogService.open(EditAppPoolModalComponent, {
       width: '600px',
-      data: pool,      
+      data: pool,
     });
 
-    editDialog.afterClosed().subscribe(result => {      
-    });
-    
-    const dialogSubmitSubscription = 
-    editDialog.componentInstance.submitClicked.subscribe(result => {
-      this.updatePool(result);
-      dialogSubmitSubscription.unsubscribe();
-    });
+    editDialog.afterClosed().subscribe((result) => {});
+
+    const dialogSubmitSubscription =
+      editDialog.componentInstance.submitClicked.subscribe((result) => {
+        this.updatePool(result);
+        dialogSubmitSubscription.unsubscribe();
+      });
   }
 
-  updateRowData(row: ApplicantsPool){
-    let source = this.dataSource.data.find(x=> x.id == row.id);
-    if(source)
-    {
+  updateRowData(row: ApplicantsPool) {
+    let source = this.dataSource.data.find((x) => x.id == row.id);
+    if (source) {
       source.applicants = row.applicants;
       source.name = row.name;
       source.description = row.description;
@@ -195,6 +178,4 @@ export class ApplicationPoolComponent implements OnInit , AfterViewInit{
       source.count = row.applicants.length;
     }    
   }
-
-
 }

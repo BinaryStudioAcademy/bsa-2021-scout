@@ -4,8 +4,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { applicantGroup } from '../../validators/applicant-validator';
-import { Applicant } from 'src/app/shared/models/applicant/applicant';
-import { CreateApplicant } from 'src/app/shared/models/applicant/create-applicant';
+import { Applicant } from 'src/app/shared/models/applicants/applicant';
+import { CreateApplicant } from 'src/app/shared/models/applicants/create-applicant';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { Tag } from 'src/app/shared/models/tags/tag';
@@ -14,10 +14,7 @@ import { FileType } from 'src/app/shared/enums/file-type.enum';
 @Component({
   selector: 'app-create-applicant',
   templateUrl: 'create-applicant.component.html',
-  styleUrls: [
-    'create-applicant.component.scss',
-    '../../common/common.scss',
-  ],
+  styleUrls: ['create-applicant.component.scss', '../../common/common.scss'],
 })
 export class CreateApplicantComponent implements OnInit, OnDestroy {
   public validationGroup: FormGroup | undefined = undefined;

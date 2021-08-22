@@ -7,7 +7,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 
-import { Subject } from 'rxjs';
+import { forkJoin, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { StageService } from 'src/app/shared/services/stage.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
@@ -18,9 +18,18 @@ import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candida
 // eslint-disable-next-line max-len
 import { ShortVacancyCandidateWithApplicant } from 'src/app/shared/models/vacancy-candidates/short-with-applicant';
 import { OneCandidateModalComponent } from '../one-candidate-modal/one-candidate-modal.component';
-import { MatDialog } from '@angular/material/dialog';
-import { AddCandidateModalComponent }
-  from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+
+// This line can't be shorter
+// eslint-disable-next-line max-len
+import { RateCandidateModalComponent } from '../rate-candidate-modal/rate-candidate-modal.component';
+import { ShortVacancyWithStages } from 'src/app/shared/models/vacancy/short-with-stages';
+import { ReviewService } from 'src/app/shared/services/review.service';
+import { Review } from 'src/app/shared/models/reviews/review';
+
+import {
+  AddCandidateModalComponent,
+} from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
 
 interface CandidatePos {
   index: number;
@@ -41,12 +50,16 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   public extraAvatarsCount: number = 0;
   public vacancyId: string = '';
 
+  private reviews: Review[] = [];
+
   private readonly showingAvatarsCount: number = 7;
+  private readonly additionalCriteriaMap: Record<string, Review[]> = {};
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   public constructor(
     private readonly stageService: StageService,
     private readonly vacancyCandidateService: VacancyCandidateService,
+    private readonly reviewService: ReviewService,
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
     private readonly modalService: MatDialog,
@@ -76,38 +89,72 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
         event.currentIndex,
       );
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-
-      this.vacancyCandidateService
-        .changeCandidateStage(
-          event.item.element.nativeElement.id, // Stores candidate id
-          event.container.id, // Stores new stage id
-        )
-        .subscribe(
-          () =>
-            this.notificationService.showSuccessMessage(
-              'Candidate\'s stage is updated',
-              'Success',
-            ),
-          () => {
-            this.notificationService.showErrorMessage(
-              'Failed to save candidate\'s stage',
-              'Error',
-            );
-
-            transferArrayItem(
-              event.container.data,
-              event.previousContainer.data,
-              event.currentIndex,
-              event.previousIndex,
-            );
-          },
+      const forward = () =>
+        transferArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex,
         );
+
+      const backward = () =>
+        transferArrayItem(
+          event.container.data,
+          event.previousContainer.data,
+          event.currentIndex,
+          event.previousIndex,
+        );
+
+      const updateStage = () =>
+        this.vacancyCandidateService
+          .changeCandidateStage(
+            event.item.element.nativeElement.id, // Stores candidate id
+            event.container.id, // Stores new stage id
+          )
+          .subscribe(
+            () =>
+              this.notificationService.showSuccessMessage(
+                'Candidate\'s stage is updated',
+                'Success',
+              ),
+            () => {
+              this.notificationService.showErrorMessage(
+                'Failed to save candidate\'s stage',
+                'Error',
+              );
+
+              backward();
+            },
+          );
+
+      const stage = this.data.find(
+        (s) => s.id === event.container.id,
+      ) as StageWithCandidates;
+
+      forward();
+
+      if (stage.isReviewable) {
+        const dialog: MatDialogRef<RateCandidateModalComponent> =
+          this.modalService.open(RateCandidateModalComponent, {
+            width: '700px',
+            data: {
+              fixedCriterias: stage.reviews,
+              optionalCriterias: this.additionalCriteriaMap[stage.id],
+              stageId: stage.id,
+              candidateId: event.item.element.nativeElement.id,
+            },
+          });
+
+        dialog.afterClosed().subscribe((result) => {
+          if (result === 'none' || !result) {
+            return backward();
+          }
+
+          updateStage();
+        });
+      } else {
+        updateStage();
+      }
     }
   }
 
@@ -251,27 +298,35 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   }
 
   private loadData(vacancyId: string): void {
-    this.stageService
-      .getByVacancyIdWithCandidates(vacancyId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (data) => {
-          this.data = data.stages;
-          this.title = data.title;
-          this.vacancyId = vacancyId;
-          this.loading = false;
+    const stages$: Observable<ShortVacancyWithStages> =
+      this.stageService.getByVacancyIdWithCandidates(vacancyId);
 
-          this.filterData();
-          this.prepareLists();
-          this.prepareAvatars();
-        },
-        () => {
-          this.notificationService.showErrorMessage(
-            'Failed to load data',
-            'Error',
-          );
-        },
-      );
+    const reviews$: Observable<Review[]> = this.reviewService.getAll();
+
+    forkJoin({
+      reviews: reviews$,
+      vacancy: stages$,
+    }).subscribe(
+      ({ reviews, vacancy }) => {
+        this.data = [...vacancy.stages];
+        this.reviews = [...reviews];
+        this.title = vacancy.title;
+        this.loading = false;
+
+        this.filterData();
+        this.prepareLists();
+        this.prepareAvatars();
+        this.prepareAdditionalCriterias();
+      },
+      () => {
+        this.notificationService.showErrorMessage(
+          'Failed to load data',
+          'Error',
+        );
+      },
+    );
+
+    stages$.pipe(takeUntil(this.unsubscribe$)).subscribe();
   }
 
   private prepareLists(): void {
@@ -297,5 +352,14 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
 
     this.avatars = allAvatars.slice(0, this.showingAvatarsCount);
     this.extraAvatarsCount = totalCandidates - this.avatars.length;
+  }
+
+  private prepareAdditionalCriterias(): void {
+    this.data.forEach((stage) => {
+      const fixedIds = stage.reviews.map((r) => r.id);
+      const additional = this.reviews.filter((r) => !fixedIds.includes(r.id));
+
+      this.additionalCriteriaMap[stage.id] = [...additional];
+    });
   }
 }

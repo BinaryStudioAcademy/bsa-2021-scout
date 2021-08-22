@@ -1,4 +1,4 @@
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 // eslint-disable-next-line max-len
 import {Component, ElementRef, ViewChild, Inject, OnInit, Output, EventEmitter} from '@angular/core';
 import {Subject} from 'rxjs';
@@ -7,7 +7,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import { map, startWith, takeUntil} from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ApplicantIsSelected } from 'src/app/shared/models/applicant/applicant-select';
+import { ApplicantIsSelected } from 'src/app/shared/models/applicants/applicant-select';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { ApplicantsPool } from 'src/app/shared/models/applicants-pool/applicants-pool'; 
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
@@ -17,17 +17,14 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 @Component({
   selector: 'app-edit-app-pool-modal',
   templateUrl: './edit-app-pool-modal.component.html',
-  styleUrls: ['./edit-app-pool-modal.component.scss',
+  styleUrls: [
+    './edit-app-pool-modal.component.scss',
     '../create-talentpool-modal/create-talentpool-modal.component.scss',
   ],
 })
-
-
-
-export class EditAppPoolModalComponent implements OnInit{
-  
+export class EditAppPoolModalComponent implements OnInit {
   @Output() submitClicked = new EventEmitter<any>();
-  id : string = '';
+  id: string = '';
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];  
@@ -55,7 +52,6 @@ export class EditAppPoolModalComponent implements OnInit{
     applicants : this.applicantsCtrl,
   });
 
-  
   @ViewChild('applicantInput') applicantInput!: ElementRef<HTMLInputElement>;
 
   constructor(
@@ -66,22 +62,21 @@ export class EditAppPoolModalComponent implements OnInit{
   ) {
     this.filteredApplicants = this.applicantsCtrl.valueChanges.pipe(
       startWith(null),
-      map((filterValue: string | null) => 
-        filterValue ? this._filter(filterValue) 
-          : this.allapplicants.slice()));
+      map((filterValue: string | null) =>
+        filterValue ? this._filter(filterValue) : this.allapplicants.slice(),
+      ),
+    );
   }
 
   ngOnInit() {
     this.getApplicants();        
   }
 
-
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();    
     
     let app = this.applicants.find(x=> x.id === value && x.lastName === value);
 
-    
     // Add our applicant
     if (app) {
       app.isSelected = true;
@@ -98,7 +93,7 @@ export class EditAppPoolModalComponent implements OnInit{
     const index = this.applicants.indexOf(applicant);
 
     if (index >= 0) {
-      let app = this.allapplicants.find(x=>x.id === applicant.id);
+      let app = this.allapplicants.find((x) => x.id === applicant.id);
       app!.isSelected = false;
       this.applicants.splice(index, 1);
     }
@@ -122,10 +117,11 @@ export class EditAppPoolModalComponent implements OnInit{
     console.log(value);
     const filterValue = value ? value.toLowerCase() : '';    
 
-    return this.allapplicants.filter(applicant => (
-      applicant.firstName.toLowerCase().includes(filterValue) || 
-      applicant.lastName.toLowerCase().includes(filterValue)
-    ));
+    return this.allapplicants.filter(
+      (applicant) =>
+        applicant.firstName.toLowerCase().includes(filterValue) ||
+        applicant.lastName.toLowerCase().includes(filterValue),
+    );
   }
 
   getStyle(applicant :ApplicantIsSelected)
@@ -136,7 +132,7 @@ export class EditAppPoolModalComponent implements OnInit{
   save() {
     const data = this.editPool.value;
     data.id = this.id;
-    data.applicantsIds = this.applicants.map(x=>x.id).join();    
+    data.applicantsIds = this.applicants.map((x) => x.id).join();
     this.submitClicked.emit(data);
     this.dialogRef.close();
   }
@@ -144,7 +140,6 @@ export class EditAppPoolModalComponent implements OnInit{
   closeDialog() {
     this.dialogRef.close();
   }
-
 
   getApplicants() {    
     this.applicantsService
@@ -171,7 +166,7 @@ export class EditAppPoolModalComponent implements OnInit{
         (error) => {          
           this.notificationService.showErrorMessage(error);
         },
-        () => {this.loading = false;},
+        () => { this.loading = false; },
       );
   }
 
