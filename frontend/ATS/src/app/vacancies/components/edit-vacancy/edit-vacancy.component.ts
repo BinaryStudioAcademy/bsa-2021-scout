@@ -111,7 +111,6 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     if (this.data.vacancyToEdit) {
       this.vacancyService.getById(this.data.vacancyToEdit.id).subscribe(
         response => {
-          console.log(response);
           if (!response.tags) {
             response.tags = {
               id: '',

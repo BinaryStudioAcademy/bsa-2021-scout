@@ -30,7 +30,6 @@ export class CreateStageComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.stage && this.stageForm) {
-      console.log(changes.stage.currentValue.actions);
       if(changes.stage.currentValue.actions){
         var finalArray = changes.stage.currentValue.actions.map(function (obj: Action) {
           return obj.actionType;
