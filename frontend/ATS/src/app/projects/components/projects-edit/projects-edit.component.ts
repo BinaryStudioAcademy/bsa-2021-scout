@@ -111,7 +111,7 @@ export class ProjectsEditComponent implements OnDestroy {
             `Project ${this.project.name} updated!`,
           );
         },
-        () => {},
+        () => this.notificationService.showErrorMessage('Failed to update project.'),
         () => (this.loading = false),
       );
   }

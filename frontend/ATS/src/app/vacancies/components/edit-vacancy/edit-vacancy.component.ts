@@ -23,6 +23,7 @@ import { VacancyData } from 'src/app/shared/models/vacancy/vacancy-data';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Component({
   selector: 'app-edit-vacancy',
@@ -54,6 +55,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     public projectService: ProjectService,
     public vacancyService: VacancyService,
+    public notificationService: NotificationService,
   ) {
     this.vacancyForm = this.fb.group(
       {
@@ -84,7 +86,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
           this.projects = response;
           this.selectedProjects = this.projects;
         },
-        () => {},
+        () => this.notificationService.showErrorMessage('Failed to load projects.'),
         () => (this.loading = false),
       );
   }
@@ -139,7 +141,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           (response) => this.vacancyChange.emit(response),
-          () => {},
+          () => this.notificationService.showErrorMessage('Failed to create vacancy.'),
           () => (this.loading = false),
         );
     } else {
@@ -148,7 +150,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           (response) => this.vacancyChange.emit(response),
-          () => {},
+          () => this.notificationService.showErrorMessage('Failed to update vacancy.'),
           () => (this.loading = false),
         );
     }

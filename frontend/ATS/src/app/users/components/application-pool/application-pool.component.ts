@@ -113,7 +113,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => this.updateRowData(resp.body!),
-        () => {},
+        () => this.notificationService.showErrorMessage('Failed to update pool.'),
         () => (this.loading = false),
       );
   }

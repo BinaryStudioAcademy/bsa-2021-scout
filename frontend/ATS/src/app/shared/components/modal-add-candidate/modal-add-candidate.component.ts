@@ -90,7 +90,7 @@ export class AddCandidateModalComponent implements OnDestroy {
             this.filteredApplicants.push(applicant);
             this.applicantsForm.setValue([applicant]);
           },
-          () => {},
+          (error) => this.OnError(error),
           () => (this.loading = false),
         );
 
