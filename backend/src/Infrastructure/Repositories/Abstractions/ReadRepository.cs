@@ -21,7 +21,7 @@ namespace Infrastructure.Repositories.Abstractions
             _connectionFactory = connectionFactory;
         }
 
-        public virtual async Task<T> GetAsync(string id)
+        public async Task<T> GetAsync(string id)
         {
             SqlConnection connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
@@ -39,7 +39,7 @@ namespace Infrastructure.Repositories.Abstractions
             return entity;
         }
 
-        public virtual async Task<IEnumerable<T>> GetEnumerableAsync()
+        public async Task<IEnumerable<T>> GetEnumerableAsync()
         {
             var connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
@@ -51,7 +51,7 @@ namespace Infrastructure.Repositories.Abstractions
             return entities;
         }
 
-        public virtual async Task<T> GetByPropertyAsync(string property, string propertyValue)
+        public async Task<T> GetByPropertyAsync(string property, string propertyValue)
         {
             var connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();

@@ -24,10 +24,4 @@ export class VacancyCandidateService {
       `/vacancyCandidates/${id}/set-stage/${stageId}`,
     );
   }
-
-  public postRangeOfCandidates(vacancyId:string, applicantsIds: string[]){
-    return this.http.postRequest<void>(
-      `/VacancyCandidates/CandidatesRange/${vacancyId}`, applicantsIds,
-    );
-  }
 }

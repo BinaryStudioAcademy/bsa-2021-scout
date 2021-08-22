@@ -53,7 +53,7 @@ export class MultiselectComponent implements OnChanges, OnInit {
     this.control.setValue(this.selected);
 
     this.control.valueChanges.subscribe((newValue) =>
-      this.emitChange(newValue),    
+      this.emitChange(newValue),
     );
   }
 
@@ -69,6 +69,4 @@ export class MultiselectComponent implements OnChanges, OnInit {
       this.select.disabled = false;
     }, 20);
   }
-
-
 }

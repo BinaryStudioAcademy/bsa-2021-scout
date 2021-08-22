@@ -13,8 +13,6 @@ namespace Infrastructure.EF.Configuration
                 .HasForeignKey(a => a.CompanyId)
                 .HasConstraintName("applicant_company_FK")
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Ignore(a => a.HasCv);
         }
     }
 }

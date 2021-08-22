@@ -23,23 +23,33 @@ namespace Application.VacancyCandidates.Queries
         : IRequestHandler<GetFullVacancyCandidateByIdQuery, VacancyCandidateFullDto>
     {
         private readonly IVacancyCandidateReadRepository _readRepository;
+        private readonly IReadRepository<entities::ApplicantCv> _cvReadRepository;
         private readonly IMapper _mapper;
 
         public GetFullVacancyCandidateByIdQueryHandler(
             IVacancyCandidateReadRepository readRepository,
+            IReadRepository<entities::ApplicantCv> cvReadRepository,
             IMapper mapper
         )
         {
             _readRepository = readRepository;
+            _cvReadRepository = cvReadRepository;
             _mapper = mapper;
         }
 
         public async Task<VacancyCandidateFullDto> Handle(GetFullVacancyCandidateByIdQuery query, CancellationToken _)
         {
             VacancyCandidate candidate = await _readRepository.GetFullAsync(query.Id);
-            VacancyCandidateFullDto candidateFullDto = _mapper.Map<VacancyCandidate, VacancyCandidateFullDto>(candidate);
+            VacancyCandidateFullDto result = _mapper.Map<VacancyCandidate, VacancyCandidateFullDto>(candidate);
 
-            return candidateFullDto;
+            try
+            {
+                ApplicantCv cv = await _cvReadRepository.GetByPropertyAsync("ApplicantId", candidate.ApplicantId);
+                result.Cv = cv.Cv;
+            }
+            catch { }
+
+            return result;
         }
     }
 }

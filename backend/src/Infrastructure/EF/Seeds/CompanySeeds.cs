@@ -12,8 +12,7 @@ namespace Infrastructure.EF.Seeds
            new Company{
                Id="1",
                Name="Binary Studio",
-               Description="Bulka cat is in Lviv",
-               Logo = "https://academy.binary-studio.com/static/logo-social.og-aff399bc2ff28efd30a516155a46717a.png"
+               Description="Bulka cat is in Lviv"
            }
         };
     }

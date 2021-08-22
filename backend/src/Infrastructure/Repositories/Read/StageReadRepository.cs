@@ -103,17 +103,5 @@ namespace Infrastructure.Repositories.Read
 
             return result;
         }
-
-        public async Task<Stage> GetByVacancyIdWithFirstIndex(string vacancyId)
-        {
-            SqlConnection connection = _connectionFactory.GetSqlConnection();
-            await connection.OpenAsync();
-
-            string sql = $@"SELECT * FROM Stages 
-                            WHERE Stages.VacancyId='{vacancyId}' 
-                            AND Stages.[Index]=0";
-
-            return await connection.QueryFirstOrDefaultAsync<Stage>(sql);
-        }
     }
 }

@@ -52,10 +52,3 @@ todo: add some project description
 - Create file `launchSettings.json`.
 
 - Copy content of `example.launchSettings.json` to `launchSettings.json`.
-
-### How to get AWS credentials
-
-- Create AWS account https://portal.aws.amazon.com/billing/signup#/start
-- Sign in to the AWS console as an IAM user with admin rights (for example Root user) https://signin.aws.amazon.com/signin
-- Create new user with **Programmatic access** using tutorial - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html
-    - note: best practice is to follow [The Principle of Least Privileges](https://kirkpatrickprice.com/blog/best-practices-for-privilege-management-in-aws/). I recommend use AmazonS3FullAccess policy for your user.

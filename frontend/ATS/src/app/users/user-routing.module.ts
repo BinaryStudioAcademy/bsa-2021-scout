@@ -14,8 +14,6 @@ import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.
 import { SuccessfulRegistrationComponent } from
   './components/successful-registration/successful-registration.component';
 import { LoggedInUserGuard } from './guards/logged-in-user.guard';
-import { ResendEmailAfterLoginComponent } from
-  './components/resend-email-after-login/resend-email-after-login.component';
 
 
 const routes: Routes = [
@@ -23,37 +21,31 @@ const routes: Routes = [
     path: AppRoute.Login,
     pathMatch: 'full',
     component: LoginComponent,
-    canActivate: [LoggedInUserGuard],
+    canActivate: [ LoggedInUserGuard ],
   },
+
+
   {
     path: AppRoute.ConfirmEmail,
     pathMatch: 'full',
     component: ConfirmEmailComponent,
-    canActivate: [LoggedInUserGuard],
+    canActivate: [ LoggedInUserGuard ],
   },
   {
     path: AppRoute.SuccessfulRegistration,
     pathMatch: 'full',
     component: SuccessfulRegistrationComponent,
-    canActivate: [LoggedInUserGuard],
+    canActivate: [ LoggedInUserGuard ],
   },
   {
     path: AppRoute.Registration,
     pathMatch: 'full',
     component: RegistrationComponent,
-    canActivate: [LoggedInUserGuard],
+    canActivate: [ LoggedInUserGuard ],
   },
 
-  {
-    path: AppRoute.ResetPassword, component: ResetPasswordComponent,
-    canActivate: [ResetPasswordGuard],
-  },
-  {
-    path: AppRoute.ResendEmail,
-    pathMatch: 'full',
-    component: ResendEmailAfterLoginComponent,
-    canActivate: [LoggedInUserGuard],
-  },
+  { path: AppRoute.ResetPassword, component: ResetPasswordComponent, 
+    canActivate: [ResetPasswordGuard] },
 ];
 
 @NgModule({
@@ -61,4 +53,4 @@ const routes: Routes = [
   exports: [RouterModule],
   imports: [CommonModule, RouterModule.forChild(routes)],
 })
-export class UserRoutingModule { }
+export class UserRoutingModule {}

@@ -12,11 +12,8 @@ namespace Domain.Entities
         public double Experience { get; set; }
         public DateTime ToBeContacted { get; set; }
         public string CompanyId { get; set; }
-        // TODO: add company read repository and remove nullability
         public Company Company { get; set; }
-        public FileInfo CvFileInfo { get; set; }
-        public bool HasCv { get => CvFileInfo != null; }
-        public ICollection<PoolToApplicant> ApplicantPools { get; set; } = new List<PoolToApplicant>();
-        public ICollection<VacancyCandidate> Candidates { get; set; } = new List<VacancyCandidate>();
+        public ICollection<PoolToApplicant> ApplicantPools { get; set; }
+        public ICollection<VacancyCandidate> Candidates { get; set; }
     }
 }
