@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+
 namespace WebAPI.Controllers
 {
     public class ApplicantsController : ApiController
@@ -59,7 +60,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostApplicantAsync([FromForm] string body, [FromForm] IFormFile? cvFile)
+        public async Task<IActionResult> PostApplicantAsync([FromForm] string body, [FromForm] IFormFile cvFile = null)
         {
             var createApplicantDto = JsonConvert.DeserializeObject<CreateApplicantDto>(body);
 
@@ -71,7 +72,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutApplicantAsync([FromForm] string body, [FromForm] IFormFile? cvFile)
+        public async Task<IActionResult> PutApplicantAsync([FromForm] string body, [FromForm] IFormFile cvFile = null)
         {
             var updateApplicantDto = JsonConvert.DeserializeObject<UpdateApplicantDto>(body);
 
