@@ -60,10 +60,13 @@ namespace Infrastructure.Repositories.Read
                             LEFT OUTER JOIN Stages AS S ON S.VacancyId=V.Id
                             LEFT OUTER JOIN CandidateToStages AS CS ON CS.StageId = S.Id AND S.[Index]=0 
                             LEFT OUTER JOIN VacancyCandidates AS VC ON CS.CandidateId = VC.Id
-                            WHERE VC.ApplicantId='{applicantId}'
-                            AND V.CompanyId='{companyId}')";
+                            WHERE VC.ApplicantId = @applicantId
+                            AND V.CompanyId = @companyId)";
 
-            var vacancies = await connection.QueryAsync<Vacancy>(sql);
+            var vacancies = await connection.QueryAsync<Vacancy>(sql, new {
+                applicantId = @applicantId,
+                companyId = @companyId
+            });
 
             await connection.CloseAsync();
 
