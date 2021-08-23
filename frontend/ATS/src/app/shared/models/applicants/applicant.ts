@@ -5,13 +5,14 @@ export interface Applicant {
   id: string;
   firstName: string;
   lastName: string;
-  middleName?: string;
   birthDate?: Date;
   email: string;
   phone?: string;
   skype?: string;
   linkedInUrl?: string;
   experience?: number;
+  experienceDescription?: string;
+  skills?: string;
   toBeContacted?: Date;
   companyId?: string;
   isSelected?: boolean;
