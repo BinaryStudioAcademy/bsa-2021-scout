@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Commands;
+using Application.Common.Exceptions;
+using Application.ElasticEnities.Dtos;
+using Application.Interfaces;
+using Application.Stages.Commands;
 using Application.Vacancies.Dtos;
 using AutoMapper;
 using Domain.Entities;
@@ -13,10 +17,6 @@ using MediatR;
 
 namespace Application.Vacancies.Commands.Create
 {
-    //public class CreateVacancyCommandHandler : CreateEntityCommandHandler<Vacancy, VacancyCreateDto>
-    //{
-    //    public CreateVacancyCommandHandler(IWriteRepository<Vacancy> repository, IMapper mapper) : base(repository, mapper) { }
-    //}
     public class CreateVacancyCommand : IRequest<VacancyDto>
     {
         public VacancyCreateDto VacancyCreate { get; set; }
@@ -27,28 +27,59 @@ namespace Application.Vacancies.Commands.Create
         }
     }
 
-        public class CreateVacancyCommandHandler : IRequestHandler<CreateVacancyCommand, VacancyDto>
-        {
-            private readonly IWriteRepository<Vacancy> _writeRepository;
-            private readonly IMapper _mapper;
+    public class CreateVacancyCommandHandler : IRequestHandler<CreateVacancyCommand, VacancyDto>
+    {
+        private readonly IWriteRepository<Vacancy> _writeRepository;
+        private readonly IWriteRepository<Stage> _writeStageRepository;
+        private readonly IMapper _mapper;
+        private readonly ISender _mediator;
+        private readonly ICurrentUserContext _currUser;
 
-            public CreateVacancyCommandHandler(
+        public CreateVacancyCommandHandler(
                 IWriteRepository<Vacancy> writeRepository,
-                IMapper mapper
+                IWriteRepository<Stage> writeStageRepository,
+                IMapper mapper, ISender mediator, ICurrentUserContext currUser
             )
+        {
+            _writeStageRepository = writeStageRepository;
+            _writeRepository = writeRepository;
+            _mapper = mapper;
+            _mediator = mediator;
+            _currUser = currUser;
+        }
+
+        public async Task<VacancyDto> Handle(CreateVacancyCommand command, CancellationToken _)
+        {
+            var user = await _currUser.GetCurrentUser();
+            if (user is null)
             {
-                _writeRepository = writeRepository;
-                _mapper = mapper;
+                throw new NotFoundException(typeof(User), "unknown");
             }
 
-            public async Task<VacancyDto> Handle(CreateVacancyCommand command, CancellationToken _)
+            var newVacancy = _mapper.Map<Vacancy>(command.VacancyCreate);
+
+            newVacancy.CompanyId = user.CompanyId;
+            newVacancy.ResponsibleHrId = user.Id;
+            newVacancy.CreationDate = DateTime.UtcNow;
+            newVacancy.DateOfOpening = newVacancy.CreationDate; // Must be changed in future
+            newVacancy.ModificationDate = DateTime.UtcNow;
+
+            await _writeRepository.CreateAsync(newVacancy);
+
+            var elasticQuery = new CreateElasticDocumentCommand<CreateElasticEntityDto>(new CreateElasticEntityDto()
             {
-                var newUser = _mapper.Map<Vacancy>(command.VacancyCreate);
+                ElasticType = ElasticType.ApplicantTags,
+                Id = newVacancy.Id,
+                TagsDtos = command.VacancyCreate.Tags.TagDtos.Select(t => new TagDto()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    TagName = t.TagName
+                })
+            });
 
-                await _writeRepository.CreateAsync(newUser);
-                var registeredUser = _mapper.Map<VacancyDto>(newUser);
-
-                return registeredUser;
-            }
+            var registeredVacancy = _mapper.Map<VacancyDto>(newVacancy);
+            registeredVacancy.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));
+            return registeredVacancy;
         }
     }
+}

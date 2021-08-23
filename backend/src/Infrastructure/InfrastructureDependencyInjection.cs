@@ -168,6 +168,9 @@ namespace Infrastructure
             services.AddScoped<IPoolToApplicantWriteRepository, PoolToApplicantWriteRepository>();
             services.AddScoped<IWriteRepository<MailTemplate>, MongoWriteRepository<MailTemplate>>();
 
+            services.AddScoped<IWriteRepository<Domain.Entities.Action>, WriteRepository<Domain.Entities.Action>>();
+
+
             return services;
         }
 
@@ -175,7 +178,6 @@ namespace Infrastructure
         {
             services.AddScoped<IReadRepository<User>, UserReadRepository>();
             services.AddScoped<IReadRepository<Vacancy>, VacancyReadRepository>();
-            services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
             services.AddScoped<IReadRepository<Company>, CompanyReadRepository>();
             services.AddScoped<IReadRepository<Role>, RoleReadRepository>();
             services.AddScoped<IReadRepository<UserToRole>, UserToRoleReadRepository>();
@@ -206,6 +208,10 @@ namespace Infrastructure
 
             services.AddScoped<IReadRepository<Pool>, PoolReadRepository>();
             services.AddScoped<IPoolReadRepository, PoolReadRepository>();
+
+            services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();
+
+            services.AddScoped<IReadRepository<Domain.Entities.Action>, ActionReadRepository>();
 
 
             return services;

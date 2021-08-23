@@ -23,11 +23,9 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public displayedColumns: string[] = [
     'position',
     'name',
-    'rate',
     'email',
     'active_vacancies',
     'jobs_list',
-    'status',
     'tags',
     'control_buttons',
   ];
@@ -35,6 +33,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public dataSource = new MatTableDataSource<ViewableApplicant>();
   public cashedData: ViewableApplicant[] = [];
   public searchValue = '';
+  public isFollowedPage = false;
   public loading: boolean = true;
 
   @ViewChild(MatPaginator) public paginator: MatPaginator | undefined =
@@ -64,6 +63,8 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         map((arr) =>
           arr.map((a) => {
             let viewableApplicant = a as unknown as ViewableApplicant;
+            
+            viewableApplicant.isFollowed = false;
             viewableApplicant.isShowAllTags = false;
 
             if (!a.tags) {
@@ -80,6 +81,10 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe(
         (result: ViewableApplicant[]) => {
+          result.forEach((d, i) => {
+            d.position = i + 1;
+          });
+          
           this.loading = false;
           this.dataSource.data = result;
           this.cashedData = result;
@@ -124,6 +129,8 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           
           if (viewableApplicant) {
             viewableApplicant.isShowAllTags = false;
+            viewableApplicant.isFollowed = false;
+            viewableApplicant.position = this.cashedData.length + 1;
           }
 
           return viewableApplicant;
@@ -133,6 +140,11 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (result) {
           this.cashedData.unshift(result);
           this.dataSource.data = this.cashedData;
+
+          if (this.isFollowedPage) {
+            this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
+          }
+
           this.directive?.applyFilter$.emit();
         
           this.notificationsService.showSuccessMessage(
@@ -146,8 +158,14 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public updateApplicant(applicant: ViewableApplicant): void {
     if (applicant) {
       let applicantIndex = this.cashedData.findIndex(a => a.id === applicant.id);
+      applicant.position = this.cashedData[applicantIndex].position;
+      applicant.isFollowed = this.cashedData[applicantIndex].isFollowed;
       this.cashedData[applicantIndex] = applicant;
       this.dataSource.data = this.cashedData;
+
+      if (this.isFollowedPage) {
+        this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
+      }
     
       this.notificationsService.showSuccessMessage(
         'An applicant was succesfully updated',
@@ -163,11 +181,41 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.cashedData.splice(applicantIndex, 1);
     this.dataSource.data = this.cashedData;
+
+    if (this.isFollowedPage) {
+      this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
+    }
+
     this.directive?.applyFilter$.emit();
     this.notificationsService.showSuccessMessage(
       'The applicant was successfully deleted',
       'Success!',
     );
+  }
+
+  public toggleFollowedOrAll(isFollowed: boolean): void {
+    this.isFollowedPage = isFollowed;
+
+    if (isFollowed) {
+      this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
+    }
+    else {
+      this.dataSource.data = this.cashedData;
+    }
+
+    this.directive!.applyFilter$.emit();
+  }
+
+  public onBookmark(applicantId: string){
+    const applicantIndex = this.cashedData.findIndex(a => a.id === applicantId);
+    this.cashedData[applicantIndex].isFollowed = !this.cashedData[applicantIndex].isFollowed;
+    this.dataSource.data = this.cashedData;
+
+    if (this.isFollowedPage) {
+      this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
+    }
+
+    this.directive!.applyFilter$.emit();
   }
 
   public getFirstTags(applicant: ViewableApplicant): Tag[] {
@@ -190,6 +238,8 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         const isAsc = sort.direction === 'asc';
 
         switch (sort.active) {
+          case 'position':
+            return this.compareRows(a.position, b.position, isAsc);
           case 'name':
             return this.compareRows(
               a.firstName + ' ' + a.lastName + ' ' + a.middleName,
@@ -199,12 +249,6 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           case 'email':
             return this.compareRows(a.email, b.email, isAsc);
           case 'active_vacancies':
-            return this.compareRows(
-              a.vacancies.length,
-              b.vacancies.length,
-              isAsc,
-            );
-          case 'jobs_list':
             return this.compareRows(
               a.vacancies.length,
               b.vacancies.length,

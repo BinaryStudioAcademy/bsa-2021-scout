@@ -5,23 +5,35 @@
     </button>
 </div>
 <app-spinner *ngIf="loading"></app-spinner>
-<div class='modal-content' *ngIf="pool">
-    <div class='pool-create-info-wrapper'>
-        <div class='creator-info'>
-            <div>created by</div>
-            <mat-icon>account_circle</mat-icon>
-            <span>{{pool.createdBy}} </span>
-        </div>
-        <span>{{pool.dateCreated | date:"dd.MM.yyyy"}}</span>
-    </div>
-    <h3>Name: {{pool.name}}</h3>
+<div class='modal-content' *ngIf="pool">    
     <div>
-        <h3>Description</h3>
-        <div class="description">{{pool.description}}</div>
-    </div>
-    <div class="applicants-table" *ngIf="pool.applicants.length">
-        <h3>Applicants</h3>
-        <div>
+        <div class="form-control">
+            <form [formGroup]="poolForm">
+                <h5>Created by</h5>
+                <mat-form-field floatLabel='never' class="al-subscribe-form-field">
+                  <input matInput type="text" formControlName="createdBy">
+                </mat-form-field>
+                <h5>Created date</h5>
+                <mat-form-field floatLabel='never' class="al-subscribe-form-field">
+                    <input matInput [matDatepicker]="picker" name="date" formControlName="dateCreated"
+                    placeholder="mm/dd/yyyy" [(ngModel)]="pool.dateCreated">
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <h5>Pool name</h5>
+                <mat-form-field floatLabel='never' class="al-subscribe-form-field">
+                  <input matInput type="text" formControlName="name">
+                </mat-form-field>
+                <h5>Description</h5>
+                <mat-form-field floatLabel='never' class="al-subscribe-form-field" class="textarea">
+                    <textarea matInput type="text" autocomplete="off" formControlName="description"
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="2"
+                    cdkAutosizeMaxRows="8"></textarea>
+                </mat-form-field>
+            </form>
+                <h4>Applicants</h4>
+                <div>
             <table mat-table [dataSource]="dataSource" matSort>
             
                 <ng-container matColumnDef="name">
@@ -63,12 +75,12 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         
                 <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell" colspan="4">No data maching the filter</td>
+                    <div *ngIf="!pool.applicants.length" style="padding-top:5px">No applicants in this pool yet</div>
                 </tr>       
         
             </table>
  <!--       <mat-paginator #paginator appStylePaginator hidePageSize [showTotalPages]="5" [pageSize]="5"></mat-paginator>-->
         </div>    
     </div>
-    <div *ngIf="!pool.applicants.length" style="padding-top:5px">No applicants in this pool yet</div>
+
 </div>

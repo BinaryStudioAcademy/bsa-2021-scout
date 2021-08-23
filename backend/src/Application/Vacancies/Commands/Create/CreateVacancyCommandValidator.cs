@@ -13,7 +13,7 @@ namespace Application.Vacancies.Commands.Create
     {
         public CreateVacancyCommandValidator()
         {
-            RuleFor(x=>x.VacancyCreate).NotNull().SetValidator(new VacancyCreateDtoValidator());
+            RuleFor(x => x.VacancyCreate).NotNull().SetValidator(new VacancyCreateDtoValidator());
         }
     }
 }

@@ -35,32 +35,6 @@ $primary-color: #ee2a64;
     }
 }
 
-
-::ng-deep .page-content{
-    .mat-select{
-        height: 40px;
-        width: 40px;
-        line-height: 40px;
-        font-size: 22px;
-        color: #808080;
-    }
-    .mat-select-arrow::after{
-        font-family: 'Material Icons';
-        content: "\e5d3";
-        font-size: 24px;
-        margin-left: 8px;
-        margin-right: 8px;
-    }
-    .mat-select-arrow:hover::after{
-        color: $primary-color;
-    }
-    .mat-select-arrow{
-        border: none;
-        margin: 0;
-        height: 100%;
-    }
-}
-
 .outside-wrapper {
   position: fixed;
   top: 0;
@@ -106,7 +80,6 @@ $primary-color: #ee2a64;
   .mat-cell {
     font-size: 14px;
     padding-right: 15px;
-    position: relative;
 
     &:last-of-type {
       padding-left: 100px;
@@ -114,8 +87,8 @@ $primary-color: #ee2a64;
 
     &:not(.control-buttons-cell) {
       min-width: 0px;
-      max-width: 300px;
-      width: fit-content;
+      max-width: 200px;
+      position: relative;
 
       overflow: hidden;
       white-space: nowrap;
@@ -132,11 +105,14 @@ $primary-color: #ee2a64;
 
     &.tags-list-cell {
       overflow: visible;
-      max-width: 400px;
+      width: fit-content;
+      max-width: 300px;
     }
 
     &.jobs-list-cell {
       overflow: visible;
+      width: fit-content;
+      max-width: none;
     }
 
     .mat-list-base {
@@ -150,6 +126,8 @@ $primary-color: #ee2a64;
     .jobs-list {
       overflow-y: hidden;
       height: min-content;
+      width: fit-content;
+      max-width: none;
 
       max-height: $row-height - 15px;
       margin: auto 0;
@@ -219,6 +197,7 @@ $primary-color: #ee2a64;
       margin-left: -3px;
       display: flex;
       flex-wrap: wrap;
+      width: fit-content;
       align-content: center;
       overflow: hidden;
 

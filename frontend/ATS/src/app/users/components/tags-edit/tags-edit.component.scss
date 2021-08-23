@@ -3,7 +3,7 @@
         min-height: 100px;
         align-content: flex-start;
         align-items: flex-start;
-        height: min-content;
+        height: min-content !important;
         padding-bottom: 20px;
     
         .mat-form-field-infix {

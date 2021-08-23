@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Dapper;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
+using Domain.Interfaces.Read;
 using Infrastructure.Dapper.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
@@ -73,6 +74,7 @@ namespace Infrastructure.Repositories.Read
             return project;
         }
 
+
         public async Task<Project> GetByPropertyAsync(string property, string propertyValue)
         {
             string companyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
@@ -99,25 +101,25 @@ namespace Infrastructure.Repositories.Read
             var projectsDictionary = new Dictionary<string, Project>();
 
             await connection.QueryAsync<Project, Vacancy, Project>(sql, (p, v) =>
+            {
+                Project project;
+                if (!projectsDictionary.TryGetValue(p.Id, out project))
                 {
-                    Project project;
-                    if (!projectsDictionary.TryGetValue(p.Id, out project))
-                    {
-                        projectsDictionary.Add(p.Id, project = p);
-                    }
+                    projectsDictionary.Add(p.Id, project = p);
+                }
 
-                    if (project.Vacancies == null)
-                    {
-                        project.Vacancies = new List<Vacancy>();
-                    }
+                if (project.Vacancies == null)
+                {
+                    project.Vacancies = new List<Vacancy>();
+                }
 
-                    if (v != null)
-                    {
-                        project.Vacancies.Add(v);
-                    }
+                if (v != null)
+                {
+                    project.Vacancies.Add(v);
+                }
 
-                    return project;
-                });
+                return project;
+            });
 
             var projects = projectsDictionary.Values;
 

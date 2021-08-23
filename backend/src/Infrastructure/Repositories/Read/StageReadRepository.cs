@@ -138,5 +138,18 @@ namespace Infrastructure.Repositories.Read
 
             return await connection.QueryFirstOrDefaultAsync<Stage>(sql);
         }
+
+
+        public async Task<IEnumerable<Stage>> GetByVacancyId(string vacancyId)
+        {
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
+
+            string sql = $@"SELECT * FROM Stages 
+                            WHERE Stages.VacancyId='{vacancyId}'";
+            var stages = await connection.QueryAsync<Stage>(sql);
+            await connection.CloseAsync();
+            return stages;
+        }
     }
 }

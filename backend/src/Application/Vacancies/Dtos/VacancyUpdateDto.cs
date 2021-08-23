@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Common.Models;
+using Application.ElasticEnities.Dtos;
 using Application.Stages.Dtos;
 using Domain.Enums;
 using FluentValidation;
 
 namespace Application.Vacancies.Dtos
 {
-    public class VacancyUpdateDto : Dto
+    public class VacancyUpdateDto
     {
         public string Title { get; set; }
         public string Description { get; set; }
@@ -23,8 +24,9 @@ namespace Application.Vacancies.Dtos
         public string Sources { get; set; }
         public bool IsHot { get; set; }
         public bool IsRemote { get; set; }
-        //public ICollection<TagDto> Tags { get; set; }
-        public ICollection<StageWithCandidatesDto> Stages { get; set; }
+        public ElasticEnitityDto Tags { get; set; }
+        public ICollection<StageUpdateDto> Stages { get; set; }
+
     }
     public class VacancyUpdateDtoValidator : AbstractValidator<VacancyUpdateDto>
     {
