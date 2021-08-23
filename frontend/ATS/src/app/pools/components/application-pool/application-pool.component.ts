@@ -144,6 +144,12 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
     });
 
     createDialog.afterClosed().subscribe((result) => {});
+
+    const dialogSubmitSubscription = 
+    createDialog.componentInstance.submitClicked.subscribe(result => {
+      this.createPool(result);      
+      dialogSubmitSubscription.unsubscribe();
+    });
   }
 
   onDetails(id: string)

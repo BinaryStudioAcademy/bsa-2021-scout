@@ -12,13 +12,15 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { FormGroup, FormControl } from '@angular/forms';
 
 const DATA: Applicant[] = [];
 
 @Component({
   selector: 'app-pool-details-modal',
   templateUrl: './pool-details-modal.component.html',
-  styleUrls: ['./pool-details-modal.component.scss'],
+  styleUrls: ['./pool-details-modal.component.scss',
+    '../create-talentpool-modal/create-talentpool-modal.component.scss'],
 })
 export class PoolDetailsModalComponent implements OnInit, AfterViewInit {
 
@@ -41,6 +43,16 @@ export class PoolDetailsModalComponent implements OnInit, AfterViewInit {
   isShowAllTags : boolean = false;
   dataSource = new MatTableDataSource(DATA);
   private unsubscribe$ = new Subject<void>();
+
+  public poolForm: FormGroup = new FormGroup({
+    'createdBy': new FormControl({value:'', disabled:true}),
+    'dateCreated': new FormControl({value:'', disabled:true}),    
+    'name': new FormControl({value:'', disabled:true}),
+    'description': new FormControl({value:'', disabled:true}),
+    'company': new FormControl({value:'', disabled:true}),
+    'applicants': new FormControl({value:'', disabled:true}),
+    'id': new FormControl({value:'', disabled:true}),
+  });
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -75,6 +87,7 @@ export class PoolDetailsModalComponent implements OnInit, AfterViewInit {
       .subscribe(
         (resp) => {
           this.pool = resp;
+          this.poolForm.setValue(this.pool);
           this.dataSource.data = resp.applicants;
           this.updatePaginator();
         },
