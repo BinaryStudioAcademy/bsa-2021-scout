@@ -40,8 +40,6 @@ export class UpdateApplicantComponent implements OnDestroy {
   };
   public allowedCvFileType = FileType.Pdf;
 
-  public tags: Tag[] = [];
-
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -61,12 +59,11 @@ export class UpdateApplicantComponent implements OnDestroy {
     this.updatedApplicant.skype = applicant.skype ?? '';
     this.updatedApplicant.experience = applicant.experience ?? 0;
     this.updatedApplicant.tags.id = applicant.tags.id;
-    this.updatedApplicant.tags.tagDtos = this.tags = applicant.tags.tagDtos;
+    Object.assign<Tag[], Tag[]>(this.updatedApplicant.tags.tagDtos, applicant.tags.tagDtos);
     this.updatedApplicant.hasCv = applicant.hasCv;
   }
 
   public updateApplicant(): void {
-    this.updatedApplicant.tags.tagDtos = this.tags;
     this.loading = true;
 
     this.applicantsService
@@ -89,7 +86,7 @@ export class UpdateApplicantComponent implements OnDestroy {
   }
 
   public updateTags(tags: Tag[]): void {
-    this.tags = tags;
+    this.updatedApplicant.tags.tagDtos = tags;
   }
 
   public uploadApplicantCv(files: File[]): void {

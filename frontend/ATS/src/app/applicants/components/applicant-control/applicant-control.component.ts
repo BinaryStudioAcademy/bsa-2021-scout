@@ -32,6 +32,7 @@ export class ApplicantControlComponent implements OnDestroy {
   @Input() public applicant: ViewableApplicant | undefined = undefined;
   @Output() public deleteApplicantEvent = new EventEmitter<string>();
   @Output() public updateApplicantEvent = new EventEmitter<ViewableApplicant>();
+  @Output() public markAsFollowed = new EventEmitter<string>();
 
   public loading: boolean = false;
 
@@ -126,6 +127,10 @@ export class ApplicantControlComponent implements OnDestroy {
           );
         },
       );
+  }
+
+  public onBookmark(){
+    this.markAsFollowed.emit(this.applicant!.id);
   }
 
   public openVacancyAddModal(): void {
