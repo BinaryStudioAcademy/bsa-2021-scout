@@ -15,7 +15,7 @@ export const applicantGroup = new FormGroup({
   email: new FormControl('', [
     Validators.required,
     Validators.email,
-    Validators.pattern('^\\S{1,}@\\S{3,}'),
+    Validators.pattern('^\\S{1,}@\\S{3,}\\.[a-z]+'),
   ]),
   experience: new FormControl('', [Validators.required]),
   phone: new FormControl('', [
