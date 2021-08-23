@@ -40,7 +40,8 @@ namespace Application.Applicants.Commands
 
         public async Task<ICollection<ApplicantCsvDto>> Handle(CreateApplicantsFromCsvCommand command, CancellationToken _)
         {
-            string companyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
+            var company = await _currentUserContext.GetCurrentUser();
+            var companyId = company.CompanyId;
 
             List<ApplicantCsvDto> applicantsDtos = new List<ApplicantCsvDto>();
 

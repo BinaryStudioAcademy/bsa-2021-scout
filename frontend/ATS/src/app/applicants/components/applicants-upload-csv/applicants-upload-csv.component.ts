@@ -11,7 +11,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 })
 export class ApplicantsUploadCsvComponent {
 
-  public allowedCvFileType = FileType.Csv;
+  public allowedFileType = FileType.Csv;
 
   constructor(private readonly applicantsService: ApplicantsService,
     private modal: MatDialogRef<ApplicantsUploadCsvComponent>,
@@ -24,7 +24,7 @@ export class ApplicantsUploadCsvComponent {
   }
 
   public OnUpload() {
-    if (this.selectedFile != null) {
+    if (this.selectedFile) {
       this.applicantsService.createApplicantsFromCSV(this.selectedFile).subscribe(values => {
         if(values.body?.length!=0){
           this.notificationsService
@@ -34,7 +34,7 @@ export class ApplicantsUploadCsvComponent {
           this.notificationsService.showInfoMessage('No loaded applicants');
         }
       },
-      _ => (this.notificationsService.showErrorMessage('Failde to load data from csv')),
+      _ => (this.notificationsService.showErrorMessage('Failed to load data from csv')),
       );
     }
     this.modal.close();
