@@ -4,19 +4,19 @@
         <mat-label>Stage name</mat-label>
         <mat-form-field appearance="fill"  [ngClass]="(stageFormControl.name.touched || submitted) && stageFormControl.name.invalid ? 'invalid-input' : ''">
             <input matInput type="text" autocomplete="off" formControlName="name" placeholder="Enter stage name">
-            <mat-error *ngIf="(stageFormControl.name.touched || submitted) && stageFormControl.name.errors?.required">
-              This field shouldn't be empty
-          </mat-error>
           </mat-form-field>
+          <mat-error *ngIf="(stageFormControl.name.touched || submitted) && stageFormControl.name.errors?.required">
+            This field shouldn't be empty
+        </mat-error>
         <mat-label>Action</mat-label>
     <mat-form-field appearance="fill" [ngClass]="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.invalid ? 'invalid-input' : ''">
         <mat-select #fontSize placeholder="Select action" formControlName="actions" multiple>
           <mat-option *ngFor="let action of actions" [value]="action.actionType">{{action.name}}</mat-option>
         </mat-select>
-        <mat-error *ngIf="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.errors?.required">
-              This field shouldn't be empty
-          </mat-error>
       </mat-form-field>
+      <mat-error *ngIf="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.errors?.required">
+        This field shouldn't be empty
+    </mat-error>
       <mat-checkbox formControlName="isReviewable">Review required</mat-checkbox>
       <mat-label>Rates</mat-label>
       <mat-form-field appearance="fill" [ngClass]="(stageFormControl.rates.touched || submitted) && stageFormControl.rates.invalid ? 'invalid-input' : ''">
@@ -25,10 +25,10 @@
           <mat-option value="Communicative skills">Communicative skills</mat-option>
           <mat-option value="English">English</mat-option>
         </mat-select>
-        <mat-error *ngIf="(stageFormControl.rates.touched || submitted) && stageFormControl.rates.errors?.required">
-              This field shouldn't be empty
-          </mat-error>
       </mat-form-field>
+      <mat-error *ngIf="(stageFormControl.rates.touched || submitted) && stageFormControl.rates.errors?.required">
+        This field shouldn't be empty
+    </mat-error>
     </form>
     <div class="buttons">
         <button mat-button mat-raised-button  (click)="onStageSave()" [disabled]="stageForm.invalid">Save</button>

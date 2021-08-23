@@ -1,4 +1,5 @@
 .buttons{
+    margin-top: 10px;
     display:flex;
     flex-direction:row;
 }
@@ -21,7 +22,11 @@
 }
 
 .mat-form-field{
-    margin-bottom: 15px;
+    margin-bottom: 5px;
+}
+
+.mat-error{
+    margin-bottom: 5px;
 }
 
 ::ng-deep{
@@ -35,12 +40,6 @@
     align-items: center;
     }
     .white-class .mat-checkbox{
-        margin-bottom: 25px
-    }
-}
-
-:host ::ng-deep{
-    .mat-form-field-wrapper.mat-form-field-wrapper{
-    padding: 0px 0px 18px 0px;
+        margin-bottom: 5px
     }
 }

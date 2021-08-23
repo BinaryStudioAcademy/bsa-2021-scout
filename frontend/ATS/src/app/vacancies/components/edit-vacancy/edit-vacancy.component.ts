@@ -369,13 +369,13 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     newStage.vacancyId = this.vacancyId;
     if (this.isEditStageMode) {
       let stage = this.stageList.find(x => x.index === newStage.index);
-      if (stage?.index) {
+      if (stage != null && stage.index >= 0) {
         newStage.id = stage.id;
-        this.stageList[stage?.index - 1] = newStage;
+        this.stageList[stage?.index ] = newStage;
       }
       this.isEditStageMode = false;
     } else {
-      newStage.index = this.stageList.length + 1;
+      newStage.index = this.stageList.length;
       this.stageList.push(newStage);
     }
     this.stageToEdit = {} as Stage;
