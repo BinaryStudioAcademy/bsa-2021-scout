@@ -27,7 +27,8 @@ import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 
 import {
   ApplicationPoolComponent,
-} from '../users/components/application-pool/application-pool.component';
+} from '../pools/components/application-pool/application-pool.component';
+import { PoolsRoutingModule } from '../pools/pools-routing.module';
 
 const routes: Routes = [
   {
@@ -110,6 +111,7 @@ const routes: Routes = [
     UserRoutingModule,
     VacanciesRoutingModule,
     ProjectRoutingModule,
+    PoolsRoutingModule,
   ],
   exports: [RouterModule],
 })

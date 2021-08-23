@@ -1,4 +1,5 @@
 ﻿using Application.Common.Commands;
+using Application.ElasticEnities.Dtos;
 using Application.Projects.Dtos;
 using AutoMapper;
 using Domain.Entities;
@@ -28,12 +29,15 @@ namespace Application.Projects.CommandQuery.Update
         protected readonly IWriteRepository<Project> _writeRepository;
         protected readonly IReadRepository<Project> _readRepository;
         protected readonly IMapper _mapper;
+        private readonly ISender _mediator;
 
-        public UpdateProjectCommandHandler(IWriteRepository<Project> writeRepository, IReadRepository<Project> readRepository, IMapper mapper)
+        public UpdateProjectCommandHandler(IWriteRepository<Project> writeRepository, 
+            IReadRepository<Project> readRepository, IMapper mapper, ISender mediator)
         {
             _writeRepository = writeRepository;
             _readRepository = readRepository;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         public async Task<ProjectDto> Handle(UpdateProjectCommand command, CancellationToken _)
@@ -46,6 +50,13 @@ namespace Application.Projects.CommandQuery.Update
             entity.CompanyId = projectToUpdate.CompanyId;
 
             var updated = await _writeRepository.UpdateAsync(entity);
+
+            var elasticQuery = new UpdateElasticDocumentCommand<UpdateApplicantToTagsDto>(
+                _mapper.Map<UpdateApplicantToTagsDto>(command.Project.Tags)
+            );
+
+            var updatedWithTags = _mapper.Map<ProjectDto>(updated);
+            updatedWithTags.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));
 
             return _mapper.Map<ProjectDto>(updated);
         }

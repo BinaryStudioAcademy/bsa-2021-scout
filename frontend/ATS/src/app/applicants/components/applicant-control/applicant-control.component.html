@@ -1,5 +1,9 @@
-<button mat-icon-button class="applicant-control-btn">
-    <mat-icon>turned_in</mat-icon>
+<app-spinner [loading]="loading"></app-spinner>
+<button mat-icon-button *ngIf="applicant!.isFollowed" (click)="onBookmark()" class="applicant-control-btn">
+    <mat-icon [ngClass]="{'applyPrimaryColor': applicant!.isFollowed}" class="applyPrimaryColor">bookmark</mat-icon>
+</button>
+<button mat-icon-button *ngIf="!applicant!.isFollowed" (click)="onBookmark()" class="applicant-control-btn">
+    <mat-icon [ngClass]="{'applyPrimaryColor': applicant!.isFollowed}">bookmark</mat-icon>
 </button>
 <button (click)="showApplicantUpdateDialog()" mat-icon-button class="applicant-control-btn">
     <mat-icon>edit</mat-icon>

@@ -1,23 +1,24 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { VacancyDataService } from 'src/app/shared/services/vacancy-data.service';
-import { MarkedApplicant } from 'src/app/shared/models/applicant/marked-applicant';
+import { MarkedApplicant } from 'src/app/shared/models/applicants/marked-applicant';
 import { ShortVacancyWithDepartment }
   from 'src/app/shared/models/vacancy/short-vacancy-with-department';
 import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candidate.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { GetShortApplicant } from '../../models/applicant/get-short-applicant';
+import { GetShortApplicant } from '../../models/applicants/get-short-applicant';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-modal-add-candidate',
   templateUrl: './modal-add-candidate.component.html',
   styleUrls: ['./modal-add-candidate.component.scss'],
 })
-export class AddCandidateModalComponent {
+export class AddCandidateModalComponent implements OnDestroy {
   public vacancyId: string = '';
   public disableVacanciesForm: boolean = true;
   public disableAddButton: boolean=true;
@@ -30,8 +31,12 @@ export class AddCandidateModalComponent {
   vacanciesForm = new FormControl();
   filteredVacancies!: Observable<ShortVacancyWithDepartment[]>;
   vacancies!: ShortVacancyWithDepartment[];
-  selectedVacancy: ShortVacancyWithDepartment = new ShortVacancyWithDepartment();
+  selectedVacancy: ShortVacancyWithDepartment =
+  new ShortVacancyWithDepartment();
 
+  public loading: boolean = true;
+
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data:
@@ -48,33 +53,42 @@ export class AddCandidateModalComponent {
     if (data.vacancyId) {
       this.vacancyId = data.vacancyId;
 
-      this.vacancyService.getVacancy(this.vacancyId).subscribe(
-        value => {
-          this.selectedVacancy = value;
-        },
-        (error) => (this.OnError(error)));
+      this.vacancyService
+        .getVacancy(this.vacancyId)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          (value) => (this.selectedVacancy = value),
+          (error) => this.OnError(error),
+        );
 
       this.applicantsForm.enable();
       this.applicantsForm.valueChanges.subscribe(_=>{
         if(this.applicantsForm.value.length==0){
           this.disableAddButton=true;
-        }else{
+        } else {
           this.disableAddButton=false;
         }
       });
 
       this.GetApplicants();
-    }
-    else if (data.applicantId) {
+    } else if (data.applicantId) {
       this.disableVacanciesForm = false;
 
-      this.applicantsService.getApplicantByCompany(data.applicantId).subscribe(value => {
-        this.selectedApplicant = value;
-        let applicant: MarkedApplicant = new MarkedApplicant(this.selectedApplicant);
-        this.filteredApplicants.push(applicant);
-        this.applicantsForm.setValue([applicant]);
-      },
-      (error) => (this.OnError(error)));
+      this.applicantsService
+        .getApplicantByCompany(data.applicantId)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          (value) => {
+            this.loading = false;
+            this.selectedApplicant = value;
+            let applicant: MarkedApplicant = new MarkedApplicant(
+              this.selectedApplicant,
+            );
+            this.filteredApplicants.push(applicant);
+            this.applicantsForm.setValue([applicant]);
+          },
+          (error) => this.OnError(error),
+        );
 
       this.vacancyService.getNotAppliedVacanciesByApplicant(data.applicantId)
         .subscribe(vacancies => {
@@ -89,34 +103,38 @@ export class AddCandidateModalComponent {
           );
         },
         (error) => (this.OnError(error)));
-
-      this.vacanciesForm.valueChanges.subscribe(vacancy => {
+        
+      this.vacanciesForm.valueChanges.subscribe((vacancy) => {
         if (typeof vacancy !== 'string') {
           this.selectedVacancy = vacancy;
           this.vacancyId = this.selectedVacancy.id;
           this.disableAddButton=false;
-        }
-        else{
+        } else {
           this.disableAddButton=true;
         }
       },
       (error) => (this.OnError(error)));
-    }
-    else {
+
+    } else {
       this.disableVacanciesForm = false;
 
-
-      this.vacancyService.getVacancies().subscribe(vacancies => {
-        this.vacancies = vacancies;
-        this.filteredVacancies = this.vacanciesForm.valueChanges.pipe(
-          startWith(''),
-          map(value => typeof value === 'string' ? value : value.title),
-          map(title => title ? this._filter(title) : this.vacancies.slice()),
+      this.vacancyService
+        .getVacancies()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          vacancies => {
+            this.loading = false;
+            this.vacancies = vacancies;
+            this.filteredVacancies = this.vacanciesForm.valueChanges.pipe(
+              startWith(''),
+              map(value => typeof value === 'string' ? value : value.title),
+              map(title => title ? this._filter(title) : this.vacancies.slice()),
+            );
+          },
+          (error) => this.OnError(error),
         );
-      },
-      (error) => (this.OnError(error)));
 
-      this.vacanciesForm.valueChanges.subscribe(vacancy => {
+      this.vacanciesForm.valueChanges.subscribe((vacancy) => {
         if (typeof vacancy !== 'string') {
           this.applicantsForm.enable();
 
@@ -133,20 +151,32 @@ export class AddCandidateModalComponent {
     }
   }
 
-  public GetApplicants() {
-    this.applicantsService.getMarkedApplicants(this.vacancyId)
-      .subscribe(value => {
-        this.filteredApplicants = value;
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
-        this.applicantsIds?.forEach(applicantId => {
-          this.filteredApplicants.forEach(applicant => {
-            if (applicantId == applicant.id && !applicant.isApplied) {
-              this.applicantsForm.setValue([applicant]);
-            }
+  public GetApplicants() {
+    this.loading = true;
+
+    this.applicantsService
+      .getMarkedApplicants(this.vacancyId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        value => {
+          this.loading = false;
+          this.filteredApplicants = value;
+
+          this.applicantsIds?.forEach((applicantId) => {
+            this.filteredApplicants.forEach((applicant) => {
+              if (applicantId == applicant.id && !applicant.isApplied) {
+                this.applicantsForm.setValue([applicant]);
+              }
+            });
           });
-        });
-      },
-      (error) => (this.OnError(error)));
+        },
+        (error) => this.OnError(error),
+      );
   }
 
   public OnCreate() {
@@ -163,7 +193,9 @@ export class AddCandidateModalComponent {
   private _filter(title: string): ShortVacancyWithDepartment[] {
     const filterValue = title.toLowerCase();
 
-    return this.vacancies.filter(option => option.title.toLowerCase().includes(filterValue));
+    return this.vacancies.filter((option) =>
+      option.title.toLowerCase().includes(filterValue),
+    );
   }
 
   displayFn(vacancy: ShortVacancyWithDepartment): string {
@@ -176,6 +208,7 @@ export class AddCandidateModalComponent {
   }
 
   public OnError(error: Error) {
+    this.loading = false;
     this.notificationService.showErrorMessage(error?.message ? 
       error.message : 'Apply vacancy failed');
     this.modal.close();

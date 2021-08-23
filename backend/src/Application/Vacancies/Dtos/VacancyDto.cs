@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Common.Models;
+using Application.ElasticEnities.Dtos;
 using Application.Stages.Dtos;
 using Domain.Enums;
 using FluentValidation;
@@ -31,7 +32,8 @@ namespace Application.Vacancies.Dtos
         public DateTime ModificationDate { get; set; }
         public DateTime? CompletionDate { get; set; }
         public DateTime PlannedCompletionDate { get; set; }
-        public ICollection<StageWithCandidatesDto> Stages { get; set; }
+        public ICollection<StageDto> Stages { get; set; }
+        public ElasticEnitityDto Tags { get; set; }
     }
     public class VacancyDtoValidator : AbstractValidator<VacancyDto>
     {

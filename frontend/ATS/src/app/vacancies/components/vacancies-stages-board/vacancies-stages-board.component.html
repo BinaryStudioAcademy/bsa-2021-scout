@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="container">
-  <app-spinner *ngIf="loading"></app-spinner>
+  <app-spinner [loading]="loading"></app-spinner>
   <ng-container *ngIf="!loading">
     <div>
       <h2>{{ title }}</h2>

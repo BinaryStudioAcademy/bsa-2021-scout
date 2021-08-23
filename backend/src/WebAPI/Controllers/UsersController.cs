@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Application.Interfaces;
 using System.Collections.Generic;
 using Application.Users.Queries;
+using System;
+using Application.Projects.Commands;
 
 namespace WebAPI.Controllers
 {
@@ -33,8 +35,6 @@ namespace WebAPI.Controllers
             return Ok(user);
         }
 
-
-
         [AllowAnonymous]
         [HttpGet, Route("Email/{email}")]
         public async Task<IActionResult> IsEmailAlreadyUsed(string email)
@@ -56,6 +56,13 @@ namespace WebAPI.Controllers
         {
             var command = new CreateEntityCommand<UserDto>(user);
             return StatusCode(201, await Mediator.Send(command));
+        }
+
+        [HttpGet("current/company/projects")]
+        public async Task<IActionResult> CurrentHRProjects()
+        {
+            var query = new GetProjectsByCurrentHRCompanyCommand();
+            return Ok(await Mediator.Send(query));
         }
     }
 }

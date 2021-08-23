@@ -1,0 +1,12 @@
+<div class="dialog-header">
+    <mat-icon mat-dialog-close class="close-btn" (click)="sendDialogResponse(false)">arrow_back</mat-icon>
+    <h1 mat-dialog-title>Delete {{entityName}}</h1>
+</div>
+<mat-dialog-content>
+    <p>Are you sure you want to delete the {{entityName}}? Delete action can`t be undone</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-dialog-close mat-button (click)="sendDialogResponse(true)">
+        Delete
+    </button>
+</mat-dialog-actions>

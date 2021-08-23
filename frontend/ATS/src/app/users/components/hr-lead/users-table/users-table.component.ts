@@ -1,62 +1,89 @@
-import { AfterViewInit, Component,
-  ViewChild, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { Sort } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
-import { User } from 'src/app/users/models/user';
 import { UserDataService } from 'src/app/users/services/user-data.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { finalize } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { SendingRegisterLinkDialogComponent } 
   from '../send-registration-link-dialog/sending-register-link-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { UserTableData } from 'src/app/users/models/user-table-data';
+import { Subject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users-table',
   templateUrl: './users-table.component.html',
   styleUrls: ['./users-table.component.scss'],
 })
-export class UsersTableComponent implements AfterViewInit, OnInit {
+export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
   public displayedColumns: string[] =
   ['position', 'full-name', 'email', 'birth-date', 
     'creation-date', 'email-confirmed', 'actions'];
-  private users: User[] = [];
-  public dataSource: MatTableDataSource<User>;
+  private users: UserTableData[] = [];
+  public dataSource: MatTableDataSource<UserTableData>;
   public loading: boolean = true;
-​
+  public isFollowedPage: boolean = false;
+
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private userDataService: UserDataService,
     private notificationService: NotificationService,
     private dialog: MatDialog) {
-    this.dataSource = new MatTableDataSource<User>();
+    this.dataSource = new MatTableDataSource<UserTableData>();
   }
 
   public getUsers() {
     this.userDataService
       .getUsersForHrLead()
       .pipe(
+        takeUntil(this.unsubscribe$),
         finalize(() => this.loading = false),
       )
       .subscribe(
         (resp) => {
+          resp.forEach((user, index) => {
+            user.position = index + 1;
+          });
           this.users = resp;
           this.dataSource.data = this.users;
           this.directive.applyFilter$.emit();
         },
-        () => this.notificationService.showErrorMessage('Something went wrong'),
+        () => {
+          this.notificationService.showErrorMessage('Something went wrong');
+        },
       );
   }
 
   public ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'full-name': return `${item.firstName}  ${item.lastName}`;
+        case 'email': return item.email;
+        case 'birth-date': return item.birthDate;
+        case 'creation-date': return item.creationDate;
+        case 'email-confirmed': return item.isEmailConfirmed;
+        default: return (item as IIndexable)[property];
+      }
+    };  
   }
-  ​
   public ngOnInit() {
     this.getUsers();
+  }
+
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   public applyFilter(event: Event) {
@@ -69,28 +96,6 @@ export class UsersTableComponent implements AfterViewInit, OnInit {
     }
   }
 
-  public sortData(sort: Sort): void {
-    this.dataSource.data = (this.dataSource.data as User[]).sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-                  
-      switch (sort.active) {
-        case 'full-name':
-          return this.compareRows(`${a.firstName}  ${a.lastName}`,
-            `${b.firstName} ${b.lastName}`, isAsc);
-        case 'email':
-          return this.compareRows(a.email, b.email, isAsc);
-        case 'birth-date':
-          return this.compareRows(a.birthDate, b.birthDate, isAsc);
-        case 'creation-date':
-          return this.compareRows(a.creationDate, b.creationDate, isAsc);
-        case 'email-confirmed':
-          return this.compareRows(a.isEmailConfirmed, b.isEmailConfirmed, isAsc);
-        default:
-          return 0;
-      }
-    });
-  }
-
   public OpenSendRegistrationLinkDialog(): void {
     this.dialog.open(SendingRegisterLinkDialogComponent, {
       disableClose: true,
@@ -98,8 +103,27 @@ export class UsersTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  private compareRows(a: number|string|Date|boolean, b: number|string|Date|boolean, isAsc: boolean)
-    : number {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  public switchToFollowed() {
+    this.isFollowedPage = true;
+    this.dataSource.data = this.dataSource.data.filter(user => user.isFollowed);
+    this.directive.applyFilter$.emit();
   }
+
+  public switchAwayToAll() {
+    this.isFollowedPage = false;
+    this.dataSource.data = this.users;
+    this.directive.applyFilter$.emit();
+  }
+
+  public onBookmark(data: UserTableData, perfomToFollowCleanUp: boolean = false){
+    data.isFollowed = !data.isFollowed;
+    if(perfomToFollowCleanUp) {
+      this.dataSource.data = this.dataSource.data.filter(user => user.isFollowed);
+    }
+    this.directive.applyFilter$.emit();
+  }
+}
+
+interface IIndexable {
+  [key: string]: any;
 }

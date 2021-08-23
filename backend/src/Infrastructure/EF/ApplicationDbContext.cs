@@ -2,6 +2,7 @@
 using Domain.Common.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using sys = System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -29,6 +30,8 @@ namespace Infrastructure.EF
         public DbSet<Review> Reviews { get; set; }
         public DbSet<CandidateReview> CandidateReviews { get; set; }
         public DbSet<CvParsingJob> CvParsingJobs { get; set; }
+        public DbSet<ReviewToStage> ReviewToStages { get; set; }
+        public DbSet<CandidateComment> CandidateComments { get; set; }
         public DbSet<RegisterPermission> RegisterPermissions { get; set; }
 
         private readonly IDomainEventService _domainEventService;
@@ -47,13 +50,7 @@ namespace Infrastructure.EF
         {
             if (!optionsBuilder.IsConfigured)
             {
-                string connectionString = System.Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
-
-                if (connectionString == null)
-                {
-                    throw new System.Exception("Database connection string is not specified");
-                }
-
+                string connectionString = sys::Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
                 optionsBuilder.UseSqlServer(connectionString);
             }
         }

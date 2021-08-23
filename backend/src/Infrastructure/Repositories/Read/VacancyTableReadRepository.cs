@@ -27,8 +27,9 @@ namespace Infrastructure.Repositories.Read
             var connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
             StringBuilder vacancySql = new StringBuilder();
-            vacancySql.Append("SELECT * FROM Vacancies as VC");
-            vacancySql.Append(" WHERE VC.CompanyId = @CompanyId");
+            vacancySql.Append("SELECT VC.* FROM Vacancies as VC");
+            vacancySql.Append(" JOIN Projects ON Projects.Id = VC.ProjectId");
+            vacancySql.Append(" WHERE VC.CompanyId = @CompanyId AND Projects.IsDeleted='0'");
             StringBuilder candidateCountSql = new StringBuilder();
             candidateCountSql.Append("SELECT COUNT(*) FROM VacancyCandidates");
             candidateCountSql.Append(" WHERE EXISTS(SELECT * FROM Stages WHERE Stages.VacancyId = @vacancyId");

@@ -134,6 +134,7 @@ $primary-color: #291965;
 ::ng-deep {
     ::-webkit-scrollbar {
         width: 5px;
+        height: 5px;
       }
 
       /* Track */
@@ -191,9 +192,6 @@ $primary-color: #291965;
 }
 
 :host ::ng-deep {
-    .invalid-input .mat-form-field-flex {
-        border: 2.5px solid #EE2A64 !important;
-}
 
 .mat-form-field-wrapper.mat-form-field-wrapper {
     min-width: unset;
@@ -202,7 +200,7 @@ $primary-color: #291965;
     height: auto;
     box-sizing: border-box;
     background-color: unset;
-    padding: 0px 0px 20px 0px;
+    padding: 0px 0px 0px 0px;
 }
 
 .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
