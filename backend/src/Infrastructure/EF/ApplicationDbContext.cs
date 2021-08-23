@@ -2,6 +2,7 @@
 using Domain.Common.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using sys = System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -24,9 +25,13 @@ namespace Infrastructure.EF
         public DbSet<Vacancy> Vacancies { get; set; }
         public DbSet<VacancyCandidate> VacancyCandidates { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<FileInfo> FileInfos { get; set; }
         public DbSet<CandidateToStage> CandidateToStages { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<CandidateReview> CandidateReviews { get; set; }
+        public DbSet<ReviewToStage> ReviewToStages { get; set; }
+        public DbSet<CandidateComment> CandidateComments { get; set; }
+        public DbSet<RegisterPermission> RegisterPermissions { get; set; }
 
         private readonly IDomainEventService _domainEventService;
 
@@ -44,7 +49,8 @@ namespace Infrastructure.EF
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(local);Database=ATS_dev;User Id=sa;Password=123Admin!;");
+                string connectionString = sys::Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
+                optionsBuilder.UseSqlServer(connectionString);
             }
         }
 

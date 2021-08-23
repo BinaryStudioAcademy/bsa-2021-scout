@@ -1,0 +1,24 @@
+<div class='send-register-link-dialog-container'>
+    <h1 mat-dialog-title >
+        <mat-icon mat-dialog-close class='send-register-link-dialog-back-button'>arrow_back</mat-icon>
+        <span class="send-register-link-dialog-title">Send registration link</span>
+    </h1>
+    <div mat-dialog-content>
+        <p>Enter email address to which to send the link for registration.</p>
+    </div>
+    <form [formGroup]="emailForm" (ngSubmit)="sendRegistLink()">
+        <div class="send-register-link-dialog-input-email form-group">
+            <mat-form-field floatLabel="never"
+            [ngClass]="loginRegistCommonComponent.checkIsControlValid(emailForm,'userEmail') ? 'invalid-input' : ''">
+                <input matInput type="email" formControlName="userEmail" placeholder="Enter your Email">
+            </mat-form-field>
+            <div class="validation-error"
+                *ngIf="loginRegistCommonComponent.checkIsControlValid(emailForm,'userEmail') && emailForm.controls['userEmail'].errors?.pattern">
+                Please enter a valid address.
+            </div>
+        </div>
+        <div mat-dialog-actions class="dialog-button form-group">
+            <button mat-button color="primary" [disabled]="emailForm.invalid || !isRequestFinished">Send link</button>
+        </div>
+    </form>
+</div>

@@ -12,10 +12,12 @@ namespace Application.VacancyCandidates.Queries
     public class GetFullVacancyCandidateByIdQuery : IRequest<VacancyCandidateFullDto>
     {
         public string Id { get; set; }
+        public string VacancyId { get; set; }
 
-        public GetFullVacancyCandidateByIdQuery(string id)
+        public GetFullVacancyCandidateByIdQuery(string id, string vacancyId)
         {
             Id = id;
+            VacancyId = vacancyId;
         }
     }
 
@@ -23,33 +25,23 @@ namespace Application.VacancyCandidates.Queries
         : IRequestHandler<GetFullVacancyCandidateByIdQuery, VacancyCandidateFullDto>
     {
         private readonly IVacancyCandidateReadRepository _readRepository;
-        private readonly IReadRepository<entities::ApplicantCv> _cvReadRepository;
         private readonly IMapper _mapper;
 
         public GetFullVacancyCandidateByIdQueryHandler(
             IVacancyCandidateReadRepository readRepository,
-            IReadRepository<entities::ApplicantCv> cvReadRepository,
             IMapper mapper
         )
         {
             _readRepository = readRepository;
-            _cvReadRepository = cvReadRepository;
             _mapper = mapper;
         }
 
         public async Task<VacancyCandidateFullDto> Handle(GetFullVacancyCandidateByIdQuery query, CancellationToken _)
         {
-            VacancyCandidate candidate = await _readRepository.GetFullAsync(query.Id);
-            VacancyCandidateFullDto result = _mapper.Map<VacancyCandidate, VacancyCandidateFullDto>(candidate);
+            VacancyCandidate candidate = await _readRepository.GetFullAsync(query.Id, query.VacancyId);
+            VacancyCandidateFullDto candidateFullDto = _mapper.Map<VacancyCandidate, VacancyCandidateFullDto>(candidate);
 
-            try
-            {
-                ApplicantCv cv = await _cvReadRepository.GetByPropertyAsync("ApplicantId", candidate.ApplicantId);
-                result.Cv = cv.Cv;
-            }
-            catch { }
-
-            return result;
+            return candidateFullDto;
         }
     }
 }

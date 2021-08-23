@@ -10,9 +10,9 @@ import { HttpClientService } from './http-client.service';
 export class VacancyCandidateService {
   public constructor(private readonly http: HttpClientService) {}
 
-  public getFull(id: string): Observable<FullVacancyCandidate> {
+  public getFull(id: string, vacancyId: string): Observable<FullVacancyCandidate> {
     return this.http.getRequest<FullVacancyCandidate>(
-      `/vacancyCandidates/${id}/full`,
+      `/vacancyCandidates/${vacancyId}/${id}/full`,
     );
   }
 
@@ -22,6 +22,12 @@ export class VacancyCandidateService {
   ): Observable<VacancyCandidate> {
     return this.http.putClearRequest(
       `/vacancyCandidates/${id}/set-stage/${stageId}`,
+    );
+  }
+
+  public postRangeOfCandidates(vacancyId:string, applicantsIds: string[]){
+    return this.http.postRequest<void>(
+      `/VacancyCandidates/CandidatesRange/${vacancyId}`, applicantsIds,
     );
   }
 }

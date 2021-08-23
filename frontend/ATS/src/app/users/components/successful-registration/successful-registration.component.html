@@ -1,6 +1,7 @@
 <app-logo-block></app-logo-block>
 <div class="login-side-block">
     <div>
+        <app-spinner [loading]="loading"></app-spinner>
         <h2>You have successfully registered.</h2>
         <h2>Please check your email to confirm your email. If you don`t receive mail click this <a
                 (click)="resendEmail()">link</a> for

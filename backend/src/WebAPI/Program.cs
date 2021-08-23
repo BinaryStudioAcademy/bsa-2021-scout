@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using WebAPI.Extensions;
@@ -11,12 +12,9 @@ namespace WebAPI
             CreateHostBuilder(args)
                 .Build()
                 .ApplyDatabaseMigrations()
-                .ApplyElasticSeeding()
-                .ApplyDatabaseSeeding()
-                .ApplyMongoSeeding()
+                .ApplyAllSeedingSync()
                 .Run();
         }
-
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)

@@ -1,7 +1,8 @@
 import { Tag } from '../tags/tag';
 import { ElasticType } from './elastic-type';
 
-export interface ElasticEntity {
-  elasticType: ElasticType,
-  tagDtos: Tag[]
+export class ElasticEntity {
+  id: string='';
+  elasticType: ElasticType=0;
+  tagDtos: Tag[] = [];
 }

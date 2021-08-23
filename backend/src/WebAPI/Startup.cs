@@ -15,19 +15,23 @@ namespace WebAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        public Startup()
+        {
+            Configuration = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.Development.json")
+                .Build();
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplication();
             services.AddInfrastructure();
 
-            
+
             services.ConfigureJwt(Configuration);
             services.AddScoped<ICurrentUserContext, CurrentUserContext>();
             services.AddHttpContextAccessor();
@@ -45,7 +49,7 @@ namespace WebAPI
                     BearerFormat = "JWT"
                 });
                 c.OperationFilter<AddAuthHeaderOperationFilter>();
-            });            
+            });
 
         }
 
@@ -66,6 +70,7 @@ namespace WebAPI
 
             app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
 

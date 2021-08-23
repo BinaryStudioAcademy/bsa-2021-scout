@@ -32,14 +32,14 @@ namespace WebAPI.Extensions
 
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = true,
-                ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
 
                 ValidateAudience = true,
                 ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
 
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
+                ValidateIssuer = true,
+                ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
 
                 RequireExpirationTime = false,
                 ValidateLifetime = true,
@@ -53,7 +53,7 @@ namespace WebAPI.Extensions
 
             }).AddJwtBearer(configureOptions =>
             {
-               // configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
                 configureOptions.SaveToken = true;
 

@@ -4,10 +4,11 @@ using Application.Users.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using WebAPI.Extensions;
 using Application.Interfaces;
-using Application.Common.Exceptions;
-using Domain.Entities;
+using System.Collections.Generic;
+using Application.Users.Queries;
+using System;
+using Application.Projects.Commands;
 
 namespace WebAPI.Controllers
 {
@@ -42,11 +43,26 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
+        [Authorize(Roles = "HrLead")]
+        [HttpGet("for-hr-lead")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUserForHrLead()
+        {
+            var query = new GetUsersForHrLeadQuery();
+            return Ok(await Mediator.Send(query));
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateUser(UserDto user)
         {
             var command = new CreateEntityCommand<UserDto>(user);
             return StatusCode(201, await Mediator.Send(command));
+        }
+
+        [HttpGet("current/company/projects")]
+        public async Task<IActionResult> CurrentHRProjects()
+        {
+            var query = new GetProjectsByCurrentHRCompanyCommand();
+            return Ok(await Mediator.Send(query));
         }
     }
 }

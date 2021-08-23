@@ -1,49 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { EmailIsNotConfirmedErrorType } from '../../models/auth/emai-is-not-confirmed-error-type';
 import { UserLoginDto } from '../../models/auth/user-login-dto';
 import { AuthenticationService } from '../../services/auth.service';
-import { ForgotPasswordDialogComponent }
-  from '../forgot-password-dialog/forgot-password-dialog.component';
+
+import {
+  ForgotPasswordDialogComponent,
+} from '../forgot-password-dialog/forgot-password-dialog.component';
+
 import { LoginRegistCommonComponent } from '../login-regist-common/login-regist-common.component';
 
 @Component({
   selector: 'app-login-box',
   templateUrl: './login-box.component.html',
-  styleUrls: ['./login-box.component.scss',
-    '../login-regist-common/login-regist-common.component.scss'],
+  styleUrls: [
+    './login-box.component.scss',
+    '../login-regist-common/login-regist-common.component.scss',
+  ],
 })
-export class LoginBoxComponent {
-
+export class LoginBoxComponent implements OnDestroy {
   public constructor(
     public loginRegistCommonComponent: LoginRegistCommonComponent,
     public dialog: MatDialog,
     public authenticationService: AuthenticationService,
     private notificationService: NotificationService,
-    private router: Router) { }
+    private router: Router,
+  ) {}
 
   public userLoginDto: UserLoginDto = {} as UserLoginDto;
-
   public isPasswordHide = true;
-
-  public isRequestFinished = true;
+  public loading: boolean = false;
 
   public loginForm: FormGroup = new FormGroup({
-    'userEmail': new FormControl('', [
+    userEmail: new FormControl('', [
       Validators.required,
-      Validators
-        .pattern(
-          '^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{1,6}$',
-        ),
+      Validators.pattern(
+        '^([a-zA-Z0-9_-]+.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_]+(.[a-zA-Z0-9_-]+)*.[a-zA-Z]{1,6}$',
+      ),
       this.loginRegistCommonComponent.noUnAllowedCharactersValidation,
       this.loginRegistCommonComponent.onlyOneAtSign,
     ]),
-    'userPassword': new FormControl('', [
-      Validators.required,
-    ]),
+    userPassword: new FormControl('', [Validators.required]),
   });
+
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   public openDialog(): void {
     this.dialog.open(ForgotPasswordDialogComponent, {
@@ -54,15 +64,40 @@ export class LoginBoxComponent {
 
   public onSubmit() {
     if (this.loginForm.valid) {
-      this.authenticationService.login(this.userLoginDto).pipe()
-        .subscribe(() => {
-          this.isRequestFinished = false;
-          this.router.navigate(['/']);
-        },
-        (error) => {
-          this.isRequestFinished = true;
-          this.notificationService.showErrorMessage(error.description);
-        });
+      this.loading = true;
+
+      this.authenticationService
+        .login(this.userLoginDto)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          () => {
+            this.loading = false;
+            this.router.navigate(['/']);
+          },
+          (error) => {
+            this.loading = false;
+
+            if (error.description != null) {
+              if (
+                error.type === EmailIsNotConfirmedErrorType.EmailIsNotConfirmed
+              ) {
+                this.router.navigate(['/resend-email'], {
+                  queryParams: { email: this.userLoginDto.email },
+                });
+              } else {
+                this.notificationService.showErrorMessage(
+                  error.description,
+                  'Something went wrong',
+                );
+              }
+            } else {
+              this.notificationService.showErrorMessage(
+                error,
+                'Something went wrong',
+              );
+            }
+          },
+        );
     }
   }
 }

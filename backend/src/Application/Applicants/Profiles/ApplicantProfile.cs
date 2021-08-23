@@ -10,10 +10,23 @@ namespace Application.Applicants.Profiles
         {
             CreateMap<ApplicantDto, Applicant>();
             CreateMap<Applicant, ApplicantDto>();
+            CreateMap<Applicant, GetShortApplicantDto>();
+
+            CreateMap<Applicant, MarkedApplicantDto>()
+                .ForMember(dto => dto.IsApplied, opt => opt.Ignore());
+
+            CreateMap<(Applicant, bool), MarkedApplicantDto>()
+                .IncludeMembers(dto => dto, opt => opt.Item1)
+                .ForMember(dto => dto.IsApplied, opt => opt
+                         .MapFrom(ma => ma.Item2));
+
             CreateMap<CreateApplicantDto, ApplicantDto>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
+            CreateMap<ApplicantCsvDto, Applicant>();
+
             CreateMap<UpdateApplicantDto, ApplicantDto>();
+            CreateMap<UpdateApplicantDto, Applicant>();
             CreateMap<ApplicantVacancyInfo, ApplicantVacancyInfoDto>();
         }
     }
