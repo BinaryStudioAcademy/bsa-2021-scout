@@ -13,6 +13,8 @@ import { ApplicantsHeadComponent } from './components/applicants-head/applicants
 import { MatChipsModule } from '@angular/material/chips';
 import { ApplicantControlComponent } 
   from './components/applicant-control/applicant-control.component';
+import { ApplicantsUploadCsvComponent } 
+  from './components/applicants-upload-csv/applicants-upload-csv.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { ApplicantControlComponent }
     UpdateApplicantComponent,
     ApplicantsHeadComponent,
     ApplicantControlComponent,
+    ApplicantsUploadCsvComponent,
   ],
   imports: [
     BrowserModule,

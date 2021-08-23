@@ -1,5 +1,5 @@
 <app-header></app-header>
-<app-applicants-head (search)="applySearchValue($event)" (applicantCreated)="createApplicant($event)" #head></app-applicants-head>
+<app-applicants-head (search)="applySearchValue($event)" (applicantCreated)="createApplicant($event)" (applicantsFileUploaded)="updateListApplicants()" #head></app-applicants-head>
 <div class="page-content">
     <app-spinner [loading]="loading"></app-spinner>
     <div class="mat-elevation-z8">
