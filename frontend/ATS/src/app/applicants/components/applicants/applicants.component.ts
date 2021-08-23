@@ -52,6 +52,10 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {}
 
   public ngOnInit(): void {
+    this.getApplicants();
+  }
+
+  public getApplicants(){
     this.applicantsService
       .getApplicants()
       .pipe(
@@ -261,6 +265,10 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       },
     );
+  }
+
+  public updateListApplicants(){
+    this.getApplicants();
   }
 
   private compareRows(

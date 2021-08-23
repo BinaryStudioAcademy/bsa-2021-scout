@@ -1,6 +1,7 @@
 ﻿using CsvHelper.Configuration;
 using FluentValidation;
 using System;
+using System.Text.RegularExpressions;
 
 namespace Application.Applicants.Dtos
 {
@@ -13,6 +14,7 @@ namespace Application.Applicants.Dtos
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Skype { get; set; }
+        public string LinkedInUrl { get; set; }
         public double Experience { get; set; }
     }
 
@@ -20,14 +22,16 @@ namespace Application.Applicants.Dtos
     {
         public ApplicantCsvDtoValidator()
         {
-            RuleFor(h => h.FirstName).NotNull().NotEmpty();
-            RuleFor(h => h.LastName).NotNull().NotEmpty();
-            RuleFor(h => h.MiddleName).NotNull().NotEmpty();
-            RuleFor(h => h.BirthDate).NotNull().NotEmpty();
-            RuleFor(h => h.Email).NotNull().EmailAddress();
-            RuleFor(a => a.Phone).NotNull().NotEmpty();
-            RuleFor(a => a.Skype).NotNull().NotEmpty();
-            RuleFor(a => a.Experience).GreaterThanOrEqualTo(0);
+            RuleFor(_ => _.FirstName).NotNull().NotEmpty();
+            RuleFor(_ => _.LastName).NotNull().NotEmpty();
+            RuleFor(_ => _.MiddleName).NotNull().NotEmpty();
+            RuleFor(_ => _.BirthDate).NotNull().NotEmpty();
+            RuleFor(_ => _.Email).NotNull().EmailAddress();
+            RuleFor(_ => _.Phone).NotNull().NotEmpty();
+            RuleFor(_ => _.Skype).NotNull().NotEmpty();
+            RuleFor(_ => _.LinkedInUrl).NotNull().NotEmpty()
+                .Must(LinkedInUrl => new Regex(@"^https:\/\/www.linkedin.com\/[a-z0-9\-]+").IsMatch(LinkedInUrl));
+            RuleFor(_ => _.Experience).GreaterThanOrEqualTo(0);
         }
     }
 
@@ -42,6 +46,7 @@ namespace Application.Applicants.Dtos
             Map(a => a.Email).Name("Email");
             Map(a => a.Phone).Name("Phone");
             Map(a => a.Skype).Name("Skype");
+            Map(a => a.LinkedInUrl).Name("LinkedInUrl");
             Map(a => a.Experience).Name("Experience");
         }
     }

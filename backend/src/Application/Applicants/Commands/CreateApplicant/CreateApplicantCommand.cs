@@ -77,7 +77,7 @@ namespace Application.Applicants.Commands
 
             var createdApplicant = _mapper.Map<Applicant, ApplicantDto>(applicant);
 
-            await CreateTagsIfExists(createdApplicant, command);
+            await CreateElasticEntityAndAddTagsIfExist(createdApplicant, command);
 
             createdApplicant.Vacancies = new List<ApplicantVacancyInfoDto>();
 
@@ -95,24 +95,25 @@ namespace Application.Applicants.Commands
             applicant.CvFileInfo = uploadedCvFileInfo;
         }
 
-        private async Task CreateTagsIfExists(ApplicantDto createdApplicant, CreateApplicantCommand command)
+        private async Task CreateElasticEntityAndAddTagsIfExist(ApplicantDto createdApplicant, CreateApplicantCommand command)
         {
-            if (!command.ApplicantDto.Tags.TagDtos.Any())
-            {
-                return;
-            }
-
-            var elasticQuery = new CreateElasticDocumentCommand<CreateElasticEntityDto>(new CreateElasticEntityDto()
+            var elasticEntityDto = new CreateElasticEntityDto()
             {
                 ElasticType = ElasticType.ApplicantTags,
                 Id = createdApplicant.Id,
-                TagsDtos = command.ApplicantDto.Tags.TagDtos.Select(t => new TagDto()
+                TagsDtos = new List<TagDto>()
+            };
+
+            if (command.ApplicantDto.Tags.TagDtos.Any())
+            {
+                elasticEntityDto.TagsDtos = command.ApplicantDto.Tags.TagDtos.Select(t => new TagDto()
                 {
                     Id = Guid.NewGuid().ToString(),
                     TagName = t.TagName
-                })
-            });
+                });
+            }
 
+            var elasticQuery = new CreateElasticDocumentCommand<CreateElasticEntityDto>(elasticEntityDto);
             createdApplicant.Tags = _mapper.Map<ElasticEnitityDto>(await _mediator.Send(elasticQuery));
         }
     }
