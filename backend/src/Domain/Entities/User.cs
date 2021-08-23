@@ -27,6 +27,7 @@ namespace Domain.Entities
         public ICollection<RefreshToken> RefreshTokens { get; set; }
         public ICollection<UserToRole> UserRoles { get; set; }
         public ICollection<CvParsingJob> CvParsingJobs { get; set; }
+        public ICollection<SkillsParsingJob> SkillsParsingJobs { get; set; }
 
         public IList<DomainEvent> DomainEvents { get; set; }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,8 @@ namespace WebAPI.Controllers
     public class ApplicantCvController : ApiController
     {
         [HttpPost("file-to-applicant")]
-        [AllowAnonymous]
         public async Task<ActionResult> StartParsingFileToApplicant([FromForm] ApplicantCvOnlyFileDto dto)
         {
-            string userId = "65cf0eb1-6d09-4711-add6-3628d369645a";
             ActionResult fileError = ValidateFileType(dto.File, "application/pdf");
 
             if (fileError != null)
@@ -24,15 +23,15 @@ namespace WebAPI.Controllers
             }
 
             byte[] bytes = GetFileBytes(dto.File);
-            var command = new StartApplicantCvTextDetectionCommand(bytes, userId);
+            var command = new StartApplicantCvTextDetectionCommand(bytes);
             await Mediator.Send(command);
 
             return Ok();
         }
 
-        [HttpPost("webhook/parsed")]
+        [HttpPost("webhook/text-parsed")]
         [AllowAnonymous]
-        public async Task<ActionResult> ParseFileToApplicant([FromBody] SnsNotificationDto data)
+        public async Task<ActionResult> StartParsingFileToApplicant([FromBody] SnsNotificationDto data)
         {
             if (data.SubscribeURL != null)
             {
@@ -41,7 +40,24 @@ namespace WebAPI.Controllers
             }
 
             TextractNotificationDto message = JsonConvert.DeserializeObject<TextractNotificationDto>(data.Message);
-            var command = new ParseCvFileToApplicantCommand(message.JobId);
+            var command = new StartParsingCvFileToApplicantCommand(message.JobId);
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpPost("webhook/skills-parsed")]
+        [AllowAnonymous]
+        public async Task<ActionResult> FinishParsingFileToApplicant([FromBody] SnsNotificationDto data)
+        {
+            if (data.SubscribeURL != null)
+            {
+                Console.WriteLine($"SubscribeURL: {data.SubscribeURL}");
+                return Ok();
+            }
+
+            S3NotificationDto message = JsonConvert.DeserializeObject<S3NotificationDto>(data.Message);
+            var command = new FinishParsingCvFileToApplicantCommand(message.Records.First().S3.Object.Key);
             await Mediator.Send(command);
 
             return Ok();

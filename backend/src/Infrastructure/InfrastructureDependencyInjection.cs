@@ -130,7 +130,7 @@ namespace Infrastructure
 
             return services;
         }
-        
+
         private static IServiceCollection AddFilesManagement(this IServiceCollection services)
         {
             services.AddScoped<IAwsS3ConnectionFactory, AwsS3ConnectionFactory>();
@@ -178,6 +178,8 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<PoolToApplicant>, PoolToApplicantWriteRepository>();
             services.AddScoped<IPoolToApplicantWriteRepository, PoolToApplicantWriteRepository>();
             services.AddScoped<IWriteRepository<MailTemplate>, MongoWriteRepository<MailTemplate>>();
+            services.AddScoped<IWriteRepository<CvParsingJob>, WriteRepository<CvParsingJob>>();
+            services.AddScoped<IWriteRepository<SkillsParsingJob>, WriteRepository<SkillsParsingJob>>();
 
             services.AddScoped<IWriteRepository<Domain.Entities.Action>, WriteRepository<Domain.Entities.Action>>();
 
@@ -205,7 +207,6 @@ namespace Infrastructure
 
             services.AddScoped<IApplicantReadRepository, ApplicantReadRepository>();
 
-            //services.AddScoped<IReadRepository<CandidateToStage>, ReadRepository<CandidateToStage>>();
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
@@ -215,7 +216,7 @@ namespace Infrastructure
             services.AddScoped<IVacancyReadRepository, VacancyReadRepository>();
 
             services.AddScoped<IReadRepository<CvParsingJob>, CvParsingJobReadRepository>();
-            services.AddScoped<IWriteRepository<CvParsingJob>, WriteRepository<CvParsingJob>>();
+            services.AddScoped<IReadRepository<SkillsParsingJob>, SkillsParsingJobReadRepository>();
 
             services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
             services.AddScoped<IReadRepository<MailTemplate>, MongoReadRespoitory<MailTemplate>>();

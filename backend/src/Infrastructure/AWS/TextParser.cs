@@ -51,8 +51,8 @@ namespace Infrastructure.AWS
 
         public async Task<string> StartParsingAsync(byte[] fileContent)
         {
-            string fileName = $"cv-{Guid.NewGuid().ToString()}";
-            string filePath = $"cvs/{fileName}.pdf";
+            string fileName = $"cv-{Guid.NewGuid().ToString()}.pdf";
+            string filePath = $"cvs/{fileName}";
             await _uploader.UploadAsync(filePath, fileContent);
 
             StartDocumentTextDetectionRequest request = new StartDocumentTextDetectionRequest();

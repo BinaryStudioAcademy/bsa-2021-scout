@@ -47,5 +47,20 @@ namespace Infrastructure.AWS
 
             await _s3.PutObjectAsync(request);
         }
+
+        public async Task<byte[]> ReadAsync(string path)
+        {
+            return await ReadAsync(_defaultBucket, path);
+        }
+
+        public async Task<byte[]> ReadAsync(string bucket, string path)
+        {
+            GetObjectResponse response = await _s3.GetObjectAsync(bucket, path);
+
+            MemoryStream memory = new MemoryStream();
+            response.ResponseStream.CopyTo(memory);
+
+            return memory.ToArray();
+        }
     }
 }

@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace WebAPI.Middleware
 {
     public class ForceJsonMiddleware
     {
         private static readonly List<string> forceJsonRoutes = new List<string> {
-            "/api/applicantCv/webhook/parsed",
+            "/api/applicantCv/webhook/text-parsed",
+            "/api/applicantCv/webhook/skills-parsed"
         };
 
         private readonly RequestDelegate _next;

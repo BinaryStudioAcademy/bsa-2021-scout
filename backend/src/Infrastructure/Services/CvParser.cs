@@ -17,11 +17,15 @@ namespace Infrastructure.Services
             _comprehend = comprehend;
         }
 
-        public async Task<ApplicantCreationVariantsDto> ParseAsync(string text, string lang = "en")
+        public async Task<(string, string)> StartParsingSkillsAsync(string text)
         {
-            IEnumerable<TextEntity> generalEntities = await _comprehend.ParseEntitiesAsync(text, lang);
-            IEnumerable<TextEntity> skillEntities = await _comprehend.ParseSkillsAsync(text, lang);
-            IEnumerable<TextEntity> personalDataEntities = await _comprehend.ParsePersonalDataAsync(text, lang);
+            return await _comprehend.StartParsingSkillsAsync(text);
+        }
+
+        public async Task<ApplicantCreationVariantsDto> FinishParsingAsync(string text, IEnumerable<TextEntity> skillEntities)
+        {
+            IEnumerable<TextEntity> generalEntities = await _comprehend.ParseEntitiesAsync(text);
+            IEnumerable<TextEntity> personalDataEntities = await _comprehend.ParsePersonalDataAsync(text);
 
             IEnumerable<TextEntity> entities = _comprehend
                 .ConcatenateEntities(generalEntities, skillEntities, personalDataEntities);

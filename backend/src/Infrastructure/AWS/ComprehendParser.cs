@@ -1,8 +1,13 @@
 using System;
+using System.IO;
+using System.IO.Compression;
+using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using SharpCompress.Common;
+using SharpCompress.Readers;
 using Amazon;
 using Amazon.Comprehend;
 using Amazon.Comprehend.Model;
@@ -14,13 +19,21 @@ namespace Infrastructure.AWS
     public class ComprehendParser : IComprehendParser
     {
         private readonly IAmazonComprehend _comprehend;
+        private readonly IS3Uploader _s3;
+        private readonly string _skillsRecognizer;
+        private readonly string _s3Role;
+        private readonly string _s3Bucket;
 
-        public ComprehendParser()
+        public ComprehendParser(IS3Uploader s3)
         {
             string keyId = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
             string key = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
             string region = Environment.GetEnvironmentVariable("AWS_REGION");
 
+            _s3 = s3;
+            _s3Role = Environment.GetEnvironmentVariable("AWS_COMPREHEND_S3_ROLE");
+            _s3Bucket = Environment.GetEnvironmentVariable("AWS_DEFAULT_BUCKET");
+            _skillsRecognizer = Environment.GetEnvironmentVariable("AWS_COMPREHEND_SKILLS_RECOGNIZER");
             _comprehend = new AmazonComprehendClient(keyId, key, RegionEndpoint.GetBySystemName(region));
         }
 
@@ -36,19 +49,46 @@ namespace Infrastructure.AWS
 
         }
 
-        public async Task<IEnumerable<common::TextEntity>> ParseSkillsAsync(string text, string lang = "en")
+        public async Task<(string, string)> StartParsingSkillsAsync(string text, string lang = "en")
         {
-            string endpoint = Environment.GetEnvironmentVariable("AWS_COMPREHEND_SKILLS_ENDPOINT");
+            string inputFileName = $"cv-text-{Guid.NewGuid().ToString()}.txt";
+            string outputFolderName = $"cv-skills-result-{Guid.NewGuid().ToString()}";
+            string inputFilePath = $"cv-texts/{inputFileName}";
+            string outputFolderPath = $"cv-skills-results/{outputFolderName}";
+            await _s3.UploadAsync(inputFilePath, Encoding.UTF8.GetBytes(text));
 
-            DetectEntitiesRequest request = new DetectEntitiesRequest();
-            request.Text = text;
+            StartEntitiesDetectionJobRequest request = new StartEntitiesDetectionJobRequest();
+            request.DataAccessRoleArn = _s3Role;
+            request.EntityRecognizerArn = _skillsRecognizer;
             request.LanguageCode = lang;
-            request.EndpointArn = endpoint;
+            request.InputDataConfig = new InputDataConfig();
+            request.InputDataConfig.InputFormat = "ONE_DOC_PER_FILE";
+            request.InputDataConfig.S3Uri = $"s3://{_s3Bucket}/{inputFilePath}";
+            request.OutputDataConfig = new OutputDataConfig();
+            request.OutputDataConfig.S3Uri = $"s3://{_s3Bucket}/{outputFolderPath}";
 
-            DetectEntitiesResponse response = await _comprehend.DetectEntitiesAsync(request);
+            await _comprehend.StartEntitiesDetectionJobAsync(request);
 
-            return ConvertEntities(response.Entities);
+            return (inputFilePath, outputFolderPath);
+        }
 
+        public async Task<string> TarGZipOutputToString(byte[] tarGZipBytes)
+        {
+            MemoryStream gzipStream = new MemoryStream(tarGZipBytes);
+            using GZipStream gzip = new GZipStream(gzipStream, CompressionMode.Decompress);
+
+            StreamReader gzipReader = new StreamReader(gzip);
+            string tar = await gzipReader.ReadToEndAsync();
+
+            MemoryStream tarStream = new MemoryStream(Encoding.UTF8.GetBytes(tar));
+
+            IReader tarReader = ReaderFactory.Open(tarStream);
+            tarReader.MoveToNextEntry();
+
+            EntryStream entryStream = tarReader.OpenEntryStream();
+            StreamReader entryReader = new StreamReader(entryStream);
+
+            return await entryReader.ReadToEndAsync();
         }
 
         public async Task<IEnumerable<common::TextEntity>> ParsePersonalDataAsync(string text, string lang = "en")
