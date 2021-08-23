@@ -124,6 +124,7 @@ $primary-font: Nunito;
         /* Scroll Bar */
         ::-webkit-scrollbar {
             width: 5px;
+            height: 5px;
         }
         ::-webkit-scrollbar-track {
             display: none;
