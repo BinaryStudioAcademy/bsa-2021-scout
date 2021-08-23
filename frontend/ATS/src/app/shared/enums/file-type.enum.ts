@@ -1,3 +1,4 @@
 export enum FileType {
-  Pdf = 'application/pdf'
+  Pdf = 'application/pdf',
+  Csv = '.csv'
 }

@@ -1,3 +1,3 @@
-export interface File {
+export interface FileUrl {
   url: string;
 }
