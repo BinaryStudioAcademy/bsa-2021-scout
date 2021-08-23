@@ -8,9 +8,8 @@
             <span class="user-role"  appUserRole value="{{role.name}}">{{role.name}}</span>
             <div class="contacts">
                 <h2 *ngIf="user.phone || user.skype" >Contacts:</h2>
-                
-                <h3 *ngIf="user.phone"><mat-icon>phone</mat-icon>{{user.phone}}</h3>
-                <h3 *ngIf="user.skype"><span class="iconify" data-icon="mdi:skype"></span>{{user.skype}}</h3>
+                <h3 role="button" [copy-clipboard]="this.user.phone || ''" (copied)="notifyPhone($event)" *ngIf="user.phone"><mat-icon>phone</mat-icon>{{user.phone}}</h3>
+                <h3 role="button" [copy-clipboard]="this.user.skype || ''" (copied)="notifySkype($event)" *ngIf="user.skype"><span class="iconify" data-icon="mdi:skype"></span>{{user.skype}}</h3>
             </div>
         </div>
     </div>

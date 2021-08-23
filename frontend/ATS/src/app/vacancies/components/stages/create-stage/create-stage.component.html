@@ -2,14 +2,14 @@
     <h1 mat-title>Create stage</h1>
     <form [formGroup]="stageForm">
         <mat-label>Stage name</mat-label>
-        <mat-form-field appearance="fill"  [ngClass]="(stageFormControl.name.touched || submitted) && stageFormControl.name.invalid ? 'invalid-input' : ''">
+        <mat-form-field appearance="fill"  [ngClass]="(stageFormControl.name.touched || submitted) && stageFormControl.name.invalid ? 'my-invalid-input' : ''">
             <input matInput type="text" autocomplete="off" formControlName="name" placeholder="Enter stage name">
             <mat-error *ngIf="(stageFormControl.name.touched || submitted) && stageFormControl.name.errors?.required">
               This field shouldn't be empty
           </mat-error>
           </mat-form-field>
         <mat-label>Action</mat-label>
-    <mat-form-field appearance="fill" [ngClass]="(stageFormControl.action.touched || submitted) && stageFormControl.action.invalid ? 'invalid-input' : ''">
+    <mat-form-field appearance="fill" [ngClass]="(stageFormControl.action.touched || submitted) && stageFormControl.action.invalid ? 'my-invalid-input' : ''">
         <mat-select #fontSize placeholder="Select action" formControlName="action">
             <mat-option >None</mat-option>
           <mat-option value="Add task">Add task</mat-option>
@@ -22,16 +22,20 @@
       </mat-form-field>
       <mat-checkbox formControlName="isReviewRequired">Review required</mat-checkbox>
       <mat-label>Rates</mat-label>
-      <mat-form-field appearance="fill" [ngClass]="(stageFormControl.rates.touched || submitted) && stageFormControl.rates.invalid ? 'invalid-input' : ''">
-        <mat-select #fontSize placeholder="Select rates" formControlName="rates">
-            <mat-option >None</mat-option>
-          <mat-option value="Communicative skills">Communicative skills</mat-option>
-          <mat-option value="English">English</mat-option>
-        </mat-select>
-        <mat-error *ngIf="(stageFormControl.rates.touched || submitted) && stageFormControl.rates.errors?.required">
-              This field shouldn't be empty
-          </mat-error>
-      </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-chip-list #chipList >
+                  <mat-chip *ngFor="let tag of rates" [selectable]="selectable"
+                           [removable]="removable" (removed)="remove(tag)">
+                    {{tag}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                  <input autocomplete="off" formControlName="rates" placeholder="Enter rates"
+                         [matChipInputFor]="chipList"
+                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                         [matChipInputAddOnBlur]="addOnBlur"
+                         (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+              </mat-form-field>
     </form>
     <div class="buttons">
         <button mat-button mat-raised-button type="submit" (click)="onStageSave()" [disabled]="stageForm.invalid">Save</button>

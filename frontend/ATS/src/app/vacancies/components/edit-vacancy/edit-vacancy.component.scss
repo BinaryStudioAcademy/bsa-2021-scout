@@ -191,7 +191,7 @@ $primary-color: #291965;
 }
 
 :host ::ng-deep {
-    .invalid-input .mat-form-field-flex {
+    .my-invalid-input .mat-form-field-flex {
         border: 2.5px solid #EE2A64 !important;
 }
 
@@ -254,12 +254,12 @@ $primary-color: #291965;
         align-items: center;
     }
 
-    .mat-standard-chip.mat-chip-with-trailing-icon{
+    .coloured-chip .mat-standard-chip.mat-chip-with-trailing-icon{
     background: #ee2a64;
         color:white;
     }
 
-    .mat-standard-chip .mat-chip-remove.mat-icon{
+    .coloured-chip .mat-standard-chip .mat-chip-remove.mat-icon{
         color:white
     }
 }

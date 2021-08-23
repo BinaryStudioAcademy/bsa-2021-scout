@@ -6,5 +6,5 @@ export interface Stage{
   isReviewRequired:Boolean,
   vacancyId:string,
   action:string, //?
-  rates: string //?
+  rates: string[] //?
 }

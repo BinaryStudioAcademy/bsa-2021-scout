@@ -42,6 +42,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { UserRoleDirective } from './directives/user-role.directive';
 import {ClipboardModule} from '@angular/cdk/clipboard';
+import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
 
 @NgModule({
   exports: [
@@ -134,6 +135,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
     AddCandidateModalComponent,
     UserProfileComponent,
     UserRoleDirective,
+    CopyClipboardDirective,
   ],
 })
 export class SharedModule { }

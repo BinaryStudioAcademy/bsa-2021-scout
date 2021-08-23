@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { User } from 'src/app/users/models/user';
 import { UserProfile } from '../../models/users/user-profile';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -15,11 +16,11 @@ export class UserProfileComponent {
   @Input() user!:UserProfile;
 
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, public notificService: NotificationService) {
     
     this.user = {
       image: "https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg",
-      skype: "@string",
+      skype: "@h.roberts",
       phone:"+380123456789",
       firstName: "Hanna",
       lastName: "Roberts",
@@ -29,18 +30,12 @@ export class UserProfileComponent {
       }]
     }
   }
-  copyMessage(val: string){
-    const selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = val;
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
-  }
+  public notifyPhone(payload: string) {
+    this.notificService.showInfoMessage(`The phone has been copied to clipboard`);
+}
+public notifySkype(payload: string) {
+  this.notificService.showInfoMessage(`The skype link has been copied to clipboard`);
+}
   
 }
+

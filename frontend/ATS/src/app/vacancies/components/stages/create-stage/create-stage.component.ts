@@ -1,5 +1,7 @@
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {Component,EventEmitter,Input,OnChanges,OnInit,Output,SimpleChanges} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { Stage } from 'src/app/shared/models/stages/stage';
 
 @Component({
@@ -15,15 +17,40 @@ export class CreateStageComponent implements OnChanges {
   @Output() stageCreateAndAddChange = new EventEmitter<Stage>();
   @Output() isClosedChange = new EventEmitter<Boolean>();
   @Input() stage:Stage = {} as Stage;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
 
   constructor(private fb: FormBuilder) {
     this.stageForm = this.fb.group({
       name: ['', [Validators.required]],
       action: ['', [Validators.required]],
       isReviewRequired: [''],
-      rates: ['', [Validators.required]],
+      rates: [''],
     },
     );
+  }
+
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+  rates: string[] = [
+    'English',
+    'Communicative skills',
+  ];
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.rates.push(this.rates.length.toString()); //needs to be fixed
+    }
+    event.chipInput!.clear();
+  }
+
+  remove(tag: string): void {
+    const index = this.rates.indexOf(tag);
+
+    if (index >= 0) {
+      this.rates.splice(index, 1);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -39,6 +66,7 @@ export class CreateStageComponent implements OnChanges {
   save(){
     this.submitted = true;
     this.stage = this.stageForm.value;
+    this.stage.rates = this.rates;
     this.stage.index = this.editModeItemIndex;
     this.stageForm.reset();
   }
