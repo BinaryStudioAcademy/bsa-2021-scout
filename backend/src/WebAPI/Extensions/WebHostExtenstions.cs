@@ -73,19 +73,15 @@ namespace WebAPI.Extensions
         public static async Task<IHost> ApplyMongoSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            var connectionFactory = scope.ServiceProvider.GetService<IMongoConnectionFactory>();
             var readRepository = scope.ServiceProvider.GetService<IReadRepository<MailTemplate>>();
             var writeRepository = scope.ServiceProvider.GetService<IWriteRepository<MailTemplate>>();
-            var connection = connectionFactory.GetMongoConnection();
-            var collection = connection.GetCollection<MailTemplate>(typeof(MailTemplate).Name);
 
-            MailTemplate check = await readRepository.GetByPropertyAsync("Slug", "default");
-
-            if (check != null)
+            try
             {
+                await readRepository.GetByPropertyAsync("Slug", "default");
                 await writeRepository.UpdateAsync(MailTemplatesSeeds.GetSeed());
             }
-            else
+            catch
             {
                 await writeRepository.CreateAsync(MailTemplatesSeeds.GetSeed());
             }
