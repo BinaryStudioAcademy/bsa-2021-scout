@@ -148,7 +148,14 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         (response) => {
           this.loading = false;
           this.projects = response;
-          this.selectedProjects = this.projects;
+          this.selectedProjects = this.projects.sort(function(a, b){
+            var nameA=a.name.toLowerCase(), nameB=b.name.toLowerCase();
+            if (nameA < nameB)
+              return -1;
+            if (nameA > nameB)
+              return 1;
+            return 0;
+          });
         },
         () => {
           this.loading = false;
@@ -220,11 +227,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
 
   //Tag field
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
-  tags: Tag[] = [
-    { id: '1', tagName: 'Devops' },
-    { id: '2', tagName: 'Ukraine' },
-    { id: '3', tagName: 'Job offer' },
-  ];
+  tags: Tag[] = [];
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
