@@ -74,4 +74,7 @@ h5 {
     .mat-dialog-actions {
         min-height: 0;
     }
+    .no-arrow .mat-select-arrow {
+        border: 0;
+    }
 }

@@ -24,7 +24,7 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" FROM Users");
             sql.Append(" LEFT JOIN UserToRoles ON UserToRoles.UserId = Users.Id");
             sql.Append(" LEFT JOIN Roles ON UserToRoles.RoleId = Roles.Id");
-            sql.Append($" WHERE Users.Email = '{email}'");
+            sql.Append($" WHERE Users.Email = @email");
 
             Dictionary<string, UserToRole> userToRoleDict = new Dictionary<string, UserToRole>();
             User cachedUser = null;
@@ -58,7 +58,7 @@ namespace Infrastructure.Repositories.Read
                         }
 
                         return cachedUser;
-                    },
+                    }, new { email = @email },
                     splitOn: "Id,Id,Id"
                 );
 
@@ -75,10 +75,10 @@ namespace Infrastructure.Repositories.Read
             StringBuilder sql = new StringBuilder();
             sql.Append("SELECT *");
             sql.Append(" FROM Users");
-            sql.Append($" WHERE Users.CompanyId = '{companyId}'");
+            sql.Append($" WHERE Users.CompanyId = @companyId");
 
             IEnumerable<User> users = await connection
-                .QueryAsync<User>(sql.ToString());
+                .QueryAsync<User>(sql.ToString(), new { companyId = @companyId });
 
             await connection.CloseAsync();
             return users;
