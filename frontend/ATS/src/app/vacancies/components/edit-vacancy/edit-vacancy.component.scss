@@ -19,7 +19,7 @@
     box-sizing: border-box;
 }
 
-.modal-container{
+.edit-vacancy-container{
     padding: 40px 60px 40px 66px;
     width: 100%;
     box-sizing: border-box;
@@ -131,7 +131,11 @@
 $primary-font : Nunito;
 $primary-color: #291965;
 
-::ng-deep {
+
+::ng-deep .cdk-overlay-pane .mat-dialog-container .edit-vacancy-container{
+    height: 80vh;
+}
+::ng-deep .edit-vacancy-container{
     ::-webkit-scrollbar {
         width: 5px;
         height: 5px;
@@ -164,9 +168,7 @@ $primary-color: #291965;
         padding: 0 10px;
     }
 
-    .cdk-overlay-pane .mat-dialog-container{
-        height: 80vh;
-}
+
 
     textarea.mat-input-element{
         padding: 10px 0px ;
