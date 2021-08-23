@@ -21,6 +21,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { VacancyData } from 'src/app/shared/models/vacancy/vacancy-data';
 import { Tag } from 'src/app/shared/models/tags/tag';
+import { ElasticEntity } from 'src/app/shared/models/elastic-entity/elastic-entity';
+import { ElasticType } from 'src/app/shared/models/elastic-entity/elastic-type';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from 'src/app/shared/services/notification.service';
@@ -42,6 +44,11 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   selectable = true;
   removable = true;
   addOnBlur = true;
+  elasticEntity : ElasticEntity = {} as ElasticEntity; 
+  vacancyId : string = '';
+  tierFrom: number = 0;
+  tierTo: number = 0;
+
 
   @Output() vacancyChange = new EventEmitter<VacancyFull>();
 
@@ -77,23 +84,6 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit() {
-    this.projectService
-      .getByCompany()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (response) => {
-          this.loading = false;
-          this.projects = response;
-          this.selectedProjects = this.projects;
-        },
-        () => {
-          this.loading = false;
-          this.notificationService.showErrorMessage('Failed to load projects.');
-        },
-      );
-  }
-
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -117,11 +107,64 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  ngOnInit() {
+    if (this.data.vacancyToEdit) {
+      this.vacancyService.getById(this.data.vacancyToEdit.id).subscribe(
+        response => {
+          if (!response.tags) {
+            response.tags = {
+              id: '',
+              elasticType: 1,
+              tagDtos: [],
+            };
+          }
+          else{
+            this.elasticEntity.id = response.tags.id;
+          }
+          this.vacancyForm.setValue({
+            title: response.title,
+            description: response.description,
+            requirements: response.requirements,
+            projectId: response.projectId,
+            salaryFrom: response.salaryFrom,
+            salaryTo: response.salaryTo,
+            tierFrom: response.tierFrom.toString(),
+            tierTo: response.tierTo.toString(),
+            link: response.sources,
+            isHot: response.isHot,
+            isRemote: response.isRemote,
+            tags: '',
+            stages: response.stages,
+          });
+          response.stages.sort((a,b) => a.index - b.index);
+          this.stageList = response.stages;
+          this.tags = response.tags.tagDtos;
+        });
+    }
+    this.projectService
+      .getByCompany()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (response) => {
+          this.loading = false;
+          this.projects = response;
+          this.selectedProjects = this.projects;
+        },
+        () => {
+          this.loading = false;
+          this.notificationService.showErrorMessage('Failed to load projects.');
+        },
+      );
+  }
+
   //------------------VACANCY------------------
   createVacancy() {
     this.submitted = true;
     this.loading = true;
 
+
+    this.elasticEntity.tagDtos = this.tags;
+    this.elasticEntity.elasticType = ElasticType.VacancyTags;
     this.vacancy = {
       title: this.vacancyForm.controls['title'].value,
       description: this.vacancyForm.controls['description'].value,
@@ -134,10 +177,9 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       sources: this.vacancyForm.controls['link'].value,
       isHot: this.vacancyForm.controls['isHot'].value ? true : false,
       isRemote: this.vacancyForm.controls['isRemote'].value ? true : false,
-      tags: this.tags,
+      tags : this.elasticEntity,
       stages: this.stageList,
     };
-
     if (!this.data.vacancyToEdit) {
       this.vacancyService
         .postVacancy(this.vacancy)
@@ -167,6 +209,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
           },
         );
     }
+
 
     this.dialogRef.close();
   }
@@ -213,58 +256,94 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
 
   stageList: Stage[] = [
     {
-      id: 'aaaa',
-      name: 'Test',
-      index: 2,
-      action: 'Prepare questions for interview',
+      id: '',
+      name: 'Contacted',
+      index: 0,
+      type: 0,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
       rates: 'English',
-      isReviewRequired: true,
-      vacancyId: '1',
+      IsReviewable: true,
+      vacancyId: '',
     },
     {
-      id: 'bbbb',
-      name: 'Interview',
+      id: '',
+      name: 'Hr interview',
       index: 1,
-      action: 'Prepare questions for interview',
+      type: 1,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
       rates: 'English',
-      isReviewRequired: true,
-      vacancyId: '2',
+      IsReviewable: true,
+      vacancyId: '',
     },
     {
-      id: 'ccccc',
-      name: 'Technical test',
+      id: '',
+      name: 'Tech interview',
+      index: 2,
+      type: 2,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
+      rates: 'English',
+      IsReviewable: true,
+      vacancyId: '',
+    },
+    {
+      id: '',
+      name: 'Live coding session',
       index: 3,
-      action: 'Prepare questions for interview',
+      type: 3,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
       rates: 'English',
-      isReviewRequired: true,
-      vacancyId: '1',
+      IsReviewable: true,
+      vacancyId: '',
     },
     {
-      id: 'bbbb',
-      name: 'Interview',
+      id: '',
+      name: 'Pre-offer',
       index: 4,
-      action: 'Prepare questions for interview',
+      type: 4,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
       rates: 'English',
-      isReviewRequired: true,
-      vacancyId: '2',
+      IsReviewable: true,
+      vacancyId: '',
     },
     {
-      id: 'ddddd',
-      name: '5',
+      id: '',
+      name: 'Offer',
       index: 5,
-      action: 'Prepare questions for interview',
+      type: 5,
+      actions: [{
+        id : '',
+        name: 'Schedule interview action',
+        actionType: 3,
+        stageId: '',
+      }],
       rates: 'English',
-      isReviewRequired: true,
-      vacancyId: '1',
-    },
-    {
-      id: 'bbbb',
-      name: 'Interview',
-      index: 6,
-      action: 'Prepare questions for interview',
-      rates: 'English',
-      isReviewRequired: true,
-      vacancyId: '2',
+      IsReviewable: true,
+      vacancyId: '',
     },
   ];
 
@@ -277,8 +356,8 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
 
   //changes indexes of stages
   sortStageList() {
-    let index = 1;
-    this.stageList.forEach((x) => {
+    let index = 0;
+    this.stageList.forEach(x => {
       x.index = index;
       index++;
     });
@@ -287,12 +366,12 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
 
   //common func for saving
   toSave(newStage: Stage) {
+    newStage.vacancyId = this.vacancyId;
     if (this.isEditStageMode) {
-      let stageIndex = this.stageList.find(
-        (x) => x.index === newStage.index,
-      )?.index;
-      if (stageIndex) {
-        this.stageList[stageIndex - 1] = newStage;
+      let stage = this.stageList.find(x => x.index === newStage.index);
+      if (stage?.index) {
+        newStage.id = stage.id;
+        this.stageList[stage?.index - 1] = newStage;
       }
       this.isEditStageMode = false;
     } else {
