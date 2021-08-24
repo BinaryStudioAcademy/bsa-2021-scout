@@ -1,8 +1,8 @@
 using System;
-using Infrastructure.Files.Abstraction;
 using Amazon.S3;
+using Infrastructure.AWS.S3.Abstraction;
 
-namespace Infrastructure.Mongo.Services
+namespace Infrastructure.AWS.S3.Services
 {
     public class AwsS3ConnectionFactory : IAwsS3ConnectionFactory
     {

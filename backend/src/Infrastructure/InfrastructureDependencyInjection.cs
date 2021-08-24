@@ -23,6 +23,9 @@ using Domain.Interfaces;
 using Infrastructure.Files.Abstraction;
 using Infrastructure.Files.Read;
 using Action = Domain.Entities.Action;
+using Infrastructure.AWS.S3;
+using Infrastructure.AWS.S3.Abstraction;
+using Infrastructure.AWS.S3.Services;
 
 namespace Infrastructure
 {
@@ -123,7 +126,11 @@ namespace Infrastructure
 
         private static IServiceCollection AddAWS(this IServiceCollection services)
         {
-            services.AddSingleton<IS3Uploader, S3Uploader>();
+            services.AddSingleton<IAwsS3ConnectionFactory, AwsS3ConnectionFactory>();
+            services.AddSingleton<IAwsS3ReadRepository, AwsS3ReadRepository>();
+            services.AddSingleton<IAwsS3WriteRepository, AwsS3WriteRepository>();
+            services.AddSingleton<IS3Uploader, AwsS3Uploader>();
+
             services.AddSingleton<ITextParser, TextParser>();
             services.AddSingleton<IComprehendParser, ComprehendParser>();
             services.AddSingleton<ICvParser, CvParser>();
@@ -133,10 +140,8 @@ namespace Infrastructure
 
         private static IServiceCollection AddFilesManagement(this IServiceCollection services)
         {
-            services.AddScoped<IAwsS3ConnectionFactory, AwsS3ConnectionFactory>();
-
-            services.AddScoped<IFileReadRepository, AwsS3FileReadRepository>();
-            services.AddScoped<IFileWriteRepository, AwsS3FileWriteRepository>();
+            services.AddScoped<IFileReadRepository, FileReadRepository>();
+            services.AddScoped<IFileWriteRepository, FileWriteRepository>();
 
             services.AddScoped<IApplicantCvFileReadRepository, ApplicantCvFileReadRepository>();
             services.AddScoped<IApplicantCvFileWriteRepository, ApplicantCvFileWriteRepository>();
