@@ -47,6 +47,7 @@
                 <mat-select formControlName="projectId" placeholder="Select project">
                     <input matInput class="search-input" type="text" autocomplete="off" placeholder="Search project..."
                         (keyup)="onKey($event)">
+                    <mat-option>None</mat-option>
                     <mat-option *ngFor="let project of selectedProjects" [value]="project.id">{{project.name}}
                     </mat-option>
                 </mat-select>
