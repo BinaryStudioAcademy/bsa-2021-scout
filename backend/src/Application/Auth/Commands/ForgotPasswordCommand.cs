@@ -60,9 +60,9 @@ namespace Application.Auth.Commands
             };
 
             var callback = QueryHelpers.AddQueryString(command.ForgotPasswordInfo.ClientUri, queryParam);
-            var body = MailBodyFactory.BODY_FORGOT_PASSWORD;
+            var body = MailBodyFactory.FORGOT_PASSWORD;
             body = body.Replace("{{CALLBACK}}", callback);
-            var sendMailCommand = new SendMailCommand(command.ForgotPasswordInfo.Email, MailSubjectFactory.SUBJECT_FORGOT_PASSWORD, body);
+            var sendMailCommand = new SendMailCommand(command.ForgotPasswordInfo.Email, MailSubjectFactory.FORGOT_PASSWORD, body);
             await _mediator.Send(sendMailCommand);
 
             return Unit.Value;

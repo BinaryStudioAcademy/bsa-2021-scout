@@ -1,6 +1,6 @@
 ﻿using Amazon.S3;
 
-namespace Infrastructure.Files.Abstraction
+namespace Infrastructure.AWS.S3.Abstraction
 {
     public interface IAwsS3ConnectionFactory
     {
