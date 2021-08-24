@@ -23,12 +23,13 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
   public createdApplicant: CreateApplicant = {
     firstName: '',
     lastName: '',
-    middleName: '',
     email: '',
     phone: '',
     skype: '',
     linkedInUrl: '',
     experience: 0,
+    experienceDescription: '',
+    skills: '',
     tags: {
       id: '',
       elasticType: 1,

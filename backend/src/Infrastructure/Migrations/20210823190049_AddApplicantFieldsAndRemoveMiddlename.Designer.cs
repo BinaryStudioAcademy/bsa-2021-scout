@@ -4,14 +4,16 @@ using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210823190049_AddApplicantFieldsAndRemoveMiddlename")]
+    partial class AddApplicantFieldsAndRemoveMiddlename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,25 +196,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CvParsingJob", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AWSJobId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TriggerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TriggerId");
-
-                    b.ToTable("CvParsingJobs");
                 });
 
             modelBuilder.Entity("Domain.Entities.EmailToken", b =>
@@ -441,28 +424,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("Domain.Entities.SkillsParsingJob", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("OutputPath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TextPath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TriggerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TriggerId");
-
-                    b.ToTable("SkillsParsingJobs");
                 });
 
             modelBuilder.Entity("Domain.Entities.Stage", b =>
@@ -773,17 +734,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Stage");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CvParsingJob", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "Trigger")
-                        .WithMany("CvParsingJobs")
-                        .HasForeignKey("TriggerId")
-                        .HasConstraintName("cv_parsing_job_user_FK")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Trigger");
-                });
-
             modelBuilder.Entity("Domain.Entities.EmailToken", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -881,15 +831,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Review");
 
                     b.Navigation("Stage");
-                });
-
-            modelBuilder.Entity("Domain.Entities.SkillsParsingJob", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "Trigger")
-                        .WithMany("SkillsParsingJobs")
-                        .HasForeignKey("TriggerId");
-
-                    b.Navigation("Trigger");
                 });
 
             modelBuilder.Entity("Domain.Entities.Stage", b =>
@@ -1038,13 +979,9 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("AddedCandidates");
 
-                    b.Navigation("CvParsingJobs");
-
                     b.Navigation("EmailToken");
 
                     b.Navigation("RefreshTokens");
-
-                    b.Navigation("SkillsParsingJobs");
 
                     b.Navigation("UserRoles");
 
