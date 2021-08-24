@@ -141,6 +141,9 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
           this.tags = response.tags.tagDtos;
         });
     }
+    else{
+      this.vacancyForm.controls['isRemote'].setValue('true');
+    }
     this.projectService
       .getByCompany()
       .pipe(takeUntil(this.unsubscribe$))
