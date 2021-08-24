@@ -74,8 +74,8 @@ namespace Application.Users.Commands
             var sendConfirmEmailMailCommand = new SendConfirmEmailMailCommand(
                 registeredUser,
                 command.RegisterDto.ClientUrl,
-                MailSubjectFactory.confirmEmailMailSubject,
-                MailBodyFactory.confirmEmailMailBody);
+                MailSubjectFactory.CONFIRM_EMAIL,
+                MailBodyFactory.CONFIRM_EMAIL);
             await _mediator.Send(sendConfirmEmailMailCommand);
 
             await _registerPermissionWriteRepository.DeleteAsync(registerPermission.Id);

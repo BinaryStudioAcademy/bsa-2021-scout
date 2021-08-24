@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using AutoMapper;
 using entities = Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Application.ElasticEnities.Dtos;
 using Domain.Entities;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace Application.ElasticEnities.CommandQuery.AddTagCommand
     public class AddTagCommand : IRequest
     {
         public TagDto Tag { get; }
-        public string EntityId {get; }
+        public string EntityId { get; }
 
         public AddTagCommand(string entityId, TagDto tag)
         {

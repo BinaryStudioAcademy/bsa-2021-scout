@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Domain.Common;
 using Domain.Interfaces.Abstractions;
 
-namespace Domain.Interfaces
+namespace Domain.Interfaces.Abstractions
 {
     public interface IElasticWriteRepository<T> : IWriteRepository<T> where T : Entity
     {

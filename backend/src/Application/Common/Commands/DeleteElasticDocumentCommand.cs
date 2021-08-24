@@ -3,12 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Domain.Common;
-using Domain.Interfaces;
+using Domain.Interfaces.Abstractions;
 using Application.Common.Models;
 
 namespace Application.Common.Commands
 {
-    public class DeleteElasticDocumentCommand: IRequest
+    public class DeleteElasticDocumentCommand : IRequest
     {
         public string Id { get; }
 

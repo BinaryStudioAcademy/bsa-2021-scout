@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Read;
+﻿using Application.Common.Exceptions.Applicants;
+using Domain.Interfaces.Read;
 using Domain.Interfaces.Write;
 using Infrastructure.Files.Abstraction;
 using System.IO;
@@ -29,7 +30,6 @@ namespace Infrastructure.Files.Read
         public async Task UpdateAsync(string applicantId, Stream cvFileContent)
         {
             var cvFileInfo = await _applicantReadRepository.GetCvFileInfoAsync(applicantId);
-
             await _fileWriteRepository.UpdateFileAsync(cvFileInfo, cvFileContent);
         }
 
