@@ -24,12 +24,13 @@ export class UpdateApplicantComponent implements OnDestroy {
     id: '',
     firstName: '',
     lastName: '',
-    middleName: '',
     email: '',
     phone: '',
     skype: '',
     linkedInUrl: '',
     experience: 0,
+    experienceDescription: '',
+    skills: '',
     tags: {
       id: '',
       elasticType: 1,
@@ -52,12 +53,13 @@ export class UpdateApplicantComponent implements OnDestroy {
     this.updatedApplicant.id = applicant.id;
     this.updatedApplicant.firstName = applicant.firstName;
     this.updatedApplicant.lastName = applicant.lastName;
-    this.updatedApplicant.middleName = applicant.middleName ?? '';
     this.updatedApplicant.email = applicant.email;
     this.updatedApplicant.phone = applicant.phone ?? '';
     this.updatedApplicant.linkedInUrl = applicant.linkedInUrl ?? '';
     this.updatedApplicant.skype = applicant.skype ?? '';
     this.updatedApplicant.experience = applicant.experience ?? 0;
+    this.updatedApplicant.experienceDescription = applicant.experienceDescription;
+    this.updatedApplicant.skills = applicant.skills;
     this.updatedApplicant.tags.id = applicant.tags.id;
     Object.assign<Tag[], Tag[]>(this.updatedApplicant.tags.tagDtos, applicant.tags.tagDtos);
     this.updatedApplicant.hasCv = applicant.hasCv;

@@ -242,8 +242,8 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
             return this.compareRows(a.position, b.position, isAsc);
           case 'name':
             return this.compareRows(
-              a.firstName + ' ' + a.lastName + ' ' + a.middleName,
-              b.firstName + ' ' + b.lastName + ' ' + b.middleName,
+              a.firstName + ' ' + a.lastName,
+              b.firstName + ' ' + b.lastName,
               isAsc,
             );
           case 'email':
