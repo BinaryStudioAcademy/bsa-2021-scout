@@ -2,3 +2,10 @@ app-header{
     height: 120px;
     display: block;
 }
+
+.small-image{
+    object-fit: cover;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}

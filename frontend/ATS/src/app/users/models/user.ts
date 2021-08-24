@@ -9,4 +9,8 @@ export interface User {
   email: string;
   isEmailConfirmed: boolean;
   roles?: Role[];
+
+  image?: string,
+  skype?: string,
+  phone?:string
 }

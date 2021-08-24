@@ -10,5 +10,7 @@ namespace Domain.Entities.Abstractions
         public string MiddleName { get; set; }
         public DateTime BirthDate { get; set; }
         public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Skype { get; set; }
     }
 }
