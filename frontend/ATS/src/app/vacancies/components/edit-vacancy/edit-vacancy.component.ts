@@ -280,7 +280,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Hr interview',
       index: 1,
-      type: 1,
+      type: 3,
       actions: [{
         id : '',
         name: 'Schedule interview action',
@@ -295,7 +295,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Tech interview',
       index: 2,
-      type: 2,
+      type: 3,
       actions: [{
         id : '',
         name: 'Schedule interview action',
@@ -310,7 +310,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Live coding session',
       index: 3,
-      type: 3,
+      type: 0,
       actions: [{
         id : '',
         name: 'Schedule interview action',
@@ -340,7 +340,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Offer',
       index: 5,
-      type: 5,
+      type: 4,
       actions: [{
         id : '',
         name: 'Schedule interview action',

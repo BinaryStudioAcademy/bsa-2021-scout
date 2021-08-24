@@ -62,7 +62,6 @@ export class CreateStageComponent implements OnChanges {
     { name:'Applied', type: StageType.Applied },
     { name:'Phone screen', type: StageType.PhoneScreen },
     { name:'Interview', type: StageType.Interview },
-    { name:'Test', type: StageType.Test },
     { name:'Offer', type: StageType.Offer },
     { name:'Hired', type: StageType.Hired },
   ]
