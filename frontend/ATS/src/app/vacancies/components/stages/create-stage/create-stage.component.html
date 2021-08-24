@@ -8,6 +8,15 @@
           <mat-error *ngIf="(stageFormControl.name.touched || submitted) && stageFormControl.name.errors?.required">
             This field shouldn't be empty
         </mat-error>
+        <mat-label>Type</mat-label>
+      <mat-form-field appearance="fill" [ngClass]="(stageFormControl.type.touched || submitted) && stageFormControl.type.invalid ? 'invalid-input' : ''">
+        <mat-select #fontSize placeholder="Select type" formControlName="type">
+          <mat-option *ngFor="let type of types" [value]="type.type">{{type.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="(stageFormControl.type.touched || submitted) && stageFormControl.type.errors?.required">
+        This field shouldn't be empty
+    </mat-error>
         <mat-label>Action</mat-label>
     <mat-form-field appearance="fill" [ngClass]="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.invalid ? 'invalid-input' : ''">
         <mat-select #fontSize placeholder="Select action" formControlName="actions" multiple>
