@@ -42,18 +42,19 @@ namespace Infrastructure.AWS.S3
 
         public async Task<byte[]> ReadAsync(string filePath)
         {
-            return await ReadAsync(_awsS3Connection.GetBucketName(), filePath);
-        }
-
-        public async Task<byte[]> ReadAsync(string filePath, string fileName)
-        {
-            var path = $"{filePath}/{fileName}";
-            GetObjectResponse response = await _awsS3Connection.GetAwsS3().GetObjectAsync(_awsS3Connection.GetBucketName(), path);
+            GetObjectResponse response = await _awsS3Connection.GetAwsS3().GetObjectAsync(_awsS3Connection.GetBucketName(), filePath);
 
             MemoryStream memory = new MemoryStream();
             response.ResponseStream.CopyTo(memory);
 
             return memory.ToArray();
+        }
+
+        public async Task<byte[]> ReadAsync(string filePath, string fileName)
+        {
+            var path = AwsS3Helpers.GetFileKey(filePath, fileName);
+
+            return await ReadAsync(path);
         }
     }
 }
