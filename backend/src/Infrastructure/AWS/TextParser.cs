@@ -5,6 +5,7 @@ using Amazon;
 using Amazon.Textract;
 using Amazon.Textract.Model;
 using Application.Interfaces.AWS;
+using Infrastructure.AWS.S3.Abstraction;
 
 namespace Infrastructure.AWS
 {
@@ -12,20 +13,17 @@ namespace Infrastructure.AWS
     {
         private readonly IAmazonTextract _textract;
         private readonly IS3Uploader _uploader;
-        private readonly string _defaultBucket;
+        private readonly IAwsS3ConnectionFactory _awsS3ConnectionFactory;
         private readonly string _role;
         private readonly string _topic;
 
-        public TextParser(IS3Uploader uploader)
+        public TextParser(IS3Uploader uploader, IAwsS3ConnectionFactory awsS3ConnectionFactory)
         {
-            string keyId = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
-            string key = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
-            string region = Environment.GetEnvironmentVariable("AWS_REGION");
-
-            _defaultBucket = Environment.GetEnvironmentVariable("AWS_DEFAULT_BUCKET");
             _role = Environment.GetEnvironmentVariable("AWS_TEXTRACT_SNS_ROLE");
             _topic = Environment.GetEnvironmentVariable("AWS_TEXTRACT_SNS_TOPIC");
-            _textract = new AmazonTextractClient(keyId, key, RegionEndpoint.GetBySystemName(region));
+
+            _awsS3ConnectionFactory = awsS3ConnectionFactory;
+            _textract = new AmazonTextractClient();
             _uploader = uploader;
         }
 
@@ -58,7 +56,7 @@ namespace Infrastructure.AWS
             StartDocumentTextDetectionRequest request = new StartDocumentTextDetectionRequest();
             request.DocumentLocation = new DocumentLocation();
             request.DocumentLocation.S3Object = new S3Object();
-            request.DocumentLocation.S3Object.Bucket = _defaultBucket;
+            request.DocumentLocation.S3Object.Bucket = _awsS3ConnectionFactory.GetBucketName();
             request.DocumentLocation.S3Object.Name = filePath;
             request.NotificationChannel = new NotificationChannel();
             request.NotificationChannel.RoleArn = _role;

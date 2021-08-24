@@ -26,6 +26,7 @@ using Action = Domain.Entities.Action;
 using Infrastructure.AWS.S3;
 using Infrastructure.AWS.S3.Abstraction;
 using Infrastructure.AWS.S3.Services;
+using Infrastructure.AWS.Connection;
 
 namespace Infrastructure
 {
@@ -126,6 +127,7 @@ namespace Infrastructure
 
         private static IServiceCollection AddAWS(this IServiceCollection services)
         {
+            services.AddSingleton<IAwsConnectionFactory, AwsConnectionFactory>();
             services.AddSingleton<IAwsS3ConnectionFactory, AwsS3ConnectionFactory>();
             services.AddSingleton<IAwsS3ReadRepository, AwsS3ReadRepository>();
             services.AddSingleton<IAwsS3WriteRepository, AwsS3WriteRepository>();

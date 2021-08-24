@@ -13,28 +13,27 @@ using Amazon.Comprehend;
 using Amazon.Comprehend.Model;
 using common = Domain.Common;
 using Application.Interfaces.AWS;
+using Infrastructure.AWS.S3.Abstraction;
 
 namespace Infrastructure.AWS
 {
     public class ComprehendParser : IComprehendParser
     {
         private readonly IAmazonComprehend _comprehend;
+        private readonly IAwsS3ConnectionFactory _awsS3ConnectionFactory;
         private readonly IS3Uploader _s3;
         private readonly string _skillsRecognizer;
         private readonly string _s3Role;
-        private readonly string _s3Bucket;
 
-        public ComprehendParser(IS3Uploader s3)
+        public ComprehendParser(IS3Uploader s3, IAwsS3ConnectionFactory awsS3ConnectionFactory)
         {
-            string keyId = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
-            string key = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
-            string region = Environment.GetEnvironmentVariable("AWS_REGION");
-
             _s3 = s3;
+            _awsS3ConnectionFactory = awsS3ConnectionFactory;
+
             _s3Role = Environment.GetEnvironmentVariable("AWS_COMPREHEND_S3_ROLE");
-            _s3Bucket = Environment.GetEnvironmentVariable("AWS_DEFAULT_BUCKET");
             _skillsRecognizer = Environment.GetEnvironmentVariable("AWS_COMPREHEND_SKILLS_RECOGNIZER");
-            _comprehend = new AmazonComprehendClient(keyId, key, RegionEndpoint.GetBySystemName(region));
+
+            _comprehend = new AmazonComprehendClient();
         }
 
         public async Task<IEnumerable<common::TextEntity>> ParseEntitiesAsync(string text, string lang = "en")
@@ -63,9 +62,9 @@ namespace Infrastructure.AWS
             request.LanguageCode = lang;
             request.InputDataConfig = new InputDataConfig();
             request.InputDataConfig.InputFormat = "ONE_DOC_PER_FILE";
-            request.InputDataConfig.S3Uri = $"s3://{_s3Bucket}/{inputFilePath}";
+            request.InputDataConfig.S3Uri = $"s3://{_awsS3ConnectionFactory.GetBucketName()}/{inputFilePath}";
             request.OutputDataConfig = new OutputDataConfig();
-            request.OutputDataConfig.S3Uri = $"s3://{_s3Bucket}/{outputFolderPath}";
+            request.OutputDataConfig.S3Uri = $"s3://{_awsS3ConnectionFactory.GetBucketName()}/{outputFolderPath}";
 
             await _comprehend.StartEntitiesDetectionJobAsync(request);
 
