@@ -29,6 +29,8 @@ namespace Infrastructure.EF
         public DbSet<CandidateToStage> CandidateToStages { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<CandidateReview> CandidateReviews { get; set; }
+        public DbSet<CvParsingJob> CvParsingJobs { get; set; }
+        public DbSet<SkillsParsingJob> SkillsParsingJobs { get; set; }
         public DbSet<ReviewToStage> ReviewToStages { get; set; }
         public DbSet<CandidateComment> CandidateComments { get; set; }
         public DbSet<RegisterPermission> RegisterPermissions { get; set; }
