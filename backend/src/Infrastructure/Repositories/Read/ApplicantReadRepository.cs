@@ -32,7 +32,7 @@ namespace Infrastructure.Repositories.Read
                           INNER JOIN FileInfos fi ON a.CvFileInfoId = fi.Id
                           WHERE a.Id = @applicantId;";
 
-            var fileInfo = await connection.QueryFirstAsync<FileInfo>(query, new { applicantId = applicantId });
+            var fileInfo = await connection.QueryFirstOrDefaultAsync<FileInfo>(query, new { applicantId = applicantId });
 
             if (fileInfo == null)
             {
