@@ -42,7 +42,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
-import { RequiredFieldDirective } from './directives/required-field.directive';
 
 @NgModule({
   exports: [
@@ -133,7 +132,6 @@ import { RequiredFieldDirective } from './directives/required-field.directive';
     MainContentComponent,
     SpinnerComponent,
     StylePaginatorDirective,
-    RequiredFieldDirective,
     AddCandidateModalComponent,
     TagsEditComponent,
     DeleteConfirmComponent,
