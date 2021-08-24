@@ -19,7 +19,8 @@ namespace Application.Mail
         public string ClientUrl { get; set; }
 
 
-        public SendConfirmEmailMailCommand(UserDto userDto, string clientUrl,  string subject, string body, string templateSlug = "default") : base(userDto.Email, subject, body, templateSlug = "default") {
+        public SendConfirmEmailMailCommand(UserDto userDto, string clientUrl, string subject, string body, string templateSlug = "default") : base(userDto.Email, subject, body, templateSlug = "default")
+        {
             UserDto = userDto;
             ClientUrl = clientUrl;
         }
@@ -37,10 +38,6 @@ namespace Application.Mail
 
             public async Task<Unit> Handle(SendConfirmEmailMailCommand command, CancellationToken _)
             {
-                string address = Environment.GetEnvironmentVariable("MAIL_ADDRESS");
-                string password = Environment.GetEnvironmentVariable("MAIL_PASSWORD");
-                string displayName = Environment.GetEnvironmentVariable("MAIL_DISPLAY_NAME");
-
                 var emailTokenCommand = new GenerateEmailTokenCommand(command.UserDto);
 
                 var queryParam = new Dictionary<string, string>
@@ -51,7 +48,7 @@ namespace Application.Mail
 
                 var callbackUrl = QueryHelpers.AddQueryString(command.ClientUrl, queryParam);
 
-                using (ISmtp connection = _smtp.Connect(address, password, displayName))
+                using (ISmtp connection = _smtp.Connect())
                 {
                     await connection.SendAsync(command.To, command.Subject, command.Body.Replace("{{LINK}}", callbackUrl), command.TemplateSlug);
                 }

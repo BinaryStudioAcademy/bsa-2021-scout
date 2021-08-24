@@ -1,17 +1,19 @@
-﻿using Amazon.S3;
-using Amazon.S3.Model;
-using Domain.Entities;
-using Infrastructure.Files.Helpers;
+﻿using Amazon.S3.Model;
+using Application.Interfaces.AWS;
+using Infrastructure.AWS.S3.Abstraction;
+using Infrastructure.AWS.S3.Helpers;
+using Infrastructure.Files.Abstraction;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Files.Abstraction
+namespace Infrastructure.AWS.S3
 {
-    public class AwsS3FileReadRepository : IFileReadRepository
+    public class AwsS3ReadRepository : IAwsS3ReadRepository
     {
         private readonly IAwsS3ConnectionFactory _awsS3Connection;
 
-        public AwsS3FileReadRepository(IAwsS3ConnectionFactory awsS3Connection)
+        public AwsS3ReadRepository(IAwsS3ConnectionFactory awsS3Connection)
         {
             _awsS3Connection = awsS3Connection;
         }
@@ -36,6 +38,22 @@ namespace Infrastructure.Files.Abstraction
 
             var preSignedUrl = _awsS3Connection.GetAwsS3().GetPreSignedURL(preSignedUrlRequest);
             return Task.FromResult(preSignedUrl);
+        }
+
+        public async Task<byte[]> ReadAsync(string filePath)
+        {
+            return await ReadAsync(_awsS3Connection.GetBucketName(), filePath);
+        }
+
+        public async Task<byte[]> ReadAsync(string filePath, string fileName)
+        {
+            var path = $"{filePath}/{fileName}";
+            GetObjectResponse response = await _awsS3Connection.GetAwsS3().GetObjectAsync(_awsS3Connection.GetBucketName(), path);
+
+            MemoryStream memory = new MemoryStream();
+            response.ResponseStream.CopyTo(memory);
+
+            return memory.ToArray();
         }
     }
 }
