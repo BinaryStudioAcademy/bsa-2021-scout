@@ -1,11 +1,11 @@
-import { Action } from '../action/action';
+import { ActionCreate } from '../action/create';
 import { Review } from '../reviews/review';
 
-export interface Stage {
+export interface StageCreate {
   id: string;
   name: string;
   type: number;
-  actions: Action[];
+  actions: ActionCreate[];
   // stageType Type { get; set; }
   index: number;
   IsReviewable: boolean;

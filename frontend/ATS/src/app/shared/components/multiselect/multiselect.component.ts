@@ -28,6 +28,7 @@ export interface IOption<T = any> {
 export class MultiselectComponent implements OnChanges, OnInit {
   @Input() public data: IOption[] = [];
   @Input() public selected: IOption[] = [];
+  @Input() public placeholder: string = 'Select';
 
   @Output() public selectedChange: EventEmitter<IOption[]> = new EventEmitter<
   IOption[]
@@ -53,8 +54,12 @@ export class MultiselectComponent implements OnChanges, OnInit {
     this.control.setValue(this.selected);
 
     this.control.valueChanges.subscribe((newValue) =>
-      this.emitChange(newValue),    
+      this.emitChange(newValue),
     );
+  }
+
+  public compareWith(a: any, b: any): boolean {
+    return _.isEqual(a, b);
   }
 
   public emitChange(changed: IOption[]): void {
@@ -69,6 +74,4 @@ export class MultiselectComponent implements OnChanges, OnInit {
       this.select.disabled = false;
     }, 20);
   }
-
-
 }

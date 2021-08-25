@@ -75,27 +75,28 @@ namespace Application.Vacancies.Commands.Edit
 
             await _writeRepository.UpdateAsync(existedVacancy);
 
-            var stages = (ICollection<StageWithCandidatesDto>)(await _mediator.Send(new GetStagesByVacancyQuery(command.Id))).Stages;
+            var vacancyWithStages = await _mediator.Send(new GetStagesByVacancyQuery(command.Id));
+            var stages = vacancyWithStages.Stages.ToList();
             var actions = await _readActionRepository.GetEnumerableAsync();
-            if(updateVacancy.Stages.Count != 0)
+            if (updateVacancy.Stages.Count != 0)
             {
                 foreach (var stage in updateVacancy.Stages)
                 {
-                    if(stage.Id == null)
+                    if (stage.Id == null)
                     {
                         await _mediator.Send(new CreateVacancyStageCommand(_mapper.Map<StageCreateDto>(stage), command.Id));
                     }
-                    if(stages.Any(x => x.Id == stage.Id))
+                    if (stages.Any(x => x.Id == stage.Id))
                     {
-                        var thisStageActions = actions.Where(x=> x.StageId == stage.Id).ToList();
+                        var thisStageActions = actions.Where(x => x.StageId == stage.Id).ToList();
                         foreach (var action in stage.Actions)
                         {
-                            if(action.Id != null)
+                            if (action.Id != null)
                             {
                                 thisStageActions.Remove(thisStageActions.First(x => x.Id == action.Id));
                             }
                         }
-                        if(thisStageActions.Count() > 0)
+                        if (thisStageActions.Count() > 0)
                         {
                             foreach (var action in thisStageActions)
                             {

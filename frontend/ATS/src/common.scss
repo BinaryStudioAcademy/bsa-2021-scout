@@ -151,6 +151,12 @@ a {
   content: " *";
 }
 
+.pool-dialog-container .mat-dialog-container{ 
+      padding-top: 0;
+      border-top: 24px solid #fff;
+}
+}
+
 .mat-menu-content:not(:empty){
     padding: 0px !important;
     max-width: 200px;

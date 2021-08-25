@@ -17,31 +17,36 @@
       <mat-error *ngIf="(stageFormControl.type.touched || submitted) && stageFormControl.type.errors?.required">
         This field shouldn't be empty
     </mat-error>
-        <mat-label>Action</mat-label>
-    <mat-form-field appearance="fill" [ngClass]="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.invalid ? 'invalid-input' : ''">
-        <mat-select #fontSize placeholder="Select action" formControlName="actions" multiple>
-          <mat-option *ngFor="let action of actions" [value]="action.actionType">{{action.name}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-error *ngIf="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.errors?.required">
-        This field shouldn't be empty
-      </mat-error>
-      <mat-checkbox formControlName="isReviewable">Review required</mat-checkbox>
-      <mat-label class="required-field">Rates</mat-label>
-      <mat-form-field appearance="fill" [ngClass]="(stageFormControl.rates.touched || submitted) && stageFormControl.rates.invalid ? 'invalid-input' : ''">
-        <mat-select #fontSize placeholder="Select rates" formControlName="rates">
-            <mat-option >None</mat-option>
-          <mat-option value="Communicative skills">Communicative skills</mat-option>
-          <mat-option value="English">English</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-error *ngIf="(stageFormControl.rates.touched || submitted) && stageFormControl.rates.errors?.required">
-        This field shouldn't be empty
-    </mat-error>
-    </form>
-    <div class="buttons">
-        <button mat-button mat-raised-button  (click)="onStageSave()" [disabled]="stageForm.invalid">Save</button>
-        <!--<button mat-button mat-raised-button  (click)="onSaveAndAdd()" [disabled]="stageForm.invalid">Save and add another</button>-->
-        <button mat-button class="mat-accent" (click)="onStageClose()">Cancel</button>
+    <mat-label>Action</mat-label>
+    <div class="multiselect-wrp">
+      <app-multiselect
+        [data]="actionOptions"
+        placeholder="Select actions"
+        [selected]="actionsToOptions(stageForm.get('actions')!.value)"
+        (selectedChange)="stageForm.get('actions')!.setValue(optionsToActions($event))"
+      ></app-multiselect>
     </div>
+    <mat-error *ngIf="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.errors?.required">
+      This field shouldn't be empty
+    </mat-error>
+    <ng-container *ngIf="reviewOptions.length > 0">
+      <mat-checkbox formControlName="isReviewable">Review required</mat-checkbox>
+      <ng-container *ngIf="stageForm.get('isReviewable')!.value">
+        <mat-label class="required-field">Rates</mat-label>
+        <div class="multiselect-wrp">
+          <app-multiselect
+            [data]="reviewOptions"
+            placeholder="Select reviews"
+            [selected]="reviewsToOptions(stageForm.get('reviews')!.value)"
+            (selectedChange)="stageForm.get('reviews')!.setValue(optionsToReviews($event))"
+          ></app-multiselect>
+        </div>
+      </ng-container>
+    </ng-container>
+  </form>
+  <div class="buttons">
+    <button mat-button mat-raised-button (click)="onStageSave()" [disabled]="stageForm.invalid">Save</button>
+    <!--<button mat-button mat-raised-button  (click)="onSaveAndAdd()" [disabled]="stageForm.invalid">Save and add another</button>-->
+    <button mat-button class="mat-accent" (click)="onStageClose()">Cancel</button>
+  </div>
 </div>
