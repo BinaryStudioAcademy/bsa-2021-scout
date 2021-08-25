@@ -4,7 +4,7 @@
   flex-direction: row;
 }
 
-.buttons > * {
+.buttons > *:first-child {
   margin-right: 10px;
 }
 

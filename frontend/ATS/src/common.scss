@@ -145,3 +145,13 @@ a {
   color: #ef5350;
   max-width: fit-content;
 }
+
+.required-field::after {
+  color: #f00;
+  content: " *";
+}
+
+.pool-dialog-container .mat-dialog-container{ 
+      padding-top: 0;
+      border-top: 24px solid #fff;
+}

@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Infrastructure.Files.Helpers
+namespace Infrastructure.AWS.S3.Helpers
 {
     public static class AwsS3Helpers
     {

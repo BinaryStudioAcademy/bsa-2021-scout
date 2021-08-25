@@ -19,6 +19,7 @@ import { Review } from 'src/app/shared/models/reviews/review';
 import { Stage } from 'src/app/shared/models/stages/stage';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ReviewService } from 'src/app/shared/services/review.service';
+import { StageType } from 'src/app/shared/models/stages/type';
 
 @Component({
   selector: 'app-create-stage',
@@ -77,6 +78,7 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
   ) {
     this.stageForm = this.fb.group({
       name: ['', [Validators.required]],
+      type: ['', [Validators.required]],
       actions: [[]],
       isReviewable: [false],
       reviews: [[]],
@@ -98,6 +100,7 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
       }
       this.stageId = changes.stage.currentValue.id;
       this.stageForm.get('name')?.setValue(changes.stage.currentValue.name);
+      this.stageForm.get('type')?.setValue(changes.stage.currentValue.type);
       this.stageForm
         .get('isReviewable')
         ?.setValue(changes.stage.currentValue.isReviewable);
@@ -176,6 +179,14 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
     this.stage.index = this.editModeItemIndex;
     this.stageForm.reset();
   }
+
+  types: { name: string; type: StageType }[] = [
+    { name: 'Applied', type: StageType.Applied },
+    { name: 'Phone screen', type: StageType.PhoneScreen },
+    { name: 'Interview', type: StageType.Interview },
+    { name: 'Offer', type: StageType.Offer },
+    { name: 'Hired', type: StageType.Hired },
+  ];
 
   onStageSave() {
     this.submitted = true;

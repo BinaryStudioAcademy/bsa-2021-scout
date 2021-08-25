@@ -1,10 +1,6 @@
 ﻿using Domain.Interfaces.Read;
 using Infrastructure.Files.Abstraction;
-using Infrastructure.Files.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Files.Read

@@ -139,6 +139,8 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
           this.stageList = response.stages;
           this.tags = response.tags.tagDtos;
         });
+    } else {
+      this.vacancyForm.controls['isRemote'].setValue('true');
     }
     this.projectService
       .getByCompany()
@@ -147,7 +149,13 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         (response) => {
           this.loading = false;
           this.projects = response;
-          this.selectedProjects = this.projects;
+          this.selectedProjects = this.projects.sort(function (a, b) {
+            var nameA = a.name.toLowerCase(),
+              nameB = b.name.toLowerCase();
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+            return 0;
+          });
         },
         () => {
           this.loading = false;
@@ -223,11 +231,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
 
   //Tag field
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
-  tags: Tag[] = [
-    { id: '1', tagName: 'Devops' },
-    { id: '2', tagName: 'Ukraine' },
-    { id: '3', tagName: 'Job offer' },
-  ];
+  tags: Tag[] = [];
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
@@ -279,10 +283,10 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Hr interview',
       index: 1,
-      type: 1,
+      type: 3,
       actions: [
         {
-          id: '1',
+          id: '',
           name: 'Schedule interview action',
           actionType: 3,
           stageId: '',
@@ -296,10 +300,10 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Tech interview',
       index: 2,
-      type: 2,
+      type: 3,
       actions: [
         {
-          id: '1',
+          id: '',
           name: 'Schedule interview action',
           actionType: 3,
           stageId: '',
@@ -313,10 +317,10 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Live coding session',
       index: 3,
-      type: 3,
+      type: 0,
       actions: [
         {
-          id: '1',
+          id: '',
           name: 'Schedule interview action',
           actionType: 3,
           stageId: '',
@@ -347,10 +351,10 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Offer',
       index: 5,
-      type: 5,
+      type: 4,
       actions: [
         {
-          id: '1',
+          id: '',
           name: 'Schedule interview action',
           actionType: 3,
           stageId: '',
