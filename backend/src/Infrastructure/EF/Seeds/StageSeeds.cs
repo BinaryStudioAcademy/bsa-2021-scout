@@ -34,7 +34,6 @@ namespace Infrastructure.EF.Seeds
             "Applied",
             "Phone screen",
             "Interview",
-            "Test",
             "Offer",
             "Hired",
         };
@@ -43,7 +42,6 @@ namespace Infrastructure.EF.Seeds
             StageType.Applied,
             StageType.PhoneScreen,
             StageType.Interview,
-            StageType.Test,
             StageType.Offer,
             StageType.Hired,
         };

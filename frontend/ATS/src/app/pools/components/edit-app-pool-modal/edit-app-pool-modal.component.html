@@ -6,7 +6,7 @@
 </div>
 <div class="form-control">
     <form [formGroup]="editPool">
-        <h5>Pool name</h5>
+        <h5 class="required-field">Pool name</h5>
         <mat-form-field floatLabel='never' class="al-subscribe-form-field" [ngClass]="getClass('name')">
           <input matInput type="text" formControlName="name" placeholder="Enter name of pool">
         </mat-form-field>
@@ -19,7 +19,7 @@
         <div class="custom-error" *ngIf="this.editPool.controls['name'].dirty && this.editPool.controls['name'].errors?.maxlength">
           Name must be not greater than 20 characters long.
         </div>
-        <h5>Description</h5>
+        <h5 class="required-field">Description</h5>
         <mat-form-field floatLabel='never' class="al-subscribe-form-field" class="textarea" [ngClass]="getClass('description')">
             <textarea matInput type="text" autocomplete="off" formControlName="description" placeholder="Enter description"
             cdkTextareaAutosize

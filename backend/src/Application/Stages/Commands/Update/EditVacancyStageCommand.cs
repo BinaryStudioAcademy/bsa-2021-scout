@@ -59,6 +59,7 @@ namespace Application.Stages.Commands
             var existedStage = await _readStageRepository.GetAsync(command.StageId);
             existedStage.Name = updateVacancy.Name;
             existedStage.Index = updateVacancy.Index;
+            existedStage.Type = updateVacancy.Type;
             existedStage.IsReviewable = updateVacancy.IsReviewable;
             existedStage.Reviews = updateVacancy.Reviews;
             existedStage.Actions = updateVacancy.Actions;
