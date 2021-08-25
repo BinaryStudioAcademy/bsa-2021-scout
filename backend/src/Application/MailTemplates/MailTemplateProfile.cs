@@ -10,7 +10,8 @@ namespace Application.MailTemplates
         {
             CreateMap<MailTemplate, MailTemplateDto>();
             CreateMap<MailTemplateDto, MailTemplate>();
-
+            CreateMap<MailTemplateCreateDto, MailTemplate>();
+            CreateMap<MailTemplateUpdateDto, MailTemplate>();
         }
     }
 }

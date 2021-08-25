@@ -28,16 +28,16 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MailTemplateDto>> CreateMailTempale([FromBody] MailTemplateDto mailTemplateDto)
+        public async Task<ActionResult<MailTemplateDto>> CreateMailTempale([FromBody] MailTemplateCreateDto mailTemplateCreateDto)
         {
-            var query = new CreateEntityCommand<MailTemplateDto>(mailTemplateDto);
+            var query = new CreateEntityCommand<MailTemplateCreateDto>(mailTemplateCreateDto);
             return Ok(await Mediator.Send(query));
         }
 
         [HttpPut]
-        public async Task<ActionResult<MailTemplateDto>> UpdateMailTempale([FromBody] MailTemplateDto mailTemplateDto)
+        public async Task<ActionResult<MailTemplateDto>> UpdateMailTempale([FromBody] MailTemplateUpdateDto mailTemplateUpdateDto)
         {
-            var query = new UpdateEntityCommand<MailTemplateDto>(mailTemplateDto);
+            var query = new UpdateEntityCommand<MailTemplateUpdateDto>(mailTemplateUpdateDto);
             return Ok(await Mediator.Send(query));
         }
 

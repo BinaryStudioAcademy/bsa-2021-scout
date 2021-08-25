@@ -6,7 +6,7 @@ using AutoMapper;
 
 namespace Application.MailTemplates.Commands
 {
-    public class UpdateMailTemplateCommandHandler: UpdateEntityCommandHandler<MailTemplate, MailTemplateDto>
+    public class UpdateMailTemplateCommandHandler: UpdateEntityCommandHandler<MailTemplate, MailTemplateUpdateDto>
     {
         public UpdateMailTemplateCommandHandler(IWriteRepository<MailTemplate> repository, IMapper mapper) : base(repository, mapper) { }
     }
