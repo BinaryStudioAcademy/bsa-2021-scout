@@ -1,12 +1,13 @@
-<mat-select #select [formControl]="control" multiple placeholder="Select">
+<mat-select #select multiple [formControl]="control" [compareWith]="compareWith" [placeholder]="placeholder">
   <mat-select-trigger>
     <div class="topics">
       <app-topic
         [text]="opt.label"
         [removable]="true"
         (remove)="remove(opt.id)"
-        *ngFor="let opt of selected"
+        *ngFor="let opt of control.value"
       ></app-topic>
     </div>
   </mat-select-trigger>
+  <mat-option [value]="opt" *ngFor="let opt of data">{{ opt.label }}</mat-option>
 </mat-select>

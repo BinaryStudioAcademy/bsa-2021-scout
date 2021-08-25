@@ -190,7 +190,6 @@ namespace Infrastructure
 
             services.AddScoped<IWriteRepository<Domain.Entities.Action>, WriteRepository<Domain.Entities.Action>>();
 
-
             return services;
         }
 
@@ -235,7 +234,6 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();
 
             services.AddScoped<IReadRepository<Domain.Entities.Action>, ActionReadRepository>();
-
 
             return services;
         }
