@@ -27,9 +27,9 @@ import { ShortVacancyWithStages } from 'src/app/shared/models/vacancy/short-with
 import { ReviewService } from 'src/app/shared/services/review.service';
 import { Review } from 'src/app/shared/models/reviews/review';
 
-import {
-  AddCandidateModalComponent,
-} from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
+// This line can't be shorter
+// eslint-disable-next-line max-len
+import { AddCandidateModalComponent } from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
 
 interface CandidatePos {
   index: number;
@@ -63,7 +63,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
     private readonly modalService: MatDialog,
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     this.route.params.subscribe(({ id }) => {
@@ -113,11 +113,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
             event.container.id, // Stores new stage id
           )
           .subscribe(
-            () =>
-              this.notificationService.showSuccessMessage(
-                'Candidate\'s stage is updated',
-                'Success',
-              ),
+            () => {},
             () => {
               this.notificationService.showErrorMessage(
                 'Failed to save candidate\'s stage',
@@ -160,17 +156,18 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   }
 
   public openCandidateAddModal(): void {
-    this.modalService.open(AddCandidateModalComponent, {
-      width: '400px',
-      autoFocus: false,
-      panelClass: 'candidate-dialog',
-      data: {
-        vacancyId: this.vacancyId,
-      },
-    }).afterClosed()
-      .subscribe(_ => this.loadData());
+    this.modalService
+      .open(AddCandidateModalComponent, {
+        width: '400px',
+        autoFocus: false,
+        panelClass: 'candidate-dialog',
+        data: {
+          vacancyId: this.vacancyId,
+        },
+      })
+      .afterClosed()
+      .subscribe((_) => this.loadData());
   }
-
 
   public openCandidateModal(id: string): void {
     let pos: CandidatePos = { index: 0, stageIndex: 0 };
