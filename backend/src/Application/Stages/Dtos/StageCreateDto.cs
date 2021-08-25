@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Common.Models;
-using Domain.Enums;
+using System.Collections.Generic;
 using FluentValidation;
+using Domain.Enums;
+using Application.Common.Models;
+using Application.Reviews.Dtos;
 
 namespace Application.Stages.Dtos
 {
@@ -16,7 +17,9 @@ namespace Application.Stages.Dtos
         public int Index { get; set; }
         public bool IsReviewable { get; set; }
         public ICollection<ActionCreateDto> Actions { get; set; }
+        public ICollection<ReviewDto> Reviews { get; set; }
     }
+
     public class StageCreateDtoValidator : AbstractValidator<StageCreateDto>
     {
         public StageCreateDtoValidator()
