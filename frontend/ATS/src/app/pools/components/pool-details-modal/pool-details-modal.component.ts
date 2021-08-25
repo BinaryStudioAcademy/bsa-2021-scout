@@ -9,12 +9,12 @@ import { Subject } from 'rxjs';
 import { PoolService } from 'src/app/shared/services/poolService';
 import { takeUntil} from 'rxjs/operators';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { Applicant } from 'src/app/shared/models/applicants/applicant';
+import { ApplicantIsSelected } from 'src/app/shared/models/applicants/applicant-select';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
 
-const DATA: Applicant[] = [];
+const DATA: ApplicantIsSelected[] = [];
 
 @Component({
   selector: 'app-pool-details-modal',
@@ -88,11 +88,19 @@ export class PoolDetailsModalComponent implements OnInit, AfterViewInit {
         (resp) => {
           this.pool = resp;
           this.poolForm.setValue(this.pool);
-          this.dataSource.data = resp.applicants;
+          const applicantsMod = resp.applicants
+            .map(
+              value => {
+                return {
+                  ...value, isShowAllTags: false};                
+              },            
+            );
+          this.dataSource.data = applicantsMod;
           this.updatePaginator();
         },
         (error) => {          
-          this.notificationService.showErrorMessage(error);        
+          this.notificationService.showErrorMessage(error);
+          this.loading = false;
         },
         () => this.loading = false,
       );
@@ -102,11 +110,11 @@ export class PoolDetailsModalComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.directive?.applyFilter$.emit();
   }
-  public getFirstTags(applicant: Applicant): Tag[] {
+  public getFirstTags(applicant: ApplicantIsSelected): Tag[] {
     if(applicant.tags)
     {
-      return applicant.tags.tagDtos.length > 6
-        ? applicant.tags.tagDtos.slice(0, 5)
+      return applicant.tags.tagDtos.length > 4
+        ? applicant.tags.tagDtos.slice(0, 3)
         : applicant.tags.tagDtos;
     }
     return [];
@@ -114,6 +122,10 @@ export class PoolDetailsModalComponent implements OnInit, AfterViewInit {
 
   public toggleAllTags(): void {
     this.isShowAllTags = this.isShowAllTags ? false : true;
+  }
+
+  public toggleTags(applicant: ApplicantIsSelected): void {
+    applicant.isShowAllTags = applicant.isShowAllTags ? false : true;
   }
 
 

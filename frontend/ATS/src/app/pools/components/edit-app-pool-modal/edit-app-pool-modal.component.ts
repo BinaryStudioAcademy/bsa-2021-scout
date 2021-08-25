@@ -163,8 +163,10 @@ export class EditAppPoolModalComponent implements OnInit {
           });
           
         },
-        (error) => {          
-          this.notificationService.showErrorMessage(error);
+        (error) => {                    
+          this.notificationService.showErrorMessage(error.description);
+          if(error.type === 'InvalidToken') this.closeDialog();
+
         },
         () => { this.loading = false; },
       );
