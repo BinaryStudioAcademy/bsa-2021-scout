@@ -49,7 +49,7 @@ namespace Infrastructure.Repositories.Read
             StringBuilder followedSql = new StringBuilder();
             followedSql.Append("SELECT UE.* FROM UserFollowedEntities as UE");
             followedSql.Append(" JOIN Users ON Users.Id = UE.UserId");
-            followedSql.Append(" WHERE UE.UserId = @UserId AND EU.EntityId = @EntityId AND UE.EntityType = @EntityType");
+            followedSql.Append(" WHERE UE.UserId = @UserId AND UE.EntityId = @EntityId AND UE.EntityType = @EntityType");
             UserFollowedEntity userFollowedEntity = (await connection
             .QueryAsync<UserFollowedEntity>(followedSql.ToString(), 
                 param: new 

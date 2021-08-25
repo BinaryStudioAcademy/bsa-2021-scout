@@ -30,29 +30,22 @@ namespace WebAPI.Controllers
         {
 
         }
-        [HttpGet]
-        public async Task<IActionResult> GetFollowedItemsByType(EntityType type)
+        [HttpGet("{type}")]
+        public async Task<IActionResult> GetFollowedItemsByType([FromRoute] EntityType type)
         {
             var command = new GetUserFollowedEntityByType(type);
             return Ok(await Mediator.Send(command));
         }
-        [HttpGet("{Id}")]
-        public async Task<IActionResult> GetVacancy(
-            [FromRoute] string Id)
-        {
-            var query = new GetVacancyByIdQuery(Id);
-            return StatusCode(201, await Mediator.Send(query));
-        }
         [HttpPost]
-        public async Task<IActionResult> CreateVacancyWithStages(CreateUserFollowedDto followedDto)
+        public async Task<IActionResult> CreateFollowed(CreateUserFollowedDto followedDto)
         {
             var command = new CreateUserFollowedCommand(followedDto);
             return StatusCode(201, await Mediator.Send(command));
         }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVacancy(string id)
+        [HttpDelete("{id}/{type}")]
+        public async Task<IActionResult> DeleteVacancy(string id, EntityType type)
         {
-            var command = new DeleteVacancyCommand(id);
+            var command = new DeleteUserFollowedCommand(id, type);
             return StatusCode(204, await Mediator.Send(command));
         }
     }

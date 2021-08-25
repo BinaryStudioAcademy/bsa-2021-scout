@@ -1,3 +1,4 @@
+import { Followed } from './../../../shared/models/followed/create-followed';
 import {
   AfterViewInit, Component,
   ViewChild, ElementRef, ChangeDetectorRef, OnDestroy,
@@ -20,6 +21,8 @@ import { DeleteConfirmComponent }
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { FollowedService } from 'src/app/shared/services/followedService';
+import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 
 
 const STATUES: VacancyStatus[] = [
@@ -51,12 +54,19 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   @ViewChild('input') serachField!: ElementRef;
 
   public loading: boolean = true;
-
+  private followedSet: Set<string> = new Set();
   constructor(
     private router: Router, private cd: ChangeDetectorRef,
     private dialog: MatDialog, private service: VacancyDataService,
     private notificationService: NotificationService,
+    private followService: FollowedService,
   ) {
+    this.followService.getFollowed(EntityType.Vacancy)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data=>
+        data.forEach(item=>this.followedSet.add(item.entityId)),
+      );
+    
     this.getVacancies();
   }
 
@@ -76,6 +86,7 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
           this.dataSource.data = data;
           data.forEach((d, i) => {
             d.position = i + 1;
+            d.isFollowed = this.followedSet.has(d.id);
           });
           this.mainData = data;
           this.directive.applyFilter$.emit();
@@ -109,6 +120,20 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   public onBookmark(data: VacancyData, perfomToFollowCleanUp: boolean = false){
     let vacancyIndex:number = this.dataSource.data.findIndex(vacancy=>vacancy.id === data.id)!;
     data.isFollowed = !data.isFollowed;
+    if(data.isFollowed)
+    {
+      this.followService.createFollowed(
+        {
+          entityId: data.id,
+          entityType: EntityType.Vacancy,
+        },
+      ).subscribe();
+    }else
+    {
+      this.followService.deleteFollowed(
+        EntityType.Vacancy, data.id,
+      ).subscribe();
+    }
     this.dataSource.data[vacancyIndex] = data;
     if(perfomToFollowCleanUp){
       this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
