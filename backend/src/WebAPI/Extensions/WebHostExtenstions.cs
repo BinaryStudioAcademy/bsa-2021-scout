@@ -34,8 +34,8 @@ namespace WebAPI.Extensions
             await ApplyElasticSeeding(host);
             await ApplyRoleSeeding(host);
             await ApplyProjectSeeding(host);
-            await ApplyPoolSeeding(host);
             await ApplyUserSeeding(host);
+            await ApplyPoolSeeding(host);
             await ApplyUserToRoleSeeding(host);
             await ApplyVacancySeeding(host);
             await ApplyApplicantSeeding(host);

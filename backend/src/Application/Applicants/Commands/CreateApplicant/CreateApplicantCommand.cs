@@ -61,7 +61,6 @@ namespace Application.Applicants.Commands
             {
                 FirstName = command.ApplicantDto.FirstName,
                 LastName = command.ApplicantDto.LastName,
-                MiddleName = command.ApplicantDto.MiddleName,
                 BirthDate = command.ApplicantDto.BirthDate,
                 Email = command.ApplicantDto.Email,
                 Phone = command.ApplicantDto.Phone,

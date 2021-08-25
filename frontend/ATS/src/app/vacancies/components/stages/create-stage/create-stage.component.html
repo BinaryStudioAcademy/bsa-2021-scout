@@ -25,9 +25,9 @@
       </mat-form-field>
       <mat-error *ngIf="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.errors?.required">
         This field shouldn't be empty
-    </mat-error>
+      </mat-error>
       <mat-checkbox formControlName="isReviewable">Review required</mat-checkbox>
-      <mat-label>Rates</mat-label>
+      <mat-label class="required-field">Rates</mat-label>
       <mat-form-field appearance="fill" [ngClass]="(stageFormControl.rates.touched || submitted) && stageFormControl.rates.invalid ? 'invalid-input' : ''">
         <mat-select #fontSize placeholder="Select rates" formControlName="rates">
             <mat-option >None</mat-option>
