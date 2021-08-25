@@ -1,15 +1,24 @@
 <div class="form-container white-class" >
     <h1 mat-title>Create stage</h1>
     <form [formGroup]="stageForm">
-      <mat-label class="required-field">Stage name</mat-label>
-      <mat-form-field appearance="fill"  [ngClass]="(stageFormControl.name.touched || submitted) && stageFormControl.name.invalid ? 'invalid-input' : ''">
-        <input matInput type="text" autocomplete="off" formControlName="name" placeholder="Enter stage name">
+        <mat-label>Stage name</mat-label>
+        <mat-form-field appearance="fill"  [ngClass]="(stageFormControl.name.touched || submitted) && stageFormControl.name.invalid ? 'invalid-input' : ''">
+            <input matInput type="text" autocomplete="off" formControlName="name" placeholder="Enter stage name">
+          </mat-form-field>
+          <mat-error *ngIf="(stageFormControl.name.touched || submitted) && stageFormControl.name.errors?.required">
+            This field shouldn't be empty
+        </mat-error>
+        <mat-label>Type</mat-label>
+      <mat-form-field appearance="fill" [ngClass]="(stageFormControl.type.touched || submitted) && stageFormControl.type.invalid ? 'invalid-input' : ''">
+        <mat-select #fontSize placeholder="Select type" formControlName="type">
+          <mat-option *ngFor="let type of types" [value]="type.type">{{type.name}}</mat-option>
+        </mat-select>
       </mat-form-field>
-      <mat-error *ngIf="(stageFormControl.name.touched || submitted) && stageFormControl.name.errors?.required">
+      <mat-error *ngIf="(stageFormControl.type.touched || submitted) && stageFormControl.type.errors?.required">
         This field shouldn't be empty
-      </mat-error>
-      <mat-label class="required-field">Action</mat-label>
-      <mat-form-field appearance="fill" [ngClass]="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.invalid ? 'invalid-input' : ''">
+    </mat-error>
+        <mat-label>Action</mat-label>
+    <mat-form-field appearance="fill" [ngClass]="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.invalid ? 'invalid-input' : ''">
         <mat-select #fontSize placeholder="Select action" formControlName="actions" multiple>
           <mat-option *ngFor="let action of actions" [value]="action.actionType">{{action.name}}</mat-option>
         </mat-select>
