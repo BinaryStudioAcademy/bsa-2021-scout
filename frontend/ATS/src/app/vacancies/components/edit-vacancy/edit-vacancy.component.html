@@ -1,9 +1,9 @@
 <app-spinner [loading]="loading"></app-spinner>
-<div class="edit-vacancy-container" >
+<div class="edit-vacancy-container">
     <div class="modal-top">
-        <h1 mat-dialog-title *ngIf="this.data.vacancyToEdit"><b>Vacancy edit form</b></h1>
-        <h1 mat-dialog-title *ngIf="!this.data.vacancyToEdit"><b>Vacancy create form</b></h1>
-        <button mat-icon-button aria-label="Close" (click)="this.dialogRef.close()">
+        <h1 mat-dialog-title *ngIf="data.vacancyToEdit"><b>Edit vacancy</b></h1>
+        <h1 mat-dialog-title *ngIf="!data.vacancyToEdit"><b>Create vacancy</b></h1>
+        <button mat-icon-button aria-label="Close" (click)="dialogRef.close()">
             <mat-icon>close</mat-icon>
         </button>
     </div>
@@ -181,19 +181,19 @@
                             </div>
                         </div>
                     </ng-container>
-                    <button mat-stroked-button class="add-stage-button" *ngIf="!this.isOpenCreateStage"
+                    <button mat-stroked-button class="add-stage-button" *ngIf="!isOpenCreateStage"
                         (click)="displayCreateStage()">+ Add new stage</button>
 
                 </div>
-                <div *ngIf="this.isOpenCreateStage">
-                    <app-create-stage [stage]=this.stageToEdit (stageChange)="saveStage($event)"
+                <div *ngIf="isOpenCreateStage">
+                    <app-create-stage [stage]="stageToEdit" (stageChange)="saveStage($event)"
                         (stageCreateAndAddChange)="saveStageAndAdd($event)" (isClosedChange)="cancelStageEdit()">
                     </app-create-stage>
                 </div>
             </div>
-            <button mat-button type="submit" *ngIf="!this.data.vacancyToEdit" style="margin-bottom:50px"
+            <button mat-button type="submit" *ngIf="!data.vacancyToEdit" style="margin-bottom:50px"
                 [disabled]="vacancyForm.invalid" (click)="createVacancy()">Publish</button>
-            <button mat-button type="submit" *ngIf="this.data.vacancyToEdit" style="margin-bottom:50px"
+            <button mat-button type="submit" *ngIf="data.vacancyToEdit" style="margin-bottom:50px"
                 [disabled]="vacancyForm.invalid" (click)="createVacancy()">Save changes</button>
         </form>
     </div>

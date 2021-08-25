@@ -170,7 +170,6 @@ namespace Infrastructure
 
             services.AddScoped<IWriteRepository<Domain.Entities.Action>, WriteRepository<Domain.Entities.Action>>();
 
-
             return services;
         }
 
@@ -192,7 +191,6 @@ namespace Infrastructure
 
             services.AddScoped<IApplicantReadRepository, ApplicantReadRepository>();
 
-            //services.AddScoped<IReadRepository<CandidateToStage>, ReadRepository<CandidateToStage>>();
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
@@ -212,7 +210,6 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();
 
             services.AddScoped<IReadRepository<Domain.Entities.Action>, ActionReadRepository>();
-
 
             return services;
         }

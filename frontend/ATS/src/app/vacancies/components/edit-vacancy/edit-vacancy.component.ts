@@ -44,11 +44,10 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   selectable = true;
   removable = true;
   addOnBlur = true;
-  elasticEntity : ElasticEntity = {} as ElasticEntity; 
-  vacancyId : string = '';
+  elasticEntity: ElasticEntity = {} as ElasticEntity;
+  vacancyId: string = '';
   tierFrom: number = 0;
   tierTo: number = 0;
-
 
   @Output() vacancyChange = new EventEmitter<VacancyFull>();
 
@@ -109,16 +108,16 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.data.vacancyToEdit) {
-      this.vacancyService.getById(this.data.vacancyToEdit.id).subscribe(
-        response => {
+      this.vacancyService
+        .getById(this.data.vacancyToEdit.id)
+        .subscribe((response) => {
           if (!response.tags) {
             response.tags = {
               id: '',
               elasticType: 1,
               tagDtos: [],
             };
-          }
-          else{
+          } else {
             this.elasticEntity.id = response.tags.id;
           }
           this.vacancyForm.setValue({
@@ -136,7 +135,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
             tags: '',
             stages: response.stages,
           });
-          response.stages.sort((a,b) => a.index - b.index);
+          response.stages.sort((a, b) => a.index - b.index);
           this.stageList = response.stages;
           this.tags = response.tags.tagDtos;
         });
@@ -162,7 +161,6 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     this.submitted = true;
     this.loading = true;
 
-
     this.elasticEntity.tagDtos = this.tags;
     this.elasticEntity.elasticType = ElasticType.VacancyTags;
     this.vacancy = {
@@ -177,7 +175,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       sources: this.vacancyForm.controls['link'].value,
       isHot: this.vacancyForm.controls['isHot'].value ? true : false,
       isRemote: this.vacancyForm.controls['isRemote'].value ? true : false,
-      tags : this.elasticEntity,
+      tags: this.elasticEntity,
       stages: this.stageList,
     };
     if (!this.data.vacancyToEdit) {
@@ -187,11 +185,15 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         .subscribe(
           (response) => {
             this.loading = false;
+            this.dialogRef.close();
             this.vacancyChange.emit(response);
           },
           () => {
             this.loading = false;
-            this.notificationService.showErrorMessage('Failed to create vacancy.');
+            this.dialogRef.close();
+            this.notificationService.showErrorMessage(
+              'Failed to create vacancy.',
+            );
           },
         );
     } else {
@@ -201,17 +203,18 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         .subscribe(
           (response) => {
             this.loading = false;
+            this.dialogRef.close();
             this.vacancyChange.emit(response);
           },
           () => {
             this.loading = false;
-            this.notificationService.showErrorMessage('Failed to update vacancy.');
+            this.dialogRef.close();
+            this.notificationService.showErrorMessage(
+              'Failed to update vacancy.',
+            );
           },
         );
     }
-
-
-    this.dialogRef.close();
   }
 
   get vacancyFormControl() {
@@ -260,13 +263,15 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Contacted',
       index: 0,
       type: 0,
-      actions: [{
-        id : '',
-        name: 'Schedule interview action',
-        actionType: 3,
-        stageId: '',
-      }],
-      rates: 'English',
+      actions: [
+        {
+          id: '1',
+          name: 'Schedule interview action',
+          actionType: 3,
+          stageId: '',
+        },
+      ],
+      reviews: [],
       IsReviewable: true,
       vacancyId: '',
     },
@@ -275,13 +280,15 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Hr interview',
       index: 1,
       type: 1,
-      actions: [{
-        id : '',
-        name: 'Schedule interview action',
-        actionType: 3,
-        stageId: '',
-      }],
-      rates: 'English',
+      actions: [
+        {
+          id: '1',
+          name: 'Schedule interview action',
+          actionType: 3,
+          stageId: '',
+        },
+      ],
+      reviews: [],
       IsReviewable: true,
       vacancyId: '',
     },
@@ -290,13 +297,15 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Tech interview',
       index: 2,
       type: 2,
-      actions: [{
-        id : '',
-        name: 'Schedule interview action',
-        actionType: 3,
-        stageId: '',
-      }],
-      rates: 'English',
+      actions: [
+        {
+          id: '1',
+          name: 'Schedule interview action',
+          actionType: 3,
+          stageId: '',
+        },
+      ],
+      reviews: [],
       IsReviewable: true,
       vacancyId: '',
     },
@@ -305,13 +314,15 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Live coding session',
       index: 3,
       type: 3,
-      actions: [{
-        id : '',
-        name: 'Schedule interview action',
-        actionType: 3,
-        stageId: '',
-      }],
-      rates: 'English',
+      actions: [
+        {
+          id: '1',
+          name: 'Schedule interview action',
+          actionType: 3,
+          stageId: '',
+        },
+      ],
+      reviews: [],
       IsReviewable: true,
       vacancyId: '',
     },
@@ -320,13 +331,15 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Pre-offer',
       index: 4,
       type: 4,
-      actions: [{
-        id : '',
-        name: 'Schedule interview action',
-        actionType: 3,
-        stageId: '',
-      }],
-      rates: 'English',
+      actions: [
+        {
+          id: '1',
+          name: 'Schedule interview action',
+          actionType: 3,
+          stageId: '',
+        },
+      ],
+      reviews: [],
       IsReviewable: true,
       vacancyId: '',
     },
@@ -335,13 +348,15 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Offer',
       index: 5,
       type: 5,
-      actions: [{
-        id : '',
-        name: 'Schedule interview action',
-        actionType: 3,
-        stageId: '',
-      }],
-      rates: 'English',
+      actions: [
+        {
+          id: '1',
+          name: 'Schedule interview action',
+          actionType: 3,
+          stageId: '',
+        },
+      ],
+      reviews: [],
       IsReviewable: true,
       vacancyId: '',
     },
@@ -357,7 +372,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   //changes indexes of stages
   sortStageList() {
     let index = 0;
-    this.stageList.forEach(x => {
+    this.stageList.forEach((x) => {
       x.index = index;
       index++;
     });
@@ -368,10 +383,10 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   toSave(newStage: Stage) {
     newStage.vacancyId = this.vacancyId;
     if (this.isEditStageMode) {
-      let stage = this.stageList.find(x => x.index === newStage.index);
-      if (stage != null && stage.index >= 0) {
+      let stage = this.stageList.find((x) => x.index === newStage.index);
+      if (stage && stage.index >= 0) {
         newStage.id = stage.id;
-        this.stageList[stage?.index ] = newStage;
+        this.stageList[stage?.index] = { ...newStage };
       }
       this.isEditStageMode = false;
     } else {
