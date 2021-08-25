@@ -11,7 +11,6 @@
     color: $primary-color;    
 }
 
-//.dialog-title .mat-button-focus-overlay { background-color: transparent!important; }       
 
 
 .form-control {
@@ -43,9 +42,9 @@
     .mat-input-element,
     .mat-form-field-wrapper.mat-form-field-wrapper,
     .mat-form-field.mat-focused .mat-form-field-label
-    {
-      color : $primary-color-darkgrey;
-      caret-color: $primary-color-darkgrey;
+    {        
+        color : #000;
+        caret-color: $primary-color-darkgrey;
     }
 
     .mat-button-focus-overlay { background-color: transparent!important; }       
