@@ -33,23 +33,7 @@ export class HeaderComponent implements OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  public logout(): void {
-    this.loading = true;
 
-    this.service
-      .logout()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        () => {
-          this.loading = false;
-          window.location.replace('/login');
-        },
-        () => {
-          this.loading = false;
-          window.location.replace('/login');
-        },
-      );
-  }
   openDialog(): void {
     const dialogRef = this.dialog.open(EditVacancyComponent, {
       width: '914px',

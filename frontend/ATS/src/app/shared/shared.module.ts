@@ -42,6 +42,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
+import { ProfileDropdownMenuComponent } from './components/profile-dropdown-menu/profile-dropdown-menu.component';
 
 @NgModule({
   exports: [
@@ -85,6 +86,7 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     MatMenuModule,
     TagsEditComponent,
     DeleteConfirmComponent,
+    ProfileDropdownMenuComponent
   ],
   imports: [
     MatButtonModule,
@@ -135,6 +137,8 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     AddCandidateModalComponent,
     TagsEditComponent,
     DeleteConfirmComponent,
+    
+    ProfileDropdownMenuComponent,
   ],
 })
 export class SharedModule { }

@@ -26,6 +26,8 @@ import { ResendEmailAfterLoginComponent } from
   './components/resend-email-after-login/resend-email-after-login.component';
 import { SendingRegisterLinkDialogComponent } from 
   './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
+import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
+import { EditHrsDialogComponent } from './components/edit-hrs-dialog/edit-hrs-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,11 @@ import { SendingRegisterLinkDialogComponent } from
     ResendEmailAfterLoginComponent,
     SuccessfulRegistrationComponent,
     SendingRegisterLinkDialogComponent,
+    ProfileEditComponent,
+    EditHrsDialogComponent,
+  ],
+  exports:[
+    ProfileEditComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
