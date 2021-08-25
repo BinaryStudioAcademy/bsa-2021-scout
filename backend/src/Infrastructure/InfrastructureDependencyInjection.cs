@@ -189,7 +189,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<SkillsParsingJob>, WriteRepository<SkillsParsingJob>>();
 
             services.AddScoped<IWriteRepository<Domain.Entities.Action>, WriteRepository<Domain.Entities.Action>>();
-
+            services.AddScoped<IWriteRepository<UserFollowedEntity>, WriteRepository<UserFollowedEntity>>();
 
             return services;
         }
@@ -212,7 +212,8 @@ namespace Infrastructure
             services.AddScoped<IElasticReadRepository<ElasticEntity>, ElasticReadRepository<ElasticEntity>>();
 
             services.AddScoped<IApplicantReadRepository, ApplicantReadRepository>();
-
+            services.AddScoped<IUserFollowedReadRepository, UserFollowedEntityReadRepository>();
+           
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
