@@ -112,9 +112,8 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
             event.item.element.nativeElement.id, // Stores candidate id
             event.container.id, // Stores new stage id
           )
-          .subscribe(
-            () => {},
-            () => {
+          .subscribe({
+            error: () => {
               this.notificationService.showErrorMessage(
                 'Failed to save candidate\'s stage',
                 'Error',
@@ -122,7 +121,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
 
               backward();
             },
-          );
+          });
 
       const stage = this.data.find(
         (s) => s.id === event.container.id,
