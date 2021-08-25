@@ -58,15 +58,17 @@ namespace Application.Stages.Commands
 
             var updateStage = _mapper.Map<Stage>(command.StageUpdate);
 
-            var existedStage = await _readStageRepository.GetAsync(command.StageId);
+            var existedStage = await _readStageRepository.GetWithReviews(command.StageId);
+            var existedRts = existedStage.ReviewToStages;
             existedStage.Name = updateStage.Name;
             existedStage.Index = updateStage.Index;
             existedStage.Type = updateStage.Type;
             existedStage.IsReviewable = updateStage.IsReviewable;
-            existedStage.Reviews = updateStage.Reviews;
             existedStage.Actions = updateStage.Actions;
+            existedStage.ReviewToStages = null;
 
             await _writeStageRepository.UpdateAsync(existedStage);
+            existedStage.ReviewToStages = existedRts;
 
             foreach (ReviewToStage rts in updateStage.ReviewToStages)
             {
