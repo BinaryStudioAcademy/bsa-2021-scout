@@ -41,7 +41,7 @@ export interface IIndexable {
 export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   displayedColumns: string[] =
   ['position', 'title', 'candidatesAmount', 'responsible', 'teamInfo', 
-    'project', 'creationDate', 'status', 'actions'];
+    'project', 'creationDate', 'actions'];
   dataSource: MatTableDataSource<VacancyData> = new MatTableDataSource<VacancyData>();
   mainData!: VacancyData[];
   isFollowedPage: boolean = false;

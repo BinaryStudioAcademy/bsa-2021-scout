@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Action } from 'src/app/shared/models/action/action';
 import { ActionType } from 'src/app/shared/models/action/action-type';
 import { Stage } from 'src/app/shared/models/stages/stage';
+import { StageType } from 'src/app/shared/models/stages/type';
 
 @Component({
   selector: 'app-create-stage',
@@ -21,6 +22,7 @@ export class CreateStageComponent implements OnChanges {
   constructor(private fb: FormBuilder) {
     this.stageForm = this.fb.group({
       name: ['', [Validators.required]],
+      type: ['', [Validators.required]],
       actions: ['', [Validators.required]],
       isReviewable: [''],
       rates: ['', [Validators.required]],
@@ -42,6 +44,7 @@ export class CreateStageComponent implements OnChanges {
       }
       this.stageId = changes.stage.currentValue.id;
       this.stageForm.get('name')?.setValue(changes.stage.currentValue.name);
+      this.stageForm.get('type')?.setValue(changes.stage.currentValue.type);
       this.stageForm.get('isReviewable')?.setValue(changes.stage.currentValue.isReviewable);
       this.stageForm.get('rates')?.setValue(changes.stage.currentValue.rates);
       this.editModeItemIndex = changes.stage.currentValue.index;
@@ -54,6 +57,14 @@ export class CreateStageComponent implements OnChanges {
     this.stage.index = this.editModeItemIndex;
     this.stageForm.reset();
   }
+
+  types : {name: string, type: StageType }[] = [
+    { name:'Applied', type: StageType.Applied },
+    { name:'Phone screen', type: StageType.PhoneScreen },
+    { name:'Interview', type: StageType.Interview },
+    { name:'Offer', type: StageType.Offer },
+    { name:'Hired', type: StageType.Hired },
+  ]
 
   actions: Action[] = [
     { id: undefined, name: 'None', actionType: ActionType.None, stageId: this.stageId },
@@ -76,7 +87,9 @@ export class CreateStageComponent implements OnChanges {
     });
     this.stageForm.reset();
     this.stageChange.emit(this.stage);
+    console.log(this.stage);
     this.stage = {} as Stage;
+  
   }
 
   onSaveAndAdd() {

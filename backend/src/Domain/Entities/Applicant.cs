@@ -8,6 +8,8 @@ namespace Domain.Entities
     {
         public string LinkedInUrl { get; set; }
         public double Experience { get; set; }
+        public string ExperienceDescription { get; set; }
+        public string Skills { get; set; }
         public DateTime ToBeContacted { get; set; }
         public string CompanyId { get; set; }
         // TODO: add company read repository and remove nullability

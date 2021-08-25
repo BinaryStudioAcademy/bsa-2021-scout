@@ -1,8 +1,8 @@
 export enum StageType {
+  NotSet,
   Applied,
   PhoneScreen,
   Interview,
-  Test,
   Offer,
   Hired,
 }

@@ -263,4 +263,12 @@ $primary-color: #291965;
     .coloured-chip .mat-standard-chip .mat-chip-remove.mat-icon{
         color:white
     }
+
+    .mat-select-trigger{
+        display: block;
+    }
+
+    .mat-select-value-text{
+        display: flow-root;
+    }
 }

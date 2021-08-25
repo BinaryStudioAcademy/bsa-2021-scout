@@ -146,6 +146,11 @@ a {
   max-width: fit-content;
 }
 
+.required-field::after {
+  color: #f00;
+  content: " *";
+}
+
 .mat-menu-content:not(:empty){
     padding: 0px !important;
     max-width: 200px;

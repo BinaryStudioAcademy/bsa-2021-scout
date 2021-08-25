@@ -5,7 +5,6 @@ namespace Domain.Enums
         Applied,
         PhoneScreen,
         Interview,
-        Test,
         Offer,
         Hired,
     }
