@@ -1,7 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import moment from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+// eslint-disable-next-line
+import { AvatarModalComponent } from 'src/app/shared/components/avatar-modal/avatar-modal.component';
 import { FullVacancyCandidate } from 'src/app/shared/models/vacancy-candidates/full';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candidate.service';
@@ -23,6 +26,7 @@ export class OneCandidateComponent implements OnInit, OnDestroy {
   public constructor(
     private readonly service: VacancyCandidateService,
     private readonly notificationService: NotificationService,
+    private readonly dialog: MatDialog,
   ) {}
 
   public ngOnInit(): void {
@@ -32,6 +36,12 @@ export class OneCandidateComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  public enlargeAvatar(): void {
+    this.dialog.open(AvatarModalComponent, {
+      data: { url: '../../../../assets/images/defaultAvatar.png' }, // TODO: Add real url
+    });
   }
 
   private loadData(id: string): void {

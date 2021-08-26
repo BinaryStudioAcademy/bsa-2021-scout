@@ -2,7 +2,7 @@
   <app-spinner [loading]="loading"></app-spinner>
   <ng-container *ngIf="!loading">
     <div class="avatar-col">
-      <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />
+      <img class="avatar" src="../../../../assets/images/defaultAvatar.png" (click)="enlargeAvatar()" />
     </div>
     <div class="content-col">
       <div class="top block">
