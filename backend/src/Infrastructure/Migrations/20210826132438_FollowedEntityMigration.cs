@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Migrations
 {
-    public partial class UserFollowedEntityMigration : Migration
+    public partial class FollowedEntityMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    EntityId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EntityId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     EntityType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

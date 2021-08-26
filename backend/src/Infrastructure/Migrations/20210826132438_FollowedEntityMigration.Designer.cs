@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210825165811_UserFollowedEntityMigration")]
-    partial class UserFollowedEntityMigration
+    [Migration("20210826132438_FollowedEntityMigration")]
+    partial class FollowedEntityMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -530,7 +530,13 @@ namespace Infrastructure.Migrations
                     b.Property<string>("PasswordSalt")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ResetPasswordToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Skype")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -547,7 +553,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EntityId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("EntityType")
                         .HasColumnType("int");
