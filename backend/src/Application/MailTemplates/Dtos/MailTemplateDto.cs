@@ -1,5 +1,8 @@
 using Application.Common.Models;
+using Application.MailAttachments.Dtos;
 using MongoDB.Bson;
+using System;
+using System.Collections.Generic;
 
 namespace Application.MailTemplates.Dtos
 {
@@ -10,7 +13,8 @@ namespace Application.MailTemplates.Dtos
         public string Html { get; set; }
         public string UserCreatedId { get; set; }
         public int VisibilitySetting { get; set; }
-        public BsonDateTime DateCreation { get; set; }
+        public DateTime DateCreation { get; set; }
         public string CompanyId { get; set; }
+        public ICollection<MailAttachmentDto> MailAttachments { get; set; }
     }
 }

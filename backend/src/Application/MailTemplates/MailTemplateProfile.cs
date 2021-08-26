@@ -8,7 +8,7 @@ namespace Application.MailTemplates
     {
         public MailTemplateProfile()
         {
-            CreateMap<MailTemplate, MailTemplateDto>();
+            CreateMap<MailTemplate, MailTemplateDto>(); 
             CreateMap<MailTemplateDto, MailTemplate>();
             CreateMap<MailTemplateCreateDto, MailTemplate>();
             CreateMap<MailTemplateUpdateDto, MailTemplate>();

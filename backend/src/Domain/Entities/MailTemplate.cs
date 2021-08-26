@@ -2,6 +2,7 @@ using Domain.Common;
 using Domain.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 
 namespace Domain.Entities
@@ -13,8 +14,8 @@ namespace Domain.Entities
         public string Html { get; set; }
         public string UserCreatedId { get; set; }
         public VisibilitySetting VisibilitySetting { get; set;}
-        public BsonDateTime DateCreation { get; set; }
+        public DateTime DateCreation { get; set; }
         public string CompanyId { get; set; }
-        public IEnumerable<EmailAttachment> EmailAttachments { get; set; }
+        public ICollection<MailAttachment> MailAttachments { get; set; }
     }
 }

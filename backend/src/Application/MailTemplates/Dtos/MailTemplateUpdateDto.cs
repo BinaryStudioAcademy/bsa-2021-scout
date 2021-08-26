@@ -21,6 +21,7 @@ namespace Application.MailTemplates.Dtos
     {
         public MailTemplateUpdateDtoValidator()
         {
+            RuleFor(_ => _.Id).NotNull().NotEmpty();
             RuleFor(_ => _.Slug).NotNull().NotEmpty();
             RuleFor(_ => _.Subject).NotNull().NotEmpty();
             RuleFor(_ => _.Html).NotNull().NotEmpty();
