@@ -30,20 +30,13 @@ namespace Application.Pools.Commands
     {
         protected readonly ISender _mediator;
         protected readonly IWriteRepository<Pool> _poolWriteRepository;
-        protected readonly IPoolToApplicantWriteRepository _poolApplicantWriteRepository;
-        protected readonly IReadRepository<Applicant> _applicantReadRepository;
-        protected readonly IPoolReadRepository _poolReadRepository;
-
-
         protected readonly ISecurityService _securityService;
         protected readonly IMapper _mapper;
 
-        public DeletePoolCommandHandler(ISender mediator, IWriteRepository<Pool> poolWriteRepository, IPoolToApplicantWriteRepository poolToApplicantWriteRepository, IPoolReadRepository poolReadRepository, ISecurityService securityService, IMapper mapper)
+        public DeletePoolCommandHandler(ISender mediator, IWriteRepository<Pool> poolWriteRepository, ISecurityService securityService, IMapper mapper)
         {
             _mediator = mediator;
-            _poolWriteRepository = poolWriteRepository;
-            _poolApplicantWriteRepository = poolToApplicantWriteRepository;
-            _poolReadRepository = poolReadRepository;
+            _poolWriteRepository = poolWriteRepository;            
             _securityService = securityService;
             _mapper = mapper;
         }
