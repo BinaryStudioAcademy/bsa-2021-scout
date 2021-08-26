@@ -34,14 +34,15 @@ import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
-import { AddCandidateModalComponent }
-  from './components/modal-add-candidate/modal-add-candidate.component';
+// eslint-disable-next-line
+import { AddCandidateModalComponent } from './components/modal-add-candidate/modal-add-candidate.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
+import { TimezonePipe } from './pipes/timezone-pipe';
 
 @NgModule({
   exports: [
@@ -85,6 +86,7 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     MatMenuModule,
     TagsEditComponent,
     DeleteConfirmComponent,
+    TimezonePipe,
   ],
   imports: [
     MatButtonModule,
@@ -135,6 +137,7 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     AddCandidateModalComponent,
     TagsEditComponent,
     DeleteConfirmComponent,
+    TimezonePipe,
   ],
 })
-export class SharedModule { }
+export class SharedModule {}
