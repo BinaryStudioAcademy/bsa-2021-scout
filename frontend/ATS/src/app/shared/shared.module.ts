@@ -13,6 +13,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from './components/button/button.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -30,13 +34,15 @@ import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
+// eslint-disable-next-line
+import { AddCandidateModalComponent } from './components/modal-add-candidate/modal-add-candidate.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
-
+import { MatMenuModule } from '@angular/material/menu';
+import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
+import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
+import { TimezonePipe } from './pipes/timezone-pipe';
 
 @NgModule({
   exports: [
@@ -63,17 +69,24 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatDatepickerModule,
     MatDialogModule,
     MatNativeDateModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatExpansionModule,
     TopicComponent,
     FileInputComponent,
     MenuComponent,
     MatProgressBarModule,
     SpinnerComponent,
     StylePaginatorDirective,
+    AddCandidateModalComponent,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatChipsModule,
-    MatAutocompleteModule,
+    MatMenuModule,
+    TagsEditComponent,
+    DeleteConfirmComponent,
+    TimezonePipe,
   ],
   imports: [
     MatButtonModule,
@@ -93,6 +106,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatDialogModule,
     MatProgressBarModule,
     MatListModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatExpansionModule,
     BrowserAnimationsModule,
     BrowserModule,
     MatSelectModule,
@@ -101,8 +118,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatChipsModule,
     MatAutocompleteModule,
+    MatCheckboxModule,
+    MatMenuModule,
   ],
   providers: [HttpClientService],
   declarations: [
@@ -116,6 +134,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MainContentComponent,
     SpinnerComponent,
     StylePaginatorDirective,
+    AddCandidateModalComponent,
+    TagsEditComponent,
+    DeleteConfirmComponent,
+    TimezonePipe,
   ],
 })
 export class SharedModule {}

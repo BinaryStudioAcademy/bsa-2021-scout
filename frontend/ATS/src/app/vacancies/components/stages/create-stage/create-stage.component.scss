@@ -1,0 +1,50 @@
+.buttons {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.buttons > *:first-child {
+  margin-right: 10px;
+}
+
+.form-container {
+  background-color: #f0f3f9;
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.mat-form-field {
+  margin-bottom: 5px;
+}
+
+.mat-error {
+  margin-bottom: 5px;
+}
+
+::ng-deep {
+  .white-class .mat-form-field-appearance-fill .mat-form-field-flex {
+    background: #ffffff !important;
+    color: black;
+    padding: 5px 20px !important;
+    border-radius: 10px !important;
+    box-sizing: border-box;
+    min-height: 40px;
+    align-items: center;
+  }
+  .white-class .mat-checkbox {
+    margin-bottom: 5px;
+  }
+}
+
+.multiselect-wrp {
+  padding: 10px 0;
+}

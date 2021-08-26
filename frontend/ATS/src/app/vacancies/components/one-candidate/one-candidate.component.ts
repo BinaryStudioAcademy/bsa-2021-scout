@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import moment from 'moment';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { FullVacancyCandidate } from 'src/app/shared/models/vacancy-candidates/full';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candidate.service';
@@ -12,6 +13,7 @@ import { VacancyCandidateService } from 'src/app/shared/services/vacancy-candida
 })
 export class OneCandidateComponent implements OnInit, OnDestroy {
   @Input() public id!: string;
+  @Input() public vacancyId!: string;
 
   public data!: FullVacancyCandidate;
   public loading: boolean = true;
@@ -32,19 +34,19 @@ export class OneCandidateComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  public formatDate(date: Date): string {
-    return moment(date).format('DD[.]MM[.]YYYY');
-  }
-
   private loadData(id: string): void {
-    this.service.getFull(id).subscribe(
-      (data) => {
-        this.loading = false;
-        this.data = data;
-      },
-      () => {
-        this.notificationService.showErrorMessage('Failed to load', 'Error');
-      },
-    );
+    this.service
+      .getFull(id, this.vacancyId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (data) => {
+          this.loading = false;
+          this.data = data;
+        },
+        () => {
+          this.loading = false;
+          this.notificationService.showErrorMessage('Failed to load', 'Error');
+        },
+      );
   }
 }

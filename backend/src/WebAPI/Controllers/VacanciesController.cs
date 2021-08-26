@@ -4,33 +4,82 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Common.Commands;
 using Application.Common.Queries;
+using Application.Stages.Commands;
+using Application.Stages.Dtos;
 using Application.Vacancies.Commands.Create;
+using Application.Vacancies.Commands.Delete;
 using Application.Vacancies.Commands.Edit;
 using Application.Vacancies.Dtos;
 using Application.Vacancies.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
+    [Route("api/[controller]")]
+    [Authorize]
+    [ApiController]
     public class VacanciesController : ApiController
     {
+
+        public VacanciesController()
+        {
+
+        }
         [HttpGet]
         public async Task<IActionResult> GetAllVacancies()
         {
             var command = new GetVacancyTablesListQuery();
             return Ok(await Mediator.Send(command));
         }
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetVacancy(
+            [FromRoute] string Id)
+        {
+            var query = new GetVacancyByIdQuery(Id);
+            return StatusCode(201, await Mediator.Send(query));
+        }
+        [HttpGet("applicant/{applicantId}")]
+        public async Task<IActionResult> GetAllNotAppliedVacanciesByApplicant(string applicantId)
+        {
+            var command = new GetNotAppliedVacanciesByApplicantIdQuery(applicantId);
+            return Ok(await Mediator.Send(command));
+        }
         [HttpPost]
-        public async Task<IActionResult> CreateVacancy(VacancyCreateDto vacancy)
+        public async Task<IActionResult> CreateVacancyWithStages(VacancyCreateDto vacancy)
         {
             var command = new CreateVacancyCommand(vacancy);
-            return StatusCode(201,await Mediator.Send(command));
+            return StatusCode(201, await Mediator.Send(command));
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> EditVacancy(VacancyUpdateDto vacancy, [FromRoute] string id)
         {
             var command = new EditVacancyCommand(vacancy, id);
             return StatusCode(201, await Mediator.Send(command));
+        }
+        [HttpPost("{vacancyId}/stages")]
+        public async Task<IActionResult> CreateVacancyStage(StageCreateDto stage, [FromRoute] string vacancyId)
+        {
+            var command = new CreateVacancyStageCommand(stage, vacancyId);
+            return StatusCode(201, await Mediator.Send(command));
+        }
+        [HttpPut("{vacancyId}/stages/{stageId}")]
+        public async Task<IActionResult> EditVacancyStage(StageUpdateDto stage, [FromRoute] string vacancyId, [FromRoute] string stageId)
+        {
+            var command = new EditVacancyStageCommand(stage, vacancyId, stageId);
+            return StatusCode(201, await Mediator.Send(command));
+        }
+        //[HttpDelete("{vacancyId}/stages/{stageId}")]
+        //public async Task<IActionResult> DeleteVacancyStage(StageUpdateDto stage, [FromRoute] string vacancyId, [FromRoute] string stageId)
+        //{
+        //    var command = new DeleteVacancyStageCommand(stage, vacancyId, stageId);
+        //    return StatusCode(201, await Mediator.Send(command));
+        //}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteVacancy(string id)
+        {
+            var command = new DeleteVacancyCommand(id);
+            return StatusCode(204, await Mediator.Send(command));
         }
     }
 }

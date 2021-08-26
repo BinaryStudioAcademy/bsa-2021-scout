@@ -1,0 +1,71 @@
+<div class="dialog-title" mat-dialog-title>
+    <h1>Edit pool</h1>
+    <button mat-icon-button mat-dialog-close="none">
+      <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div class="form-control">
+    <form [formGroup]="editPool">
+        <h5 class="required-field">Pool name</h5>
+        <mat-form-field floatLabel='never' class="al-subscribe-form-field" [ngClass]="getClass('name')">
+          <input matInput type="text" formControlName="name" placeholder="Enter name of pool">
+        </mat-form-field>
+        <div class="custom-error" *ngIf="this.editPool.controls['name'].dirty && this.editPool.controls['name'].errors?.required">
+          Please fill name of pool.
+        </div>
+        <div class="custom-error" *ngIf="this.editPool.controls['name'].dirty && this.editPool.controls['name'].errors?.minlength">
+          Name must be at least 3 characters long.
+        </div>
+        <div class="custom-error" *ngIf="this.editPool.controls['name'].dirty && this.editPool.controls['name'].errors?.maxlength">
+          Name must be not greater than 20 characters long.
+        </div>
+        <h5 class="required-field">Description</h5>
+        <mat-form-field floatLabel='never' class="al-subscribe-form-field" class="textarea" [ngClass]="getClass('description')">
+            <textarea matInput type="text" autocomplete="off" formControlName="description" placeholder="Enter description"
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="12"
+            cdkAutosizeMaxRows="12"></textarea>
+        </mat-form-field>
+        <div class="custom-error" *ngIf="this.editPool.controls['description'].dirty && this.editPool.controls['description'].errors?.required">
+          Please fill description of pool.
+        </div>
+        <div class="custom-error" *ngIf="this.editPool.controls['description'].dirty && this.editPool.controls['description'].errors?.minlength">
+          Pool description must be at least 10 characters long.
+        </div>
+        <h5>Applicants</h5>
+        <mat-form-field class="example-chip-list" floatLabel='never' placeholder="New applicant">
+            <mat-label>Pool applicnts</mat-label>
+            <mat-chip-list #applicantsList aria-label="Applicants selection">
+              <mat-chip
+                *ngFor="let applicant of applicants"
+                [selectable]="selectable"
+                [removable]="removable"
+                (removed)="remove(applicant)">
+                {{applicant.firstName}} {{applicant.lastName}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+              <input
+                placeholder="New applicant..."
+                #applicantInput
+                [formControl]="applicantsCtrl"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="applicantsList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+              <mat-option *ngFor="let applicant of filteredApplicants | async" [value]="filterValue">
+                  <mat-icon [ngClass]='getStyle(applicant)'>done</mat-icon>
+                {{applicant.firstName}} {{applicant.lastName}} 
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        <div class="login-button form-group">
+            <button mat-button color="primary" (click)="save()" [disabled]="!editPool.valid">Save</button>
+        </div>
+    </form>
+</div>
+
+
+

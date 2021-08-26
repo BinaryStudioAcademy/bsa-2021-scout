@@ -49,7 +49,7 @@ namespace Application.Users.Commands
             var getUserByPropertyQuery = new GetEntityByPropertyQuery<UserDto>("Email", command.ResendConfirmEmailDto.Email);
             var user = await _mediator.Send(getUserByPropertyQuery);
 
-            if(user == null)
+            if (user == null)
             {
                 throw new NotFoundException("User with this email is not found");
             }
@@ -63,8 +63,8 @@ namespace Application.Users.Commands
             var sendConfirmEmailMailCommand = new SendConfirmEmailMailCommand(
                 user,
                 command.ResendConfirmEmailDto.ClientUrl,
-                MailSubjectFactory.confirmEmailMailSubject, 
-                MailBodyFactory.confirmEmailMailBody);
+                MailSubjectFactory.CONFIRM_EMAIL,
+                MailBodyFactory.CONFIRM_EMAIL);
             await _mediator.Send(sendConfirmEmailMailCommand);
 
             return Unit.Value;

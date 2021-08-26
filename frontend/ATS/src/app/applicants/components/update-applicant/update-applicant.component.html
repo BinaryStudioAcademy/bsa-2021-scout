@@ -1,110 +1,114 @@
-<mat-dialog-actions align="end">
-    <button mat-icon-button mat-dialog-close>
-        <mat-icon>close</mat-icon>
-    </button>
-</mat-dialog-actions>
-<h2 mat-dialog-title>Applicant editing form</h2>
-<mat-dialog-content>
-    <form [formGroup]="validationGroup!" novalidate>
-        <p>First name</p>
-        <mat-form-field appearance="fill">
-            <input formControlName="firstName" type="text" matInput placeholder="Enter first name" [(ngModel)]="updatedApplicant.firstName">
-            <mat-error *ngIf="validationGroup!.controls['firstName'].hasError('required'); then firstNamePatternError">
-                Please enter a first name
-            </mat-error>
-            <ng-template #firstNamePatternError>
-                <mat-error *ngIf="validationGroup!.controls['firstName'].hasError('pattern')">
-                    A first name can only contain latin letters
-                </mat-error>
-            </ng-template>
-        </mat-form-field>
+<app-spinner [loading]="loading"></app-spinner>
+<div class="dialog-header-bar">
+    <h1 mat-dialog-title>Applicant editing form</h1>
+    <mat-dialog-actions>
+        <mat-icon mat-dialog-close>close</mat-icon>
+    </mat-dialog-actions>
+</div>
+<form class="applicant-form" [formGroup]="validationGroup!" novalidate>
+    <p class="required-field">First name</p>
+    <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['firstName'].dirty && validationGroup!.controls['firstName'].errors? 'invalid-input' : ''">
+        <input required formControlName="firstName" type="text" matInput placeholder="Enter first name" [(ngModel)]="updatedApplicant.firstName">
+    </mat-form-field>
+    <div class="validation-error" *ngIf="validationGroup!.controls['firstName'].dirty && validationGroup!.controls['firstName'].errors?.required; else firstNamePatternError">
+        It`s required field
+    </div>
+    <ng-template #firstNamePatternError>
+        <div class="validation-error" *ngIf="validationGroup!.controls['firstName'].dirty && validationGroup!.controls['firstName'].errors?.pattern">
+            A first name can only contain latin letters and start with an upper case letter
+        </div>
+    </ng-template>
 
-        <p>Last name</p>
-        <mat-form-field appearance="fill">
-            <input formControlName="lastName" type="text" matInput placeholder="Enter last name" [(ngModel)]="updatedApplicant.lastName">
-            <mat-error *ngIf="validationGroup!.controls['lastName'].hasError('required'); then lastNamePatternError">
-                Please enter a last name
-            </mat-error>
-            <ng-template #lastNamePatternError>
-                <mat-error *ngIf="validationGroup!.controls['lastName'].hasError('pattern')">
-                    A last name can only contain latin letters
-                </mat-error>
-            </ng-template>
-        </mat-form-field>
+    <p class="required-field">Last name</p>
+    <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['lastName'].dirty && validationGroup!.controls['lastName'].errors? 'invalid-input' : ''">
+        <input required formControlName="lastName" type="text" matInput placeholder="Enter last name" [(ngModel)]="updatedApplicant.lastName">
+    </mat-form-field>
+    <div class="validation-error" *ngIf="validationGroup!.controls['lastName'].dirty && validationGroup!.controls['lastName'].errors?.required; else lastNamePatternError">
+        It`s required field
+    </div>
+    <ng-template #lastNamePatternError>
+        <div class="validation-error" *ngIf="validationGroup!.controls['lastName'].dirty && validationGroup!.controls['lastName'].errors?.pattern">
+            A last name can only contain latin letters and start with an upper case letter
+        </div>
+    </ng-template>
 
-        <p>Middle name</p>
-        <mat-form-field appearance="fill">
-            <input formControlName="middleName" type="text" matInput placeholder="Enter middle name" [(ngModel)]="updatedApplicant.middleName">
-            <mat-error *ngIf="validationGroup!.controls['middleName'].hasError('required'); then middleNamePatternError">
-                Please enter a middle name
-            </mat-error>
-            <ng-template #middleNamePatternError>
-                <mat-error *ngIf="validationGroup!.controls['middleName'].hasError('pattern')">
-                    A middle name can only contain latin letters
-                </mat-error>
-            </ng-template>
-        </mat-form-field>
+    <p class="required-field">Email</p>
+    <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors? 'invalid-input' : ''">
+        <input required formControlName="email" type="email" matInput placeholder="Enter email" [(ngModel)]="updatedApplicant.email">
+    </mat-form-field>
+    <div class="validation-error" *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.required; else emailPatternError">
+        It`s required field
+    </div>
+    <ng-template #emailPatternError>
+        <div class="validation-error" *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.pattern">
+            Please enter a valid email address.
+        </div>
+    </ng-template>
 
-        <p>Email</p>
-        <mat-form-field appearance="fill">
-            <input formControlName="email" type="email" matInput placeholder="Enter email" [(ngModel)]="updatedApplicant.email">
-            <mat-error *ngIf="validationGroup!.controls['email'].hasError('required'); then emailPatternError">
-                Please enter an email address.
-            </mat-error>
-            <ng-template #emailPatternError>
-                <mat-error *ngIf="validationGroup!.controls['email'].invalid || validationGroup!.controls['email'].hasError('pattern')">
-                    Please enter a valid email address.
-                </mat-error>
-            </ng-template>
-        </mat-form-field>
+    <p class="required-field">Experience description</p>
+    <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors? 'invalid-input' : ''">
+        <input required formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description" [(ngModel)]="updatedApplicant.experienceDescription">
+    </mat-form-field>
+    <div class="validation-error" *ngIf="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors?.required">
+        It`s required field
+    </div>
 
-        <p>Experience</p>
-        <mat-form-field appearance="fill">
-            <input formControlName="experience" type="number" matInput step=".1" min="0" max="60" [(ngModel)]="updatedApplicant.experience">
-            <mat-error>
-                Please enter a valid experience number in range from 0 to 60
-            </mat-error>
-        </mat-form-field>
-        
-        <p>Phone</p>
-        <mat-form-field appearance="fill">
-            <input formControlName="phone" type="tel" matInput placeholder="Enter phone number" [(ngModel)]="updatedApplicant.phone">
-            <mat-error *ngIf="validationGroup!.controls['phone'].hasError('required'); then phonePatternError">
-                Please enter a phone number
-            </mat-error>
-            <ng-template #phonePatternError>
-                <mat-error *ngIf="validationGroup!.controls['phone'].hasError('pattern')">
-                    A phone number can only contain integers and has a length from 8 to 16
-                </mat-error>
-            </ng-template>
-        </mat-form-field>
+    <p class="required-field">Experience</p>
+    <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors? 'invalid-input' : ''">
+        <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60" [(ngModel)]="updatedApplicant.experience">
+    </mat-form-field>
+    <div class="validation-error" *ngIf="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors?.required">
+        Please enter a valid experience number in range from 0 to 60
+    </div>
+    
+    <p class="required-field">Phone</p>
+    <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors? 'invalid-input' : ''">
+        <input required formControlName="phone" type="tel" matInput placeholder="Enter phone number" [(ngModel)]="updatedApplicant.phone">
+    </mat-form-field>
+    <div class="validation-error" *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.required; else phonePatternError">
+        It`s required field
+    </div>
+    <ng-template #phonePatternError>
+        <div class="validation-error" *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.pattern">
+            A phone number can only contain integers and has a length from 8 to 16. In has to match the pattern +&lt;code&gt;&lt;number&gt; or &lt;number&gt;
+        </div>
+    </ng-template>
 
-        <p>Skype</p>
-        <mat-form-field appearance="fill">
-            <input formControlName="skype" type="text" matInput placeholder="Enter skype" [(ngModel)]="updatedApplicant.skype">
-            <mat-error *ngIf="validationGroup!.controls['skype'].hasError('required'); then skypePatternError">
-                Please enter a skype
-            </mat-error>
-            <ng-template #skypePatternError>
-                <mat-error *ngIf="validationGroup!.controls['skype'].hasError('pattern')">
-                    A skype has to has a length from 6 to 32 not space characters
-                </mat-error>
-            </ng-template>
-        </mat-form-field>
+    <p>Tags</p>
+    <app-tags-edit [tags]="updatedApplicant.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
 
-        <p>LinkedIn url</p>
-        <mat-form-field appearance="fill">
-            <input formControlName="linkedInUrl" type="text" matInput placeholder="Enter LinkedIn url" [(ngModel)]="updatedApplicant.linkedInUrl">
-            <ng-template #linkedInUrlPatternError>
-                <mat-error *ngIf="validationGroup!.controls['linkedInUrl'].hasError('pattern')">
-                    LinkedIn url must match the pattern https://www.linkedin.com/in/&lt;username&gt;
-                </mat-error>
-            </ng-template>
-        </mat-form-field>
-    </form>
-</mat-dialog-content>
-<mat-dialog-actions class="edit-action">
-    <button [disabled]="validationGroup!.invalid" (click)="updateApplicant()" mat-button>
-        Edit
-    </button>
-</mat-dialog-actions>
+    <p class="required-field">Skills additional information</p>
+    <mat-form-field class="wide" appearance="fill">
+        <textarea formControlName="skills" matInput placeholder="Enter skills additional information" [(ngModel)]="updatedApplicant.skills"></textarea>
+    </mat-form-field>
+    <div class="validation-error" *ngIf="validationGroup!.controls['skills'].dirty && validationGroup!.controls['skills'].errors?.required">
+        It`s required field
+    </div>
+
+    <p>Skype</p>
+    <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['skype'].dirty && validationGroup!.controls['skype'].errors? 'invalid-input' : ''">
+        <input formControlName="skype" type="text" matInput placeholder="Enter skype" [(ngModel)]="updatedApplicant.skype">
+    </mat-form-field>
+    <div class="validation-error" *ngIf="validationGroup!.controls['skype'].dirty && validationGroup!.controls['skype'].errors?.pattern">
+        A skype url must match the pattern https://skype.com/&lt;skype&gt;. 
+        A skype has to has a length from 6 to 32 not space characters
+    </div>
+
+    <p>LinkedIn url</p>
+    <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['linkedInUrl'].dirty && validationGroup!.controls['linkedInUrl'].errors? 'invalid-input' : ''">
+        <input formControlName="linkedInUrl" type="text" matInput placeholder="Enter LinkedIn url" [(ngModel)]="updatedApplicant.linkedInUrl">
+    </mat-form-field>
+    <div class="validation-error" *ngIf="validationGroup!.controls['linkedInUrl'].dirty && validationGroup!.controls['linkedInUrl'].errors?.pattern">
+        LinkedIn url must match the pattern https://www.linkedin.com/&lt;username&gt;
+    </div>
+
+    <p>{{ updatedApplicant.hasCv ? 'Update Cv' : "Add cv" }}</p>
+    <app-file-input (upload)="uploadApplicantCv($event)" [accept]="allowedCvFileType"></app-file-input>
+
+    <mat-dialog-actions class="edit-action">
+        <button [disabled]="validationGroup!.invalid" (click)="updateApplicant()" mat-button>
+            Publish
+        </button>
+    </mat-dialog-actions>
+
+</form>

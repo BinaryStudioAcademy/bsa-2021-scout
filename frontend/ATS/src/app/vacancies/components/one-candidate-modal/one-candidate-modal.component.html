@@ -4,7 +4,7 @@
     <mat-icon>close</mat-icon>
   </button>
 </div>
-<app-one-candidate mat-dialog-content [id]="data.candidateId"></app-one-candidate>
+<app-one-candidate mat-dialog-content [id]="data.candidateId" [vacancyId]="data.vacancyId"></app-one-candidate>
 <div mat-dialog-actions class="space-between">
   <div class="button" mat-dialog-close="prev" *ngIf="data.hasPrevious">
     <mat-icon class="icon">chevron_left</mat-icon>

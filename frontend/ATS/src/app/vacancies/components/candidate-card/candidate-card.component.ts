@@ -16,10 +16,6 @@ export class CandidateCardComponent {
   @Input() public candidate!: ShortVacancyCandidateWithApplicant;
   @Output() public clickAction: EventEmitter<void> = new EventEmitter<void>();
 
-  public fromNow(date: Date): string {
-    return moment(date).fromNow();
-  }
-
   public emitClick(): void {
     if (this.isClickable) {
       this.clickAction.emit();

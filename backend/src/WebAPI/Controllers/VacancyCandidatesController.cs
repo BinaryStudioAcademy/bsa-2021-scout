@@ -8,10 +8,13 @@ namespace WebAPI.Controllers
 {
     public class VacancyCandidates : ApiController
     {
-        [HttpGet("{id}/full")]
-        public async Task<ActionResult<VacancyCandidateFullDto>> GetFull([FromRoute] string id)
+        [HttpGet("{vacancyId}/{id}/full")]
+        public async Task<ActionResult<VacancyCandidateFullDto>> GetFull(
+            [FromRoute] string id,
+            [FromRoute] string vacancyId
+        )
         {
-            var query = new GetFullVacancyCandidateByIdQuery(id);
+            var query = new GetFullVacancyCandidateByIdQuery(id, vacancyId);
             return Ok(await Mediator.Send(query));
         }
 
@@ -22,6 +25,14 @@ namespace WebAPI.Controllers
         )
         {
             var command = new ChangeCandidateStageCommand(id, stageId);
+            return Ok(await Mediator.Send(command));
+        }
+
+        [HttpPost("CandidatesRange/{vacancyId}")]
+        public async Task<IActionResult> PostRangeOfCandidatesAsync(string[] applicantsIds, string vacancyId)
+        {
+            var command = new CreateVacancyCandidateRangeCommand(applicantsIds, vacancyId);
+
             return Ok(await Mediator.Send(command));
         }
     }

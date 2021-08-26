@@ -53,11 +53,17 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CompanyId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CvFileInfoId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Experience")
                         .HasColumnType("float");
+
+                    b.Property<string>("ExperienceDescription")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
@@ -68,10 +74,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LinkedInUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MiddleName")
+                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("Skills")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Skype")
@@ -84,7 +90,34 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CompanyId");
 
+                    b.HasIndex("CvFileInfoId");
+
                     b.ToTable("Applicants");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CandidateComment", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CandidateId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("StageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CandidateId");
+
+                    b.HasIndex("StageId");
+
+                    b.ToTable("CandidateComments");
                 });
 
             modelBuilder.Entity("Domain.Entities.CandidateReview", b =>
@@ -163,6 +196,25 @@ namespace Infrastructure.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CvParsingJob", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AWSJobId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TriggerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TriggerId");
+
+                    b.ToTable("CvParsingJobs");
+                });
+
             modelBuilder.Entity("Domain.Entities.EmailToken", b =>
                 {
                     b.Property<string>("Id")
@@ -184,6 +236,26 @@ namespace Infrastructure.Migrations
                     b.ToTable("EmailToken");
                 });
 
+            modelBuilder.Entity("Domain.Entities.FileInfo", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PublicUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileInfos");
+                });
+
             modelBuilder.Entity("Domain.Entities.Pool", b =>
                 {
                     b.Property<string>("Id")
@@ -194,7 +266,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -208,6 +280,8 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("CreatedById");
 
                     b.ToTable("Pools");
                 });
@@ -295,6 +369,28 @@ namespace Infrastructure.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
+            modelBuilder.Entity("Domain.Entities.RegisterPermission", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("RegisterPermissions");
+                });
+
             modelBuilder.Entity("Domain.Entities.Review", b =>
                 {
                     b.Property<string>("Id")
@@ -307,6 +403,27 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ReviewToStage", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ReviewId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("StageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("StageId");
+
+                    b.ToTable("ReviewToStages");
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
@@ -324,6 +441,28 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SkillsParsingJob", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("OutputPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TextPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TriggerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TriggerId");
+
+                    b.ToTable("SkillsParsingJobs");
                 });
 
             modelBuilder.Entity("Domain.Entities.Stage", b =>
@@ -383,16 +522,19 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordSalt")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ResetPasswordToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Skype")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -400,6 +542,28 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserFollowedEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EntityId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EntityType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFollowedEntities");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserToRole", b =>
@@ -432,7 +596,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CompanyId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("CompletionDate")
+                    b.Property<DateTime?>("CompletionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreationDate")
@@ -509,7 +673,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContactedBy")
+                    b.Property<string>("ContactedById")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateAdded")
@@ -518,7 +682,7 @@ namespace Infrastructure.Migrations
                     b.Property<double>("Experience")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("FirstContactDate")
+                    b.Property<DateTime?>("FirstContactDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("HrWhoAddedId")
@@ -527,10 +691,10 @@ namespace Infrastructure.Migrations
                     b.Property<int>("SalaryExpectation")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("SecondContactDate")
+                    b.Property<DateTime?>("SecondContactDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ThirdContactDate")
+                    b.Property<DateTime?>("ThirdContactDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -563,7 +727,32 @@ namespace Infrastructure.Migrations
                         .HasConstraintName("applicant_company_FK")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("Domain.Entities.FileInfo", "CvFileInfo")
+                        .WithMany()
+                        .HasForeignKey("CvFileInfoId");
+
                     b.Navigation("Company");
+
+                    b.Navigation("CvFileInfo");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CandidateComment", b =>
+                {
+                    b.HasOne("Domain.Entities.VacancyCandidate", "Candidate")
+                        .WithMany("CandidateComments")
+                        .HasForeignKey("CandidateId")
+                        .HasConstraintName("candidate_comment_candidate_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Entities.Stage", "Stage")
+                        .WithMany("CandidateComments")
+                        .HasForeignKey("StageId")
+                        .HasConstraintName("candidate_comment_stage_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Candidate");
+
+                    b.Navigation("Stage");
                 });
 
             modelBuilder.Entity("Domain.Entities.CandidateReview", b =>
@@ -612,6 +801,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Stage");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CvParsingJob", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "Trigger")
+                        .WithMany("CvParsingJobs")
+                        .HasForeignKey("TriggerId")
+                        .HasConstraintName("cv_parsing_job_user_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Trigger");
+                });
+
             modelBuilder.Entity("Domain.Entities.EmailToken", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -631,7 +831,13 @@ namespace Infrastructure.Migrations
                         .HasConstraintName("pool_company_FK")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("Domain.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
                     b.Navigation("Company");
+
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("Domain.Entities.PoolToApplicant", b =>
@@ -675,6 +881,45 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.RegisterPermission", b =>
+                {
+                    b.HasOne("Domain.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .HasConstraintName("register_permission__company_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ReviewToStage", b =>
+                {
+                    b.HasOne("Domain.Entities.Review", "Review")
+                        .WithMany("ReviewToStages")
+                        .HasForeignKey("ReviewId")
+                        .HasConstraintName("review_to_stage_review_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Entities.Stage", "Stage")
+                        .WithMany("ReviewToStages")
+                        .HasForeignKey("StageId")
+                        .HasConstraintName("review_to_stage_stage_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Review");
+
+                    b.Navigation("Stage");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SkillsParsingJob", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "Trigger")
+                        .WithMany("SkillsParsingJobs")
+                        .HasForeignKey("TriggerId");
+
+                    b.Navigation("Trigger");
+                });
+
             modelBuilder.Entity("Domain.Entities.Stage", b =>
                 {
                     b.HasOne("Domain.Entities.Vacancy", "Vacancy")
@@ -695,6 +940,15 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserFollowedEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserToRole", b =>
@@ -795,6 +1049,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Review", b =>
                 {
                     b.Navigation("CandidateReviews");
+
+                    b.Navigation("ReviewToStages");
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
@@ -806,18 +1062,26 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("Actions");
 
+                    b.Navigation("CandidateComments");
+
                     b.Navigation("CandidateToStages");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("ReviewToStages");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("AddedCandidates");
 
+                    b.Navigation("CvParsingJobs");
+
                     b.Navigation("EmailToken");
 
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("SkillsParsingJobs");
 
                     b.Navigation("UserRoles");
 
@@ -831,6 +1095,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.VacancyCandidate", b =>
                 {
+                    b.Navigation("CandidateComments");
+
                     b.Navigation("CandidateToStages");
 
                     b.Navigation("Reviews");

@@ -11,11 +11,14 @@ namespace Domain.Entities
 {
     [Serializable]
     [StringEnum]
-    public enum ElasticType {
+    public enum ElasticType
+    {
         ApplicantTags = 1,
-        VacancyTags = 2
+        VacancyTags = 2,
+        ProjectTags = 3,
     }
-    public class ElasticEntity: Entity
+
+    public class ElasticEntity : Entity
     {
         [JsonConverter(typeof(StringEnumConverter))]
         [Text]

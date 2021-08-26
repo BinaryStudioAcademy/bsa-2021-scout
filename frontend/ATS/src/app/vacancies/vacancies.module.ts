@@ -1,7 +1,9 @@
 import { MatSortModule } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RoutingModule } from '../routing/routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -24,6 +26,14 @@ import { MatButtonModule } from '@angular/material/button';
 // This line can't be shorter
 // eslint-disable-next-line max-len
 import { VacanciesStagesBoardComponent } from './components/vacancies-stages-board/vacancies-stages-board.component';
+// This line can't be shorter
+// eslint-disable-next-line max-len
+import { RateCandidateModalComponent } from './components/rate-candidate-modal/rate-candidate-modal.component';
+
+import { EditVacancyComponent } from './components/edit-vacancy/edit-vacancy.component';
+import { CreateStageComponent } from './components/stages/create-stage/create-stage.component';
+import { StageComponent } from './components/stages/stage/stage.component';
+
 @NgModule({
   declarations: [
     CandidateCardComponent,
@@ -33,6 +43,10 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     OneCandidateComponent,
     OneCandidateModalComponent,
     VacanciesTableComponent,
+    RateCandidateModalComponent,
+    EditVacancyComponent,
+    CreateStageComponent,
+    StageComponent,
   ],
   imports: [
     MatDialogModule,
@@ -44,6 +58,8 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     MatPaginatorModule,
     MatTableModule,
     MatTabsModule,
+    MatInputModule,
+    MatFormFieldModule,
     DragDropModule,
     SharedModule,
     CommonModule,
@@ -51,7 +67,6 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     DragDropModule,
     SharedModule,
   ],
-
   exports: [
     CandidateCardComponent,
     CandidateColumnComponent,
@@ -60,7 +75,7 @@ import { VacanciesStagesBoardComponent } from './components/vacancies-stages-boa
     VacanciesTableComponent,
     OneCandidateComponent,
     OneCandidateModalComponent,
-
+    RateCandidateModalComponent,
   ],
 })
-export class VacanciesModule { }
+export class VacanciesModule {}

@@ -1,0 +1,46 @@
+<app-spinner [loading]="loading"></app-spinner>
+<div class="candidate-add-container">
+    <form class="form">
+
+        <div mat-dialog-actions>
+            <mat-icon class="close-dialog" (click)="onFormClose()">close</mat-icon>
+        </div>
+
+        <div *ngIf="disableVacanciesForm; then oneVacancy else allVacancies"></div>
+
+        <ng-template #oneVacancy>
+                <h2 style="margin-bottom: 0;"> Add new candidates to vacancy </h2>
+                <h3> {{selectedVacancy.title}} </h3>
+        </ng-template>
+
+        <ng-template #allVacancies>
+            
+                <h2> Add new candidates to vacancy </h2>
+            
+            <h5>Pick vacancy</h5>
+            <mat-form-field class="full-width" appearance="fill">
+                <input floatLabel="never" type="text" placeholder="Pick one" matInput [formControl]="vacanciesForm" [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let vacancy of filteredVacancies | async" [value]="vacancy">
+                        {{vacancy.title}} / {{vacancy.department}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </ng-template>
+
+        <h5 [ngStyle]="selectedApplicant.id ? {'display':'none'} : null ">Pick candidates</h5>
+        <mat-form-field class="full-width" appearance="fill">
+            <mat-select [formControl]="applicantsForm" [ngClass]="{'no-arrow': applicantsForm.disabled}" [disableOptionCentering]="true" multiple placeholder="Pick candidates">
+                <mat-option *ngFor="let applicant of filteredApplicants" [disabled]="applicant.isApplied" [value]="applicant">{{applicant.firstName}} {{applicant.lastName}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+    </form>
+
+    <div class="centered">
+        <button mat-button [disabled]="disableAddButton" (click)="OnCreate()">Add Candidates</button>
+    </div>
+    
+
+</div>

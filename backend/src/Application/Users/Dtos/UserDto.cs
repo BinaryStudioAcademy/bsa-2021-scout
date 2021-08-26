@@ -13,15 +13,17 @@ namespace Application.Users.Dtos
         }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string MiddleName { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime CreationDate { get; set; }
         public string Email { get; set; }
         public string CompanyId { get; set; }
+        public string Phone { get; set; }
+        public string Skype { get; set; }
 
         public ICollection<RoleDto> Roles { get; set; }
 
         public bool IsEmailConfirmed {get ; set;}
+
     }
     public class UserDtoValidator : AbstractValidator<UserDto>
     {

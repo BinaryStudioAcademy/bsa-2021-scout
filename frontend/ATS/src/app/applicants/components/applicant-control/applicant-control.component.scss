@@ -1,0 +1,93 @@
+$primary-color: #ee2a64;
+
+:host {
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+
+    .applicant-control-btn {
+        color: #8E8E8E;
+
+        &:hover {
+            color: #ee2a64;
+        }
+    }
+
+    ::ng-deep {
+        .mat-select {
+            height: 40px;
+            width: 40px;
+            line-height: 40px;
+            font-size: 22px;
+            color: #808080;
+        }
+
+        .mat-select-arrow::after {
+            font-family: 'Material Icons';
+            content: "\e5d3";
+            font-size: 24px;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+
+        .mat-select-arrow:hover::after {
+            color: $primary-color;
+        }
+        
+        .mat-select-arrow {
+            border: none;
+            margin: 0;
+            height: 100%;
+        }
+    }
+}
+
+.applyPrimaryColor{
+    color: $primary-color !important;
+}
+
+:host ::ng-deep .dot-menu {
+    position: relative;
+
+    .mat-list {
+        position: absolute;
+        right: 20px;
+        background-color: #fff;
+        animation: appearance 0.1s;
+        box-shadow: 0 0 10px 5px #c9c9c9;
+        z-index: 5;
+
+        .mat-list-item {
+            height: fit-content;
+
+            &:last-of-type .mat-flat-button {
+                color: #f00;
+            }
+        }
+
+        .mat-list-item-content {
+            min-height: 0;
+            padding: 0;
+            height: fit-content;
+        }
+    }
+}
+
+.outside-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    width: 100%;
+    height: 100vh;
+}
+
+@keyframes appearance {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

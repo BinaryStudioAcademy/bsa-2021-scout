@@ -21,9 +21,10 @@ export class AuthGuard implements CanActivateChild, CanActivate {
     if (this.authService.areTokensExist()) {
       return true;
     }
-
-    this.router.navigate([`/${AppRoute.Login}`]);
-
+    this.router.navigate([AppRoute.Login], { 
+      queryParams: { link: btoa(state.url) },
+      queryParamsHandling: state.url.includes('?') ? 'merge' : 'preserve',
+    });
     return false;
   }
 }

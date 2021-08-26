@@ -1,4 +1,5 @@
 <div class="project-add-container">
+    <app-spinner [loading]="loading"></app-spinner>
     <h1>Project creation form</h1>
     <div mat-dialog-actions>
         <mat-icon class="close-dialog" (click)="onFormClose()">close</mat-icon>
@@ -6,60 +7,63 @@
     
     <div class="form-container">
         <form [formGroup]="projectCreateForm" (ngSubmit)="onSubmited()">
-            <h5>Name</h5>
-            <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['name'].dirty && this.projectCreateForm.controls['name'].errors? 'error-border': ''">
+            <h5 class="required-field">Name</h5>
+            <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['name'].dirty && this.projectCreateForm.controls['name'].errors? 'invalid-input': ''">
                 <input matInput type="text" formControlName="name" placeholder="Enter name project">
             </mat-form-field>
-            <div class="custom-error" *ngIf="this.projectCreateForm.controls['name'].dirty && this.projectCreateForm.controls['name'].errors?.required">
+            <div class="validation-error" *ngIf="this.projectCreateForm.controls['name'].dirty && this.projectCreateForm.controls['name'].errors?.required">
                 Is required.
             </div>
-            <div class="custom-error" *ngIf="this.projectCreateForm.controls['name'].dirty && this.projectCreateForm.controls['name'].errors?.minlength">
+            <div class="validation-error" *ngIf="this.projectCreateForm.controls['name'].dirty && this.projectCreateForm.controls['name'].errors?.minlength">
                 Name must be at least 3 characters long.
             </div>
-            <div class="custom-error" *ngIf="this.projectCreateForm.controls['name'].dirty && this.projectCreateForm.controls['name'].errors?.maxlength">
+            <div class="validation-error" *ngIf="this.projectCreateForm.controls['name'].dirty && this.projectCreateForm.controls['name'].errors?.maxlength">
                 Name must be not greater than 15 characters long.
             </div>
     
-            <h5>Logo</h5>
-            <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['logo'].dirty && this.projectCreateForm.controls['logo'].errors? 'error-border': ''">
+            <h5 class="required-field">Logo</h5>
+            <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['logo'].dirty && this.projectCreateForm.controls['logo'].errors? 'invalid-input': ''">
                 <input matInput type="text" formControlName="logo" placeholder="Enter logo link">
             </mat-form-field>
-            <div class="custom-error" *ngIf="this.projectCreateForm.controls['logo'].dirty && this.projectCreateForm.controls['logo'].errors?.required">
+            <div class="validation-error" *ngIf="this.projectCreateForm.controls['logo'].dirty && this.projectCreateForm.controls['logo'].errors?.required">
                 Is required.
             </div>
     
-            <h5>Desctiption project</h5>
-            <mat-form-field class="wide example-full-width" appearance="fill" [ngClass]="this.projectCreateForm.controls['description'].dirty && this.projectCreateForm.controls['description'].errors? 'error-border': ''">
+            <h5 class="required-field">Description project</h5>
+            <mat-form-field class="wide example-full-width" appearance="fill" [ngClass]="this.projectCreateForm.controls['description'].dirty && this.projectCreateForm.controls['description'].errors? 'invalid-input': ''">
                 <textarea matInput type="text" formControlName="description" placeholder="Enter text"></textarea>
             </mat-form-field>
-            <div class="custom-error" *ngIf="this.projectCreateForm.controls['description'].dirty && this.projectCreateForm.controls['description'].errors?.required">
+            <div class="validation-error" *ngIf="this.projectCreateForm.controls['description'].dirty && this.projectCreateForm.controls['description'].errors?.required">
                 Is required.
             </div>
-            <div class="custom-error" *ngIf="this.projectCreateForm.controls['description'].dirty && this.projectCreateForm.controls['description'].errors?.minlength">
-                Desctiption must be at least 10 characters long.
+            <div class="validation-error" *ngIf="this.projectCreateForm.controls['description'].dirty && this.projectCreateForm.controls['description'].errors?.minlength">
+                Description must be at least 10 characters long.
             </div>
     
-            <h5>Team info</h5>
-            <mat-form-field class="wide example-full-width" appearance="fill" [ngClass]="this.projectCreateForm.controls['teamInfo'].dirty && this.projectCreateForm.controls['teamInfo'].errors? 'error-border': ''">
+            <h5 class="required-field">Team info</h5>
+            <mat-form-field class="wide example-full-width" appearance="fill" [ngClass]="this.projectCreateForm.controls['teamInfo'].dirty && this.projectCreateForm.controls['teamInfo'].errors? 'invalid-input': ''">
                 <textarea matInput type="text" formControlName="teamInfo" placeholder="Enter text"></textarea>
             </mat-form-field>
-            <div class="custom-error" *ngIf="this.projectCreateForm.controls['teamInfo'].dirty && this.projectCreateForm.controls['teamInfo'].errors?.required">
+            <div class="validation-error" *ngIf="this.projectCreateForm.controls['teamInfo'].dirty && this.projectCreateForm.controls['teamInfo'].errors?.required">
                 Is required.
             </div>
-            <div class="custom-error" *ngIf="this.projectCreateForm.controls['teamInfo'].dirty && this.projectCreateForm.controls['teamInfo'].errors?.minlength">
+            <div class="validation-error" *ngIf="this.projectCreateForm.controls['teamInfo'].dirty && this.projectCreateForm.controls['teamInfo'].errors?.minlength">
                 Team info must be at least 10 characters long.
             </div>
     
-            <h5>Website Link</h5>
-            <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors? 'error-border': ''">
+            <h5 class="required-field">Website Link</h5>
+            <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors? 'invalid-input': ''">
                 <input matInput type="text" formControlName="websiteLink" placeholder="Enter website link project">
             </mat-form-field>
-            <div class="custom-error" *ngIf="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors?.required">
+            <div class="validation-error" *ngIf="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors?.required">
                 Is required.
             </div>
-            <div class="custom-error" *ngIf="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors?.url">
+            <div class="validation-error" *ngIf="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors?.url">
                 Wrong url format
             </div>
+
+            <p>Tags</p>
+            <app-tags-edit [tags]="project.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
     
             <button mat-button mat-dialog-close type="submit" [disabled]="!projectCreateForm.valid || !this.projectCreateForm.dirty">Publish</button>
         </form>

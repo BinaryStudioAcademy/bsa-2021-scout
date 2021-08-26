@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Dapper;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
+using Domain.Interfaces.Read;
 using Infrastructure.Dapper.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace Infrastructure.Repositories.Read
                     SELECT p.*, v.*
                     FROM Projects p
                     LEFT OUTER JOIN Vacancies v ON p.Id = v.ProjectId     
-                    WHERE p.Id = @id AND p.IsDeleted = 0 AND p.CompanyId = '{companyId}'
+                    WHERE p.Id = @id AND p.IsDeleted = 0 AND p.CompanyId = @companyId
             ";
 
             var projectsDictionary = new Dictionary<string, Project>();
@@ -59,7 +60,7 @@ namespace Infrastructure.Repositories.Read
 
                 return project;
             },
-            new { id = @id });
+            new { id = @id, companyId = @companyId });
 
             Project project = projectsDictionary.Values.FirstOrDefault();
 
@@ -73,13 +74,18 @@ namespace Infrastructure.Repositories.Read
             return project;
         }
 
+
         public async Task<Project> GetByPropertyAsync(string property, string propertyValue)
         {
             string companyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
 
             using var connection = _connectionFactory.GetSqlConnection();
-            string sql = $"SELECT * FROM {_tableName} WHERE [{property}] = @propertyValue AND IsDeleted = 0 AND CompanyId = '{companyId}'";
-            return await connection.QueryFirstOrDefaultAsync<Project>(sql, new { propertyValue });
+            string sql = $"SELECT * FROM {_tableName} WHERE [{property}] = @propertyValue AND IsDeleted = 0 AND CompanyId = @companyId";
+            return await connection.QueryFirstOrDefaultAsync<Project>(sql, new
+            {
+                propertyValue = @propertyValue,
+                companyId = @companyId
+            });
         }
 
         public async Task<IEnumerable<Project>> GetEnumerableAsync()
@@ -93,31 +99,31 @@ namespace Infrastructure.Repositories.Read
                     SELECT p.*, v.*
                     FROM Projects p
                     LEFT OUTER JOIN Vacancies v ON p.Id = v.ProjectId     
-                    WHERE p.IsDeleted = 0 AND p.CompanyId = '{companyId}'
+                    WHERE p.IsDeleted = 0 AND p.CompanyId = @companyId
             ";
 
             var projectsDictionary = new Dictionary<string, Project>();
 
             await connection.QueryAsync<Project, Vacancy, Project>(sql, (p, v) =>
+            {
+                Project project;
+                if (!projectsDictionary.TryGetValue(p.Id, out project))
                 {
-                    Project project;
-                    if (!projectsDictionary.TryGetValue(p.Id, out project))
-                    {
-                        projectsDictionary.Add(p.Id, project = p);
-                    }
+                    projectsDictionary.Add(p.Id, project = p);
+                }
 
-                    if (project.Vacancies == null)
-                    {
-                        project.Vacancies = new List<Vacancy>();
-                    }
+                if (project.Vacancies == null)
+                {
+                    project.Vacancies = new List<Vacancy>();
+                }
 
-                    if (v != null)
-                    {
-                        project.Vacancies.Add(v);
-                    }
+                if (v != null)
+                {
+                    project.Vacancies.Add(v);
+                }
 
-                    return project;
-                });
+                return project;
+            }, new { companyId = @companyId });
 
             var projects = projectsDictionary.Values;
 

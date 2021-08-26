@@ -1,5 +1,5 @@
 <div class="container">
-  <app-spinner *ngIf="loading"></app-spinner>
+  <app-spinner [loading]="loading"></app-spinner>
   <ng-container *ngIf="!loading">
     <div class="avatar-col">
       <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />
@@ -10,7 +10,7 @@
         <p class="only-color meta">
           <span>Added by HR </span>
           <a routerLink="/profile/{{ data.hrWhoAddedId }}">{{ data.hrWhoAddedFullName }}</a>
-          <span> {{ formatDate(data.dateAdded) }}</span>
+          <span> {{ data.dateAdded | timezone }}</span>
         </p>
         <p class="only-color meta">
           <span>Current stage: </span>
@@ -45,7 +45,7 @@
           <div class="activity-item" *ngFor="let item of data.stagesHistory">
             <h4>{{ item.stageName }}</h4>
             <mat-divider></mat-divider>
-            <div class="meta" *ngIf="item.dateRemoved">{{ formatDate(item.dateRemoved) }}</div>
+            <div class="meta" *ngIf="item.dateRemoved">{{ item.dateRemoved | timezone }}</div>
             <div class="meta" *ngIf="!item.dateRemoved">not assigned</div>
           </div>
         </div>

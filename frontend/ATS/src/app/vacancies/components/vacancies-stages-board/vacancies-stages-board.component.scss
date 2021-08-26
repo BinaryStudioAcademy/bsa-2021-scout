@@ -1,11 +1,13 @@
 @import "../../../../common.scss";
 
 .container {
-  height: 100%;
+  height: calc(100% - 120px);
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   padding: 40px 60px 20px 60px;
   box-sizing: border-box;
+  position: relative;
 
   & > * {
     width: 100%;
@@ -17,7 +19,6 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    height: 100%;
 
     .avatars {
       position: relative;
@@ -92,6 +93,7 @@
         box-sizing: border-box;
         display: flex;
         align-items: center;
+        padding-left: 10px;
 
         mat-icon {
           font-size: 16px;

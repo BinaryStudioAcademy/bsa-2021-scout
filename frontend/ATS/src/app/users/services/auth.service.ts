@@ -14,6 +14,7 @@ import { ResendConfirmEmailDto } from '../models/resend-confirm-email-dto';
 import { ForgotPasswordDto } from '../models/forgot-password-dto';
 import { ResetPasswordDto } from '../models/reset-password-dto';
 import { AuthUserEventService } from './auth-user-event.service';
+import { RegistrationLinkDto } from '../models/registration-link-dto';
 
 
 @Injectable({ providedIn: 'root' })
@@ -39,9 +40,14 @@ export class AuthenticationService {
       );
   }
 
-  public setUser(user: User) {
+  public setUser(user: User| null) {
     this.user = user;
     this.authUserEventService.userChanged(user);
+  }
+
+  public sendRegistrationLink(registrationLinkDto: RegistrationLinkDto) {
+    return this.httpService.postFullRequest<void>(
+      '/register/send-registration-link', registrationLinkDto);
   }
 
   public register(registerDto: RegisterDto): Observable<HttpResponse<void>> {
@@ -85,7 +91,7 @@ export class AuthenticationService {
     });
   }
 
-  private removeTokensFromStorage(): void {
+  public removeTokensFromStorage(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   }

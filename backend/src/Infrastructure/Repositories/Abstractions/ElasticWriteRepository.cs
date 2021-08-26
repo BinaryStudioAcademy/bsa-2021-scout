@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+using Domain.Common;
+using Domain.Interfaces.Abstractions;
+using System;
+using System.Collections.Generic;
 using System.Dynamic;
-using Domain.Entities;
-using Domain.Interfaces;
 using System.Threading.Tasks;
 using Nest;
-using System;
-using Domain.Common;
 
 namespace Infrastructure.Repositories.Abstractions
 {
@@ -48,8 +47,8 @@ namespace Infrastructure.Repositories.Abstractions
             var indexResponse = await _client.UpdateAsync<T, object>(
                 DocumentPath<T>.Id(id),
                 i => i.Doc(dynamicUpdate));
-            
-            if(!indexResponse.IsValid)
+
+            if (!indexResponse.IsValid)
                 throw new InvalidOperationException("Partial update invalid");
         }
     }
