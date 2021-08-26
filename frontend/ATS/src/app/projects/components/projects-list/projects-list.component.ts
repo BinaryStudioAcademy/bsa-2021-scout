@@ -1,3 +1,4 @@
+import { Project } from 'src/app/shared/models/projects/project';
 import {
   AfterViewInit,
   Component,
@@ -21,6 +22,8 @@ import { DeleteConfirmComponent }
   from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { FollowedService } from 'src/app/shared/services/followedService';
+import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 
 @Component({
   selector: 'app-projects-list',
@@ -46,14 +49,20 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
 
   public loading: boolean = false;
-
+  private followedSet: Set<string> = new Set();
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
     private projectService: ProjectService,
     private dialog: MatDialog,
     private notificationService: NotificationService,
+    private followService: FollowedService,
   ) {
+    this.followService.getFollowed(EntityType.Project)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data=>
+        data.forEach(item=>this.followedSet.add(item.entityId)),
+      );
     this.dataSource = new MatTableDataSource<ProjectInfo>();
   }
 
@@ -66,6 +75,7 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
           this.projects = resp.body!;
           this.projects.forEach((d, i) => {
             d.position = i + 1;
+            d.isFollowed = this.followedSet.has(d.id);
           });
           this.dataSource.data = this.projects;
           this.directive.applyFilter$.emit();
@@ -123,6 +133,20 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   public onBookmark(data: ProjectInfo, perfomToFollowCleanUp: boolean = false){
     let projetIndex:number = this.dataSource.data.findIndex(project=>project.id === data.id)!;
     data.isFollowed = !data.isFollowed;
+    if(data.isFollowed)
+    {
+      this.followService.createFollowed(
+        {
+          entityId: data.id,
+          entityType: EntityType.Project,
+        },
+      ).subscribe();
+    }else
+    {
+      this.followService.deleteFollowed(
+        EntityType.Project, data.id,
+      ).subscribe();
+    }
     this.dataSource.data[projetIndex] = data;
     if(perfomToFollowCleanUp){
       this.dataSource.data = this.dataSource.data.filter(project=>project.isFollowed);
