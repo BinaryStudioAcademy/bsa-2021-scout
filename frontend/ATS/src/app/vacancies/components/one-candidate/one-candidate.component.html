@@ -8,7 +8,7 @@
       <div class="top block">
         <h2>{{ data.fullName }}</h2>
         <p class="only-color meta">
-          <span>Added by HR </span>
+          <span>Added by </span>
           <a routerLink="/profile/{{ data.hrWhoAddedId }}">{{ data.hrWhoAddedFullName }}</a>
           <span> {{ data.dateAdded | timezone }}</span>
         </p>
