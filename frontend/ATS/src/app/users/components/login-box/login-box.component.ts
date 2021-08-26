@@ -76,7 +76,7 @@ export class LoginBoxComponent implements OnDestroy {
           (queryParams) => {
             this.loading = false;
             if (queryParams.link) {
-              this.router.navigateByUrl(`${atob(queryParams.link)}`);
+              this.router.navigateByUrl(atob(queryParams.link));
             }
             else {
               this.router.navigate(['/']);
