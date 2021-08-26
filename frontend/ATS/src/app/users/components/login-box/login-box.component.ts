@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { EmailIsNotConfirmedErrorType } from '../../models/auth/emai-is-not-confirmed-error-type';
 import { UserLoginDto } from '../../models/auth/user-login-dto';
@@ -29,6 +29,7 @@ export class LoginBoxComponent implements OnDestroy {
     public dialog: MatDialog,
     public authenticationService: AuthenticationService,
     private notificationService: NotificationService,
+    private route: ActivatedRoute,
     private router: Router,
   ) {}
 
@@ -68,11 +69,18 @@ export class LoginBoxComponent implements OnDestroy {
 
       this.authenticationService
         .login(this.userLoginDto)
-        .pipe(takeUntil(this.unsubscribe$))
+        .pipe(
+          takeUntil(this.unsubscribe$),
+          mergeMap(() => this.route.queryParams))
         .subscribe(
-          () => {
+          (queryParams) => {
             this.loading = false;
-            this.router.navigate(['/']);
+            if (queryParams.link) {
+              this.router.navigateByUrl(`${atob(queryParams.link)}`);
+            }
+            else {
+              this.router.navigate(['/']);
+            }       
           },
           (error) => {
             this.loading = false;
