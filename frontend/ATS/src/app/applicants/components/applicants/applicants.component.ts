@@ -1,6 +1,6 @@
 import { Observable, Subject } from 'rxjs';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, mergeMap } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
@@ -52,19 +52,62 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly route: ActivatedRoute,
     private followService: FollowedService,
 
-  ) {}
-  
+  ) { }
+
   public ngOnInit(): void {
     this.followService.getFollowed(EntityType.Applicant)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data=>
-        data.forEach(item=> this.followedSet.add(item.entityId)),
+      .pipe(takeUntil(this.unsubscribe$),
+        mergeMap(data => {
+          data.forEach(item => this.followedSet.add(item.entityId));
+          return this.applicantsService.getApplicants();
+        }),
+      )
+      .pipe(takeUntil(this.unsubscribe$),
+        map((arr) =>
+          arr.map((a) => {
+            let viewableApplicant = a as unknown as ViewableApplicant;
+
+            viewableApplicant.isFollowed = this.followedSet.has(a.id);
+            viewableApplicant.isShowAllTags = false;
+
+            if (!a.tags) {
+              viewableApplicant.tags = {
+                id: '',
+                elasticType: 1,
+                tagDtos: [],
+              };
+            }
+
+            return viewableApplicant;
+          }),
+        ))
+      .subscribe((result: ViewableApplicant[]) => {
+        result.forEach((d, i) => {
+          d.position = i + 1;
+        });
+
+        this.loading = false;
+        if (localStorage.getItem(this.followedPageToken) !== null)
+          this.dataSource.data = result.filter(item => this.followedSet.has(item.id));
+        else
+          this.dataSource.data = result;
+        this.cashedData = result;
+        this.directive!.applyFilter$.emit();
+      },
+      (error: Error) => {
+        this.loading = false;
+
+        this.notificationsService.showErrorMessage(
+          error.message,
+          'Cannot download applicants from the host',
+        );
+      },
       );
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) !== null;
     this.getApplicants();
   }
 
-  public getApplicants(){
+  public getApplicants() {
     this.applicantsService
       .getApplicants()
       .pipe(
@@ -72,7 +115,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         map((arr) =>
           arr.map((a) => {
             let viewableApplicant = a as unknown as ViewableApplicant;
-            
+
             viewableApplicant.isFollowed = this.followedSet.has(a.id);
             viewableApplicant.isShowAllTags = false;
 
@@ -93,10 +136,10 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           result.forEach((d, i) => {
             d.position = i + 1;
           });
-      
+
           this.loading = false;
-          if(localStorage.getItem(this.followedPageToken)!==null)
-            this.dataSource.data = result.filter(item=>this.followedSet.has(item.id));
+          if (localStorage.getItem(this.followedPageToken) !== null)
+            this.dataSource.data = result.filter(item => this.followedSet.has(item.id));
           else
             this.dataSource.data = result;
           this.cashedData = result;
@@ -138,7 +181,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(
         map((a: Applicant) => {
           let viewableApplicant = (a as unknown) as ViewableApplicant;
-          
+
           if (viewableApplicant) {
             viewableApplicant.isShowAllTags = false;
             viewableApplicant.isFollowed = false;
@@ -158,7 +201,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           }
 
           this.directive?.applyFilter$.emit();
-        
+
           this.notificationsService.showSuccessMessage(
             'An applicant was succesfully created',
             'Success!',
@@ -178,7 +221,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.isFollowedPage) {
         this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
       }
-    
+
       this.notificationsService.showSuccessMessage(
         'An applicant was succesfully updated',
         'Success!',
@@ -218,11 +261,11 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.directive!.applyFilter$.emit();
   }
 
-  public onBookmark(applicantId: string){
+  public onBookmark(applicantId: string) {
     const applicantIndex = this.cashedData.findIndex(a => a.id === applicantId);
     this.cashedData[applicantIndex].isFollowed = !this.cashedData[applicantIndex].isFollowed;
     this.dataSource.data = this.cashedData;
-    if(this.cashedData[applicantIndex].isFollowed){
+    if (this.cashedData[applicantIndex].isFollowed) {
       this.followService.createFollowed(
         {
           entityId: this.cashedData[applicantIndex].id,
@@ -230,7 +273,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         },
       ).subscribe();
     }
-    else{
+    else {
       this.followService.deleteFollowed(
         EntityType.Applicant, this.cashedData[applicantIndex].id,
       ).subscribe();
@@ -291,7 +334,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  public updateListApplicants(){
+  public updateListApplicants() {
     this.getApplicants();
   }
 

@@ -19,7 +19,7 @@ import { DeleteConfirmComponent }
   from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
@@ -62,12 +62,30 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
     private followService: FollowedService,
   ) {
     this.followService.getFollowed(EntityType.Vacancy)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data=>
-        data.forEach(item=>this.followedSet.add(item.entityId)),
+      .pipe(takeUntil(this.unsubscribe$),
+        mergeMap(data => {
+          data.forEach(item=>this.followedSet.add(item.entityId));
+          return this.service.getList();
+        }))
+      .subscribe(data => {
+        this.mainData = data;
+        if(localStorage.getItem(this.followedPageToken)!==null)
+          this.dataSource.data = data.filter(item=>this.followedSet.has(item.id));
+        else
+          this.dataSource.data = data;
+        data.forEach((d, i) => {
+          d.position = i + 1;
+          d.isFollowed = this.followedSet.has(d.id);
+        });
+        this.mainData = data;
+        this.directive.applyFilter$.emit();
+      },
+      () => {
+        this.loading = false;
+        this.notificationService.showErrorMessage('Failed to get vacancies.');
+      },
       );
     this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
-    this.getVacancies();
   }
   private readonly followedPageToken: string = 'followedVacancyPage';
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
