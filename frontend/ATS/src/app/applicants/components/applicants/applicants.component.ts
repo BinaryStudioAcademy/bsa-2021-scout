@@ -45,7 +45,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   | undefined = undefined;
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
-
+  private readonly followedPageToken: string = 'followedApplicantPage';
   constructor(
     private readonly notificationsService: NotificationService,
     private readonly applicantsService: ApplicantsService,
@@ -53,13 +53,14 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     private followService: FollowedService,
 
   ) {}
-
+  
   public ngOnInit(): void {
     this.followService.getFollowed(EntityType.Applicant)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data=>
         data.forEach(item=> this.followedSet.add(item.entityId)),
       );
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
     this.getApplicants();
   }
 
@@ -92,9 +93,12 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           result.forEach((d, i) => {
             d.position = i + 1;
           });
-          
+      
           this.loading = false;
-          this.dataSource.data = result;
+          if(localStorage.getItem(this.followedPageToken)!==null)
+            this.dataSource.data = result.filter(item=>this.followedSet.has(item.id));
+          else
+            this.dataSource.data = result;
           this.cashedData = result;
           this.directive!.applyFilter$.emit();
         },
@@ -210,7 +214,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     else {
       this.dataSource.data = this.cashedData;
     }
-
+    this.followService.switchRefreshFollowedPageToken(isFollowed, this.followedPageToken);
     this.directive!.applyFilter$.emit();
   }
 

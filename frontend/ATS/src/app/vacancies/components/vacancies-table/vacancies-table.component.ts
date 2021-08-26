@@ -66,11 +66,12 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
       .subscribe(data=>
         data.forEach(item=>this.followedSet.add(item.entityId)),
       );
-    
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
     this.getVacancies();
   }
-
+  private readonly followedPageToken: string = 'followedVacancyPage';
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
 
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -83,7 +84,11 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         data => {
-          this.dataSource.data = data;
+          this.mainData = data;
+          if(localStorage.getItem(this.followedPageToken)!==null)
+            this.dataSource.data = data.filter(item=>this.followedSet.has(item.id));
+          else
+            this.dataSource.data = data;
           data.forEach((d, i) => {
             d.position = i + 1;
             d.isFollowed = this.followedSet.has(d.id);
@@ -110,11 +115,13 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   public switchToFollowed(){
     this.isFollowedPage = true;
     this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    this.followService.switchRefreshFollowedPageToken(true, this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
   public switchAwayToAll(){
     this.isFollowedPage = false;
     this.dataSource.data = this.mainData;
+    this.followService.switchRefreshFollowedPageToken(false, this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
   public onBookmark(data: VacancyData, perfomToFollowCleanUp: boolean = false){

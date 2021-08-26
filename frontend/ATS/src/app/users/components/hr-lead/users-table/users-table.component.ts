@@ -34,7 +34,7 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild(MatSort) sort!: MatSort;
-  
+  private readonly followedPageToken: string = 'followedUserPage';
   constructor(
     private userDataService: UserDataService,
     private notificationService: NotificationService,
@@ -46,8 +46,8 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
       .subscribe(data=>
         data.forEach(item=>this.followedSet.add(item.entityId)),
       );
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
   }
-
   public getUsers() {
     this.userDataService
       .getUsersForHrLead()
@@ -62,7 +62,10 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
             user.isFollowed = this.followedSet.has(user.id??'');
           });
           this.users = resp;
-          this.dataSource.data = this.users;
+          if(localStorage.getItem(this.followedPageToken)!==null)
+            this.dataSource.data = this.users.filter(item=>item.isFollowed);
+          else
+            this.dataSource.data = this.users;
           this.directive.applyFilter$.emit();
         },
         () => {
@@ -115,12 +118,14 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
   public switchToFollowed() {
     this.isFollowedPage = true;
     this.dataSource.data = this.dataSource.data.filter(user => user.isFollowed);
+    this.followService.switchRefreshFollowedPageToken(true, this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
 
   public switchAwayToAll() {
     this.isFollowedPage = false;
     this.dataSource.data = this.users;
+    this.followService.switchRefreshFollowedPageToken(false, this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
 
