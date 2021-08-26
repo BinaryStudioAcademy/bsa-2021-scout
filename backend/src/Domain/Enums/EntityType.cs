@@ -4,6 +4,7 @@ namespace Domain.Enums
     {
         User,
         Applicant,
+        Project,
         Vacancy,
         Pool
     }

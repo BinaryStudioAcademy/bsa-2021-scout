@@ -13,6 +13,8 @@ import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginat
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { ViewableApplicant } from 'src/app/shared/models/applicants/viewable-applicant';
 import { ActivatedRoute } from '@angular/router';
+import { FollowedService } from 'src/app/shared/services/followedService';
+import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 
 @Component({
   selector: 'app-applicants',
@@ -35,7 +37,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public searchValue = '';
   public isFollowedPage = false;
   public loading: boolean = true;
-
+  private followedSet: Set<string> = new Set();
   @ViewChild(MatPaginator) public paginator: MatPaginator | undefined =
   undefined;
   @ViewChild(StylePaginatorDirective) public directive:
@@ -49,9 +51,15 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly notificationsService: NotificationService,
     private readonly applicantsService: ApplicantsService,
     private readonly route: ActivatedRoute,
+    private followService: FollowedService,
   ) {}
 
   public ngOnInit(): void {
+    this.followService.getFollowed(EntityType.Applicant)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data=>
+        data.forEach(item=> this.followedSet.add(item.entityId)),
+      );
     this.getApplicants();
   }
 
@@ -64,7 +72,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           arr.map((a) => {
             let viewableApplicant = a as unknown as ViewableApplicant;
             
-            viewableApplicant.isFollowed = false;
+            viewableApplicant.isFollowed = this.followedSet.has(a.id);
             viewableApplicant.isShowAllTags = false;
 
             if (!a.tags) {
@@ -210,7 +218,19 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     const applicantIndex = this.cashedData.findIndex(a => a.id === applicantId);
     this.cashedData[applicantIndex].isFollowed = !this.cashedData[applicantIndex].isFollowed;
     this.dataSource.data = this.cashedData;
-
+    if(this.cashedData[applicantIndex].isFollowed){
+      this.followService.createFollowed(
+        {
+          entityId: this.cashedData[applicantIndex].id,
+          entityType: EntityType.Applicant,
+        },
+      ).subscribe();
+    }
+    else{
+      this.followService.deleteFollowed(
+        EntityType.Applicant, this.cashedData[applicantIndex].id,
+      ).subscribe();
+    }
     if (this.isFollowedPage) {
       this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
     }
