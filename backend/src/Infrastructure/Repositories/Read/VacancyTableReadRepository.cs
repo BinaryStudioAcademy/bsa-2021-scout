@@ -21,7 +21,6 @@ namespace Infrastructure.Repositories.Read
             _mapper = mapper;
         }
 
-
         public async Task<IEnumerable<VacancyTable>> GetVacancyTablesByCompanyIdAsync(string companyId)
         {
             var connection = _connectionFactory.GetSqlConnection();
