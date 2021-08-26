@@ -25,7 +25,6 @@ namespace Application.Vacancies
             CreateMap<Vacancy, VacancyTableDto>();
 
             CreateMap<Vacancy, VacancyTable>();
-
         }
     }
 }

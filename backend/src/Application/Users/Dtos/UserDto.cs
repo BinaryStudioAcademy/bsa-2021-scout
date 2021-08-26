@@ -23,6 +23,7 @@ namespace Application.Users.Dtos
         public ICollection<RoleDto> Roles { get; set; }
 
         public bool IsEmailConfirmed {get ; set;}
+
     }
     public class UserDtoValidator : AbstractValidator<UserDto>
     {

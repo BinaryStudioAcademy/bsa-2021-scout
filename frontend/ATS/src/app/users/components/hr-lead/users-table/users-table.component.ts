@@ -1,3 +1,4 @@
+import { FollowedService } from 'src/app/shared/services/followedService';
 import { AfterViewInit, Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserTableData } from 'src/app/users/models/user-table-data';
 import { Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 
 @Component({
   selector: 'app-users-table',
@@ -26,18 +28,24 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
   public dataSource: MatTableDataSource<UserTableData>;
   public loading: boolean = true;
   public isFollowedPage: boolean = false;
-
+  private followedSet: Set<string> = new Set();
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild(MatSort) sort!: MatSort;
-
+  
   constructor(
     private userDataService: UserDataService,
     private notificationService: NotificationService,
+    private followService: FollowedService,
     private dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<UserTableData>();
+    this.followService.getFollowed(EntityType.User)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data=>
+        data.forEach(item=>this.followedSet.add(item.entityId)),
+      );
   }
 
   public getUsers() {
@@ -51,6 +59,7 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
         (resp) => {
           resp.forEach((user, index) => {
             user.position = index + 1;
+            user.isFollowed = this.followedSet.has(user.id??'');
           });
           this.users = resp;
           this.dataSource.data = this.users;
@@ -117,6 +126,20 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public onBookmark(data: UserTableData, perfomToFollowCleanUp: boolean = false){
     data.isFollowed = !data.isFollowed;
+    if(data.isFollowed)
+    {
+      this.followService.createFollowed(
+        {
+          entityId: data.id??'',
+          entityType: EntityType.User,
+        },
+      ).subscribe();
+    }else
+    {
+      this.followService.deleteFollowed(
+        EntityType.User, data.id??'',
+      ).subscribe();
+    }
     if(perfomToFollowCleanUp) {
       this.dataSource.data = this.dataSource.data.filter(user => user.isFollowed);
     }
