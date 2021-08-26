@@ -1,15 +1,15 @@
-import { Directive, Input, Output, EventEmitter, HostListener } from "@angular/core";
+import { Directive, Input, Output, EventEmitter, HostListener } from '@angular/core';
 
-@Directive({ selector: '[copy-clipboard]' })
+@Directive({ selector: '[appCopyClipboard]' })
 export class CopyClipboardDirective {
 
-  @Input("copy-clipboard")
+  @Input('appCopyClipboard')
   public payload!: string;
 
-  @Output("copied")
+  @Output()
   public copied: EventEmitter<string> = new EventEmitter<string>();
 
-  @HostListener("click", ["$event"])
+  @HostListener('click', ['$event'])
   public onClick(event: MouseEvent): void {
 
     event.preventDefault();
@@ -18,14 +18,14 @@ export class CopyClipboardDirective {
 
     let listener = (e: ClipboardEvent) => {
       let clipboard = e.clipboardData;
-      clipboard!.setData("text", this.payload.toString());
+      clipboard!.setData('text', this.payload.toString());
       e.preventDefault();
 
       this.copied.emit(this.payload);
     };
 
-    document.addEventListener("copy", listener, false)
-    document.execCommand("copy");
-    document.removeEventListener("copy", listener, false);
+    document.addEventListener('copy', listener, false);
+    document.execCommand('copy');
+    document.removeEventListener('copy', listener, false);
   }
 }
