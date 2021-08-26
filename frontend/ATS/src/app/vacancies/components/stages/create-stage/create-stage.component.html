@@ -2,7 +2,7 @@
     <h1 mat-title>Create stage</h1>
     <form [formGroup]="stageForm">
         <mat-label>Stage name</mat-label>
-        <mat-form-field appearance="fill"  [ngClass]="(stageFormControl.name.touched || submitted) && stageFormControl.name.invalid ? 'invalid-input' : ''">
+        <mat-form-field appearance="fill"  [ngClass]="(stageFormControl.name.touched || submitted) && stageFormControl.name.invalid ? 'my-invalid-input' : ''">
             <input matInput type="text" autocomplete="off" formControlName="name" placeholder="Enter stage name">
           </mat-form-field>
           <mat-error *ngIf="(stageFormControl.name.touched || submitted) && stageFormControl.name.errors?.required">

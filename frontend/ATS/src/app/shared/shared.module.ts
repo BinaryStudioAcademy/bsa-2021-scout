@@ -43,6 +43,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 import { ProfileDropdownMenuComponent } from './components/profile-dropdown-menu/profile-dropdown-menu.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UserRoleDirective } from './directives/user-role.directive';
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
 
 @NgModule({
   exports: [
@@ -86,7 +90,9 @@ import { ProfileDropdownMenuComponent } from './components/profile-dropdown-menu
     MatMenuModule,
     TagsEditComponent,
     DeleteConfirmComponent,
-    ProfileDropdownMenuComponent
+    ProfileDropdownMenuComponent,
+    ClipboardModule,
+    UserProfileComponent,
   ],
   imports: [
     MatButtonModule,
@@ -121,6 +127,7 @@ import { ProfileDropdownMenuComponent } from './components/profile-dropdown-menu
     MatAutocompleteModule,
     MatCheckboxModule,
     MatMenuModule,
+    ClipboardModule,
   ],
   providers: [HttpClientService],
   declarations: [
@@ -137,8 +144,10 @@ import { ProfileDropdownMenuComponent } from './components/profile-dropdown-menu
     AddCandidateModalComponent,
     TagsEditComponent,
     DeleteConfirmComponent,
-    
     ProfileDropdownMenuComponent,
+    UserProfileComponent,
+    UserRoleDirective,
+    CopyClipboardDirective,
   ],
 })
 export class SharedModule { }

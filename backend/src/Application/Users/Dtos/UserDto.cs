@@ -17,6 +17,8 @@ namespace Application.Users.Dtos
         public DateTime CreationDate { get; set; }
         public string Email { get; set; }
         public string CompanyId { get; set; }
+        public string Phone { get; set; }
+        public string Skype { get; set; }
 
         public ICollection<RoleDto> Roles { get; set; }
 
