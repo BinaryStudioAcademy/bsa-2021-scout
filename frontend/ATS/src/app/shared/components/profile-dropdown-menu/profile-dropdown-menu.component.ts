@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { EditHrFormComponent } from 'src/app/users/components/edit-hr-form/edit-hr-form.component';
 import { EditHrsDialogComponent } from 'src/app/users/components/edit-hrs-dialog/edit-hrs-dialog.component';
 import { User } from '../../../users/models/user';
 import { AuthenticationService } from '../../../users/services/auth.service';
@@ -68,6 +69,14 @@ export class ProfileDropdownMenuComponent implements OnInit {
 
   public editHr(){
     const dialogRef = this.dialog.open(EditHrsDialogComponent, {
+      width: '90%',
+      height: 'auto',
+      data: {},
+    });
+  }
+
+  onOpenProfile(){
+    const dialogRef = this.dialog.open(EditHrFormComponent, {
       width: '90%',
       height: 'auto',
       data: {},

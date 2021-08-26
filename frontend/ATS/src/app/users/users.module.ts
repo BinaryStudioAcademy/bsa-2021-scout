@@ -28,6 +28,7 @@ import { SendingRegisterLinkDialogComponent } from
   './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
 import { EditHrsDialogComponent } from './components/edit-hrs-dialog/edit-hrs-dialog.component';
+import { EditHrFormComponent } from './components/edit-hr-form/edit-hr-form.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { EditHrsDialogComponent } from './components/edit-hrs-dialog/edit-hrs-di
     SendingRegisterLinkDialogComponent,
     ProfileEditComponent,
     EditHrsDialogComponent,
+    EditHrFormComponent,
   ],
   exports:[
     ProfileEditComponent,

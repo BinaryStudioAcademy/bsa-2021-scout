@@ -25,6 +25,63 @@ export class EditHrsDialogComponent implements OnInit {
     ]
     },
     {
+      image:"",
+      firstName: "Sancho",
+    lastName: "Pancho",
+    birthDate: new Date(1,1,2002),
+    creationDate: new Date(1,1,2002),
+    email: "aaa",
+    isEmailConfirmed: true,
+    roles:[
+      {
+        name:'HR',
+        key:1
+      }
+    ]
+    },{
+      image:"",
+      firstName: "Sancho",
+    lastName: "Pancho",
+    birthDate: new Date(1,1,2002),
+    creationDate: new Date(1,1,2002),
+    email: "aaa",
+    isEmailConfirmed: true,
+    roles:[
+      {
+        name:'HR',
+        key:1
+      }
+    ]
+    },{
+      image:"",
+      firstName: "Sancho",
+    lastName: "Pancho",
+    birthDate: new Date(1,1,2002),
+    creationDate: new Date(1,1,2002),
+    email: "aaa",
+    isEmailConfirmed: true,
+    roles:[
+      {
+        name:'HR',
+        key:1
+      }
+    ]
+    },{
+      image:"",
+      firstName: "Sancho",
+    lastName: "Pancho",
+    birthDate: new Date(1,1,2002),
+    creationDate: new Date(1,1,2002),
+    email: "aaa",
+    isEmailConfirmed: true,
+    roles:[
+      {
+        name:'HR',
+        key:1
+      }
+    ]
+    },{
+      image:"",
       firstName: "Sancho",
     lastName: "Pancho",
     birthDate: new Date(1,1,2002),
