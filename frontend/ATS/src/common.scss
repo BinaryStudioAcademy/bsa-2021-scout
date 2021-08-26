@@ -52,15 +52,6 @@ $primary-font: Nunito;
   color: #000;
 }
 
-input:-webkit-autofill {
-  box-shadow: 0 0 0px 1000px $primary-color-white inset;
-}
-
-.mat-form-field.mat-focused .mat-form-field-label,
-.mat-form-field.mat-form-field-invalid .mat-form-field-label {
-  color: gray;
-}
-
 .mat-form-field-wrapper.mat-form-field-wrapper {
   display: flex;
   align-items: center;
@@ -72,11 +63,20 @@ input:-webkit-autofill {
   min-width: 100px;
   width: 100%;
   border-radius: 10px;
-  padding: 0px 20px 0px 20px;
+  padding: 0 20px;
   min-height: 40px;
   color: black;
   z-index: 10;
   box-sizing: border-box;
+}
+
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px $primary-color-white inset;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label,
+.mat-form-field.mat-form-field-invalid .mat-form-field-label {
+  color: gray;
 }
 
 .mat-form-field-underline {
@@ -85,6 +85,7 @@ input:-webkit-autofill {
 
 .mat-form-field-infix {
   border: none;
+  height: 100%;
 }
 
 a {
