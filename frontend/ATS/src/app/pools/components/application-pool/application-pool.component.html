@@ -30,7 +30,7 @@
 
             <ng-container matColumnDef="dateCreated">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Date created </th>
-                <td mat-cell *matCellDef="let row">{{ row.dateCreated | date:"dd.MM.yyyy" }} </td>
+                <td mat-cell *matCellDef="let row">{{ row.dateCreated | timezone }} </td>
             </ng-container>
 
             <ng-container matColumnDef="count">
