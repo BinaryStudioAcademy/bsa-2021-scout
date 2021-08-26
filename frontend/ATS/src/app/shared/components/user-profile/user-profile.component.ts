@@ -7,7 +7,7 @@ import { NotificationService } from '../../services/notification.service';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent {
 
@@ -18,11 +18,11 @@ export class UserProfileComponent {
   constructor(public dialog: MatDialog, public notificService: NotificationService) {
   }
   public notifyPhone(payload: string) {
-    this.notificService.showInfoMessage(`The phone has been copied to clipboard`);
-}
-public notifySkype(payload: string) {
-  this.notificService.showInfoMessage(`The skype link has been copied to clipboard`);
-}
+    this.notificService.showInfoMessage('The phone has been copied to clipboard');
+  }
+  public notifySkype(payload: string) {
+    this.notificService.showInfoMessage('The skype link has been copied to clipboard');
+  }
   
 }
 

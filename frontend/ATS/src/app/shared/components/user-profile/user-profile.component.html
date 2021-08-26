@@ -1,8 +1,6 @@
 <div [matMenuTriggerFor]="menu" #menuTrigger>
 <ng-content></ng-content>
 </div>
-<!-- <img class="small-image" src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg"
-[matMenuTriggerFor]="menu" #menuTrigger> -->
 <mat-menu #menu="matMenu" class="menu">
     <img class="profile-image" alt="User profile photo" src="{{user.image}}" onError="this.src='../../../../assets/images/defaultAvatar.png'" (click) = "$event.stopPropagation()">    
     <div class="profile-content" (click) = "$event.stopPropagation()">
@@ -12,8 +10,8 @@
         </div>
             <div class="contacts">
                 <h2 *ngIf="user.phone || user.skype" >Contacts:</h2>
-                <h3 role="button" [copy-clipboard]="this.user.phone || ''" (copied)="notifyPhone($event)" *ngIf="user.phone"><mat-icon>phone</mat-icon>{{user.phone}}</h3>
-                <h3 role="button" [copy-clipboard]="this.user.skype || ''" (copied)="notifySkype($event)" *ngIf="user.skype"><span class="iconify" data-icon="mdi:skype"></span>{{user.skype}}</h3>
+                <h3 role="button" [appCopyClipboard]="this.user.phone || ''" (copied)="notifyPhone($event)" *ngIf="user.phone"><mat-icon>phone</mat-icon>{{user.phone}}</h3>
+                <h3 role="button" [appCopyClipboard]="this.user.skype || ''" (copied)="notifySkype($event)" *ngIf="user.skype"><span class="iconify" data-icon="mdi:skype"></span>{{user.skype}}</h3>
             </div>
     </div>
 </mat-menu>
