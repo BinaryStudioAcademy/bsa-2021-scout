@@ -25,43 +25,71 @@ namespace Infrastructure.Repositories.Read
         public async Task<IEnumerable<VacancyTable>> GetVacancyTablesByCompanyIdAsync(string companyId)
         {
             var connection = _connectionFactory.GetSqlConnection();
+
             await connection.OpenAsync();
-            StringBuilder vacancySql = new StringBuilder();
-            vacancySql.Append("SELECT VC.* FROM Vacancies as VC");
-            vacancySql.Append(" JOIN Projects ON Projects.Id = VC.ProjectId");
-            vacancySql.Append(" WHERE VC.CompanyId = @CompanyId AND Projects.IsDeleted='0'");
-            StringBuilder candidateCountSql = new StringBuilder();
-            candidateCountSql.Append("SELECT COUNT(*) FROM VacancyCandidates");
-            candidateCountSql.Append(" WHERE EXISTS(SELECT * FROM Stages WHERE Stages.VacancyId = @vacancyId");
-            candidateCountSql.Append(" AND EXISTS(SELECT * FROM CandidateToStages");
-            candidateCountSql.Append(" WHERE CandidateToStages.CandidateId = VacancyCandidates.Id ");
-            candidateCountSql.Append(" AND CandidateToStages.StageId = Stages.Id AND CandidateToStages.DateRemoved IS NULL))");
-            IEnumerable<VacancyTable> vacancyTables = await connection
-            .QueryAsync<VacancyTable>(vacancySql.ToString(), 
-                param: new 
+
+            var sql =
+            @"
+            SELECT distinct v.*,p.*,u.*,ur.*,r.*, CandidateCount.count
+            FROM 
+                Vacancies as v left outer join
+                Projects p on p.Id = v.ProjectId inner join
+                Users U on u.Id = v.ResponsibleHrId inner join
+                UserToRoles ur on ur.UserId = u.Id inner join
+                Roles r on r.Id = ur.RoleId
+            cross apply
+            (
+                SELECT COUNT(*) as count FROM VacancyCandidates vc
+                WHERE EXISTS(SELECT * FROM Stages WHERE Stages.VacancyId = v.Id
+                AND EXISTS(SELECT * FROM CandidateToStages
+                WHERE CandidateToStages.CandidateId = vc.Id
+                AND CandidateToStages.StageId = Stages.Id AND CandidateToStages.DateRemoved IS NULL))
+            ) as CandidateCount
+            WHERE 
+            v.CompanyId = @id AND p.IsDeleted = 0";
+
+            var vacancyDictionary = new Dictionary<string, VacancyTable>();
+            var userToRolesDictionary = new Dictionary<string, UserToRole>();
+
+            var vacancy = (await connection.QueryAsync<Vacancy, Project, User, UserToRole, Role, int, VacancyTable>(
+                sql,
+                (vacancy, project, user, userroles, role, vacancyCount) =>
                 {
-                    CompanyId = companyId
-                }
-            );
-            foreach (var vacancyTable in vacancyTables){
-                vacancyTable.CandidatesAmount = (await connection.QueryAsync<int>(candidateCountSql.ToString(), 
-                    param: new 
+
+                    if (!vacancyDictionary.TryGetValue(vacancy.Id, out VacancyTable vacancyEntry))
                     {
-                        vacancyId = vacancyTable.Id
+                        vacancyEntry = _mapper.Map<VacancyTable>(vacancy);
+
+                        vacancyEntry.Project = project;
+                        vacancyEntry.ResponsibleHr = user;
+                        vacancyEntry.ResponsibleHr.UserRoles = new LinkedList<UserToRole>();
+                        vacancyEntry.CandidatesAmount = vacancyCount;
+                        vacancyDictionary.Add(vacancyEntry.Id, vacancyEntry);
                     }
-                )).First();
-                string hrSql = "SELECT * FROM Users WHERE Users.Id = @responsibleId";
-                vacancyTable.ResponsibleHr = (await connection.QueryAsync<User>(hrSql, param: new {
-                    responsibleId = vacancyTable.ResponsibleHrId
-                })).FirstOrDefault();
-                string projectSql = "SELECT * FROM Projects WHERE Projects.Id = @projectId";
-                vacancyTable.Project = (await connection.QueryAsync<Project>(projectSql, param: new {
-                    projectId = vacancyTable.ProjectId
-                })).FirstOrDefault();
-            }
-            // 
+
+                    if (!vacancyEntry.ResponsibleHr.UserRoles.Any(x => x.RoleId == userroles.RoleId && x.UserId == userroles.UserId))
+                        vacancyEntry.ResponsibleHr.UserRoles.Add(userroles);
+
+
+                    if (role != null)
+                    {
+                        userroles.Role = role;
+                    }
+
+                    return vacancyEntry;
+                },
+                new
+                {
+                    id = companyId
+                },
+                    splitOn: "Id,Id,Id,Id,Id,Id,count"
+                ));
+
             await connection.CloseAsync();
-            return vacancyTables;
+
+            var res = vacancyDictionary.Values.ToList();
+
+            return res;
         }
 
         public async Task LoadRolesAsync(User user)
