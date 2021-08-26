@@ -2,13 +2,13 @@
   <app-spinner [loading]="loading"></app-spinner>
   <ng-container *ngIf="!loading">
     <div class="avatar-col">
-      <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />
+      <img class="avatar" src="../../../../assets/images/defaultAvatar.png" (click)="enlargeAvatar()" />
     </div>
     <div class="content-col">
       <div class="top block">
         <h2>{{ data.fullName }}</h2>
         <p class="only-color meta">
-          <span>Added by HR </span>
+          <span>Added by </span>
           <a routerLink="/profile/{{ data.hrWhoAddedId }}">{{ data.hrWhoAddedFullName }}</a>
           <span> {{ data.dateAdded | timezone }}</span>
         </p>
@@ -40,7 +40,7 @@
       </div>
       <mat-divider *ngIf="data.cv"></mat-divider>
       <div class="block" *ngIf="data.stagesHistory.length">
-        <h3>Activity</h3>
+        <h3>Timeline</h3>
         <div class="activity">
           <div class="activity-item" *ngFor="let item of data.stagesHistory">
             <h4>{{ item.stageName }}</h4>

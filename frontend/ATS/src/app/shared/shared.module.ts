@@ -42,7 +42,12 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UserRoleDirective } from './directives/user-role.directive';
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
 import { TimezonePipe } from './pipes/timezone-pipe';
+import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
 
 @NgModule({
   exports: [
@@ -86,7 +91,10 @@ import { TimezonePipe } from './pipes/timezone-pipe';
     MatMenuModule,
     TagsEditComponent,
     DeleteConfirmComponent,
+    ClipboardModule,
+    UserProfileComponent,
     TimezonePipe,
+    AvatarModalComponent,
   ],
   imports: [
     MatButtonModule,
@@ -121,6 +129,7 @@ import { TimezonePipe } from './pipes/timezone-pipe';
     MatAutocompleteModule,
     MatCheckboxModule,
     MatMenuModule,
+    ClipboardModule,
   ],
   providers: [HttpClientService],
   declarations: [
@@ -137,7 +146,11 @@ import { TimezonePipe } from './pipes/timezone-pipe';
     AddCandidateModalComponent,
     TagsEditComponent,
     DeleteConfirmComponent,
+    UserProfileComponent,
+    UserRoleDirective,
+    CopyClipboardDirective,
     TimezonePipe,
+    AvatarModalComponent,
   ],
 })
 export class SharedModule {}
