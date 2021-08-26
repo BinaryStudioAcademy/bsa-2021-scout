@@ -17,6 +17,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from './components/button/button.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -40,6 +41,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 
@@ -72,6 +74,7 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     MatCheckboxModule,
     MatChipsModule,
     MatExpansionModule,
+    MatGridListModule,
     TopicComponent,
     FileInputComponent,
     MenuComponent,
@@ -83,6 +86,7 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     MatPaginatorModule,
     MatSortModule,
     MatMenuModule,
+    MatTooltipModule,
     TagsEditComponent,
     DeleteConfirmComponent,
   ],
@@ -108,6 +112,7 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     MatCheckboxModule,
     MatChipsModule,
     MatExpansionModule,
+    MatGridListModule,
     BrowserAnimationsModule,
     BrowserModule,
     MatSelectModule,
@@ -119,6 +124,7 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     MatAutocompleteModule,
     MatCheckboxModule,
     MatMenuModule,
+    MatTooltipModule,
   ],
   providers: [HttpClientService],
   declarations: [

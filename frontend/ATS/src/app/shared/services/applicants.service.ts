@@ -7,6 +7,7 @@ import { HttpClientService } from './http-client.service';
 import { MarkedApplicant } from 'src/app/shared/models/applicants/marked-applicant';
 import { GetShortApplicant } from '../models/applicants/get-short-applicant';
 import { FileUrl } from '../models/file/file';
+import { CsvApplicant } from 'src/app/applicants/models/CsvApplicant';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantsService {
@@ -52,10 +53,14 @@ export class ApplicantsService {
     return this.httpClient.getRequest<FileUrl>(`/applicants/${applicantId}/cv`);
   }
 
-  public createApplicantsFromCSV(file: File) {
+  public getApplicantsFromCSV(file: File) {
     const fd = new FormData();
     fd.append('file', file, file.name);
-    return this.httpClient.postFullRequest<any>('/applicants/csv', fd);
+    return this.httpClient.postFullRequest<CsvApplicant[]>('/applicants/csv', fd);
+  }
+
+  public addRangeApplicants(applicants: CreateApplicant[]) {
+    return this.httpClient.postFullRequest<Applicant[]>('/applicants/range', applicants);
   }
 
 }

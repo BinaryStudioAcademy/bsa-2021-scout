@@ -46,27 +46,27 @@ namespace Infrastructure.Repositories.Read
 
         public async Task<IEnumerable<Applicant>> GetCompanyApplicants()
         {
-           var companyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
+            var companyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
 
-           SqlConnection connection = _connectionFactory.GetSqlConnection();
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
 
-           string sql = @$"SELECT a.*, fi.* FROM {_tableName} a
+            string sql = @$"SELECT a.*, fi.* FROM {_tableName} a
                            LEFT JOIN FileInfos fi ON a.CvFileInfoId = fi.Id
                            WHERE a.CompanyId = @companyId";
 
-           await connection.OpenAsync();
-           var entities = await connection.QueryAsync<Applicant, FileInfo, Applicant>(sql,
-           (a, fi) =>
-           {
-               a.CvFileInfo = fi;
-               return a;
-           },
-           splitOn: "Id,Id",
-           param: new { companyId });
+            await connection.OpenAsync();
+            var entities = await connection.QueryAsync<Applicant, FileInfo, Applicant>(sql,
+            (a, fi) =>
+            {
+                a.CvFileInfo = fi;
+                return a;
+            },
+            splitOn: "Id,Id",
+            param: new { companyId });
 
-           await connection.CloseAsync();
+            await connection.CloseAsync();
 
-           return entities;
+            return entities;
         }
 
         public async Task<IEnumerable<ApplicantVacancyInfo>> GetApplicantVacancyInfoListAsync(string applicantId)
@@ -189,6 +189,25 @@ namespace Infrastructure.Repositories.Read
             await connection.CloseAsync();
 
             return applicant;
+        }
+
+        public override async Task<IEnumerable<Applicant>> GetEnumerableAsync()
+        {
+            string companyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
+
+            var connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
+            string sql = @$"SELECT * FROM {_tableName} 
+                            WHERE Applicants.CompanyId = @companyId";
+
+            var entities = await connection.QueryAsync<Applicant>(sql,
+                new
+                {
+                    companyId = @companyId
+                });
+            await connection.CloseAsync();
+
+            return entities;
         }
     }
 }

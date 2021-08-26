@@ -29,6 +29,8 @@ import {
   ApplicationPoolComponent,
 } from '../pools/components/application-pool/application-pool.component';
 import { PoolsRoutingModule } from '../pools/pools-routing.module';
+import { ApplicantCsvListComponent } 
+  from '../applicants/components/applicant-csv-list/applicant-csv-list.component';
 
 const routes: Routes = [
   {
@@ -94,9 +96,19 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: AppRoute.Pools,
+        component: ApplicationPoolComponent,
+        pathMatch: 'full',
+      },
+      {
         path: AppRoute.UserManagement,
         component: UsersTableComponent,
         canActivate: [HrLeadGuard],
+        pathMatch: 'full',
+      },
+      {
+        path: AppRoute.ApplicantsCsv,
+        component: ApplicantCsvListComponent,
         pathMatch: 'full',
       },
       { path: '**', redirectTo: AppRoute.Home },

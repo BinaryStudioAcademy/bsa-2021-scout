@@ -15,7 +15,7 @@ namespace Infrastructure.Repositories.Write
             _context = context;
         }
 
-        public async Task<ICollection<Applicant>> CreateRangeAsync(ICollection<Applicant> applicants)
+        public async Task<IEnumerable<Applicant>> CreateRangeAsync(IEnumerable<Applicant> applicants)
         {
             _context.AddRange(applicants);
             await _context.SaveChangesAsync();

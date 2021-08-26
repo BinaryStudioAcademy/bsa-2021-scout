@@ -38,8 +38,7 @@ export class ApplicantsHeadComponent {
 
   public showUploadCSVDialog(): void{
     const dialogRef = this.dialog.open(ApplicantsUploadCsvComponent, {
-      width: '532px',
-      height: '38vh',
+      width: '600px',
       panelClass: 'applicants-csv-modal',
       autoFocus: false,
     })

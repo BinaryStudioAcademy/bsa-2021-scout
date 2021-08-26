@@ -15,6 +15,10 @@ import { ApplicantControlComponent }
   from './components/applicant-control/applicant-control.component';
 import { ApplicantsUploadCsvComponent } 
   from './components/applicants-upload-csv/applicants-upload-csv.component';
+import { ApplicantUpdateCsvComponent } 
+  from './components/applicant-update-csv/applicant-update-csv.component';
+import { ApplicantCsvListComponent } 
+  from './components/applicant-csv-list/applicant-csv-list.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +28,8 @@ import { ApplicantsUploadCsvComponent }
     ApplicantsHeadComponent,
     ApplicantControlComponent,
     ApplicantsUploadCsvComponent,
+    ApplicantUpdateCsvComponent,
+    ApplicantCsvListComponent,
   ],
   imports: [
     BrowserModule,
