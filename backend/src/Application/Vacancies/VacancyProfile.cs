@@ -23,6 +23,8 @@ namespace Application.Vacancies
             CreateMap<VacancyTable, VacancyTableDto>();
             CreateMap<Vacancy, ShortVacancyWithStagesDto>();
             CreateMap<Vacancy, VacancyTableDto>();
+
+            CreateMap<Vacancy, VacancyTable>();
         }
     }
 }
