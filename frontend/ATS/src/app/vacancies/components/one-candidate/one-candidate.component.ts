@@ -34,10 +34,6 @@ export class OneCandidateComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  public formatDate(date: Date): string {
-    return moment(date).format('DD[.]MM[.]YYYY');
-  }
-
   private loadData(id: string): void {
     this.service
       .getFull(id, this.vacancyId)
