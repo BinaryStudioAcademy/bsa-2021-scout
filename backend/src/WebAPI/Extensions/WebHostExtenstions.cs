@@ -252,6 +252,7 @@ namespace WebAPI.Extensions
         {
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            context.UserToRoles.RemoveRange(context.UserToRoles);
             var usersToRoles = new List<UserToRole>
             {
                 new UserToRole { UserId = "1", RoleId = "1"},

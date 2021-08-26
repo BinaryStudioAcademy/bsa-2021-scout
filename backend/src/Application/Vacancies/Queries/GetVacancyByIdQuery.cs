@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Queries;
@@ -47,9 +48,9 @@ namespace Application.Vacancies.Queries
         {
             var tagsQueryTask = await _mediator.Send(new GetElasticDocumentByIdQuery<ElasticEnitityDto>(query.Id));
             var vacancy = await _repository.GetByCompanyIdAsync(query.Id);
-            vacancy.Stages = (ICollection<Stage>)(await _stageRepo.GetByVacancyId(query.Id));
-            var actions = (List<Action>) await _readActionRepository.GetEnumerableAsync();
-            foreach(var stage in vacancy.Stages)
+            vacancy.Stages = (await _stageRepo.GetByVacancyId(query.Id)).ToList();
+            var actions = (List<Action>)await _readActionRepository.GetEnumerableAsync();
+            foreach (var stage in vacancy.Stages)
             {
                 stage.Actions = actions.FindAll(x => x.StageId == stage.Id);
             }

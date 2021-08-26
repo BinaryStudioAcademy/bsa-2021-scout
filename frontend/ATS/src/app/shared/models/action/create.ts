@@ -1,5 +1,4 @@
-export interface Action {
-  id: string;
+export interface ActionCreate {
   name: string;
   actionType: number;
   stageId: string;

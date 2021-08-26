@@ -22,6 +22,7 @@ export class FileInputComponent implements OnInit {
   @Input() public default?: string[];
 
   @Output() public upload: EventEmitter<File[]> = new EventEmitter<File[]>();
+
   @Output() public removeDefault: EventEmitter<string[]> = new EventEmitter<
   string[]
   >();
@@ -108,6 +109,7 @@ export class FileInputComponent implements OnInit {
     }
 
     this.limitFiles();
+    this.realInput.nativeElement.value = ''; // Reset value
     this.upload.emit(this.chosen);
   }
 
@@ -132,6 +134,20 @@ export class FileInputComponent implements OnInit {
   private limitFiles(): void {
     if (this.single) {
       this.chosen.slice(0, 1);
+    } else {
+      const distinct: File[] = [];
+      const detectedNames: string[] = [];
+
+      this.chosen.forEach((file) => {
+        if (detectedNames.includes(file.name)) {
+          return;
+        }
+
+        distinct.push(file);
+        detectedNames.push(file.name);
+      });
+
+      this.chosen = distinct;
     }
   }
 

@@ -2,19 +2,19 @@ import { Observable, Subject } from 'rxjs';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { UpdateApplicantComponent } from '../update-applicant/update-applicant.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { ViewableApplicant } from 'src/app/shared/models/applicants/viewable-applicant';
+
 import { ActivatedRoute } from '@angular/router';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
+
 
 @Component({
   selector: 'app-applicants',
@@ -47,11 +47,11 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
-    private readonly dialog: MatDialog,
     private readonly notificationsService: NotificationService,
     private readonly applicantsService: ApplicantsService,
     private readonly route: ActivatedRoute,
     private followService: FollowedService,
+
   ) {}
 
   public ngOnInit(): void {
