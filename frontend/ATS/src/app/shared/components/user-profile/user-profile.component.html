@@ -7,14 +7,14 @@
     <img class="profile-image" alt="User profile photo" src="{{user.image}}" onError="this.src='../../../../assets/images/defaultAvatar.png'" (click) = "$event.stopPropagation()">    
     <div class="profile-content" (click) = "$event.stopPropagation()">
         <h1>{{user.firstName}} {{user.lastName}}</h1>
-        <div *ngFor="let role of user.roles">
-            <span class="user-role"  appUserRole value="{{role.name}}">{{role.name}}</span>
+        <div class="roles-grid">
+            <span class="user-role" *ngFor="let role of user.roles"  appUserRole value="{{role.name}}">{{role.name}}</span>
+        </div>
             <div class="contacts">
                 <h2 *ngIf="user.phone || user.skype" >Contacts:</h2>
                 <h3 role="button" [copy-clipboard]="this.user.phone || ''" (copied)="notifyPhone($event)" *ngIf="user.phone"><mat-icon>phone</mat-icon>{{user.phone}}</h3>
                 <h3 role="button" [copy-clipboard]="this.user.skype || ''" (copied)="notifySkype($event)" *ngIf="user.skype"><span class="iconify" data-icon="mdi:skype"></span>{{user.skype}}</h3>
             </div>
-        </div>
     </div>
 </mat-menu>
 

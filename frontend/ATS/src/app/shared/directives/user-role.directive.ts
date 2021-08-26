@@ -12,10 +12,10 @@ export class UserRoleDirective implements OnInit {
     
   }
   ngOnInit(){
-    if(this.value == "HR")
+    if(this.value == "HrUser")
     {
       this.color = '#ee2a64';
-    }else if(this.value == "HR Lead"){
+    }else if(this.value == "HrLead"){
       this.color = '#291965';
     }
     this.el.nativeElement.style.backgroundColor = this.color;

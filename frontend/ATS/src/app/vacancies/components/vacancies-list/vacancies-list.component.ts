@@ -14,8 +14,11 @@ export class VacanciesListComponent{
     firstName: "Hanna",
     lastName: "Roberts",
     roles: [{
-      name: "HR Lead",
+      name: "HrLead",
       key: 1
+    },{
+      name: "HrUser",
+      key: 2
     }],
     birthDate:new Date(18,1,2000),
     email:'somemail@gmail.com',

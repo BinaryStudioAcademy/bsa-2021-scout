@@ -27,7 +27,7 @@ h1{
 
 
 .user-role{
-    width:auto;
+    width: fit-content;
     height:auto;
     padding: 2px 15px;
     border-radius: 6px;
@@ -63,4 +63,10 @@ h1{
         color:#ee2a64;
         cursor: pointer;
     }
+    
 }
+    .roles-grid{
+        display: flex;
+    grid-gap: 5px;
+    flex-wrap: wrap;
+    }
