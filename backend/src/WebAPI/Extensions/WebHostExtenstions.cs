@@ -43,6 +43,7 @@ namespace WebAPI.Extensions
             await ApplyStageSeeding(host);
             await ApplyVacancyCandidateSeeding(host);
             await ApplyCandidateToStagesSeeding(host);
+            await ApplyReviewSeeding(host);
 
             return host;
         }
@@ -289,6 +290,28 @@ namespace WebAPI.Extensions
                     context.Roles.Update(role);
                 else
                     await context.Roles.AddAsync(role);
+                await context.SaveChangesAsync();
+            }
+
+            return host;
+        }
+
+        public async static Task<IHost> ApplyReviewSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+            foreach (var review in ReviewSeeds.GetReviews())
+            {
+                if (await context.Reviews.AnyAsync(r => r.Id == review.Id))
+                {
+                    context.Reviews.Update(review);
+                }
+                else
+                {
+                    await context.Reviews.AddAsync(review);
+                }
+
                 await context.SaveChangesAsync();
             }
 
