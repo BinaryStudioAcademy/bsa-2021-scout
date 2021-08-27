@@ -9,7 +9,7 @@ using Application.CandidateToStages.Dtos;
 
 namespace Application.CandidateToStages.Queries
 {
-    public class GetRecentActivityQuery : IRequest<IEnumerable<CandidateToStageRecentActivityDto>>
+    public class GetRecentActivityQuery : IRequest<RecentActivityInfoDto>
     {
         public string UserId { get; set; }
         public int Page { get; set; }
@@ -22,7 +22,7 @@ namespace Application.CandidateToStages.Queries
     }
 
     public class GetRecentActivityQueryHandler
-        : IRequestHandler<GetRecentActivityQuery, IEnumerable<CandidateToStageRecentActivityDto>>
+        : IRequestHandler<GetRecentActivityQuery, RecentActivityInfoDto>
     {
         private readonly ICandidateToStageReadRepository _repository;
         private readonly IMapper _mapper;
@@ -33,12 +33,12 @@ namespace Application.CandidateToStages.Queries
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CandidateToStageRecentActivityDto>> Handle(
+        public async Task<RecentActivityInfoDto> Handle(
             GetRecentActivityQuery query,
             CancellationToken _
         )
         {
-            IEnumerable<CandidateToStage> candidateToStages =
+            var (candidateToStages, isEnd) =
                 await _repository.GetRecentAsync(query.UserId, query.Page);
 
             IEnumerable<CandidateToStageRecentActivityDto> dtos = _mapper
@@ -46,7 +46,13 @@ namespace Application.CandidateToStages.Queries
                     candidateToStages
                 );
 
-            return dtos;
+            RecentActivityInfoDto info = new RecentActivityInfoDto
+            {
+                IsEnd = isEnd,
+                Data = dtos,
+            };
+
+            return info;
         }
     }
 }

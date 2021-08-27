@@ -7,6 +7,6 @@ namespace Domain.Interfaces.Read
 {
     public interface ICandidateToStageReadRepository : IReadRepository<CandidateToStage>
     {
-        Task<IEnumerable<CandidateToStage>> GetRecentAsync(string userId, int page = 1);
+        Task<(IEnumerable<CandidateToStage>, bool)> GetRecentAsync(string userId, int page = 1);
     }
 }

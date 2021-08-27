@@ -25,7 +25,7 @@ namespace Infrastructure.Repositories.Read
             _userRepository = userRepository;
         }
 
-        public async Task<IEnumerable<CandidateToStage>> GetRecentAsync(string userId, int page = 1)
+        public async Task<(IEnumerable<CandidateToStage>, bool)> GetRecentAsync(string userId, int page = 1)
         {
             User user = await _userRepository.GetAsync(userId);
 
@@ -50,8 +50,16 @@ namespace Infrastructure.Repositories.Read
                 LEFT JOIN Applicants ON Applicants.Id = VacancyCandidates.ApplicantId
                 LEFT JOIN Users ON Users.Id = CandidateToStages.MoverId
                 WHERE Users.CompanyId = @companyId
+                ORDER BY CandidateToStages.DateAdded DESC
                 OFFSET @skip ROWS
                 FETCH NEXT @take ROWS ONLY
+            ";
+
+            string countSql = @"
+                SELECT COUNT(*)
+                FROM CandidateToStages
+                LEFT JOIN Users ON Users.Id = CandidateToStages.MoverId
+                WHERE Users.CompanyId = @companyId
             ";
 
             await connection.OpenAsync();
@@ -72,9 +80,11 @@ namespace Infrastructure.Repositories.Read
                     splitOn: "Id,Id,Id,Id"
                 );
 
+            int count = await connection.QueryFirstAsync<int>(countSql, new { companyId = user.CompanyId });
+
             await connection.CloseAsync();
 
-            return candidateToStages;
+            return (candidateToStages, (skip + RECENT_PAGE_SIZE) >= count);
         }
     }
 }

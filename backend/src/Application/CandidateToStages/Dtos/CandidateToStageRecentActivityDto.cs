@@ -1,3 +1,4 @@
+using System;
 using Application.Common.Models;
 
 namespace Application.CandidateToStages.Dtos
@@ -10,5 +11,6 @@ namespace Application.CandidateToStages.Dtos
         public string CandidateName { get; set; }
         public string StageId { get; set; }
         public string StageName { get; set; }
+        public DateTime DateAdded { get; set; }
     }
 }

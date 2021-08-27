@@ -8,24 +8,41 @@ import { LoginBoxComponent } from './components/login-box/login-box.component';
 import { RegistrationBoxComponent } from './components/registration-box/registration-box.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ResetPasswordGuard } from './guards/reset-password.guard';
-import { ForgotPasswordDialogComponent }
-  from './components/forgot-password-dialog/forgot-password-dialog.component';
-import { ResetPasswordBoxComponent }
-  from './components/reset-password-box/reset-password-box.component';
 
-// This line can't be shorter
+import {
+  ForgotPasswordDialogComponent,
+} from './components/forgot-password-dialog/forgot-password-dialog.component';
+
+import {
+  ResetPasswordBoxComponent,
+} from './components/reset-password-box/reset-password-box.component';
 // eslint-disable-next-line
 import { LoginRegistCommonComponent } from './components/login-regist-common/login-regist-common.component';
 import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
-import { SuccessfulRegistrationComponent }
-  from './components/successful-registration/successful-registration.component';
+
+import {
+  SuccessfulRegistrationComponent,
+} from './components/successful-registration/successful-registration.component';
+
 import { UserDataService } from './services/user-data.service';
 import { UsersTableComponent } from './components/hr-lead/users-table/users-table.component';
 import { LoggedInUserGuard } from './guards/logged-in-user.guard';
-import { ResendEmailAfterLoginComponent } from
-  './components/resend-email-after-login/resend-email-after-login.component';
-import { SendingRegisterLinkDialogComponent } from 
-  './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
+
+import {
+  ResendEmailAfterLoginComponent, 
+} from './components/resend-email-after-login/resend-email-after-login.component';
+
+import {
+  SendingRegisterLinkDialogComponent,
+} from './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
+
+import { RecentActivityComponent } from './components/recent-activity/recent-activity.component';
+import { HomeComponent } from './components/home/home.component';
+import { VacancyCardComponent } from '../vacancies/components/vacancy-card/vacancy-card.component';
+
+import {
+  VacancyWidgetComponent,
+} from '../vacancies/components/vacancy-widget/vacancy-widget.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +61,10 @@ import { SendingRegisterLinkDialogComponent } from
     ResendEmailAfterLoginComponent,
     SuccessfulRegistrationComponent,
     SendingRegisterLinkDialogComponent,
+    HomeComponent,
+    VacancyCardComponent,
+    VacancyWidgetComponent,
+    RecentActivityComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
@@ -53,4 +74,4 @@ import { SendingRegisterLinkDialogComponent } from
     LoggedInUserGuard,
   ],
 })
-export class UsersModule { }
+export class UsersModule {}
