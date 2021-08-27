@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using Application.Common.Exceptions;
+using Application.MailAttachments.Commands;
 
 namespace Application.MailTemplates.Commands
 {
@@ -27,20 +28,28 @@ namespace Application.MailTemplates.Commands
     {
         protected readonly IWriteRepository<MailTemplate> _writeRepository;
         protected readonly IReadRepository<MailTemplate> _readRepository;
+        protected readonly ISender _mediator;
 
         public DeleteMailTemplateCommandHandler(IWriteRepository<MailTemplate> writeRepository,
-            IReadRepository<MailTemplate> readRepository)
+            IReadRepository<MailTemplate> readRepository,
+            ISender mediator)
         {
             _writeRepository = writeRepository;
             _readRepository = readRepository;
+            _mediator = mediator;
         }
 
         public async Task<Unit> Handle(DeleteMailTemplateCommand command, CancellationToken cancellationToken)
         {
-            var mailTempale = await _readRepository.GetAsync(command.Id);
-            if(mailTempale == null)
+            var mailTemplate = await _readRepository.GetAsync(command.Id);
+            if (mailTemplate == null)
             {
                 throw new NotFoundException(typeof(MailTemplate), command.Id);
+            }
+            foreach (var mailAttachment in mailTemplate.MailAttachments)
+            {
+                var deleteMailAttachmentFileCommand = new DeleteMailAttachmentFileCommand(mailAttachment.Key);
+                await _mediator.Send(deleteMailAttachmentFileCommand);
             }
 
             await _writeRepository.DeleteAsync(command.Id);

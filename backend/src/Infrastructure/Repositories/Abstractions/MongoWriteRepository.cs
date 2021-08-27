@@ -19,7 +19,8 @@ namespace Infrastructure.Repositories.Abstractions
 
         public async Task<Entity> CreateAsync(T entity)
         {
-            entity.Id = ObjectId.GenerateNewId().ToString();
+            entity.Id = Guid.NewGuid().ToString();
+            //entity.Id = ObjectId.GenerateNewId().ToString();
 
             await _connectionFactory
                 .GetMongoConnection()

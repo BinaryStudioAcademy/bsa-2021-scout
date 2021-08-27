@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Application.Common.Commands;
 using Domain.Entities;
 using Application.MailTemplates.Commands;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using Application.MailAttachments.Dtos;
 
 namespace WebAPI.Controllers
 {
@@ -31,6 +34,20 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<MailTemplateDto>> CreateMailTempale([FromBody] MailTemplateCreateDto mailTemplateCreateDto)
         {
+            //MailTemplateCreateDto mailTemplateCreateDto = new MailTemplateCreateDto() { 
+            //    Html ="sdadasd",
+            //    Slug = "asdasd",
+            //    Subject ="dsdsd",
+            //    MailAttachments = new List<MailAttachmentCreateDto>()
+            //    {
+            //        new MailAttachmentCreateDto()
+            //        {
+            //            MailTemplateId = "dasda",
+            //            File = File,
+            //            Name = File.FileName
+            //        }
+            //    }
+            //};
             var query = new CreateMailTemplateCommand(mailTemplateCreateDto);
             return Ok(await Mediator.Send(query));
         }

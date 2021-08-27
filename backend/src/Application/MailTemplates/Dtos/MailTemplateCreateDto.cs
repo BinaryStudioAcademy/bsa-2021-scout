@@ -1,4 +1,5 @@
 ﻿using Application.Common.Models;
+using Application.MailAttachments.Dtos;
 using Domain.Entities;
 using Domain.Enums;
 using FluentValidation;
@@ -16,7 +17,7 @@ namespace Application.MailTemplates.Dtos
         public string Subject { get; set; }
         public string Html { get; set; }
         public int VisibilitySetting { get; set; }
-        public ICollection<MailAttachment> MailAttachments { get; set; }
+        public ICollection<MailAttachmentCreateDto> MailAttachments { get; set; }
     }
 
     public class MailTemplateCreateDtoValidator : AbstractValidator<MailTemplateCreateDto>

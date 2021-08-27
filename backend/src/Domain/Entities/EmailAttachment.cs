@@ -11,7 +11,7 @@ namespace Domain.Entities
     {
         public string MailTemplateId { get; set; }
         public string Name { get; set; }
-        public string File { get; set; }
+        public string Key { get; set; }
 
     }
 }

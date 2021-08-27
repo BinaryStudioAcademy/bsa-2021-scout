@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Application.MailTemplates.Commands.Create
 {
-    public class CreateMailAttachmentCommandValidator : AbstractValidator<CreateMailAttachmentCommand>
+    public class UploadMailAttachmentFileValidator : AbstractValidator<UploadMailAttachmentFileCommand>
     {
-        public CreateMailAttachmentCommandValidator()
+        public UploadMailAttachmentFileValidator()
         {
             RuleFor(x => x.MailAttachmentDto).NotNull().SetValidator(new MailAttachmentCreateDtoValidator());
         }

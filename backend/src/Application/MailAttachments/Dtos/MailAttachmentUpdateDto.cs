@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace Application.MailAttachments.Dtos
         public string? Id { get; set; }
         public string MailTemplateId { get; set; }
         public string Name { get; set; }
-        public string File { get; set; }
+        public string Key { get; set; }
+        public IFormFile File { get; set; }
     }
     public class MailAttachmentUpdateDtoValidator : AbstractValidator<MailAttachmentUpdateDto>
     {
