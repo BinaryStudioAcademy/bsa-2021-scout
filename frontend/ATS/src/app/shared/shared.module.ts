@@ -35,8 +35,8 @@ import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
-import { AddCandidateModalComponent }
-  from './components/modal-add-candidate/modal-add-candidate.component';
+// eslint-disable-next-line
+import { AddCandidateModalComponent } from './components/modal-add-candidate/modal-add-candidate.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -44,6 +44,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UserRoleDirective } from './directives/user-role.directive';
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
+import { TimezonePipe } from './pipes/timezone-pipe';
+import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
 
 @NgModule({
   exports: [
@@ -89,6 +95,10 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     MatTooltipModule,
     TagsEditComponent,
     DeleteConfirmComponent,
+    ClipboardModule,
+    UserProfileComponent,
+    TimezonePipe,
+    AvatarModalComponent,
   ],
   imports: [
     MatButtonModule,
@@ -125,6 +135,7 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     MatCheckboxModule,
     MatMenuModule,
     MatTooltipModule,
+    ClipboardModule,
   ],
   providers: [HttpClientService],
   declarations: [
@@ -141,6 +152,11 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     AddCandidateModalComponent,
     TagsEditComponent,
     DeleteConfirmComponent,
+    UserProfileComponent,
+    UserRoleDirective,
+    CopyClipboardDirective,
+    TimezonePipe,
+    AvatarModalComponent,
   ],
 })
-export class SharedModule { }
+export class SharedModule {}

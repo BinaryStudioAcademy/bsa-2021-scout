@@ -2,17 +2,19 @@ import { Observable, Subject } from 'rxjs';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { UpdateApplicantComponent } from '../update-applicant/update-applicant.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { ViewableApplicant } from 'src/app/shared/models/applicants/viewable-applicant';
+
 import { ActivatedRoute } from '@angular/router';
+import { FollowedService } from 'src/app/shared/services/followedService';
+import { EntityType } from 'src/app/shared/enums/entity-type.enum';
+
 
 @Component({
   selector: 'app-applicants',
@@ -35,7 +37,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public searchValue = '';
   public isFollowedPage = false;
   public loading: boolean = true;
-
+  private followedSet: Set<string> = new Set();
   @ViewChild(MatPaginator) public paginator: MatPaginator | undefined =
   undefined;
   @ViewChild(StylePaginatorDirective) public directive:
@@ -45,13 +47,19 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
-    private readonly dialog: MatDialog,
     private readonly notificationsService: NotificationService,
     private readonly applicantsService: ApplicantsService,
     private readonly route: ActivatedRoute,
+    private followService: FollowedService,
+
   ) {}
 
   public ngOnInit(): void {
+    this.followService.getFollowed(EntityType.Applicant)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data=>
+        data.forEach(item=> this.followedSet.add(item.entityId)),
+      );
     this.getApplicants();
   }
 
@@ -64,7 +72,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           arr.map((a) => {
             let viewableApplicant = a as unknown as ViewableApplicant;
             
-            viewableApplicant.isFollowed = false;
+            viewableApplicant.isFollowed = this.followedSet.has(a.id);
             viewableApplicant.isShowAllTags = false;
 
             if (!a.tags) {
@@ -210,7 +218,19 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     const applicantIndex = this.cashedData.findIndex(a => a.id === applicantId);
     this.cashedData[applicantIndex].isFollowed = !this.cashedData[applicantIndex].isFollowed;
     this.dataSource.data = this.cashedData;
-
+    if(this.cashedData[applicantIndex].isFollowed){
+      this.followService.createFollowed(
+        {
+          entityId: this.cashedData[applicantIndex].id,
+          entityType: EntityType.Applicant,
+        },
+      ).subscribe();
+    }
+    else{
+      this.followService.deleteFollowed(
+        EntityType.Applicant, this.cashedData[applicantIndex].id,
+      ).subscribe();
+    }
     if (this.isFollowedPage) {
       this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
     }

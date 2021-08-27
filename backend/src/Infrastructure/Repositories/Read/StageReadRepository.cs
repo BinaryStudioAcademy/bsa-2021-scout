@@ -9,6 +9,7 @@ using Domain.Entities;
 using Application.Common.Exceptions;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Repositories.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.Repositories.Read
 {
@@ -145,11 +146,101 @@ namespace Infrastructure.Repositories.Read
             SqlConnection connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
 
-            string sql = $@"SELECT * FROM Stages 
-                            WHERE Stages.VacancyId = @vacancyId ";
-            var stages = await connection.QueryAsync<Stage>(sql, new { vacancyId = @vacancyId });
+            string sql = @"SELECT *
+                FROM Stages 
+                LEFT JOIN Reviews ON EXISTS(
+                    SELECT *
+                    FROM ReviewToStages
+                    WHERE ReviewToStages.StageId = Stages.Id AND ReviewToStages.ReviewId = Reviews.Id
+                )
+                WHERE Stages.VacancyId = @vacancyId
+            ";
+
+            Dictionary<string, Stage> stageDict = new();
+
+            IEnumerable<Stage> stages = await connection.QueryAsync<Stage, Review, Stage>(
+                sql,
+                (stage, review) =>
+                {
+                    Stage stageEntry = null;
+                    bool tookFromDict = true;
+
+                    if (!stageDict.TryGetValue(stage.Id, out stageEntry))
+                    {
+                        stageEntry = stage;
+                        stageEntry.ReviewToStages = new List<ReviewToStage>();
+                        stageDict.Add(stageEntry.Id, stageEntry);
+                        tookFromDict = false;
+                    }
+
+                    if (review != null)
+                    {
+                        stageEntry.ReviewToStages.Add(new ReviewToStage { Review = review });
+                    }
+
+                    return tookFromDict ? null : stage;
+                },
+                new { vacancyId = vacancyId },
+                splitOn: "Id"
+            );
+
             await connection.CloseAsync();
-            return stages;
+            return stages.Where(s => s != null).ToList();
+        }
+
+        public async Task<Stage> GetWithReviews(string id)
+        {
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
+
+            string sql = @"SELECT *
+                FROM Stages 
+                LEFT JOIN ReviewToStages ON ReviewToStages.StageId = Stages.Id
+                LEFT JOIN Reviews ON Reviews.Id = ReviewToStages.ReviewId
+                WHERE Stages.Id = @id
+            ";
+
+            Stage cachedStage = null;
+
+            IEnumerable<Stage> stages = await connection.QueryAsync<Stage, ReviewToStage, Review, Stage>(
+                sql,
+                (stage, reviewToStage, review) =>
+                {
+                    if (cachedStage == null)
+                    {
+                        cachedStage = stage;
+                        cachedStage.ReviewToStages = new List<ReviewToStage>();
+                    }
+
+                    if (reviewToStage != null && review != null)
+                    {
+                        reviewToStage.Review = review;
+                        cachedStage.ReviewToStages.Add(reviewToStage);
+                    }
+
+                    return cachedStage;
+                },
+                new { id = id },
+                splitOn: "Id"
+            );
+
+            await connection.CloseAsync();
+            return stages.First();
+        }
+
+        private class StageIdEqualityComparer : IEqualityComparer<Stage>
+        {
+            public bool Equals(Stage a, Stage b)
+            {
+                System.Console.WriteLine(a.Id + " " + b.Id);
+                return a.Id == b.Id;
+            }
+
+            public int GetHashCode(Stage obj)
+            {
+                System.Console.WriteLine(obj.Id);
+                return obj.GetHashCode();
+            }
         }
     }
 }

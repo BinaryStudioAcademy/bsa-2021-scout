@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/users/models/user';
 
 @Component({
   selector: 'app-vacancies-list',
@@ -6,6 +7,5 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./vacancies-list.component.scss'],
 })
 export class VacanciesListComponent{
-
   constructor() { }
 }

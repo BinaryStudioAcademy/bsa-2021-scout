@@ -31,6 +31,7 @@ import {
 import { PoolsRoutingModule } from '../pools/pools-routing.module';
 import { ApplicantCsvListComponent } 
   from '../applicants/components/applicant-csv-list/applicant-csv-list.component';
+import { UserProfileComponent } from '../shared/components/user-profile/user-profile.component';
 
 const routes: Routes = [
   {

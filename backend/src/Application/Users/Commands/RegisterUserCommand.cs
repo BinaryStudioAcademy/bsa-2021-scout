@@ -55,9 +55,7 @@ namespace Application.Users.Commands
                 throw new InvalidTokenException("register");
             }
 
-            Console.WriteLine(command.RegisterDto.UserRegisterDto.FirstName);
             var newUser = _mapper.Map<User>(command.RegisterDto.UserRegisterDto);
-            Console.WriteLine(newUser.FirstName);
 
             newUser.CompanyId = registerPermission.CompanyId;
             newUser.IsEmailConfirmed = false;
