@@ -32,4 +32,9 @@ export class PoolService {
       pool,
     );
   }
+  
+  public deletePool(id: string) {
+    return this.http.deleteFullRequest<ApplicantsPool>(
+      `${this.routePrefix}/${id}`);
+  }
 }
