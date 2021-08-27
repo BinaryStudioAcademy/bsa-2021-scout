@@ -1,6 +1,7 @@
 import { ShortCandidateReview } from '../candidate-reviews/short';
 import { CandidateToStageHistory } from '../candidate-to-stages/history';
 import { Model } from '../model';
+import { Tag } from '../tags/tag';
 
 export interface FullVacancyCandidate extends Model {
   hrWhoAddedId: string;
@@ -14,6 +15,7 @@ export interface FullVacancyCandidate extends Model {
   experience: number;
   experienceDescription: string;
   comments: string;
+  tags: Tag[];
   stagesHistory: CandidateToStageHistory[];
   reviews: ShortCandidateReview[];
   dateAdded: Date;

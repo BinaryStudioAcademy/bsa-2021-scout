@@ -29,6 +29,12 @@
             <mat-icon color="accent">email</mat-icon>
             <span>{{ data.email }}</span>
           </li>
+          <li *ngIf="data.tags.length > 0">
+            <mat-icon color="accent" class="text-icon">#</mat-icon>
+            <div class="tags">
+              <div class="tag" *ngFor="let tag of data.tags">{{ tag.tagName }}</div>
+            </div>
+          </li>
         </ul>
       </div>
       <mat-divider></mat-divider>
