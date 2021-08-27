@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Stages.Dtos;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Interfaces.Read;
 using Domain.Interfaces.Abstractions;
 using MediatR;
 
@@ -29,20 +28,23 @@ namespace Application.Stages.Commands
     public class EditVacancyStageCommandHandler : IRequestHandler<EditVacancyStageCommand, StageDto>
     {
         private readonly IWriteRepository<Stage> _writeStageRepository;
-        private readonly IReadRepository<Stage> _readStageRepository;
+        private readonly IStageReadRepository _readStageRepository;
         private readonly IReadRepository<Vacancy> _readVacancyRepository;
+        private readonly IWriteRepository<ReviewToStage> _reviewToStageWriteRepository;
         private readonly IMapper _mapper;
 
         public EditVacancyStageCommandHandler(
             IWriteRepository<Stage> writeStageRepository,
             IReadRepository<Vacancy> readVacancyRepository,
-            IReadRepository<Stage> readStageRepository,
+            IStageReadRepository readStageRepository,
+            IWriteRepository<ReviewToStage> reviewToStageWriteRepository,
             IMapper mapper
         )
         {
             _readVacancyRepository = readVacancyRepository;
             _writeStageRepository = writeStageRepository;
             _readStageRepository = readStageRepository;
+            _reviewToStageWriteRepository = reviewToStageWriteRepository;
             _mapper = mapper;
         }
 
@@ -54,16 +56,43 @@ namespace Application.Stages.Commands
                 throw new Exception("The stage's vacancy doesn't exist");
             }
 
-            var updateVacancy = _mapper.Map<Stage>(command.StageUpdate);
+            var updateStage = _mapper.Map<Stage>(command.StageUpdate);
 
-            var existedStage = await _readStageRepository.GetAsync(command.StageId);
-            existedStage.Name = updateVacancy.Name;
-            existedStage.Index = updateVacancy.Index;
-            existedStage.IsReviewable = updateVacancy.IsReviewable;
-            existedStage.Reviews = updateVacancy.Reviews;
-            existedStage.Actions = updateVacancy.Actions;
+            var existedStage = await _readStageRepository.GetWithReviews(command.StageId);
+            var existedRts = existedStage.ReviewToStages;
+            existedStage.Name = updateStage.Name;
+            existedStage.Index = updateStage.Index;
+            existedStage.Type = updateStage.Type;
+            existedStage.IsReviewable = updateStage.IsReviewable;
+            existedStage.Actions = updateStage.Actions;
+            existedStage.ReviewToStages = null;
 
             await _writeStageRepository.UpdateAsync(existedStage);
+            existedStage.ReviewToStages = existedRts;
+
+            foreach (ReviewToStage rts in updateStage.ReviewToStages)
+            {
+                if (existedStage.ReviewToStages.Any(existingRts => existingRts.ReviewId == rts.ReviewId))
+                {
+                    continue;
+                }
+
+                rts.StageId = updateStage.Id;
+                rts.Review = null;
+                await _reviewToStageWriteRepository.CreateAsync(rts);
+            }
+
+            if (updateStage.ReviewToStages.Count < existedStage.ReviewToStages.Count)
+            {
+                foreach (ReviewToStage rts in existedStage.ReviewToStages)
+                {
+                    if (updateStage.ReviewToStages.All(updateRts => updateRts.ReviewId != rts.ReviewId))
+                    {
+                        await _reviewToStageWriteRepository.DeleteAsync(rts.Id);
+                    }
+                }
+            }
+
             var updatedVacancy = _mapper.Map<StageDto>(existedStage);
 
             return updatedVacancy;

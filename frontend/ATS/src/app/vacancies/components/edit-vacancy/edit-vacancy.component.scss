@@ -255,12 +255,20 @@ $primary-color: #291965;
         align-items: center;
     }
 
-    .mat-standard-chip.mat-chip-with-trailing-icon{
+    .coloured-chip .mat-standard-chip.mat-chip-with-trailing-icon{
     background: #ee2a64;
         color:white;
     }
 
-    .mat-standard-chip .mat-chip-remove.mat-icon{
+    .coloured-chip .mat-standard-chip .mat-chip-remove.mat-icon{
         color:white
+    }
+
+    .mat-select-trigger{
+        display: block;
+    }
+
+    .mat-select-value-text{
+        display: flow-root;
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Application.Common.Models;
 using Application.VacancyCandidates.Dtos;
-using Domain.Entities;
+using Application.Reviews.Dtos;
 using Domain.Enums;
 
 
@@ -18,6 +18,7 @@ namespace Application.Stages.Dtos
         public string VacancyId { get; set; }
         public ICollection<ActionDto> Actions { get; set; }
         public ICollection<ShortVacancyCandidateWithApplicantDto> CandidateToStages { get; set; }
+        public ICollection<ReviewDto> Reviews { get; set; }
     }
 
 }

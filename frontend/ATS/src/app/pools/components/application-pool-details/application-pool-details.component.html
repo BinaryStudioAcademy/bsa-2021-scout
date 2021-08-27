@@ -11,7 +11,7 @@
             <mat-icon>user</mat-icon>
             <span>{{pool.createdBy}} </span>
         </div>
-        <span>{{pool.dateCreated | date:"dd.MM.yyyy"}}</span>
+        <span>{{pool.dateCreated | timezone }}</span>
     </div>
     <div class="name">
         <h3>Name</h3>

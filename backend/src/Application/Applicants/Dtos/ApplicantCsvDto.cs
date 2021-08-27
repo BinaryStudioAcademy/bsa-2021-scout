@@ -9,7 +9,6 @@ namespace Application.Applicants.Dtos
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string MiddleName { get; set; }
         public DateTime BirthDate { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
@@ -24,7 +23,6 @@ namespace Application.Applicants.Dtos
         {
             RuleFor(_ => _.FirstName).NotNull().NotEmpty();
             RuleFor(_ => _.LastName).NotNull().NotEmpty();
-            RuleFor(_ => _.MiddleName).NotNull().NotEmpty();
             RuleFor(_ => _.BirthDate).NotNull().NotEmpty();
             RuleFor(_ => _.Email).NotNull().EmailAddress();
             RuleFor(_ => _.Phone).NotNull().NotEmpty();
@@ -41,7 +39,6 @@ namespace Application.Applicants.Dtos
         {
             Map(a => a.FirstName).Name("FirstName");
             Map(a => a.LastName).Name("LastName");
-            Map(a => a.MiddleName).Name("MiddleName");
             Map(a => a.BirthDate).Name("BirthDate");
             Map(a => a.Email).Name("Email");
             Map(a => a.Phone).Name("Phone");

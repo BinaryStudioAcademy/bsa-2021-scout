@@ -21,7 +21,7 @@
   }
 
   .avatar-col {
-    $dim: 175px;
+    $dim: 120px;
     padding-right: 20px;
     width: $dim;
 
@@ -30,12 +30,14 @@
       height: $dim;
       max-width: $dim;
       max-height: $dim;
+      border-radius: 50%;
+      cursor: zoom-in;
     }
   }
 
   .content-col {
     flex-grow: 1;
-    padding-top: 40px;
+    padding-top: 20px;
 
     .block {
       padding: 20px 0 20px 10px;

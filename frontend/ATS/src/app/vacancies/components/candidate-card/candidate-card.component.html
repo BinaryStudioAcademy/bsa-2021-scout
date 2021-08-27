@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="meta data" *ngIf="!candidate.averageMark && candidate.averageMark !== 0">
-    {{ fromNow(candidate.dateAdded) }}
+    {{ candidate.dateAdded | timezone:"fromnow" }}
   </div>
   <div class="mark data" *ngIf="candidate.averageMark || candidate.averageMark === 0">
     <mat-progress-bar

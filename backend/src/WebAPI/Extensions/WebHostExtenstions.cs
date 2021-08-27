@@ -34,8 +34,8 @@ namespace WebAPI.Extensions
             await ApplyElasticSeeding(host);
             await ApplyRoleSeeding(host);
             await ApplyProjectSeeding(host);
-            await ApplyPoolSeeding(host);
             await ApplyUserSeeding(host);
+            await ApplyPoolSeeding(host);
             await ApplyUserToRoleSeeding(host);
             await ApplyVacancySeeding(host);
             await ApplyApplicantSeeding(host);
@@ -43,6 +43,7 @@ namespace WebAPI.Extensions
             await ApplyStageSeeding(host);
             await ApplyVacancyCandidateSeeding(host);
             await ApplyCandidateToStagesSeeding(host);
+            await ApplyReviewSeeding(host);
 
             return host;
         }
@@ -252,6 +253,7 @@ namespace WebAPI.Extensions
         {
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            context.UserToRoles.RemoveRange(context.UserToRoles);
             var usersToRoles = new List<UserToRole>
             {
                 new UserToRole { UserId = "1", RoleId = "1"},
@@ -288,6 +290,28 @@ namespace WebAPI.Extensions
                     context.Roles.Update(role);
                 else
                     await context.Roles.AddAsync(role);
+                await context.SaveChangesAsync();
+            }
+
+            return host;
+        }
+
+        public async static Task<IHost> ApplyReviewSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+            foreach (var review in ReviewSeeds.GetReviews())
+            {
+                if (await context.Reviews.AnyAsync(r => r.Id == review.Id))
+                {
+                    context.Reviews.Update(review);
+                }
+                else
+                {
+                    await context.Reviews.AddAsync(review);
+                }
+
                 await context.SaveChangesAsync();
             }
 

@@ -7,7 +7,7 @@
 
     <div class="form-container">
         <form [formGroup]="projectCreateForm" (ngSubmit)="onSubmited()">
-            <h5>Name</h5>
+            <h5 class="required-field">Name</h5>
             <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['name'].dirty && this.projectCreateForm.controls['name'].errors? 'invalid-input': ''">
                 <input matInput type="text" formControlName="name" placeholder="Enter name project">
             </mat-form-field>
@@ -21,7 +21,7 @@
                 Name must be not greater than 15 characters long.
             </div>
 
-            <h5>Logo</h5>
+            <h5 class="required-field">Logo</h5>
             <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['logo'].dirty && this.projectCreateForm.controls['logo'].errors? 'invalid-input': ''">
                 <input matInput type="text" formControlName="logo" placeholder="Enter logo link">
             </mat-form-field>
@@ -29,7 +29,7 @@
                 Is required.
             </div>
 
-            <h5>Description project</h5>
+            <h5 class="required-field">Description project</h5>
             <mat-form-field class="wide example-full-width" appearance="fill" [ngClass]="this.projectCreateForm.controls['description'].dirty && this.projectCreateForm.controls['description'].errors? 'invalid-input': ''">
                 <textarea matInput type="text" formControlName="description" placeholder="Enter text"></textarea>
             </mat-form-field>
@@ -40,7 +40,7 @@
                 Description must be at least 10 characters long.
             </div>
 
-            <h5>Team info</h5>
+            <h5 class="required-field">Team info</h5>
             <mat-form-field class="wide example-full-width" appearance="fill" [ngClass]="this.projectCreateForm.controls['teamInfo'].dirty && this.projectCreateForm.controls['teamInfo'].errors? 'invalid-input': ''">
                 <textarea matInput type="text" formControlName="teamInfo" placeholder="Enter text"></textarea>
             </mat-form-field>
@@ -51,7 +51,7 @@
                 Team info must be at least 10 characters long.
             </div>
 
-        <h5>Website Link</h5>
+        <h5 class="required-field">Website Link</h5>
         <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['websiteLink'].dirty && this.projectCreateForm.controls['websiteLink'].errors? 'invalid-input': ''">
             <input matInput type="text" formControlName="websiteLink" placeholder="Enter website link project">
         </mat-form-field>

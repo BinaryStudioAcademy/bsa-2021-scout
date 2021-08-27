@@ -156,7 +156,9 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
   {
     this.dialogService.open(PoolDetailsModalComponent, {
       width: '800px',
+      height: '90vh',
       data: id,
+      panelClass: 'pool-dialog-container',
     });
   }
 

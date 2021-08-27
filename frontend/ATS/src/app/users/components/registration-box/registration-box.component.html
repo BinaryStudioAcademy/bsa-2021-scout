@@ -3,7 +3,7 @@
     <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
         <div class="registration-text"><span>Sign up</span></div>
         <div class="registration-input-first-name form-group">
-            <div class="registration-input-title"><span>First name</span></div>
+            <div class="registration-input-title"><span class="required-field">First name</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userFirstName') ? 'invalid-input' : ''">
                 <input matInput type="text" formControlName="userFirstName" placeholder="Enter your first name"
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="registration-input-last-name form-group">
-            <div class="registration-input-title"><span>Last name</span></div>
+            <div class="registration-input-title"><span class="required-field">Last name</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userLastName') ? 'invalid-input' : ''">
                 <input matInput type="text" formControlName="userLastName" placeholder="Enter your last name"
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="registration-input-email form-group">
-            <div class="registration-input-title"><span>Email</span></div>
+            <div class="registration-input-title"><span class="required-field">Email</span></div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userEmail') ? 'invalid-input' : ''">
                 <input matInput type="email" formControlName="userEmail" placeholder="Enter your Email"
@@ -58,7 +58,7 @@
         </div>
         <div class="registration-input-password form-group">
             <div class="registration-input-password-title-block">
-                <div class="registration-input-title"><span>Password</span></div>
+                <div class="registration-input-title"><span class="required-field">Password</span></div>
             </div>
             <mat-form-field floatLabel="never"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userPassword') ? 'invalid-input' : ''">
@@ -83,7 +83,7 @@
         </div>
         <div class="registration-input-password form-group">
             <div class="registration-input-password-title-block">
-                <div class="registration-input-title"><span>Password confirmation</span></div>
+                <div class="registration-input-title"><span class="required-field">Password confirmation</span></div>
             </div>
             <mat-form-field floatLabel="never" [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userPasswordConfirmation')
                 || registrationForm.errors?.mismatch ? 'invalid-input' : ''">
@@ -105,7 +105,7 @@
             </div>
         </div>
         <div class="registration-input-birthdate form-group">
-            <div class="registration-input-title"><span>Birthdate</span></div>
+            <div class="registration-input-title"><span class="required-field">Birthdate</span></div>
             <mat-form-field floatLabel="never" class="birthdate-form-field"
                 [ngClass]="loginRegistCommonComponent.checkIsControlValid(registrationForm,'userBirthdate') ? 'invalid-input' : ''">
                 <input matInput [matDatepicker]="picker" name="date" formControlName="userBirthdate"
