@@ -11,7 +11,12 @@
 
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Full name </th>
-                <td mat-cell *matCellDef="let applicant"> {{applicant.firstName}} {{applicant.lastName}} {{applicant.middleName}} </td>
+                <td mat-cell *matCellDef="let applicant"> 
+                    <div class="applicant-name">
+                        <mat-icon class="self-applied" *ngIf="applicant.isSelfApplied">hail</mat-icon> 
+                        {{applicant.firstName}} {{applicant.lastName}} {{applicant.middleName}} 
+                    </div>
+                </td>
             </ng-container>
         
             <ng-container matColumnDef="email">

@@ -12,7 +12,9 @@ namespace Infrastructure.Repositories.Write
     {
         protected readonly ApplicationDbContext _context;
 
-        public VacancyCandidateWriteRepository(ApplicationDbContext context) : base(context) { }
+        public VacancyCandidateWriteRepository(ApplicationDbContext context) : base(context) {
+            _context = context;
+        }
         public async Task<IEnumerable<VacancyCandidate>> CreateRangeAsync(VacancyCandidate[] candidates)
         {
             _context.AddRange(candidates);

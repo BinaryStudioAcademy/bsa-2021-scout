@@ -50,6 +50,14 @@ $primary-color: #ee2a64;
   z-index: 4;
 }
 
+.self-applied{
+  color: #501cb1d0;
+}
+
+.applicant-name{
+  display: flex;
+  line-height: 24px;
+}
 /* Table */
 :host ::ng-deep .mat-table {
   width: 100%;

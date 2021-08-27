@@ -51,7 +51,7 @@ namespace Application.VacancyCandidates.Commands
 
         public async Task<VacancyCandidateDto> Handle(CreateVacancyCandidateNoAuthCommand command, CancellationToken _)
         {
-            var stageId = (await _stageReadRepository.GetByVacancyIdWithFirstIndex(command.VacancyId)).Id;
+            var stageId = (await _stageReadRepository.GetByVacancyIdWithZeroIndex(command.VacancyId)).Id;
             var vacancyCandidate = await _readRepository.GetFullByApplicantAndStageAsync(command.Id, stageId);
 
             VacancyCandidateDto vacancyCandidateDto = null;
@@ -62,6 +62,7 @@ namespace Application.VacancyCandidates.Commands
                 {
                     ApplicantId = command.Id,
                     DateAdded = DateTime.Now,
+                    IsSelfApplied = true,
                 };
 
                 vacancyCandidateDto = _mapper.Map<VacancyCandidateDto>(await _writeRepository.CreateAsync(candidate));

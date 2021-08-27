@@ -15,4 +15,5 @@ export interface FullVacancyCandidate extends Model {
   stagesHistory: CandidateToStageHistory[];
   reviews: ShortCandidateReview[];
   dateAdded: Date;
+  isSelfApplied: boolean;
 }

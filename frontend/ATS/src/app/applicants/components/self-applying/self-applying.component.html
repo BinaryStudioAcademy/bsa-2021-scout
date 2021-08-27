@@ -27,7 +27,7 @@
                 <ng-template #email>
                     <div class="form">
                         <form class="applicant-form" [formGroup]="validationEmailGroup!" novalidate>
-                            <p>Email</p>
+                            <p class="required-field">Email</p>
                             <mat-form-field appearance="fill" [ngClass]="validationEmailGroup!.controls['email'].dirty && validationEmailGroup!.controls['email'].errors? 'invalid-input' : ''">
                                 <input formControlName="email" type="email" matInput placeholder="Enter email" [(ngModel)]="applicant.email">
                             </mat-form-field>
@@ -49,7 +49,7 @@
                 <ng-template #form>
                     <div class="form">
                         <form class="applicant-form" [formGroup]="validationGroup!" novalidate>
-                            <p>First name</p>
+                            <p class="required-field">First name</p>
                             <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['firstName'].dirty && validationGroup!.controls['firstName'].errors? 'invalid-input' : ''">
                                 <input formControlName="firstName" type="text" matInput placeholder="Enter first name" [(ngModel)]="applicant.firstName">
                             </mat-form-field>
@@ -62,7 +62,7 @@
                                 </div>
                             </ng-template>
 
-                            <p>Last name</p>
+                            <p class="required-field">Last name</p>
                             <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['lastName'].dirty && validationGroup!.controls['lastName'].errors? 'invalid-input' : ''">
                                 <input formControlName="lastName" type="text" matInput placeholder="Enter last name" [(ngModel)]="applicant.lastName">
                             </mat-form-field>
@@ -75,7 +75,7 @@
                                 </div>
                             </ng-template>
 
-                            <p>Email</p>
+                            <p class="required-field">Email</p>
                             <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors? 'invalid-input' : ''">
                                 <input formControlName="email" type="email" matInput placeholder="Enter email" [(ngModel)]="applicant.email">
                             </mat-form-field>
@@ -88,7 +88,15 @@
                                 </div>
                             </ng-template>
 
-                            <p>Experience</p>
+                            <p class="required-field">Experience description</p>
+                            <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors? 'invalid-input' : ''">
+                                <input required formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description" [(ngModel)]="applicant.experienceDescription">
+                            </mat-form-field>
+                            <div class="validation-error" *ngIf="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors?.required">
+                                It`s required field
+                            </div>
+
+                            <p class="required-field">Experience</p>
                             <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors? 'invalid-input' : ''">
                                 <input formControlName="experience" type="number" matInput step=".1" min="0" max="60" [(ngModel)]="applicant.experience">
                             </mat-form-field>
@@ -96,7 +104,7 @@
                                 Please enter a valid experience number in range from 0 to 60
                             </div>
 
-                            <p>Phone</p>
+                            <p class="required-field">Phone</p>
                             <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors? 'invalid-input' : ''">
                                 <input formControlName="phone" type="tel" matInput placeholder="Enter phone number" [(ngModel)]="applicant.phone">
                             </mat-form-field>

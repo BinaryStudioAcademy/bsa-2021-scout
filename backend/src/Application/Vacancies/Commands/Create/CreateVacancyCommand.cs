@@ -12,6 +12,7 @@ using Application.Stages.Commands;
 using Application.Vacancies.Dtos;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces.Abstractions;
 using MediatR;
 
@@ -34,7 +35,7 @@ namespace Application.Vacancies.Commands.Create
         private readonly IMapper _mapper;
         private readonly ISender _mediator;
         private readonly ICurrentUserContext _currUser;
-
+        private readonly string DefaultColumnName = "Self-Applied";
         public CreateVacancyCommandHandler(
                 IWriteRepository<Vacancy> writeRepository,
                 IWriteRepository<Stage> writeStageRepository,
@@ -57,6 +58,15 @@ namespace Application.Vacancies.Commands.Create
             }
 
             var newVacancy = _mapper.Map<Vacancy>(command.VacancyCreate);
+
+            newVacancy.Stages.Add(new Stage
+            {
+                Name = DefaultColumnName,
+                Type = StageType.Applied,
+                Index = 0,
+                IsReviewable = false,
+                VacancyId = newVacancy.Id
+            });
 
             newVacancy.CompanyId = user.CompanyId;
             newVacancy.ResponsibleHrId = user.Id;

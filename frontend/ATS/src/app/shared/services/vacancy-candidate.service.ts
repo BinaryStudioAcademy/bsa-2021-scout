@@ -35,4 +35,8 @@ export class VacancyCandidateService {
     return this.http.postFullRequest<void>(
       `/VacancyCandidates/${vacancyId}/${applicantId}`,new Object());
   }
+
+  public MarkAsViewed(candidateId: string){
+    return this.http.postFullRequest<void>(`/VacancyCandidates/viewed/${candidateId}`,new Object());
+  }
 }
