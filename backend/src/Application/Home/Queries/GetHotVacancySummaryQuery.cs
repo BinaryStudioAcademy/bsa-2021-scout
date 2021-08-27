@@ -33,17 +33,28 @@ namespace Application.Home.Queries
             var hrLead = await _currentUserContext.GetCurrentUser();
 
             var hotVacansies = await _homePageInfoReadRepository.GetHotVacancySummaryAsync(hrLead.CompanyId);
+
             var hotVacansiesDto = hotVacansies.GroupBy(p => p.Id)
-                        .Select(g => new HotVacancySummaryDto
-                        {
-                            Id = g.Key,
-                            Title = g.Select(p => p.Title).First(),
-                            ProjectName = g.Select(p => p.ProjectName).FirstOrDefault(),
-                            CandidateCount = g.Count(),
-                            ProcessedCount = g.Where(p => p.CurrentStageIndex == p.LastStageIndex).Count(),
-                            SelfAppliedCount = g.Where(p => p.HrWhoAddedId is null).Count(),
-                            CandidateNewCount = g.Where(p => p.CurrentStageIndex == 0).Count()
-                        });
+                       .Select(g => 
+                       { 
+                           var hotVacancy = new HotVacancySummaryDto
+                           {
+                               Id = g.Key,
+                               Title = g.First().Title,
+                               ProjectName = g.First().ProjectName
+                           };
+
+                           if (!g.Any(p => p.Candidate is not null))
+                           {
+                               return hotVacancy;
+                           }
+                           var tempList = g.Where(p => p.Candidate is not null);
+                           hotVacancy.CandidateCount = tempList.Count();
+                           hotVacancy.ProcessedCount = tempList.Count(p => p.CurrentStageIndex == p.LastStageIndex);
+                           hotVacancy.SelfAppliedCount = tempList.Count(p => p.HrWhoAdded is null);
+                           hotVacancy.CandidateNewCount = tempList.Count(p => p.CurrentStageIndex == 0);
+                           return hotVacancy;
+                       });
             return hotVacansiesDto.ToList();
         }
     }

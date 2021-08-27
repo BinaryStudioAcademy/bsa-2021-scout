@@ -8,6 +8,7 @@ namespace Domain.Entities.HomeData
         public string ProjectName { get; set; }
         public int CurrentStageIndex { get; set; }
         public int LastStageIndex { get; set; }
-        public string HrWhoAddedId { get; set; }
+        public string Candidate { get; set; }
+        public string HrWhoAdded { get; set; }
     }
 }

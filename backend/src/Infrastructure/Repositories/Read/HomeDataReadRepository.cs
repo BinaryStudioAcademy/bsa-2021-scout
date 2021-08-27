@@ -63,18 +63,22 @@ namespace Infrastructure.Repositories.Read
             SqlConnection connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
 
-            string sql = @$"SELECT V.Id, V.Title, P.Name AS ProjectName, S.[Index] AS CurrentStageIndex, 
-	                        (SELECT MAX(S2.[Index]) FROM Stages AS S2 WHERE S2.VacancyId = V.Id) AS LastStageIndex,
-	                         VC.HrWhoAddedId
-                             FROM Vacancies AS V
-                             INNER JOIN Stages AS S ON V.Id = S.VacancyId
-                             INNER JOIN CandidateToStages AS CS ON S.Id = CS.StageId
-                             INNER JOIN VacancyCandidates AS VC ON CS.CandidateId = VC.Id
-                             INNER JOIN Projects AS P ON V.ProjectId = P.Id
-                             WHERE V.CompanyId = @companyId 
-		                           AND V.IsHot = 1
-		                           AND V.CompletionDate IS NULL
-		                           AND CS.DateRemoved IS NULL;";
+            string sql = @$"SELECT V.Id, V.Title, P.Name AS ProjectName,
+                              S.[Index] AS CurrentStageIndex, 
+	                          (SELECT MAX(S2.[Index]) FROM Stages AS S2 WHERE S2.VacancyId = V.Id) AS LastStageIndex,
+	                          CS.CandidateId AS Candidate,
+                              VC.HrWhoAddedId AS HrWhoAdded
+                            FROM Vacancies AS V
+                            INNER JOIN Projects AS P ON V.ProjectId = P.Id
+                            INNER JOIN Stages AS S ON V.Id = S.VacancyId
+                            LEFT JOIN CandidateToStages AS CS ON S.Id = CS.StageId
+                            LEFT JOIN VacancyCandidates AS VC ON CS.CandidateId = VC.Id
+                            WHERE V.CompanyId = @companyId 
+		                      AND V.IsHot = 1
+		                      AND V.CompletionDate IS NULL
+		                      AND CS.DateRemoved IS NULL
+                            ORDER BY V.CreationDate DESC;";
+
             var hotVacancySummary = await connection.QueryAsync<HotVacancySummary>(sql, new { companyId = @companyId });
 
             await connection.CloseAsync();
