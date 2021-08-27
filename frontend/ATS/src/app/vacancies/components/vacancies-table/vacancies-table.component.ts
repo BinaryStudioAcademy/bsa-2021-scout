@@ -62,7 +62,8 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
     private followService: FollowedService,
   ) {
     this.followService.getFollowed(EntityType.Vacancy)
-      .pipe(takeUntil(this.unsubscribe$),
+      .pipe(
+        takeUntil(this.unsubscribe$),
         mergeMap(data => {
           data.forEach(item=>this.followedSet.add(item.entityId));
           return this.service.getList();
@@ -99,7 +100,8 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   getVacancies() {
     this.service
       .getList()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(
+        takeUntil(this.unsubscribe$))
       .subscribe(
         data => {
           this.mainData = data;
@@ -220,7 +222,8 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
         if (response) {
           this.loading = true;
           this.service.deleteVacancy(vacancyToDelete.id)
-            .pipe(takeUntil(this.unsubscribe$))
+            .pipe(
+              takeUntil(this.unsubscribe$))
             .subscribe(_ => {
               this.loading = false;
               this.notificationService

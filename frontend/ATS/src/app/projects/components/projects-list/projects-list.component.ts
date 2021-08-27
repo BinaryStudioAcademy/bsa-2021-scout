@@ -93,9 +93,14 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
             d.isFollowed = this.followedSet.has(d.id);
           });
           if(localStorage.getItem(this.followedPageToken)!==null)
+          {
             this.dataSource.data = this.projects.filter(item=>this.followedSet.has(item.id));
+          
+          }
           else
+          {
             this.dataSource.data = this.projects;
+          }
           this.directive.applyFilter$.emit();
         },
       );

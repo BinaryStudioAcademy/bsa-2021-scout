@@ -42,7 +42,8 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
     private dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<UserTableData>();
     this.followService.getFollowed(EntityType.User)
-      .pipe(takeUntil(this.unsubscribe$),
+      .pipe(
+        takeUntil(this.unsubscribe$),
         mergeMap(data => {
           data.forEach(item => this.followedSet.add(item.entityId));
           return this.userDataService
@@ -57,10 +58,12 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
           user.isFollowed = this.followedSet.has(user.id ?? '');
         });
         this.users = resp;
-        if (localStorage.getItem(this.followedPageToken) !== null)
+        if (localStorage.getItem(this.followedPageToken) !== null) {
           this.dataSource.data = this.users.filter(item => item.isFollowed);
-        else
+        }
+        else {
           this.dataSource.data = this.users;
+        }
         this.directive.applyFilter$.emit();
       },
       () => {

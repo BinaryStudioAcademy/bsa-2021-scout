@@ -56,13 +56,12 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public ngOnInit(): void {
     this.followService.getFollowed(EntityType.Applicant)
-      .pipe(takeUntil(this.unsubscribe$),
+      .pipe(
+        takeUntil(this.unsubscribe$),
         mergeMap(data => {
           data.forEach(item => this.followedSet.add(item.entityId));
           return this.applicantsService.getApplicants();
         }),
-      )
-      .pipe(takeUntil(this.unsubscribe$),
         map((arr) =>
           arr.map((a) => {
             let viewableApplicant = a as unknown as ViewableApplicant;
@@ -80,7 +79,8 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
 
             return viewableApplicant;
           }),
-        ))
+        ),
+      )
       .subscribe((result: ViewableApplicant[]) => {
         result.forEach((d, i) => {
           d.position = i + 1;
