@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210826114252_Add phone and skype to user")]
+    [Migration("20210825141116_Add phone and skype to user")]
     partial class Addphoneandskypetouser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,9 +64,6 @@ namespace Infrastructure.Migrations
                     b.Property<double>("Experience")
                         .HasColumnType("float");
 
-                    b.Property<string>("ExperienceDescription")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
@@ -76,10 +73,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LinkedInUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Skills")
+                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Skype")
@@ -522,6 +519,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")

@@ -7,5 +7,5 @@ import { HomeWidgetData } from 'src/app/users/models/home/home-widget-data';
   styleUrls: ['./home-widget.component.scss'],
 })
 export class HomeWidgetComponent {
-  @Input() widgetData!: HomeWidgetData;
+  @Input() widgetData?: HomeWidgetData;
 }

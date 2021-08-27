@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public processedWidget! : HomeWidgetData;
   public recruiterWidget! : HomeWidgetData;
 
-  public hotVacancies!: HotVacancySummary[];
+  public hotVacancies: HotVacancySummary[] = [];
   public minVisibleQuantity = 5;
   public isShowedAllVacancies: boolean = false;
   public isWidgetsLoading: boolean = true;
@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             description:'Recruiter', 
           };  
         },
-        () => this.notificationService.showErrorMessage('Fail to load data'),
+        () => this.notificationService.showErrorMessage('Failed to load widgets data.'),
       );
 
     this.homeDataService.GetHotVacanciesSummary()
@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         finalize(() => this.isVacanciesLoading = false))
       .subscribe(
         hotVacancies => this.hotVacancies = hotVacancies,
-        () => this.notificationService.showErrorMessage('Fail to load data'), 
+        () => this.notificationService.showErrorMessage('Failed to load vacancies summary.'), 
       );
   }
 

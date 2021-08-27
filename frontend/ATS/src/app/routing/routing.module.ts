@@ -29,6 +29,7 @@ import {
   ApplicationPoolComponent,
 } from '../pools/components/application-pool/application-pool.component';
 import { PoolsRoutingModule } from '../pools/pools-routing.module';
+import { UserProfileComponent } from '../shared/components/user-profile/user-profile.component';
 
 const routes: Routes = [
   {

@@ -31,6 +31,9 @@
 }
 
 ::ng-deep {
+  .white-class .mat-form-field-wrapper {
+    background: #ffffff !important;
+  }
   .white-class .mat-form-field-appearance-fill .mat-form-field-flex {
     background: #ffffff !important;
     color: black;
