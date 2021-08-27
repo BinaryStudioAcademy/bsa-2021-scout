@@ -20,7 +20,7 @@ function processLinkedInPage() {
     // window of LinkedIn page
 
     const mode = "development"; // TODO: add frontend domain and change to "production"
-    const frontendUrl = "http://localhost:4200/applicants"; // TODO: Change to real url
+    const frontendUrl = "http://develop.bsa21-scout.com/applicants"; // TODO: Change to real url
 
     const leftMainInfoPanel = document.querySelector(".pv-text-details__left-panel");
     const rightMainInfoPanel = document.querySelector(".pv-text-details__right-panel");
