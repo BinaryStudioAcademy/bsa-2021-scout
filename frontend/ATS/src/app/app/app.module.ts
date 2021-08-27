@@ -10,9 +10,6 @@ import { VacanciesModule } from '../vacancies/vacancies.module';
 import { ApplicantsModule } from '../applicants/applicants.module';
 import { SharedModule } from '../shared/shared.module';
 import { UsersModule } from '../users/users.module';
-import { VacancyCardComponent } from '../vacancies/components/vacancy-card/vacancy-card.component';
-import { VacancyWidgetComponent } from '../vacancies/components/vacancy-widget/vacancy-widget.component';
-import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -28,9 +25,6 @@ import { PoolsModule } from '../pools/pools.module';
 @NgModule({
   declarations: [
     AppComponent, 
-    VacancyCardComponent,
-    VacancyWidgetComponent,
-    HomeComponent,    
   ],
   imports: [
     BrowserModule,

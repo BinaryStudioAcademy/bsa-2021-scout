@@ -26,6 +26,10 @@ import { ResendEmailAfterLoginComponent } from
   './components/resend-email-after-login/resend-email-after-login.component';
 import { SendingRegisterLinkDialogComponent } from 
   './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
+import { HomeWidgetComponent } from './components/home-page/home-widget/home-widget.component';
+import { HomeComponent } from './components/home-page/home/home.component';
+import { HomeDataService } from './services/home-data.service';
+import { VacancyCardComponent } from './components/home-page/vacancy-card/vacancy-card.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +48,9 @@ import { SendingRegisterLinkDialogComponent } from
     ResendEmailAfterLoginComponent,
     SuccessfulRegistrationComponent,
     SendingRegisterLinkDialogComponent,
+    HomeWidgetComponent,
+    HomeComponent,
+    VacancyCardComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
@@ -51,6 +58,7 @@ import { SendingRegisterLinkDialogComponent } from
     ResetPasswordGuard,
     UserDataService,
     LoggedInUserGuard,
+    HomeDataService,
   ],
 })
 export class UsersModule { }

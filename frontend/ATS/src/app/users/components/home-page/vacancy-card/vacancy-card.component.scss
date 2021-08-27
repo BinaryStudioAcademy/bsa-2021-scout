@@ -1,0 +1,76 @@
+@import "/src/common.scss";
+
+$card-width: 240px;
+$card-height: 240px;
+
+.vacancy-card-wrapper {
+  background-color: $primary-color-white;
+  padding: 20px 10px 20px 10px;
+  border-radius: 7px;
+  font-family: $primary-font;
+  width: $card-width;
+  height: $card-height;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.vacancy-card-wrapper h2,
+h3,
+h4 {
+  margin-bottom: 5px;
+}
+
+.vacancy-card-wrapper h2 {
+  font-weight: 700;
+}
+
+.vacancy-summary-info {
+  display: grid;
+}
+
+.vacancy-summary-info mat-icon {
+  color: $primary-color-icons;
+  vertical-align: middle;
+  font-size: 20px;
+}
+
+.vacancy-summary-info span {
+  min-width: 135px;
+  vertical-align: middle;
+  padding: 5px 0;
+}
+
+.hot {
+  color: white;
+  background: $primary-color;
+  border-radius: 15px;
+  padding: 2px;
+  vertical-align: middle;
+}
+
+.light {
+  font-weight: 100;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.bold-plus {
+  font-weight: 800;
+}
+
+.vacancy-title {
+  display: flex;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+
+.vacancy-title:hover {
+  cursor: pointer;
+  color: $primary-color;
+}
+
+.blur {
+  filter: blur(4px);
+}
