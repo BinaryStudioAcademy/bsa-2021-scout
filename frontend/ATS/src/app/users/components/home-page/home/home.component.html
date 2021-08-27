@@ -14,11 +14,10 @@
             <app-vacancy-card 
                 *ngFor="let vacancy of isShowedAllVacancies ? hotVacancies : hotVacancies.slice(0, minVisibleQuantity)" [hotVacancy]="vacancy">
             </app-vacancy-card> 
-            <div class="vacancy-blur-card" *ngIf="!isShowedAllVacancies && hotVacancies.length > minVisibleQuantity" >
+            <div class="vacancy-blur-card" *ngIf="!isShowedAllVacancies && hotVacancies.length > minVisibleQuantity"> 
                 <div><span class="see-all-button" (click)="showAllVacancies()">See all</span></div>
                 <app-vacancy-card [hotVacancy]="hotVacancies[minVisibleQuantity]" [isBlur]="true"></app-vacancy-card>
             </div>
-            
         </div>
     </div>
     <div class="home-team-tasks"></div>    

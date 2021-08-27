@@ -20,8 +20,8 @@ import { finalize } from 'rxjs/operators';
 })
 export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
   public displayedColumns: string[] =
-  ['position', 'full-name', 'email', 'birth-date', 
-    'creation-date', 'email-confirmed', 'actions'];
+  ['position', 'full-name', 'email', 
+    'birth-date', 'creation-date', 'actions'];
   private users: UserTableData[] = [];
   public dataSource: MatTableDataSource<UserTableData>;
   public loading: boolean = true;
