@@ -32,13 +32,18 @@
         </ul>
       </div>
       <mat-divider></mat-divider>
-      <div class="block" *ngIf="data.cv">
+      <div class="experience block">
         <h3>Experience</h3>
-        <div>
-          {{ data.cv }}
+        <div>{{ data.experience }} years</div>
+        <div *ngIf="data.experienceDescription">{{ data.experienceDescription }}</div>
+        <div *ngIf="data.cvLink">
+          <a [href]="data.cvLink" download class="icon-link">
+            <mat-icon>insert_drive_file</mat-icon>
+            <span>{{ data.cvName }}</span>
+          </a>
         </div>
       </div>
-      <mat-divider *ngIf="data.cv"></mat-divider>
+      <mat-divider></mat-divider>
       <div class="block" *ngIf="data.stagesHistory.length">
         <h3>Timeline</h3>
         <div class="activity">

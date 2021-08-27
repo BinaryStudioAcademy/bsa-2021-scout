@@ -20,6 +20,12 @@
     font-weight: bold;
   }
 
+  .icon-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
   .avatar-col {
     $dim: 120px;
     padding-right: 20px;
@@ -45,6 +51,12 @@
 
       &.top {
         padding: 0 0 40px 0;
+      }
+
+      &.experience {
+        div:not(div:last-child) {
+          margin-bottom: 10px;
+        }
       }
 
       .activity,

@@ -15,7 +15,10 @@ namespace Application.VacancyCandidates.Dtos
         public string Email { get; set; }
         public string Phone { get; set; }
         public double Experience { get; set; }
+        public string ExperienceDescription { get; set; }
         public string Comments { get; set; }
+        public string CvLink { get; set; }
+        public string CvName { get; set; }
         public DateTime DateAdded { get; set; }
         public IEnumerable<CandidateToStageHistoryDto> StagesHistory { get; set; }
         public IEnumerable<CandidateReviewShortDto> Reviews { get; set; }

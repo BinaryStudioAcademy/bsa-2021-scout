@@ -9,8 +9,10 @@ export interface FullVacancyCandidate extends Model {
   fullName: string;
   email: string;
   phone: string;
-  cv?: string;
+  cvLink?: string;
+  cvName?: string;
   experience: number;
+  experienceDescription: string;
   comments: string;
   stagesHistory: CandidateToStageHistory[];
   reviews: ShortCandidateReview[];
