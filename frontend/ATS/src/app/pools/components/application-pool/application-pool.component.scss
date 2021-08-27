@@ -47,6 +47,11 @@ button.tub:focus {
     width: 100%;
 }
 
+.pool-list {
+    overflow: scroll;
+    height: calc(100vh - 200px);
+}
+
 .mat-table .mat-icon {
     color : $primary-color-darkgrey;
     cursor: pointer;    
