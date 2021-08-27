@@ -28,8 +28,8 @@ export class ApplicantsUploadCsvComponent {
     this.modal.close();
     if (this.selectedFile) {
       this.applicantsService.getApplicantsFromCSV(this.selectedFile).subscribe(responce => {
-        this.router.navigate(['applicants/csv'], 
-          { queryParams: { data: JSON.stringify(responce.body) } });
+        window.localStorage.setItem('csvFile', JSON.stringify(responce.body));
+        this.router.navigate(['applicants/csv']);
       }, _ => (this.notificationsService.showErrorMessage('Failed to load data from csv')));
     }
   }

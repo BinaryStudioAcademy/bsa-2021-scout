@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { CreateApplicant } from 'src/app/shared/models/applicants/create-applicant';
@@ -25,13 +25,18 @@ export class ApplicantCsvListComponent implements OnInit {
   public newApplicants: CsvApplicant[] = [];
   public addedApplicants: CsvApplicant[] = [];
 
-  constructor(private route: ActivatedRoute,
-    private readonly applicantsService: ApplicantsService,
+  constructor(private readonly applicantsService: ApplicantsService,
     private readonly notificationsService: NotificationService,
     private readonly dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.allApplicants = JSON.parse(this.route.snapshot.queryParams.data);
+    let csvFileJSON = window.localStorage.getItem('csvFile');
+
+    if(csvFileJSON){
+      this.allApplicants = JSON.parse(csvFileJSON);
+    }
+    
+    window.localStorage.removeItem('csvFile');
 
     this.applicantsService.getApplicants().subscribe(applicants => {
       applicants.forEach(applicant => {
