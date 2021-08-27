@@ -43,8 +43,8 @@ export interface IIndexable {
 })
 export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   displayedColumns: string[] =
-  ['position', 'title', 'candidatesAmount', 'responsible', 'teamInfo', 
-    'project', 'creationDate', 'actions'];
+  ['position', 'title', 'project', 'teamInfo',  'responsible', 
+    'creationDate', 'candidatesAmount', 'actions'];
   dataSource: MatTableDataSource<VacancyData> = new MatTableDataSource<VacancyData>();
   mainData!: VacancyData[];
   isFollowedPage: boolean = false;
@@ -75,7 +75,6 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
         else
           this.dataSource.data = data;
         data.forEach((d, i) => {
-          d.position = i + 1;
           d.isFollowed = this.followedSet.has(d.id);
         });
         this.mainData = data;
