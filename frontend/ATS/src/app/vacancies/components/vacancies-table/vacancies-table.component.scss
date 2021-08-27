@@ -73,7 +73,7 @@ button.tub {
 
     /* Table */
 
-    .vacancy-page {
+    .vacancy-list {
         overflow: scroll;
         height: calc(100vh - 200px);
     }
@@ -116,6 +116,12 @@ button.tub {
     .icons .mat-icon:hover {
         cursor: pointer;
         color: $primary-color;
+    }
+
+    .mat-paginator-sticky {
+        bottom: 0px;
+        position: sticky;
+        z-index: 10;
     }
     /* Project Logo */
 

@@ -63,7 +63,7 @@
                     </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
                 <!-- Row shown when there is no matching data. -->
@@ -75,8 +75,10 @@
                 </tr>
 
             </table>
-            <mat-paginator #paginator appStylePaginator [showTotalPages]="5" [pageSize]="10"
-                [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            <mat-paginator class="mat-paginator-sticky" 
+                #paginator appStylePaginator [showTotalPages]="5" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
 
         </div>
     </div>
