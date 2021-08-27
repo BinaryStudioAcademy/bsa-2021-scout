@@ -147,6 +147,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<CandidateReview>, CandidateReviewWriteRepository>();
 
             services.AddScoped<IWriteRepository<Applicant>, ApplicantsWriteRepository>();
+            services.AddScoped<IApplicantsWriteRepository, ApplicantsWriteRepository>();
             services.AddScoped<IApplicantsFromCsvWriteRepository, ApplicantsFromCsvWriteRepository>();
 
             services.AddScoped<IWriteRepository<FileInfo>, WriteRepository<FileInfo>>();

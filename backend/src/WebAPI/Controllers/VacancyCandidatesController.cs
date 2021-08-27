@@ -35,5 +35,12 @@ namespace WebAPI.Controllers
 
             return Ok(await Mediator.Send(command));
         }
+        [HttpPost("{vacancyId}/{id}")]
+        public async Task<IActionResult> PostVacancyCandidateNoAuthCommand(string id, string vacancyId)
+        {
+            var command = new CreateVacancyCandidateNoAuthCommand(id, vacancyId);
+
+            return Ok(await Mediator.Send(command));
+        }
     }
 }

@@ -42,6 +42,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
+import { LogoBlockComponent } from '../users/components/logo-block/logo-block.component';
 
 @NgModule({
   exports: [
@@ -85,6 +86,7 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     MatMenuModule,
     TagsEditComponent,
     DeleteConfirmComponent,
+    LogoBlockComponent,
   ],
   imports: [
     MatButtonModule,
@@ -135,6 +137,7 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     AddCandidateModalComponent,
     TagsEditComponent,
     DeleteConfirmComponent,
+    LogoBlockComponent,
   ],
 })
 export class SharedModule { }

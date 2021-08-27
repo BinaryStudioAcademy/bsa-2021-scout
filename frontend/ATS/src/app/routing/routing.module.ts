@@ -29,6 +29,7 @@ import {
   ApplicationPoolComponent,
 } from '../pools/components/application-pool/application-pool.component';
 import { PoolsRoutingModule } from '../pools/pools-routing.module';
+import { ApplicantsRoutingModule } from '../applicants/applicants-routing.module';
 
 const routes: Routes = [
   {
@@ -112,6 +113,7 @@ const routes: Routes = [
     VacanciesRoutingModule,
     ProjectRoutingModule,
     PoolsRoutingModule,
+    ApplicantsRoutingModule,
   ],
   exports: [RouterModule],
 })
