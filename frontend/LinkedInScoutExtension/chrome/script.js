@@ -49,10 +49,15 @@ function processLinkedInPage() {
     }
 
     let experience = 0;
+    let index = 0;
+    let experienceDescription = "";
 
     for (const child of experienceElements) {
         const [fromDate, toDate] = child.children[1].innerText.split(" – ");
-        // Be careful, this is not a regular dash (is is longer).      ^
+        // Be careful, this is not a regular dash (it is longer).      ^
+
+        experienceDescription += `${experienceNames[index]} (${fromDate} - ${toDate}), `;
+        index += 1;
 
         let toNum;
 
@@ -74,14 +79,19 @@ function processLinkedInPage() {
     for (const child of educationElements) {
         const infoBlock = child.children[0];
         const name = infoBlock.children[0].innerText;
-        const degreePart1 = infoBlock.children[1].children[1].innerText;
-        let degreePart2;
 
-        if (infoBlock.childElementCount > 2) {
-            degreePart2 = ", " + infoBlock.children[2].children[1].innerText;
+        if (infoBlock.children[1] && infoBlock.children[1].childElementCount > 0) {
+            const degreePart1 = infoBlock.children[1].children[1].innerText;
+            let degreePart2;
+
+            if (infoBlock.childElementCount > 2) {
+                degreePart2 = ", " + infoBlock.children[2].children[1].innerText;
+            }
+
+            education.push(`${name} (${degreePart1}${degreePart2})`);
+        } else {
+            education.push(name);
         }
-
-        education.push(`${name} (${degreePart1}${degreePart2})`);
     }
 
     const skills = [];
@@ -96,8 +106,8 @@ function processLinkedInPage() {
         // currentJob,
         // region,
         // jobsAndEducationNames,
-        // experienceNames,
         experience,
+        experienceDescription,
         // education,
         // skills,
         linkedInUrl: window.location.href,

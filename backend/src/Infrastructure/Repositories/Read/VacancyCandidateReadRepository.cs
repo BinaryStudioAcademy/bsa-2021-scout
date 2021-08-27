@@ -14,8 +14,15 @@ namespace Infrastructure.Repositories.Read
 {
     public class VacancyCandidateReadRepository : ReadRepository<VacancyCandidate>, IVacancyCandidateReadRepository
     {
-        public VacancyCandidateReadRepository(IConnectionFactory connectionFactory)
-            : base("VacancyCandidates", connectionFactory) { }
+        private readonly IApplicantReadRepository _applicantRepository;
+
+        public VacancyCandidateReadRepository(
+            IConnectionFactory connectionFactory,
+            IApplicantReadRepository applicantRepository
+        ) : base("VacancyCandidates", connectionFactory)
+        {
+            _applicantRepository = applicantRepository;
+        }
 
         public async Task<VacancyCandidate> GetFullAsync(string id, string vacancyId)
         {
@@ -99,6 +106,18 @@ namespace Infrastructure.Repositories.Read
 
             VacancyCandidate candidate = resultAsArray.Distinct().FirstOrDefault();
 
+            // Oops! Ran out of JOINs in the first query!
+
+            try
+            {
+                FileInfo cvInfo = await _applicantRepository.GetCvFileInfoAsync(candidate.ApplicantId);
+                candidate.Applicant.CvFileInfo = cvInfo;
+            }
+            catch
+            {
+                //
+            }
+
             if (candidate == null || candidate.CandidateToStages.Where(cts => cts.DateRemoved == null).Count() == 0)
             {
                 throw new NotFoundException(typeof(VacancyCandidate), id);
@@ -106,7 +125,7 @@ namespace Infrastructure.Repositories.Read
 
             candidate.CandidateToStages = candidate.CandidateToStages
                 .OrderBy(cts => cts.DateRemoved)
-                .OrderByDescending(cts => cts.DateRemoved.HasValue)
+                .OrderBy(cts => cts.DateRemoved.HasValue)
                 .ToList();
 
             return candidate;

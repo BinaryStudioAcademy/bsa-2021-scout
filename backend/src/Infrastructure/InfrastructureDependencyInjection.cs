@@ -212,9 +212,10 @@ namespace Infrastructure
 
             services.AddScoped<IElasticReadRepository<ElasticEntity>, ElasticReadRepository<ElasticEntity>>();
 
+            services.AddScoped<IReadRepository<Applicant>, ApplicantReadRepository>();
             services.AddScoped<IApplicantReadRepository, ApplicantReadRepository>();
             services.AddScoped<IUserFollowedReadRepository, UserFollowedEntityReadRepository>();
-           
+
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();
