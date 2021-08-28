@@ -28,6 +28,11 @@ import { UserDataService } from './services/user-data.service';
 import { UsersTableComponent } from './components/hr-lead/users-table/users-table.component';
 import { LoggedInUserGuard } from './guards/logged-in-user.guard';
 
+import { HomeWidgetComponent } from './components/home-page/home-widget/home-widget.component';
+import { HomeComponent } from './components/home-page/home/home.component';
+import { HomeDataService } from './services/home-data.service';
+import { VacancyCardComponent } from './components/home-page/vacancy-card/vacancy-card.component';
+
 import {
   ResendEmailAfterLoginComponent, 
 } from './components/resend-email-after-login/resend-email-after-login.component';
@@ -37,19 +42,12 @@ import {
 } from './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
 
 import { RecentActivityComponent } from './components/recent-activity/recent-activity.component';
-import { HomeComponent } from './components/home/home.component';
-import { VacancyCardComponent } from '../vacancies/components/vacancy-card/vacancy-card.component';
-
-import {
-  VacancyWidgetComponent,
-} from '../vacancies/components/vacancy-widget/vacancy-widget.component';
 
 @NgModule({
   declarations: [
     LoginBoxComponent,
     LoginComponent,
     LoginRegistCommonComponent,
-    //LogoBlockComponent,
     RegistrationComponent,
     RegistrationBoxComponent,
     ForgotPasswordDialogComponent,
@@ -61,9 +59,9 @@ import {
     ResendEmailAfterLoginComponent,
     SuccessfulRegistrationComponent,
     SendingRegisterLinkDialogComponent,
+    HomeWidgetComponent,
     HomeComponent,
     VacancyCardComponent,
-    VacancyWidgetComponent,
     RecentActivityComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
@@ -72,6 +70,7 @@ import {
     ResetPasswordGuard,
     UserDataService,
     LoggedInUserGuard,
+    HomeDataService,
   ],
 })
 export class UsersModule {}

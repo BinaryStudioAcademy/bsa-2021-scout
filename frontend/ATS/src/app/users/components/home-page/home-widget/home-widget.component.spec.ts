@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HomeWidgetComponent } from './home-widget.component';
 
-import { VacancyWidgetComponent } from './vacancy-widget.component';
-
-describe('VacancyWidgetComponent', () => {
-  let component: VacancyWidgetComponent;
-  let fixture: ComponentFixture<VacancyWidgetComponent>;
+describe('HomeWidgetComponent', () => {
+  let component: HomeWidgetComponent;
+  let fixture: ComponentFixture<HomeWidgetComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VacancyWidgetComponent ],
+      declarations: [ HomeWidgetComponent ],
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VacancyWidgetComponent);
+    fixture = TestBed.createComponent(HomeWidgetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

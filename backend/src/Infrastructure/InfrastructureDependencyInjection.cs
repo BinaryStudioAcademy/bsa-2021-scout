@@ -209,6 +209,7 @@ namespace Infrastructure
             services.AddScoped<ICandidateToStageReadRepository, CandidateToStageReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
+            services.AddScoped<IHomeDataReadRepository, HomeDataReadRepository>();
 
             services.AddScoped<IReadRepository<RegisterPermission>, RegisterPermissionReadRepository>();
 

@@ -55,3 +55,22 @@ h4 {
 .bold {
   font-weight: 600;
 }
+
+.bold-plus {
+  font-weight: 800;
+}
+
+.vacancy-title {
+  display: flex;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+
+.vacancy-title:hover {
+  cursor: pointer;
+  color: $primary-color;
+}
+
+.blur {
+  filter: blur(2px);
+}

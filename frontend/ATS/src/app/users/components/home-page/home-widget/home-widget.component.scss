@@ -52,6 +52,11 @@ $list-margin: 15px;
   font-weight: 100;
 }
 
+.extended-item span:hover {
+  cursor: pointer;
+  color: $primary-color;
+}
+
 .extended-item mat-icon {
   color: $primary-color;
   font-size: 14px;

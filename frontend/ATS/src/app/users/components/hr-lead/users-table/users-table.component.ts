@@ -22,8 +22,8 @@ import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 })
 export class UsersTableComponent implements AfterViewInit, OnDestroy {
   public displayedColumns: string[] =
-  ['position', 'full-name', 'email', 'birth-date',
-    'creation-date', 'email-confirmed', 'actions'];
+  ['position', 'full-name', 'email', 
+    'birth-date', 'creation-date', 'actions'];
   private users: UserTableData[] = [];
   public dataSource: MatTableDataSource<UserTableData>;
   public loading: boolean = true;
