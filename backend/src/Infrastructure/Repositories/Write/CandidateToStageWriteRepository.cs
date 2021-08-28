@@ -40,12 +40,13 @@ namespace Infrastructure.Repositories.Write
             };
 
             CandidateToStage oldEntity = await connection.QueryFirstAsync<CandidateToStage>(sql.ToString());
-            oldEntity.DateRemoved = DateTime.UtcNow;
 
             await connection.CloseAsync();
 
             _context.Add(newEntity);
+
             _context.Update(oldEntity);
+            oldEntity.DateRemoved = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
         }
