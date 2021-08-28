@@ -19,7 +19,7 @@ import { DeleteConfirmComponent }
   from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
@@ -43,8 +43,8 @@ export interface IIndexable {
 })
 export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   displayedColumns: string[] =
-  ['position', 'title', 'candidatesAmount', 'responsible', 'teamInfo', 
-    'project', 'creationDate', 'actions'];
+  ['position', 'title', 'project', 'teamInfo',  'responsible', 
+    'creationDate', 'candidatesAmount', 'actions'];
   dataSource: MatTableDataSource<VacancyData> = new MatTableDataSource<VacancyData>();
   mainData!: VacancyData[];
   isFollowedPage: boolean = false;
@@ -62,15 +62,34 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
     private followService: FollowedService,
   ) {
     this.followService.getFollowed(EntityType.Vacancy)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data=>
-        data.forEach(item=>this.followedSet.add(item.entityId)),
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        mergeMap(data => {
+          data.forEach(item=>this.followedSet.add(item.entityId));
+          return this.service.getList();
+        }))
+      .subscribe(data => {
+        this.mainData = data;
+        if(localStorage.getItem(this.followedPageToken)!==null)
+          this.dataSource.data = data.filter(item=>this.followedSet.has(item.id));
+        else
+          this.dataSource.data = data;
+        data.forEach((d, i) => {
+          d.isFollowed = this.followedSet.has(d.id);
+        });
+        this.mainData = data;
+        this.directive.applyFilter$.emit();
+      },
+      () => {
+        this.loading = false;
+        this.notificationService.showErrorMessage('Failed to get vacancies.');
+      },
       );
-    
-    this.getVacancies();
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
   }
-
+  private readonly followedPageToken: string = 'followedVacancyPage';
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
 
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -80,10 +99,15 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   getVacancies() {
     this.service
       .getList()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(
+        takeUntil(this.unsubscribe$))
       .subscribe(
         data => {
-          this.dataSource.data = data;
+          this.mainData = data;
+          if(localStorage.getItem(this.followedPageToken)!==null)
+            this.dataSource.data = data.filter(item=>this.followedSet.has(item.id));
+          else
+            this.dataSource.data = data;
           data.forEach((d, i) => {
             d.position = i + 1;
             d.isFollowed = this.followedSet.has(d.id);
@@ -110,11 +134,13 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
   public switchToFollowed(){
     this.isFollowedPage = true;
     this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    this.followService.switchRefreshFollowedPageToken(true, this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
   public switchAwayToAll(){
     this.isFollowedPage = false;
     this.dataSource.data = this.mainData;
+    this.followService.switchRefreshFollowedPageToken(false, this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
   public onBookmark(data: VacancyData, perfomToFollowCleanUp: boolean = false){
@@ -195,7 +221,8 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
         if (response) {
           this.loading = true;
           this.service.deleteVacancy(vacancyToDelete.id)
-            .pipe(takeUntil(this.unsubscribe$))
+            .pipe(
+              takeUntil(this.unsubscribe$))
             .subscribe(_ => {
               this.loading = false;
               this.notificationService

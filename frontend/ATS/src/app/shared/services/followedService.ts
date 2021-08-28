@@ -11,18 +11,26 @@ import { HttpClientService } from './http-client.service';
   providedIn: 'root',
 })
 export class FollowedService {
-  public constructor(private readonly http: HttpClientService) {}
+  public constructor(private readonly http: HttpClientService) { }
   public routePrefix = '/UserFollowed';
 
   public getFollowed(type: EntityType) {
     return this.http.getRequest<Followed[]>(`${this.routePrefix}/${type}`);
   }
-
-  public createFollowed(follow : Followed): Observable<Followed> {
+  public switchRefreshFollowedPageToken(toFollowedPage: boolean, token: string) {
+    if (toFollowedPage) {
+      localStorage.setItem(token, 'true');
+    }
+    else 
+    {
+      localStorage.removeItem(token);
+    }
+  }
+  public createFollowed(follow: Followed): Observable<Followed> {
     return this.http.postRequest<Followed>(
       `${this.routePrefix}`, follow);
   }
-  public deleteFollowed(type: EntityType, id: string){
+  public deleteFollowed(type: EntityType, id: string) {
     return this.http.deleteFullRequest<Followed>(`${this.routePrefix}/${id}/${type}`);
   }
 }

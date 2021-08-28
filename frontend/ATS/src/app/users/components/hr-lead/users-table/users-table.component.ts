@@ -6,8 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
 import { UserDataService } from 'src/app/users/services/user-data.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { takeUntil } from 'rxjs/operators';
-import { SendingRegisterLinkDialogComponent } 
+import { takeUntil, mergeMap } from 'rxjs/operators';
+import { SendingRegisterLinkDialogComponent }
   from '../send-registration-link-dialog/sending-register-link-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserTableData } from 'src/app/users/models/user-table-data';
@@ -20,7 +20,7 @@ import { EntityType } from 'src/app/shared/enums/entity-type.enum';
   templateUrl: './users-table.component.html',
   styleUrls: ['./users-table.component.scss'],
 })
-export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
+export class UsersTableComponent implements AfterViewInit, OnDestroy {
   public displayedColumns: string[] =
   ['position', 'full-name', 'email', 
     'birth-date', 'creation-date', 'actions'];
@@ -34,7 +34,7 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild(MatSort) sort!: MatSort;
-  
+  private readonly followedPageToken: string = 'followedUserPage';
   constructor(
     private userDataService: UserDataService,
     private notificationService: NotificationService,
@@ -42,12 +42,35 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
     private dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<UserTableData>();
     this.followService.getFollowed(EntityType.User)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data=>
-        data.forEach(item=>this.followedSet.add(item.entityId)),
-      );
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        mergeMap(data => {
+          data.forEach(item => this.followedSet.add(item.entityId));
+          return this.userDataService
+            .getUsersForHrLead();
+        },
+        ),
+        finalize(() => this.loading = false),
+      )
+      .subscribe((resp) => {
+        resp.forEach((user, index) => {
+          user.position = index + 1;
+          user.isFollowed = this.followedSet.has(user.id ?? '');
+        });
+        this.users = resp;
+        if (localStorage.getItem(this.followedPageToken) !== null) {
+          this.dataSource.data = this.users.filter(item => item.isFollowed);
+        }
+        else {
+          this.dataSource.data = this.users;
+        }
+        this.directive.applyFilter$.emit();
+      },
+      () => {
+        this.notificationService.showErrorMessage('Something went wrong');
+      });
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) !== null;
   }
-
   public getUsers() {
     this.userDataService
       .getUsersForHrLead()
@@ -59,10 +82,13 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
         (resp) => {
           resp.forEach((user, index) => {
             user.position = index + 1;
-            user.isFollowed = this.followedSet.has(user.id??'');
+            user.isFollowed = this.followedSet.has(user.id ?? '');
           });
           this.users = resp;
-          this.dataSource.data = this.users;
+          if (localStorage.getItem(this.followedPageToken) !== null)
+            this.dataSource.data = this.users.filter(item => item.isFollowed);
+          else
+            this.dataSource.data = this.users;
           this.directive.applyFilter$.emit();
         },
         () => {
@@ -84,10 +110,7 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
         case 'email-confirmed': return item.isEmailConfirmed;
         default: return (item as IIndexable)[property];
       }
-    };  
-  }
-  public ngOnInit() {
-    this.getUsers();
+    };
   }
 
   public ngOnDestroy(): void {
@@ -115,32 +138,32 @@ export class UsersTableComponent implements AfterViewInit, OnInit, OnDestroy {
   public switchToFollowed() {
     this.isFollowedPage = true;
     this.dataSource.data = this.dataSource.data.filter(user => user.isFollowed);
+    this.followService.switchRefreshFollowedPageToken(true, this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
 
   public switchAwayToAll() {
     this.isFollowedPage = false;
     this.dataSource.data = this.users;
+    this.followService.switchRefreshFollowedPageToken(false, this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
 
-  public onBookmark(data: UserTableData, perfomToFollowCleanUp: boolean = false){
+  public onBookmark(data: UserTableData, perfomToFollowCleanUp: boolean = false) {
     data.isFollowed = !data.isFollowed;
-    if(data.isFollowed)
-    {
+    if (data.isFollowed) {
       this.followService.createFollowed(
         {
-          entityId: data.id??'',
+          entityId: data.id ?? '',
           entityType: EntityType.User,
         },
       ).subscribe();
-    }else
-    {
+    } else {
       this.followService.deleteFollowed(
-        EntityType.User, data.id??'',
+        EntityType.User, data.id ?? '',
       ).subscribe();
     }
-    if(perfomToFollowCleanUp) {
+    if (perfomToFollowCleanUp) {
       this.dataSource.data = this.dataSource.data.filter(user => user.isFollowed);
     }
     this.directive.applyFilter$.emit();

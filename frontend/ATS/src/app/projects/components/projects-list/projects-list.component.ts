@@ -21,7 +21,7 @@ import { Tag } from 'src/app/shared/models/tags/tag';
 import { DeleteConfirmComponent } 
   from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 
@@ -30,7 +30,7 @@ import { EntityType } from 'src/app/shared/enums/entity-type.enum';
   templateUrl: './projects-list.component.html',
   styleUrls: ['./projects-list.component.scss'],
 })
-export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
+export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   displayedColumns: string[] = [
     'position',
     'name',
@@ -51,7 +51,7 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   public loading: boolean = false;
   private followedSet: Set<string> = new Set();
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
-
+  private readonly followedPageToken: string = 'followedProjectPage';
   constructor(
     private projectService: ProjectService,
     private dialog: MatDialog,
@@ -59,17 +59,34 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
     private followService: FollowedService,
   ) {
     this.followService.getFollowed(EntityType.Project)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data=>
-        data.forEach(item=>this.followedSet.add(item.entityId)),
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        mergeMap(data => {
+          data.forEach(item=>this.followedSet.add(item.entityId));
+          return this.projectService.getProjects();
+        }))
+      .subscribe((resp) => {
+        this.projects = resp.body!;
+        this.projects.forEach((d, i) => {
+          d.position = i + 1;
+          d.isFollowed = this.followedSet.has(d.id);
+        });
+        if(localStorage.getItem(this.followedPageToken)!==null)
+          this.dataSource.data = this.projects.filter(item=>this.followedSet.has(item.id));
+        else
+          this.dataSource.data = this.projects;
+        this.directive.applyFilter$.emit();
+      },
       );
     this.dataSource = new MatTableDataSource<ProjectInfo>();
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
   }
 
   public getProjects() {
     this.projectService
       .getProjects()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(
+        takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
           this.projects = resp.body!;
@@ -77,7 +94,15 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
             d.position = i + 1;
             d.isFollowed = this.followedSet.has(d.id);
           });
-          this.dataSource.data = this.projects;
+          if(localStorage.getItem(this.followedPageToken)!==null)
+          {
+            this.dataSource.data = this.projects.filter(item=>this.followedSet.has(item.id));
+          
+          }
+          else
+          {
+            this.dataSource.data = this.projects;
+          }
           this.directive.applyFilter$.emit();
         },
       );
@@ -88,12 +113,10 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
     this.dataSource.paginator = this.paginator;
   }
 
-  ngOnInit() {
-    this.getProjects();
-  }
   public switchToFollowed(){
     this.isFollowedPage = true;
     this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    this.followService.switchRefreshFollowedPageToken(true, this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
   public getFirstTags(project: ProjectInfo): Tag[] {
@@ -114,6 +137,7 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   public switchAwayToAll(){
     this.isFollowedPage = false;
     this.dataSource.data = this.projects;
+    this.followService.switchRefreshFollowedPageToken(false, this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
   public ngOnDestroy(): void {
@@ -184,7 +208,8 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
         if (response) {
           this.projectService
             .deleteProject(projectToDelete)
-            .pipe(takeUntil(this.unsubscribe$))
+            .pipe(
+              takeUntil(this.unsubscribe$))
             .subscribe(_ => {
               this.notificationService
                 .showSuccessMessage(`Project ${projectToDelete.name} deleted!`);

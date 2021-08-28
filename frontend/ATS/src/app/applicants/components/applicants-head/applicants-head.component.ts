@@ -27,7 +27,7 @@ export class ApplicantsHeadComponent implements OnInit{
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
   ) {}
-
+  private readonly followedPageToken: string = 'followedApplicantPage';
   public ngOnInit(): void {
     this.route.queryParams.subscribe((query) => {
       if (query['data']) {
@@ -36,6 +36,7 @@ export class ApplicantsHeadComponent implements OnInit{
         this.showApplicantsCreateDialog();
       }
     });
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
   }
 
   public applySearchValue(): void {

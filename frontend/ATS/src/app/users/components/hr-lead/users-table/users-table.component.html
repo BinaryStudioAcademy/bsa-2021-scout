@@ -3,8 +3,8 @@
 <div class="users-page">
 
     <div class="header">
-        <button class="tub" (click)="switchAwayToAll()">All</button>
-        <button class="tub" (click)="switchToFollowed()">Followed</button>
+        <button class="tub" [style.text-decoration]="!isFollowedPage ? 'underline' : 'none'" (click)="switchAwayToAll()">All</button>
+        <button class="tub" [style.text-decoration]="isFollowedPage ? 'underline' : 'none'" (click)="switchToFollowed()">Followed</button>
         <mat-form-field appearance="fill" floatLabel="never">
             <mat-icon class="search">search</mat-icon>
             <input matInput type="text" (keyup)="applyFilter($event)" placeholder="Search..." #input>
