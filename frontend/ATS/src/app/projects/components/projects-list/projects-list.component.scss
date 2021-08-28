@@ -75,6 +75,7 @@ button.tub {
     font-weight: 600;
     font-size: 16px;
     line-height: 22px;
+    text-underline-offset: 5px;
 }
 
 button.tub:hover {
@@ -84,8 +85,8 @@ button.tub:hover {
 button.tub:focus {
     color: $primary-color-blue;
     text-decoration: underline;
-    text-underline-offset: 5px;
 }
+
 
 .projects-header {
     display: flex;
