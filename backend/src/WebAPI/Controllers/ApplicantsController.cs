@@ -157,16 +157,24 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("csv/")]
-        public async Task<IActionResult> PostApplicantFromCsv()
+        public async Task<IActionResult> GetApplicantFromCsv()
         {
             var file = Request.Form.Files[0];
 
             using (var fileReadStream = file.OpenReadStream())
             {
-                var command = new CreateApplicantsFromCsvCommand(fileReadStream);
+                var command = new CetApplicantsFromCsvCommand(fileReadStream);
 
                 return Ok(await Mediator.Send(command));
             }
+        }
+
+        [HttpPost("range/")]
+        public async Task<IActionResult> GetApplicantFromCsv(IEnumerable<CreateApplicantDto> applicants)
+        {
+            var command = new CreateRangeOfApplicantsCommand(applicants);
+
+            return Ok(await Mediator.Send(command));
         }
 
         [HttpPost("tags/{entityId}")]

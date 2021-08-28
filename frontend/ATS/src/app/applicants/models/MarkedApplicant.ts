@@ -4,7 +4,6 @@ export class MarkedApplicant {
   id: string='';
   firstName: string='';
   lastName: string='';
-  middleName: string='';
   linkedInUrl: string='';
   email: string='';
   phone: string='';
@@ -16,7 +15,6 @@ export class MarkedApplicant {
     this.id = applicant.id;
     this.firstName = applicant.firstName;
     this.lastName = applicant.lastName;
-    this.middleName = applicant.middleName;
     this.linkedInUrl = applicant.linkedInUrl;
     this.email = applicant.email;
     this.phone = applicant.phone;

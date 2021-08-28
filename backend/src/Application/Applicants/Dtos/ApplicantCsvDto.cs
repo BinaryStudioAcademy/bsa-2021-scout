@@ -26,9 +26,9 @@ namespace Application.Applicants.Dtos
             RuleFor(_ => _.BirthDate).NotNull().NotEmpty();
             RuleFor(_ => _.Email).NotNull().EmailAddress();
             RuleFor(_ => _.Phone).NotNull().NotEmpty();
-            RuleFor(_ => _.Skype).NotNull().NotEmpty();
-            RuleFor(_ => _.LinkedInUrl).NotNull().NotEmpty()
-                .Must(LinkedInUrl => new Regex(@"^https:\/\/www.linkedin.com\/[a-z0-9\-]+").IsMatch(LinkedInUrl));
+            RuleFor(_ => _.LinkedInUrl)
+                .Must(LinkedInUrl => 
+                new Regex(@"^https:\/\/www.linkedin.com\/[a-z0-9\-]+").IsMatch(LinkedInUrl) || LinkedInUrl=="");
             RuleFor(_ => _.Experience).GreaterThanOrEqualTo(0);
         }
     }

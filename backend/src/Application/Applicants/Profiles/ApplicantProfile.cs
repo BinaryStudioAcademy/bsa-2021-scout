@@ -23,7 +23,12 @@ namespace Application.Applicants.Profiles
             CreateMap<CreateApplicantDto, ApplicantDto>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
+            CreateMap<CreateApplicantDto, Applicant>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
             CreateMap<ApplicantCsvDto, Applicant>();
+            CreateMap<ApplicantCsvDto, GetApplicantCsvDto>()
+                .ForMember(dto => dto.IsValid, opt => opt.Ignore());
 
             CreateMap<UpdateApplicantDto, ApplicantDto>();
             CreateMap<UpdateApplicantDto, Applicant>();
