@@ -206,6 +206,7 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<Action>, ActionReadRepository>();
             services.AddScoped<IReadRepository<CandidateReview>, CandidateReviewReadRepository>();
             services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();
+            services.AddScoped<ICandidateToStageReadRepository, CandidateToStageReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
 
