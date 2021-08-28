@@ -63,7 +63,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
     private readonly modalService: MatDialog,
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     this.route.params.subscribe(({ id }) => {
@@ -113,8 +113,9 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
             event.container.id, // Stores new stage id
           )
           .subscribe(
-            _ => (this.MarkCandidateAsViewed(event.item.element.nativeElement.id)),
-            _ => {
+            (_) =>
+              this.MarkCandidateAsViewed(event.item.element.nativeElement.id),
+            (_) => {
               this.notificationService.showErrorMessage(
                 'Failed to save candidate\'s stage',
                 'Error',
@@ -275,7 +276,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
           this.openCandidateModal(
             this.data[prevPos!.stageIndex].candidates[prevPos!.index].id,
           );
-        } else if (state == 'next') {
+        } else if (state === 'next') {
           this.openCandidateModal(
             this.data[nextPos!.stageIndex].candidates[nextPos!.index].id,
           );
@@ -316,13 +317,11 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
 
         if (vacancy.stages[0].candidates.length != 0) {
           this.data = [...vacancy.stages];
-        }
-        else {
+        } else {
           vacancy.stages.splice(0, 1);
           this.data = [...vacancy.stages];
         }
 
-        console.log(this.data);
         this.reviews = [...reviews];
         this.title = vacancy.title;
 
@@ -380,10 +379,10 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
 
   public MarkCandidateAsViewed(id: string) {
     this.data.forEach((stage) => {
-      stage.candidates.forEach(candidate => {
+      stage.candidates.forEach((candidate) => {
         if (candidate.id == id) {
           if (candidate.isViewed != true) {
-            this.vacancyCandidateService.MarkAsViewed(id).subscribe(_ => {
+            this.vacancyCandidateService.MarkAsViewed(id).subscribe((_) => {
               candidate.isViewed = true;
             });
           }
