@@ -59,7 +59,8 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     private followService: FollowedService,
   ) {
     this.followService.getFollowed(EntityType.Project)
-      .pipe(takeUntil(this.unsubscribe$),
+      .pipe(
+        takeUntil(this.unsubscribe$),
         mergeMap(data => {
           data.forEach(item=>this.followedSet.add(item.entityId));
           return this.projectService.getProjects();
@@ -84,7 +85,8 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   public getProjects() {
     this.projectService
       .getProjects()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(
+        takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
           this.projects = resp.body!;
@@ -206,7 +208,8 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
         if (response) {
           this.projectService
             .deleteProject(projectToDelete)
-            .pipe(takeUntil(this.unsubscribe$))
+            .pipe(
+              takeUntil(this.unsubscribe$))
             .subscribe(_ => {
               this.notificationService
                 .showSuccessMessage(`Project ${projectToDelete.name} deleted!`);
