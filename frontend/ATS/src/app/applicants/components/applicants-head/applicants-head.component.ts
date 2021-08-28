@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { CreateApplicantComponent } from '../create-applicant/create-applicant.c
   templateUrl: './applicants-head.component.html',
   styleUrls: ['./applicants-head.component.scss'],
 })
-export class ApplicantsHeadComponent {
+export class ApplicantsHeadComponent implements OnInit{
   public searchValue = '';
   public isFollowedPage = false;
   public creationData?: CreateApplicant;

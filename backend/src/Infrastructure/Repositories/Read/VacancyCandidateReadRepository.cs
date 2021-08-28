@@ -130,5 +130,23 @@ namespace Infrastructure.Repositories.Read
 
             return candidate;
         }
+
+        public async Task<VacancyCandidate> GetFullByApplicantAndStageAsync(string applicantId, string stageId)
+        {
+            using var connection = _connectionFactory.GetSqlConnection();
+
+            string sql = @$"SELECT VC.*
+                            FROM CandidateToStages AS CtS
+                            JOIN VacancyCandidates AS VC ON VC.Id = CtS.CandidateId
+                            JOIN Applicants AS A ON A.Id=VC.ApplicantId
+                            WHERE CtS.StageId = @stageId
+                            AND VC.ApplicantId = @applicantId";
+
+            return await connection.QueryFirstOrDefaultAsync<VacancyCandidate>(sql, new
+            {
+                applicantId = @applicantId,
+                stageId = @stageId
+            });
+        }
     }
 }

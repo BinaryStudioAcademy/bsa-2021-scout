@@ -2,6 +2,11 @@
   <h3>
     <span>{{ title }}</span>
     <span class="only-color meta"> ({{ data.length }})</span>
+    <span *ngIf="index === 0"  class="self-applied-info">
+      <mat-icon matTooltip="This column appears when a user applied for a job on their own">
+        info
+      </mat-icon>
+    </span>
   </h3>
   <button mat-icon-button>
     <mat-icon>more_vert</mat-icon>

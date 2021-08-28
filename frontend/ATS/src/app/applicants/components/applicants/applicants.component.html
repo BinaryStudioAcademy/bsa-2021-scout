@@ -6,7 +6,10 @@
         <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
             <ng-container matColumnDef="position">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header="position"> # </th>
-                <td mat-cell class="index-cell" *matCellDef="let applicant"> {{applicant.position}} </td>
+                <td mat-cell class="index-cell" *matCellDef="let applicant"> 
+                    <mat-icon class="self-applied" *ngIf="applicant.isSelfApplied">hail</mat-icon> 
+                    {{applicant.position}} 
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="name">
