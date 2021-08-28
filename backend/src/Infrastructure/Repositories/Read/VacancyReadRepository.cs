@@ -58,7 +58,7 @@ namespace Infrastructure.Repositories.Read
                             EXCEPT
                             (SELECT V.* FROM Vacancies AS V
                             LEFT OUTER JOIN Stages AS S ON S.VacancyId=V.Id
-                            LEFT OUTER JOIN CandidateToStages AS CS ON CS.StageId = S.Id AND S.[Index]=0 
+                            LEFT OUTER JOIN CandidateToStages AS CS ON CS.StageId = S.Id AND (S.[Index]=1 OR S.[Index]=0)
                             LEFT OUTER JOIN VacancyCandidates AS VC ON CS.CandidateId = VC.Id
                             WHERE VC.ApplicantId = @applicantId
                             AND V.CompanyId = @companyId)";

@@ -31,6 +31,7 @@ namespace Infrastructure.EF.Seeds
         }
 
         private static List<string> names = new List<string> {
+            "Self-Applied",
             "Applied",
             "Phone screen",
             "Interview",

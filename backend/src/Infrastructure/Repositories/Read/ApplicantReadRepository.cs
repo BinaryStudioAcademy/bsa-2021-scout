@@ -136,7 +136,7 @@ namespace Infrastructure.Repositories.Read
                            LEFT OUTER JOIN
                            (SELECT VacancyCandidates.ApplicantId, Stages.[Index]
                            From Stages 
-                           LEFT OUTER JOIN CandidateToStages ON CandidateToStages.StageId = Stages.Id AND Stages.[Index]=0 
+                           LEFT OUTER JOIN CandidateToStages ON CandidateToStages.StageId = Stages.Id AND (Stages.[Index]=0 OR Stages.[Index]=1)
                            LEFT OUTER JOIN VacancyCandidates ON CandidateToStages.CandidateId = VacancyCandidates.Id
                            WHERE Stages.VacancyId = @vacancyId) AS Applied ON AllApplicants.Id=Applied.ApplicantId
                            WHERE AllApplicants.CompanyId = @companyId";

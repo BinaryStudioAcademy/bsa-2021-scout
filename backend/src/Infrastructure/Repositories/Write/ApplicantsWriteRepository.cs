@@ -8,10 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Infrastructure.Repositories.Abstractions;
 using Application.Common.Exceptions;
 using Application.Interfaces;
+using Domain.Interfaces.Write;
 
 namespace Infrastructure.Repositories.Write
 {
-    public class ApplicantsWriteRepository : WriteRepository<Applicant>
+    public class ApplicantsWriteRepository : WriteRepository<Applicant> , IApplicantsWriteRepository
     {
         private readonly ICurrentUserContext _currentUserContext;
         public ApplicantsWriteRepository(ApplicationDbContext context,  ICurrentUserContext currentUserContext)
@@ -23,6 +24,11 @@ namespace Infrastructure.Repositories.Write
         public override async Task<Entity> CreateAsync(Applicant entity)
         {
             entity.CompanyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
+            return await base.CreateAsync(entity);
+        }
+
+        public async Task<Entity> CreateFullAsync(Applicant entity)
+        {
             return await base.CreateAsync(entity);
         }
 

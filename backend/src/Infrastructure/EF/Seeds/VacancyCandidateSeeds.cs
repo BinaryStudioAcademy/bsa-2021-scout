@@ -32,7 +32,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 2.4,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "ff2eaf94-50fc-5dbe-9175-eb5d1eb36ae3",
@@ -44,7 +45,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 1.9,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "7123aeab-e8ab-52be-9911-60128e4c80b1",
@@ -56,7 +58,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 3.4,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "8b11b446-ebf3-5ca3-8ece-4500063cda5c",
@@ -68,7 +71,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 2.3,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "548b44af-0e52-5876-ac50-dad780a42387",
@@ -80,7 +84,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 1.3,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "51831be3-e5ec-50ce-92fd-87cde7e9a406",
@@ -92,7 +97,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 5,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "72bf5de1-69c3-5aaa-94a7-bf7b84c185c0",
@@ -104,7 +110,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 1.2,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "d3a98231-109b-5db7-9be8-3d4c0b64e70b",
@@ -116,7 +123,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 1.3,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "dde9ed76-46c9-5b10-8f24-c4f59bd8d68b",
@@ -128,7 +136,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 1.5,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "1c9e33cb-a9d0-516c-9f12-45e1c56f9f69",
@@ -140,7 +149,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 2.4,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "cb47725a-4f3d-5567-b02b-9161330aa821",
@@ -152,7 +162,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 1.6,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "19ff5d99-e6ed-5967-808a-3cad8c01a0af",
@@ -164,7 +175,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 4.3,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "c836afb1-006f-5b92-a7b6-e015cb0fab05",
@@ -176,7 +188,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 3.7,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "824e26e9-d5e1-5dcb-a381-7134f2955919",
@@ -188,7 +201,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 2.8,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "175a15c4-3263-52fb-b368-f534242e651e",
@@ -200,7 +214,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 4.6,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "6723714c-6629-5aa6-a99d-2b5cc62adb3a",
@@ -212,7 +227,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 5.6,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "aa3abdc8-3ae5-50bd-935e-6d5bc36f31ad",
@@ -224,7 +240,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 1.9,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "4e64815e-42fa-5ee3-9b0f-3b6f24170536",
@@ -236,7 +253,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 3.7,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "9481253a-bad7-5f1b-b6e0-956a188c1dbb",
@@ -248,7 +266,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 3.6,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
           new VacancyCandidate{
               Id = "f0031f5b-7111-568c-ac2c-645c26d0f479",
@@ -260,7 +279,8 @@ namespace Infrastructure.EF.Seeds
               Experience = 2.6,
               ContactedById = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
               HrWhoAddedId = UserSeeds.GetUsers().Select(x=>x.Id).ToList()[_random.Next(UserSeeds.GetUsers().Count())],
-              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())]
+              Comments = CommentsQuates[_random.Next(CommentsQuates.Count())],
+              IsViewed = true
           },
 
         };

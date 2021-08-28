@@ -19,6 +19,7 @@ import { ApplicantUpdateCsvComponent }
   from './components/applicant-update-csv/applicant-update-csv.component';
 import { ApplicantCsvListComponent } 
   from './components/applicant-csv-list/applicant-csv-list.component';
+import { SelfApplyingComponent } from './components/self-applying/self-applying.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ApplicantCsvListComponent }
     ApplicantsUploadCsvComponent,
     ApplicantUpdateCsvComponent,
     ApplicantCsvListComponent,
+    SelfApplyingComponent,
   ],
   imports: [
     BrowserModule,

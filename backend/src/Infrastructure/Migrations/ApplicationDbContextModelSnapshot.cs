@@ -68,6 +68,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSelfApplied")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -551,7 +554,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EntityId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("EntityType")
                         .HasColumnType("int");
@@ -687,6 +690,12 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("HrWhoAddedId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsSelfApplied")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsViewed")
+                        .HasColumnType("bit");
 
                     b.Property<int>("SalaryExpectation")
                         .HasColumnType("int");

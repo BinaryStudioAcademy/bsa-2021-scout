@@ -9,5 +9,7 @@ namespace Application.VacancyCandidates.Dtos
         public int? AverageMark { get; set; }
         public DateTime DateAdded { get; set; }
         public ApplicantDto Applicant { get; set; }
+        public bool IsSelfApplied { get; set; }
+        public bool IsViewed { get; set; }
     }
 }

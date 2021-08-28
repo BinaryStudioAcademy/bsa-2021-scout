@@ -25,4 +25,5 @@ export class CreateApplicant {
     this.linkedInUrl = csvApplicant.linkedInUrl;
     this.experience = csvApplicant.experience;
   }
+
 }

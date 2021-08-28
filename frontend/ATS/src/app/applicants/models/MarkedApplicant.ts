@@ -1,6 +1,5 @@
 import { GetApplicant } from 'src/app/shared/models/applicants/get-applicant';
 
-
 export class MarkedApplicant {
   id: string='';
   firstName: string='';
