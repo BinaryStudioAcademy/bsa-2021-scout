@@ -166,6 +166,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<CandidateReview>, CandidateReviewWriteRepository>();
 
             services.AddScoped<IWriteRepository<Applicant>, ApplicantsWriteRepository>();
+            services.AddScoped<IApplicantsWriteRepository, ApplicantsWriteRepository>();
             services.AddScoped<IApplicantsFromCsvWriteRepository, ApplicantsFromCsvWriteRepository>();
 
             services.AddScoped<IWriteRepository<FileInfo>, WriteRepository<FileInfo>>();
@@ -213,9 +214,10 @@ namespace Infrastructure
 
             services.AddScoped<IElasticReadRepository<ElasticEntity>, ElasticReadRepository<ElasticEntity>>();
 
+            services.AddScoped<IReadRepository<Applicant>, ApplicantReadRepository>();
             services.AddScoped<IApplicantReadRepository, ApplicantReadRepository>();
             services.AddScoped<IUserFollowedReadRepository, UserFollowedEntityReadRepository>();
-           
+
             services.AddScoped<IStageReadRepository, StageReadRepository>();
             services.AddScoped<IReadRepository<Stage>, StageReadRepository>();
             services.AddScoped<IReadRepository<VacancyCandidate>, VacancyCandidateReadRepository>();

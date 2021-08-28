@@ -33,6 +33,7 @@ import { MainContentComponent } from './components/main-content/main-content.com
 import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { StylePaginatorDirective } from './directives/style-paginator.directive';
 // eslint-disable-next-line
 import { AddCandidateModalComponent } from './components/modal-add-candidate/modal-add-candidate.component';
@@ -42,6 +43,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
+import { LogoBlockComponent } from '../users/components/logo-block/logo-block.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { UserRoleDirective } from './directives/user-role.directive';
 import {ClipboardModule} from '@angular/cdk/clipboard';
@@ -73,6 +75,7 @@ import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.com
     MultiselectComponent,
     MatDatepickerModule,
     MatDialogModule,
+    MatTooltipModule,
     MatNativeDateModule,
     MatAutocompleteModule,
     MatCheckboxModule,
@@ -91,6 +94,7 @@ import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.com
     MatMenuModule,
     TagsEditComponent,
     DeleteConfirmComponent,
+    LogoBlockComponent,
     ClipboardModule,
     UserProfileComponent,
     TimezonePipe,
@@ -112,6 +116,7 @@ import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.com
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
+    MatTooltipModule,
     MatProgressBarModule,
     MatListModule,
     MatAutocompleteModule,
@@ -146,6 +151,7 @@ import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.com
     AddCandidateModalComponent,
     TagsEditComponent,
     DeleteConfirmComponent,
+    LogoBlockComponent,
     UserProfileComponent,
     UserRoleDirective,
     CopyClipboardDirective,

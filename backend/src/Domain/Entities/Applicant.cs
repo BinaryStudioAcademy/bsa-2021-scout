@@ -13,6 +13,7 @@ namespace Domain.Entities
         public DateTime ToBeContacted { get; set; }
         public string CompanyId { get; set; }
         // TODO: add company read repository and remove nullability
+        public bool IsSelfApplied { get; set; }
         public Company Company { get; set; }
         public FileInfo CvFileInfo { get; set; }
         public bool HasCv { get => CvFileInfo != null; }

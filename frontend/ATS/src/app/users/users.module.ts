@@ -36,7 +36,7 @@ import { VacancyCardComponent } from './components/home-page/vacancy-card/vacanc
     LoginBoxComponent,
     LoginComponent,
     LoginRegistCommonComponent,
-    LogoBlockComponent,
+    //LogoBlockComponent,
     RegistrationComponent,
     RegistrationBoxComponent,
     ForgotPasswordDialogComponent,

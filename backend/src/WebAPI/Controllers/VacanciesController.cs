@@ -11,6 +11,7 @@ using Application.Vacancies.Commands.Delete;
 using Application.Vacancies.Commands.Edit;
 using Application.Vacancies.Dtos;
 using Application.Vacancies.Queries;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +38,14 @@ namespace WebAPI.Controllers
             [FromRoute] string Id)
         {
             var query = new GetVacancyByIdQuery(Id);
+            return StatusCode(201, await Mediator.Send(query));
+        }
+        [AllowAnonymous]
+        [HttpGet("noauth/{Id}")]
+        public async Task<IActionResult> GetVacancyNoAuth(
+            [FromRoute] string Id)
+        {
+            var query = new GetVacancyByIdNoAuth(Id);
             return StatusCode(201, await Mediator.Send(query));
         }
         [HttpGet("applicant/{applicantId}")]
