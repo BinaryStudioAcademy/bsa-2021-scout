@@ -13,7 +13,6 @@ import { UsersModule } from '../users/users.module';
 import { SidenavService } from '../shared/services/sidenav.service';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { ApplicationPoolComponent } from '../pools/components/application-pool/application-pool.component';
 import { ErrorInterceptor } from '../users/helpers/error.interceptor';
 import { JwtInterceptor } from '../users/helpers/jwt.interceptor';
 import { AuthGuard } from '../users/guards/auth.guard';
@@ -23,9 +22,7 @@ import { ProjectsModule } from '../projects/projects.module';
 import { PoolsModule } from '../pools/pools.module';
 
 @NgModule({
-  declarations: [
-    AppComponent, 
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     RoutingModule,
@@ -33,7 +30,7 @@ import { PoolsModule } from '../pools/pools.module';
     MatSortModule,
     MatTableModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),    
+    ToastrModule.forRoot(),
     SharedModule,
     ApplicantsModule,
     VacanciesModule,
