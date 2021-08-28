@@ -402,17 +402,31 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   //common func for saving
   toSave(newStage: Stage) {
     newStage.vacancyId = this.vacancyId;
+
     if (this.isEditStageMode) {
-      let stage = this.stageList.find((x) => x.index === newStage.index);
+      let index = -1;
+
+      let stage = this.stageList.find((x, i) => {
+        const rightItem = x.index === newStage.index;
+
+        if (rightItem) {
+          index = i;
+        }
+
+        return rightItem;
+      });
+
       if (stage && stage.index >= 0) {
         newStage.id = stage.id;
-        this.stageList[stage?.index] = { ...newStage };
+        this.stageList[index] = { ...newStage };
       }
+
       this.isEditStageMode = false;
     } else {
       newStage.index = this.stageList.length+1;
       this.stageList.push(newStage);
     }
+
     this.stageToEdit = {} as Stage;
   }
 

@@ -30,12 +30,13 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
   @Output() stageChange = new EventEmitter<Stage>();
   @Output() stageCreateAndAddChange = new EventEmitter<Stage>();
   @Output() isClosedChange = new EventEmitter<boolean>();
-  @Input() stage: Stage = {} as Stage;
+  @Input() stage?: Stage;
 
   public submitted: Boolean = false;
   public editModeItemIndex: number = -1;
   public loading: boolean = false;
   public stageId: string = '';
+  public editing: boolean = false;
   public reviewOptions: IOption[] = [];
   public actionOptions: IOption[] = [];
 
@@ -119,6 +120,12 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     this.actionOptions = this.actionsToOptions(this.actions);
+
+    if (this.stage) {
+      this.editing = true;
+    } else {
+      this.stage = {} as Stage;
+    }
   }
 
   public ngOnDestroy(): void {
@@ -176,7 +183,7 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
   save() {
     this.submitted = true;
     this.stage = { ...this.stageForm.value };
-    this.stage.index = this.editModeItemIndex;
+    this.stage!.index = this.editModeItemIndex;
     this.stageForm.reset();
   }
 
@@ -191,7 +198,7 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
   onStageSave() {
     this.submitted = true;
     this.stage = { ...this.stageForm.value };
-    this.stage.index = this.editModeItemIndex;
+    this.stage!.index = this.editModeItemIndex;
     this.stageForm.reset();
     this.stageChange.emit(this.stage);
     this.stage = {} as Stage;
@@ -200,7 +207,7 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
   onSaveAndAdd() {
     this.submitted = true;
     this.stage = this.stageForm.value;
-    this.stage.index = this.editModeItemIndex;
+    this.stage!.index = this.editModeItemIndex;
     this.stageForm.reset();
     this.stageCreateAndAddChange.emit(this.stage);
     this.stage = {} as Stage;
