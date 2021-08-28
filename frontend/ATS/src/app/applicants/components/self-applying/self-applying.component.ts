@@ -20,7 +20,7 @@ export class SelfApplyingComponent {
 
   public vacancyId: string = '';
   public vacancy: VacancyFull = new VacancyFull();
-  public applicant: CreateApplicant = new CreateApplicant();
+  public applicant: CreateApplicant = new CreateApplicant(null);
   public emailFilled: boolean = false;
   public email: string = '';
   public applied: boolean = false;

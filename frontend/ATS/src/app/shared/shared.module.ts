@@ -42,7 +42,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 import { LogoBlockComponent } from '../users/components/logo-block/logo-block.component';
@@ -77,7 +76,6 @@ import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.com
     MultiselectComponent,
     MatDatepickerModule,
     MatDialogModule,
-    MatTooltipModule,
     MatNativeDateModule,
     MatAutocompleteModule,
     MatCheckboxModule,
@@ -120,7 +118,6 @@ import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.com
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
-    MatTooltipModule,
     MatProgressBarModule,
     MatListModule,
     MatAutocompleteModule,

@@ -16,14 +16,16 @@ export class CreateApplicant {
 
   cv: File | null = null;
 
-  constructor(csvApplicant: CsvApplicant) {
-    this.firstName = csvApplicant.firstName;
-    this.lastName = csvApplicant.lastName;
-    this.email = csvApplicant.email;
-    this.phone = csvApplicant.phone;
-    this.skype = csvApplicant.skype;
-    this.linkedInUrl = csvApplicant.linkedInUrl;
-    this.experience = csvApplicant.experience;
+  constructor(csvApplicant: CsvApplicant | null) {
+    if(csvApplicant){
+      this.firstName = csvApplicant.firstName;
+      this.lastName = csvApplicant.lastName;
+      this.email = csvApplicant.email;
+      this.phone = csvApplicant.phone;
+      this.skype = csvApplicant.skype;
+      this.linkedInUrl = csvApplicant.linkedInUrl;
+      this.experience = csvApplicant.experience;
+    }
   }
 
 }
