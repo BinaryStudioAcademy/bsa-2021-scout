@@ -33,6 +33,16 @@ export class ApplicantsService {
     return this.httpClient.postRequest<Applicant>('/applicants', formData);
   }
 
+  public addSelfAppliedApplicant(createApplicant: CreateApplicant, 
+    vacancyId: string): Observable<Applicant> {
+    const formData = new FormData();
+    formData.append('body', JSON.stringify(createApplicant));
+    if (createApplicant.cv) {
+      formData.append('cvFile', createApplicant.cv, createApplicant.cv.name);
+    }
+    return this.httpClient.postRequest<Applicant>(`/applicants/self-apply/${vacancyId}`, formData);
+  }
+
   public updateApplicant(updateApplicant: UpdateApplicant): Observable<Applicant> {
     const formData = new FormData();
     formData.append('body', JSON.stringify(updateApplicant));
@@ -56,6 +66,10 @@ export class ApplicantsService {
     const fd = new FormData();
     fd.append('file', file, file.name);
     return this.httpClient.postFullRequest<any>('/applicants/csv', fd);
+  }
+
+  public getApplicantByEmail(email: string): Observable<Applicant>{
+    return this.httpClient.getRequest<Applicant>(`/applicants/property/email/${email}`);
   }
 
 }

@@ -1,17 +1,17 @@
 import { ElasticEntity } from '../elastic-entity/elastic-entity';
 
-export interface CreateApplicant {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  skype: string;
-  linkedInUrl: string;
-  experience: number;
+export class CreateApplicant {
+  firstName: string='';
+  lastName: string='';
+  email: string='';
+  phone: string='';
+  skype: string='';
+  linkedInUrl: string='';
+  experience: number=0;
   experienceDescription?: string;
   skills?: string;
 
-  tags: ElasticEntity;
+  tags: ElasticEntity = new ElasticEntity();
 
-  cv: File | null;
+  cv: File | null = null;
 }

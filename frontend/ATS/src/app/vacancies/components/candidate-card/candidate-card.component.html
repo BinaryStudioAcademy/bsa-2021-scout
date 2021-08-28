@@ -1,6 +1,6 @@
 <div
   class="card"
-  [ngClass]="{'draggable': isDraggable, 'clickable': isClickable}"
+  [ngClass]="{'draggable': isDraggable, 'clickable': isClickable, 'not-viewed': !candidate.isViewed}"
   [id]="candidate.id"
   cdkDrag
   [cdkDragDisabled]="!isDraggable"
@@ -10,6 +10,7 @@
     <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />
     <div class="texts">
       <div>{{ candidate.applicant.firstName }} {{ candidate.applicant.lastName }}</div>
+      <div class="self-applied" *ngIf="candidate.isSelfApplied"><mat-icon>hail</mat-icon></div>
       <a routerLink="/profile/{{ candidate.id }}">View profile</a>
     </div>
   </div>

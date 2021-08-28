@@ -13,6 +13,7 @@ export class CandidateColumnComponent {
   @Input() public isDraggable: boolean = false;
   @Input() public data: ShortVacancyCandidateWithApplicant[] = [];
   @Input() public title: string = 'Data';
+  @Input() public index: number = -1;
   @Output() public clickAction: EventEmitter<string> =
   new EventEmitter<string>();
 

@@ -49,7 +49,7 @@ import {
     LoginBoxComponent,
     LoginComponent,
     LoginRegistCommonComponent,
-    LogoBlockComponent,
+    //LogoBlockComponent,
     RegistrationComponent,
     RegistrationBoxComponent,
     ForgotPasswordDialogComponent,

@@ -4,14 +4,16 @@ using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210827165736_AddIsSelfAppliedAndIsViewed")]
+    partial class AddIsSelfAppliedAndIsViewed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,17 +169,12 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("DateRemoved")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MoverId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("StageId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CandidateId");
-
-                    b.HasIndex("MoverId");
 
                     b.HasIndex("StageId");
 
@@ -804,12 +801,6 @@ namespace Infrastructure.Migrations
                         .HasConstraintName("candidate_to_stage_candidate_FK")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Domain.Entities.User", "Mover")
-                        .WithMany("MovedCandidateToStages")
-                        .HasForeignKey("MoverId")
-                        .HasConstraintName("candidate_to_stage_mover_FK")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Domain.Entities.Stage", "Stage")
                         .WithMany("CandidateToStages")
                         .HasForeignKey("StageId")
@@ -817,8 +808,6 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Candidate");
-
-                    b.Navigation("Mover");
 
                     b.Navigation("Stage");
                 });
@@ -1100,8 +1089,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("CvParsingJobs");
 
                     b.Navigation("EmailToken");
-
-                    b.Navigation("MovedCandidateToStages");
 
                     b.Navigation("RefreshTokens");
 

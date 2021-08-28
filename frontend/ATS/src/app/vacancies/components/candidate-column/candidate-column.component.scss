@@ -9,6 +9,7 @@
 
   h3 {
     margin: 0;
+    display: flex;
   }
 }
 
@@ -24,5 +25,20 @@
     max-height: 100%;
     padding-top: 15px;
     box-sizing: border-box;
+  }
+}
+
+.self-applied-info{
+  display: flex;
+  align-items: center;
+
+  .mat-icon{
+    color: gray;
+    font-size: 20px;
+    height: 20px;
+  }
+
+  .mat-icon:hover{
+    cursor: pointer;
   }
 }
