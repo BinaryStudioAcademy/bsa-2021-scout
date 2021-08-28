@@ -30,7 +30,8 @@ import {
 } from '../pools/components/application-pool/application-pool.component';
 import { PoolsRoutingModule } from '../pools/pools-routing.module';
 import { ApplicantsRoutingModule } from '../applicants/applicants-routing.module';
-import { UserProfileComponent } from '../shared/components/user-profile/user-profile.component';
+import { TaskManagementModule } from '../task-management/task-management.module';
+import { MainPageComponent } from '../task-management/components/main-page/main-page.component';
 
 const routes: Routes = [
   {
@@ -43,8 +44,7 @@ const routes: Routes = [
       { path: AppRoute.Applicants, component: ApplicantsComponent, pathMatch: 'full' },
       { path: AppRoute.Projects, component: ProjectsListComponent, pathMatch: 'full' },
       { path: AppRoute.Interviews, component: VacanciesListComponent, pathMatch: 'full' },
-      { path: AppRoute.Analytics, component: VacanciesListComponent, pathMatch: 'full' },
-      { path: AppRoute.TaskManagement, component: VacanciesListComponent, pathMatch: 'full' },
+      { path: AppRoute.Analytics, component: VacanciesListComponent, pathMatch: 'full' },      
       { path: AppRoute.Templates, component: VacanciesListComponent, pathMatch: 'full' },
       {
         path: 'candidates/:id',
@@ -82,7 +82,7 @@ const routes: Routes = [
       },
       {
         path: AppRoute.TaskManagement,
-        component: VacanciesListComponent,
+        component: MainPageComponent,
         pathMatch: 'full',
       },
       {
@@ -115,6 +115,7 @@ const routes: Routes = [
     ProjectRoutingModule,
     PoolsRoutingModule,
     ApplicantsRoutingModule,
+    TaskManagementModule,
   ],
   exports: [RouterModule],
 })

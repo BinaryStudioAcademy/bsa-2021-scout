@@ -1,0 +1,22 @@
+<app-header></app-header>
+<div class='task-page'>
+    <div class='header'>
+        <h2>Task management</h2>
+        <div class='filters'>
+            <div class='done-switch'>
+                <mat-selection-list #done [multiple]="false">
+                    <mat-list-option selected class='item'>To-Do</mat-list-option>
+                    <mat-list-option class='item'>Done</mat-list-option>
+                </mat-selection-list>     
+            </div>
+            <button mat-button>+ Add task</button>
+            <div class='actions'>
+                <mat-icon>filter_alt</mat-icon>
+                <mat-icon>settings</mat-icon>
+            </div>
+        </div>
+    </div>
+    <div class='content'>
+        
+    </div>
+</div>

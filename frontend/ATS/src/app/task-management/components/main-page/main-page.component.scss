@@ -1,0 +1,103 @@
+@import '/src/common.scss';
+
+.task-page {
+    padding: 20px;
+
+    .mat-icon {
+        color: $primary-color-icons;
+    }
+
+    .mat-icon:hover {
+        cursor: pointer;
+    }
+    
+}
+
+.header {
+    
+    h2 {
+        margin-bottom: 0px;
+    }
+
+    .filters {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .mat-button {
+            color: $primary-color;
+            background-color: $primary-color-white;
+            border: 2px solid $primary-color;
+            width: 177px;
+        }
+        
+        .actions {
+            margin-left: 20px;
+            
+            .mat-icon {
+                margin: 0 8px;
+            }
+        }       
+    
+
+        .done-switch {
+            margin-right: auto;
+            font-weight: 600;
+        
+            .item {
+                border-radius: 3px;
+                padding: 0 5px;
+                width: 86px;
+                height: 29px;
+                font-size: 14px;
+                text-align: center;      
+        
+                ::ng-deep .mat-list-text {
+                    padding-right: 0;
+                }
+            }
+        
+            .mat-selection-list {
+                display: flex;
+                flex-direction: row;
+                width: 200px;
+            }
+        
+            ::ng-deep .mat-option {
+                border-radius: 3px;
+                padding: 0 5px;
+                width: 86px;
+                height: 29px;
+            }
+            
+            .mat-list-item, .mat-list-item:hover, .mat-list-item:focus
+            {
+                background-color: #fff;
+                border: 1px solid $primary-color-extradarkgrey;
+                border-radius: 4px;                
+                color: $primary-color-extradarkgrey;
+            }
+
+            .mat-list-single-selected-option, .mat-list-single-selected-option:hover, .mat-list-single-selected-option:focus
+            {
+                background-color:$primary-color-icons;
+                color: #fff;
+            }
+        }
+    }
+        
+}
+
+.content {
+    background-color: #fff;
+    margin: 35px 0;
+    border-radius: 10px;
+    padding: 35px;
+    height: 500px;
+}
+
+
+
+
+
+
