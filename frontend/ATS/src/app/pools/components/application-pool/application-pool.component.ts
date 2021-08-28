@@ -17,6 +17,8 @@ import { UpdatePool } from 'src/app/shared/models/applicants-pool/update-pool';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { Router } from '@angular/router';
 import { PoolDetailsModalComponent } from '../pool-details-modal/pool-details-modal.component';
+import { DeleteConfirmComponent } from 
+  'src/app/shared/components/delete-confirm/delete-confirm.component';
 
 const DATA: ApplicantsPool[] = [];
 
@@ -177,6 +179,11 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       });
   }
 
+  markPool(row: ApplicantsPool)
+  {
+
+  }
+
   updateRowData(row: ApplicantsPool) {
     let source = this.dataSource.data.find((x) => x.id == row.id);
     if (source) {
@@ -187,5 +194,33 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       source.createdBy = row.createdBy;
       source.count = row.applicants.length;
     }    
+  }
+
+  public showDeleteConfirmDialog(pool: ApplicantsPool): void {
+    const dialogRef = this.dialogService.open(DeleteConfirmComponent, {
+      width: '400px',
+      height: 'min-content',
+      autoFocus: false,
+      data:{
+        entityName: 'Pool',
+      },
+    });
+
+    dialogRef.afterClosed()
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.poolService
+            .deletePool(pool.id)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(_ => {
+              const elementIndex = this.dataSource.data.indexOf(pool);
+              this.dataSource.data.splice(elementIndex,1);
+              this.table.renderRows();          
+              this.updatePaginator();
+              this.notificationService
+                .showSuccessMessage(`Pool ${pool.name} deleted!`);
+            });
+        }
+      });
   }
 }

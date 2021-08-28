@@ -12,5 +12,6 @@ namespace Domain.Interfaces.Read
         Task<Applicant> GetByIdAsync(string applicantId);
         Task<IEnumerable<(Applicant, bool)>> GetApplicantsWithAppliedMark(string vacancyId);
         Task<Applicant> GetByCompanyIdAsync(string id);
+        Task<Applicant> GetByPropertyAsync(string property, string propertyValue);
     }
 }

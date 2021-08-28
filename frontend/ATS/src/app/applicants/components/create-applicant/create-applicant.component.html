@@ -11,7 +11,7 @@
         <input formControlName="firstName" type="text" matInput placeholder="Enter first name" [(ngModel)]="createdApplicant.firstName" required>
     </mat-form-field>
     <div class="validation-error" *ngIf="validationGroup!.controls['firstName'].dirty && validationGroup!.controls['firstName'].errors?.required; else firstNamePatternError">
-        It`s required field
+        It&apos;s required field
     </div>
     <ng-template #firstNamePatternError>
         <div class="validation-error" *ngIf="validationGroup!.controls['firstName'].dirty && validationGroup!.controls['firstName'].errors?.pattern">
@@ -24,7 +24,7 @@
         <input required formControlName="lastName" type="text" matInput placeholder="Enter last name" [(ngModel)]="createdApplicant.lastName">
     </mat-form-field>
     <div class="validation-error" *ngIf="validationGroup!.controls['lastName'].dirty && validationGroup!.controls['lastName'].errors?.required; else lastNamePatternError">
-        It`s required field
+        It&apos;s required field
     </div>
     <ng-template #lastNamePatternError>
         <div class="validation-error" *ngIf="validationGroup!.controls['lastName'].dirty && validationGroup!.controls['lastName'].errors?.pattern">
@@ -37,7 +37,7 @@
         <input required formControlName="email" type="email" matInput placeholder="Enter email" [(ngModel)]="createdApplicant.email">
     </mat-form-field>
     <div class="validation-error" *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.required; else emailPatternError">
-        It`s required field
+        It&apos;s required field
     </div>
     <ng-template #emailPatternError>
         <div class="validation-error" *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.pattern">
@@ -50,10 +50,10 @@
         <input required formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description" [(ngModel)]="createdApplicant.experienceDescription">
     </mat-form-field>
     <div class="validation-error" *ngIf="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors?.required">
-        It`s required field
+        It&apos;s required field
     </div>
 
-    <p class="required-field">Experience</p>
+    <p class="required-field">Experience years</p>
     <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors? 'invalid-input' : ''">
         <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60" [(ngModel)]="createdApplicant.experience">
     </mat-form-field>
@@ -66,7 +66,7 @@
         <input required formControlName="phone" type="tel" matInput placeholder="Enter phone number" [(ngModel)]="createdApplicant.phone">
     </mat-form-field>
     <div class="validation-error" *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.required; else phonePatternError">
-        It`s required field
+        It&apos;s required field
     </div>
     <ng-template #phonePatternError>
         <div class="validation-error" *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.pattern">
@@ -82,7 +82,7 @@
         <textarea formControlName="skills" matInput placeholder="Enter skills additional information" [(ngModel)]="createdApplicant.skills"></textarea>
     </mat-form-field>
     <div class="validation-error" *ngIf="validationGroup!.controls['skills'].dirty && validationGroup!.controls['skills'].errors?.required">
-        It`s required field
+        It&apos;s required field
     </div>
 
     <p>Skype</p>

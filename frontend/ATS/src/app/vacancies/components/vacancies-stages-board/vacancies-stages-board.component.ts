@@ -63,7 +63,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
     private readonly modalService: MatDialog,
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     this.route.params.subscribe(({ id }) => {
@@ -112,8 +112,9 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
             event.item.element.nativeElement.id, // Stores candidate id
             event.container.id, // Stores new stage id
           )
-          .subscribe({
-            error: () => {
+          .subscribe(
+            _ => (this.MarkCandidateAsViewed(event.item.element.nativeElement.id)),
+            _ => {
               this.notificationService.showErrorMessage(
                 'Failed to save candidate\'s stage',
                 'Error',
@@ -121,13 +122,17 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
 
               backward();
             },
-          });
+          );
 
       const stage = this.data.find(
         (s) => s.id === event.container.id,
       ) as StageWithCandidates;
 
       forward();
+
+      if (stage.index == 0) {
+        return backward();
+      }
 
       if (stage.isReviewable) {
         const dialog: MatDialogRef<RateCandidateModalComponent> =
@@ -174,6 +179,8 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     let hasPrevious: boolean = false;
     let nextPos: CandidatePos | undefined;
     let nextFullName: string | undefined;
+
+    this.MarkCandidateAsViewed(id);
 
     this.data.forEach((stage, sIndex) =>
       stage.candidates.forEach((candidate, index) => {
@@ -306,7 +313,16 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     }).subscribe(
       ({ reviews, vacancy }) => {
         this.loading = false;
-        this.data = [...vacancy.stages];
+
+        if (vacancy.stages[0].candidates.length != 0) {
+          this.data = [...vacancy.stages];
+        }
+        else {
+          vacancy.stages.splice(0, 1);
+          this.data = [...vacancy.stages];
+        }
+
+        console.log(this.data);
         this.reviews = [...reviews];
         this.title = vacancy.title;
 
@@ -359,6 +375,20 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
       const additional = this.reviews.filter((r) => !fixedIds.includes(r.id));
 
       this.additionalCriteriaMap[stage.id] = [...additional];
+    });
+  }
+
+  public MarkCandidateAsViewed(id: string) {
+    this.data.forEach((stage) => {
+      stage.candidates.forEach(candidate => {
+        if (candidate.id == id) {
+          if (candidate.isViewed != true) {
+            this.vacancyCandidateService.MarkAsViewed(id).subscribe(_ => {
+              candidate.isViewed = true;
+            });
+          }
+        }
+      });
     });
   }
 }

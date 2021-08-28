@@ -5,4 +5,6 @@ export interface ShortVacancyCandidateWithApplicant extends Model {
   averageMark?: number;
   dateAdded: Date;
   applicant: OnlyApplicant;
+  isSelfApplied: boolean;
+  isViewed: boolean;
 }

@@ -23,6 +23,8 @@ namespace Domain.Entities
         public string ApplicantId { get; set; }
         public string HrWhoAddedId { get; set; }
         public DateTime DateAdded { get; set; }
+        public bool IsSelfApplied { get; set; }
+        public bool IsViewed { get; set; }
 
         public Applicant Applicant { get; set; }
         public User HrWhoAdded { get; set; }

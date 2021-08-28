@@ -68,6 +68,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSelfApplied")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -164,12 +167,17 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("DateRemoved")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MoverId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("StageId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CandidateId");
+
+                    b.HasIndex("MoverId");
 
                     b.HasIndex("StageId");
 
@@ -688,6 +696,12 @@ namespace Infrastructure.Migrations
                     b.Property<string>("HrWhoAddedId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("IsSelfApplied")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsViewed")
+                        .HasColumnType("bit");
+
                     b.Property<int>("SalaryExpectation")
                         .HasColumnType("int");
 
@@ -790,6 +804,12 @@ namespace Infrastructure.Migrations
                         .HasConstraintName("candidate_to_stage_candidate_FK")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("Domain.Entities.User", "Mover")
+                        .WithMany("MovedCandidateToStages")
+                        .HasForeignKey("MoverId")
+                        .HasConstraintName("candidate_to_stage_mover_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Domain.Entities.Stage", "Stage")
                         .WithMany("CandidateToStages")
                         .HasForeignKey("StageId")
@@ -797,6 +817,8 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Candidate");
+
+                    b.Navigation("Mover");
 
                     b.Navigation("Stage");
                 });
@@ -1078,6 +1100,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("CvParsingJobs");
 
                     b.Navigation("EmailToken");
+
+                    b.Navigation("MovedCandidateToStages");
 
                     b.Navigation("RefreshTokens");
 

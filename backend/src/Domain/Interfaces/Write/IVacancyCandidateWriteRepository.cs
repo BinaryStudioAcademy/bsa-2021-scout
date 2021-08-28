@@ -5,7 +5,7 @@ using Domain.Interfaces.Abstractions;
 
 namespace Domain.Interfaces.Write
 {
-    public interface IVacancyCandidateWriteRepository
+    public interface IVacancyCandidateWriteRepository : IWriteRepository<VacancyCandidate>
     {
         Task<IEnumerable<VacancyCandidate>> CreateRangeAsync(VacancyCandidate[] applicantIds);
     }

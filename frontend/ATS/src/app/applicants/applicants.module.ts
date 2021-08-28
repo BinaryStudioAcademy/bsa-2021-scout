@@ -15,6 +15,7 @@ import { ApplicantControlComponent }
   from './components/applicant-control/applicant-control.component';
 import { ApplicantsUploadCsvComponent } 
   from './components/applicants-upload-csv/applicants-upload-csv.component';
+import { SelfApplyingComponent } from './components/self-applying/self-applying.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ApplicantsUploadCsvComponent }
     ApplicantsHeadComponent,
     ApplicantControlComponent,
     ApplicantsUploadCsvComponent,
+    SelfApplyingComponent,
   ],
   imports: [
     BrowserModule,
