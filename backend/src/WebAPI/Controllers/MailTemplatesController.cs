@@ -40,9 +40,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<MailTemplateDto>> UpdateMailTempale([FromBody] MailTemplateUpdateDto mailTemplateUpdateDto)
+        public async Task<ActionResult<MailTemplateDto>> UpdateMailTempale([FromForm] string body, List<IFormFile> files)
         {
-            var query = new UpdateMailTemplateCommand(mailTemplateUpdateDto);
+            var query = new UpdateMailTemplateCommand(body, files);
             return Ok(await Mediator.Send(query));
         }
 

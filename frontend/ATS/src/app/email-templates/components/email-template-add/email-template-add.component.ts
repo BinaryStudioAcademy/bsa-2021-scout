@@ -6,6 +6,7 @@ import { MailTemplateCreate } from 'src/app/shared/models/mail-template/mail-tem
 import { MailTemplateService } from 'src/app/shared/services/mail-template.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { takeUntil } from 'rxjs/operators';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-email-template-add',
@@ -20,6 +21,52 @@ export class EmailTemplateAddComponent implements OnDestroy {
   public loading: boolean = false;
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      {class: 'arial', name: 'Arial'},
+      {class: 'times-new-roman', name: 'Times New Roman'},
+      {class: 'calibri', name: 'Calibri'},
+      {class: 'comic-sans-ms', name: 'Comic Sans MS'},
+    ],
+    customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText',
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+    uploadUrl: 'v1/image',
+    uploadWithCredentials: false,
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      ['bold', 'italic'],
+      ['fontSize'],
+    ],
+  };
 
   constructor(
     private mailTemplateService: MailTemplateService,
@@ -76,7 +123,7 @@ export class EmailTemplateAddComponent implements OnDestroy {
           this.loading = false;
 
           this.notificationService.showSuccessMessage(
-            `Project ${this.mailTemplate.slug} created!`,
+            `Template ${this.mailTemplate.slug} created!`,
           );
         },
         (error) => {
@@ -89,6 +136,7 @@ export class EmailTemplateAddComponent implements OnDestroy {
   }
 
   public uploadAttachments(files: File[]): void {
+    this.files = [];
     files.forEach((file: File) => {
       this.files.push(file);
     });

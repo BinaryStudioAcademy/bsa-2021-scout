@@ -4,6 +4,7 @@ using Application.MailAttachments.Dtos;
 using Application.MailTemplates.Dtos;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -70,8 +71,8 @@ namespace Application.MailTemplates.Commands
 
             entity.Slug = mailTemplateCreateDto.Slug;
             entity.Subject = mailTemplateCreateDto.Subject;
-            entity.VisibilitySetting = entity.VisibilitySetting;
-            entity.Html = entity.Html;
+            entity.VisibilitySetting = (VisibilitySetting)mailTemplateCreateDto.VisibilitySetting;
+            entity.Html = mailTemplateCreateDto.Html;
             entity.UserCreatedId = currentUser.Id;
             entity.UserCreated = currentUser.FirstName+" "+currentUser.LastName;
             entity.CompanyId = currentUser.CompanyId;

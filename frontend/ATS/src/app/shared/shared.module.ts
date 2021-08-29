@@ -43,6 +43,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 import { TimezonePipe } from './pipes/timezone-pipe';
+import { FilesEditComponent } from '../users/components/files-edit/files-edit.component';
 
 @NgModule({
   exports: [
@@ -87,6 +88,7 @@ import { TimezonePipe } from './pipes/timezone-pipe';
     TagsEditComponent,
     DeleteConfirmComponent,
     TimezonePipe,
+    FilesEditComponent,
   ],
   imports: [
     MatButtonModule,
@@ -138,6 +140,7 @@ import { TimezonePipe } from './pipes/timezone-pipe';
     TagsEditComponent,
     DeleteConfirmComponent,
     TimezonePipe,
+    FilesEditComponent,
   ],
 })
 export class SharedModule {}

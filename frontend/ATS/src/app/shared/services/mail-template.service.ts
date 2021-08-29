@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClientService } from '../../shared/services/http-client.service';
+import { MailTemplate } from '../models/mail-template/mail-template';
 import { MailTemplateCreate } from '../models/mail-template/mail-template-create';
 import { MailTemplateTable } from '../models/mail-template/mail-template-table';
 
@@ -18,11 +19,26 @@ export class MailTemplateService {
     );
   }
 
+  public getMailTempalte(mailTempalteId: string) {
+    return this.http.getRequest<MailTemplate>(
+      this.routePrefix + `/${mailTempalteId}`,
+    );
+  }
+
   public createMailTempalte(mailTemplate: MailTemplateCreate, files : File[]) {
     const formData = new FormData();
     formData.append('body', JSON.stringify(mailTemplate));
     files.forEach((f) => formData.append('files', f));
     return this.http.postFullRequest<MailTemplateCreate>(`${this.routePrefix}`, formData);
+  }
+
+
+  public updateMailTempalte(mailTemplate: MailTemplate, files : File[]) {
+    console.log(mailTemplate.id);
+    const formData = new FormData();
+    formData.append('body', JSON.stringify(mailTemplate));
+    files.forEach((f) => formData.append('files', f));
+    return this.http.putFullRequest<MailTemplateCreate>(`${this.routePrefix}`, formData);
   }
 
   public deleteMailTempalte(mailTemplate: MailTemplateTable) {

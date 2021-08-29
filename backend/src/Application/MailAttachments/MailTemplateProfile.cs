@@ -13,6 +13,8 @@ namespace Application.MailTemplates
             CreateMap<MailAttachmentDto, MailAttachment>();
             CreateMap<MailAttachmentCreateDto, MailAttachment>();
             CreateMap<MailAttachmentUpdateDto, MailAttachment>();
+            CreateMap<MailAttachmentUpdateDto, MailAttachmentCreateDto>();
+
         }
     }
 }

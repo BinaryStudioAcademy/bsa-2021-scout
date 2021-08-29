@@ -11,15 +11,20 @@ using System;
 using Application.Common.Exceptions;
 using Application.MailAttachments.Dtos;
 using Application.MailAttachments.Commands;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Application.MailTemplates.Commands
 {
     public class UpdateMailTemplateCommand : IRequest<MailTemplateDto>
     {
-        public MailTemplateUpdateDto MailTemplateDto { get; }
-        public UpdateMailTemplateCommand(MailTemplateUpdateDto mailTemplateDto)
+        public string Body;
+        public List<IFormFile> Files;
+        public UpdateMailTemplateCommand(string body, List<IFormFile> files)
         {
-            MailTemplateDto = mailTemplateDto;
+            Body = body;
+            Files = files;
         }
     }
 
@@ -48,27 +53,43 @@ namespace Application.MailTemplates.Commands
 
         public async Task<MailTemplateDto> Handle(UpdateMailTemplateCommand command, CancellationToken cancellationToken)
         {
-            var mailTemplate = await _readRepository.GetAsync(command.MailTemplateDto.Id);
+            var mailTemplateUpdateDto = JsonConvert.DeserializeObject<MailTemplateUpdateDto>(command.Body);
+            if (mailTemplateUpdateDto.MailAttachments == null)
+            {
+                mailTemplateUpdateDto.MailAttachments = new List<MailAttachmentUpdateDto>();
+            }
+            foreach (var file in command.Files)
+            {
+                mailTemplateUpdateDto.MailAttachments.Add(
+                    new MailAttachmentUpdateDto()
+                    {
+                        Name = file.FileName,
+                        File = file
+                    });
+            }
+
+            var mailTemplate = await _readRepository.GetAsync(mailTemplateUpdateDto.Id);
             if(mailTemplate == null)
             {
-                throw new NotFoundException(typeof(MailTemplate), command.MailTemplateDto.Id);
+                throw new NotFoundException(typeof(MailTemplate), mailTemplateUpdateDto.Id);
             }
             var updatedMailTemplate = new MailTemplate();
 
             updatedMailTemplate.Id = mailTemplate.Id;
-            updatedMailTemplate.Html = command.MailTemplateDto.Html;
-            updatedMailTemplate.Slug = command.MailTemplateDto.Slug;
-            updatedMailTemplate.Subject = command.MailTemplateDto.Subject;
+            updatedMailTemplate.Html = mailTemplateUpdateDto.Html;
+            updatedMailTemplate.Slug = mailTemplateUpdateDto.Slug;
+            updatedMailTemplate.Subject = mailTemplateUpdateDto.Subject;
             updatedMailTemplate.CompanyId = mailTemplate.CompanyId;
             updatedMailTemplate.DateCreation = mailTemplate.DateCreation;
             updatedMailTemplate.UserCreatedId = mailTemplate.UserCreatedId;
             updatedMailTemplate.UserCreated = mailTemplate.UserCreated;
 
 
-            var existedmailAttachments = mailTemplate.MailAttachments;
-            foreach (var mailAttachmentUpdateDto in command.MailTemplateDto.MailAttachments)
+            var existedmailAttachments = (List<MailAttachment>)mailTemplate.MailAttachments;
+            updatedMailTemplate.MailAttachments = new List<MailAttachment>();
+            foreach (var mailAttachmentUpdateDto in mailTemplateUpdateDto.MailAttachments)
             {
-                if (mailAttachmentUpdateDto.Id == "")
+                if (mailAttachmentUpdateDto.Id == null)
                 {
                     var mailAttachment = new MailAttachment()
                     {
@@ -86,16 +107,20 @@ namespace Application.MailTemplates.Commands
                 {
                     if (mailAttachmentUpdateDto.File == null)
                     {
-                        var mailAttachment = _mapper.Map<MailAttachment>(mailAttachmentUpdateDto);
+                        var mailAttachment = existedmailAttachments.Find(x => x.Id == mailAttachmentUpdateDto.Id);
                         updatedMailTemplate.MailAttachments.Add(mailAttachment);
                         existedmailAttachments.Remove(mailAttachment);
                     }
                 }
             }
-            foreach (var mailAttachment in existedmailAttachments)
+            if (existedmailAttachments != null
+                && existedmailAttachments.Count != 0)
             {
-                var deleteMailAttachmentFileCommand = new DeleteMailAttachmentFileCommand(mailAttachment.Key);
-                await _mediator.Send(deleteMailAttachmentFileCommand);
+                foreach (var mailAttachment in existedmailAttachments)
+                {
+                    var deleteMailAttachmentFileCommand = new DeleteMailAttachmentFileCommand(mailAttachment.Key);
+                    await _mediator.Send(deleteMailAttachmentFileCommand);
+                }
             }
 
             var created = await _writeRepository.UpdateAsync(updatedMailTemplate);

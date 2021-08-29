@@ -18,6 +18,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule} from '@angular/common/http';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 
@@ -41,6 +43,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatDialogModule,
     MatSelectModule,
     ReactiveFormsModule,
+    HttpClientModule, 
+    AngularEditorModule,
   ],
   exports:[
     MatButtonModule,

@@ -36,9 +36,7 @@
             </div>
     
             <h5 class="required-field">Mail text</h5>
-            <mat-form-field class="wide example-full-width" appearance="fill" [ngClass]="this.mailTemplateCreateForm.controls['html'].dirty && this.mailTemplateCreateForm.controls['html'].errors? 'invalid-input': ''">
-                <textarea matInput type="text" formControlName="html" placeholder="Enter text"></textarea>
-            </mat-form-field>
+            <angular-editor matInput type="text" id="editor1" class="wide example-full-width" formControlName="html" [config]="editorConfig"  [ngClass]="this.mailTemplateCreateForm.controls['html'].dirty && this.mailTemplateCreateForm.controls['html'].errors? 'invalid-input': ''"></angular-editor>
             <div class="validation-error" *ngIf="this.mailTemplateCreateForm.controls['html'].dirty && this.mailTemplateCreateForm.controls['html'].errors?.required">
                 Is required.
             </div>
