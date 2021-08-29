@@ -1,74 +1,83 @@
 @import "/src/common.scss";
 
-$card-width: 240px;
 $card-height: 240px;
 
 .vacancy-card-wrapper {
-  background-color: $primary-color-white;
   padding: 20px 10px 20px 10px;
-  border-radius: 7px;
-  font-family: $primary-font;
-  width: $card-width;
-  height: $card-height;
-  padding: 20px;
+  margin: auto;
   box-sizing: border-box;
-}
+  border-radius: 7px;
 
-.vacancy-card-wrapper h2,
-h3,
-h4 {
-  margin-bottom: 5px;
-}
+  width: 95%;
+  height: $card-height;
+ 
+  font-family: $primary-font;
+  background-color: $primary-color-white;
 
-.vacancy-card-wrapper h2 {
-  font-weight: 700;
-}
+  h2,
+  h3,
+  h4 {
+    margin-bottom: 5px;
+    overflow-x: hidden;
+  }
 
-.vacancy-summary-info {
-  display: grid;
-}
+  h3 span {
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-.vacancy-summary-info mat-icon {
-  color: $primary-color-icons;
-  vertical-align: middle;
-  font-size: 20px;
-}
+  h2 {
+    font-weight: 700;
+  }
 
-.vacancy-summary-info span {
-  min-width: 135px;
-  vertical-align: middle;
-  padding: 5px 0;
-}
+  .vacancy-summary-info {
+    display: grid;
 
-.hot {
-  color: white;
-  background: $primary-color;
-  border-radius: 15px;
-  padding: 2px;
-  vertical-align: middle;
-}
+    mat-icon {
+      color: $primary-color-icons;
+      vertical-align: middle;
+      font-size: 20px;
+    }
 
-.light {
-  font-weight: 100;
-}
+    span {
+      min-width: 135px;
+      vertical-align: middle;
+      padding: 5px 0;
+    }
+  }
 
-.bold {
-  font-weight: 600;
-}
+  .hot {
+    color: white;
+    background: $primary-color;
+    border-radius: 15px;
+    padding: 2px;
+    vertical-align: middle;
+  }
 
-.bold-plus {
-  font-weight: 800;
-}
+  .light {
+    font-weight: 100;
+  }
 
-.vacancy-title {
-  display: flex;
-  justify-content: space-between;
-  white-space: nowrap;
-}
+  .bold {
+    font-weight: 600;
+  }
 
-.vacancy-title:hover {
-  cursor: pointer;
-  color: $primary-color;
+  .bold-plus {
+    font-weight: 800;
+  }
+
+  .vacancy-title {
+    display: flex;
+    justify-content: space-between;
+    white-space: nowrap;
+  }
+
+  .vacancy-title:hover {
+    cursor: pointer;
+    color: $primary-color;
+  }
 }
 
 .blur {
