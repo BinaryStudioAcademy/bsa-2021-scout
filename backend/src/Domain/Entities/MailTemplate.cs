@@ -13,9 +13,11 @@ namespace Domain.Entities
         public string Subject { get; set; }
         public string Html { get; set; }
         public string UserCreatedId { get; set; }
+        public string UserCreated { get; set; }
         public VisibilitySetting VisibilitySetting { get; set;}
         public DateTime DateCreation { get; set; }
         public string CompanyId { get; set; }
         public ICollection<MailAttachment> MailAttachments { get; set; }
+
     }
 }

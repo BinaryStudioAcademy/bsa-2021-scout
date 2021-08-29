@@ -231,6 +231,7 @@ namespace Infrastructure
 
             services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
             services.AddScoped<IReadRepository<MailTemplate>, MongoReadRespoitory<MailTemplate>>();
+
             services.AddScoped<IReadRepository<EmailToken>, EmailTokenReadRepository>();
             services.AddScoped<IReadRepository<Review>, ReviewReadRepository>();
 
@@ -238,10 +239,12 @@ namespace Infrastructure
             services.AddScoped<IPoolReadRepository, PoolReadRepository>();
 
             services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();
-            services.AddScoped<IMailAttachmentReadRepository, MailAttachmentReadRepository>();
-            services.AddScoped<IReadRepository<MailAttachment>, MailAttachmentReadRepository>();
 
             services.AddScoped<IReadRepository<Domain.Entities.Action>, ActionReadRepository>();
+
+            services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
+
+
 
             return services;
         }

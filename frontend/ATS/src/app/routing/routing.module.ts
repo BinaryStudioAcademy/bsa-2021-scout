@@ -29,6 +29,8 @@ import {
   ApplicationPoolComponent,
 } from '../pools/components/application-pool/application-pool.component';
 import { PoolsRoutingModule } from '../pools/pools-routing.module';
+import { EmailTemplatesListComponent } from 
+  '../email-templates/components/email-templates-list/email-templates-list.component';
 
 const routes: Routes = [
   {
@@ -43,7 +45,7 @@ const routes: Routes = [
       { path: AppRoute.Interviews, component: VacanciesListComponent, pathMatch: 'full' },
       { path: AppRoute.Analytics, component: VacanciesListComponent, pathMatch: 'full' },
       { path: AppRoute.TaskManagement, component: VacanciesListComponent, pathMatch: 'full' },
-      { path: AppRoute.Templates, component: VacanciesListComponent, pathMatch: 'full' },
+      { path: AppRoute.Templates, component: EmailTemplatesListComponent, pathMatch: 'full' },
       {
         path: 'candidates/:id',
         pathMatch: 'full',

@@ -9,6 +9,7 @@ using Application.MailTemplates.Commands;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Application.MailAttachments.Dtos;
+using Application.MailTemplates.Queries;
 
 namespace WebAPI.Controllers
 {
@@ -20,7 +21,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<MailTemplateDto>> GetMailTempaleList()
         {
-            var query = new GetEntityListQuery<MailTemplateDto>();
+            var query = new GetMailTemplatesListForThisUserQuery();
             return Ok(await Mediator.Send(query));
         }
 
@@ -32,23 +33,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MailTemplateDto>> CreateMailTempale([FromBody] MailTemplateCreateDto mailTemplateCreateDto)
+        public async Task<ActionResult<MailTemplateDto>> CreateMailTempale([FromForm] IFormCollection collection)
         {
-            //MailTemplateCreateDto mailTemplateCreateDto = new MailTemplateCreateDto() { 
-            //    Html ="sdadasd",
-            //    Slug = "asdasd",
-            //    Subject ="dsdsd",
-            //    MailAttachments = new List<MailAttachmentCreateDto>()
-            //    {
-            //        new MailAttachmentCreateDto()
-            //        {
-            //            MailTemplateId = "dasda",
-            //            File = File,
-            //            Name = File.FileName
-            //        }
-            //    }
-            //};
-            var query = new CreateMailTemplateCommand(mailTemplateCreateDto);
+            var query = new CreateMailTemplateCommand(collection);
             return Ok(await Mediator.Send(query));
         }
 

@@ -12,6 +12,7 @@ namespace Application.MailTemplates.Dtos
         public string Subject { get; set; }
         public string Html { get; set; }
         public string UserCreatedId { get; set; }
+        public string UserCreated { get; set; }
         public int VisibilitySetting { get; set; }
         public DateTime DateCreation { get; set; }
         public string CompanyId { get; set; }

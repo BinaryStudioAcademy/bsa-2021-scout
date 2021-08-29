@@ -1,5 +1,6 @@
 ﻿using Application.Common.Commands;
 using Application.Interfaces;
+using Application.MailAttachments.Dtos;
 using Application.MailTemplates.Dtos;
 using AutoMapper;
 using Domain.Entities;
@@ -7,6 +8,7 @@ using Domain.Interfaces.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +20,10 @@ namespace Application.MailTemplates.Commands
 {
     public class CreateMailTemplateCommand : IRequest<MailTemplateDto>
     {
-        public MailTemplateCreateDto MailTemplateDto { get; }
-        public CreateMailTemplateCommand(MailTemplateCreateDto mailTemplateDto)
+        public IFormCollection Collection { get; }
+        public CreateMailTemplateCommand(IFormCollection collection)
         {
-            MailTemplateDto = mailTemplateDto;
+            Collection = collection;
         }
     }
 
@@ -46,31 +48,47 @@ namespace Application.MailTemplates.Commands
         public async Task<MailTemplateDto> Handle(CreateMailTemplateCommand command, CancellationToken cancellationToken)
         {
 
+            var mailTemplateCreateDto = JsonConvert.DeserializeObject<MailTemplateCreateDto>(command.Collection.Keys.First());
+
+            foreach (var file in command.Collection.Files)
+            {
+                mailTemplateCreateDto.MailAttachments.Add(
+                    new MailAttachmentCreateDto()
+                    {
+                        Name = file.FileName,
+                        File = file
+                    });
+            }
+
             var entity = new MailTemplate();
 
             var currentUser = await _currentUserContext.GetCurrentUser();
 
-            entity.Slug = command.MailTemplateDto.Slug;
-            entity.Subject = command.MailTemplateDto.Subject;
+            entity.Slug = mailTemplateCreateDto.Slug;
+            entity.Subject = mailTemplateCreateDto.Subject;
             entity.VisibilitySetting = entity.VisibilitySetting;
             entity.Html = entity.Html;
             entity.UserCreatedId = currentUser.Id;
+            entity.UserCreated = currentUser.FirstName+" "+currentUser.LastName;
             entity.CompanyId = currentUser.CompanyId;
             entity.DateCreation = DateTime.UtcNow;
-
-            foreach (var mailAttachmentDto in command.MailTemplateDto.MailAttachments)
+            if (mailTemplateCreateDto.MailAttachments != null
+                && mailTemplateCreateDto.MailAttachments.Count != 0)
             {
-                var mailAttachment = new MailAttachment()
+                foreach (var mailAttachmentDto in mailTemplateCreateDto.MailAttachments)
                 {
-                    MailTemplateId = entity.Id,
-                    Name = mailAttachmentDto.Name
-                };
-                var uploadMailAttachmentFileCommand = new UploadMailAttachmentFileCommand(
-                    mailAttachment.Id,
-                    entity.Id,
-                    mailAttachmentDto);
-                mailAttachment.Key = await _mediator.Send(uploadMailAttachmentFileCommand);
-                entity.MailAttachments.Add(mailAttachment);
+                    var mailAttachment = new MailAttachment()
+                    {
+                        MailTemplateId = entity.Id,
+                        Name = mailAttachmentDto.Name
+                    };
+                    var uploadMailAttachmentFileCommand = new UploadMailAttachmentFileCommand(
+                        mailAttachment.Id,
+                        entity.Id,
+                        mailAttachmentDto);
+                    mailAttachment.Key = await _mediator.Send(uploadMailAttachmentFileCommand);
+                    entity.MailAttachments.Add(mailAttachment);
+                }
             }
 
             var created = await _repository.CreateAsync(entity);

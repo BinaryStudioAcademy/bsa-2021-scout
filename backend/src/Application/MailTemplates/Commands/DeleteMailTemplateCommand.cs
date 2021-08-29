@@ -46,12 +46,15 @@ namespace Application.MailTemplates.Commands
             {
                 throw new NotFoundException(typeof(MailTemplate), command.Id);
             }
-            foreach (var mailAttachment in mailTemplate.MailAttachments)
+            if (mailTemplate.MailAttachments != null
+                && mailTemplate.MailAttachments.Count != 0)
             {
-                var deleteMailAttachmentFileCommand = new DeleteMailAttachmentFileCommand(mailAttachment.Key);
-                await _mediator.Send(deleteMailAttachmentFileCommand);
+                foreach (var mailAttachment in mailTemplate.MailAttachments)
+                {
+                    var deleteMailAttachmentFileCommand = new DeleteMailAttachmentFileCommand(mailAttachment.Key);
+                    await _mediator.Send(deleteMailAttachmentFileCommand);
+                }
             }
-
             await _writeRepository.DeleteAsync(command.Id);
 
             return Unit.Value;

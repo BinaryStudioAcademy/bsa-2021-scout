@@ -62,6 +62,8 @@ namespace Application.MailTemplates.Commands
             updatedMailTemplate.CompanyId = mailTemplate.CompanyId;
             updatedMailTemplate.DateCreation = mailTemplate.DateCreation;
             updatedMailTemplate.UserCreatedId = mailTemplate.UserCreatedId;
+            updatedMailTemplate.UserCreated = mailTemplate.UserCreated;
+
 
             var existedmailAttachments = mailTemplate.MailAttachments;
             foreach (var mailAttachmentUpdateDto in command.MailTemplateDto.MailAttachments)

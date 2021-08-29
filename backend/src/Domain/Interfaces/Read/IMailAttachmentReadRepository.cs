@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 namespace Domain.Interfaces.Read
 {
-    public interface IMailAttachmentReadRepository : IReadRepository<MailAttachment>
+    public interface IMailTemplateReadRepository : IReadRepository<MailTemplate>
     {
-        Task<ICollection<MailAttachment>> GetByMailTemplateIdAsync(string mailTemplateId);
+        Task<IEnumerable<MailTemplate>> GetMailTemplatesForThisUser(string userId);
     }
 }
