@@ -52,8 +52,8 @@
               min="0"
               max="10"
               type="number"
-              [ngModel]="rateData[crit.id]"
-              (ngModelChange)="validateMark(crit.id, $event)"
+              [value]="rateData[crit.id]"
+              (change)="validateMark(crit.id, $event)"
             />
           </mat-form-field>
         </div>

@@ -29,6 +29,8 @@ export class MultiselectComponent implements OnChanges, OnInit {
   @Input() public data: IOption[] = [];
   @Input() public selected: IOption[] = [];
   @Input() public placeholder: string = 'Select';
+  @Input() public noTopics: boolean = false;
+  @Input() public unstyled: boolean = false;
 
   @Output() public selectedChange: EventEmitter<IOption[]> = new EventEmitter<
   IOption[]
@@ -58,8 +60,8 @@ export class MultiselectComponent implements OnChanges, OnInit {
     );
   }
 
-  public compareWith(a: any, b: any): boolean {
-    return _.isEqual(a, b);
+  public compareWith(a: IOption, b: IOption): boolean {
+    return a.id === b.id;
   }
 
   public emitChange(changed: IOption[]): void {
