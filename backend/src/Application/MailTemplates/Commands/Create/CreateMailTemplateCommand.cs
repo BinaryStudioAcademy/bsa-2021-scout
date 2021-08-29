@@ -20,10 +20,13 @@ namespace Application.MailTemplates.Commands
 {
     public class CreateMailTemplateCommand : IRequest<MailTemplateDto>
     {
-        public IFormCollection Collection { get; }
-        public CreateMailTemplateCommand(IFormCollection collection)
+        public string Body;
+        public List<IFormFile> Files;
+
+        public CreateMailTemplateCommand(string body, List<IFormFile> files)
         {
-            Collection = collection;
+            Body = body;
+            Files = files;
         }
     }
 
@@ -48,10 +51,11 @@ namespace Application.MailTemplates.Commands
         public async Task<MailTemplateDto> Handle(CreateMailTemplateCommand command, CancellationToken cancellationToken)
         {
 
-            var mailTemplateCreateDto = JsonConvert.DeserializeObject<MailTemplateCreateDto>(command.Collection.Keys.First());
-
-            foreach (var file in command.Collection.Files)
+            var mailTemplateCreateDto = JsonConvert.DeserializeObject<MailTemplateCreateDto>(command.Body);
+            mailTemplateCreateDto.MailAttachments = new List<MailAttachmentCreateDto>();
+            foreach (var file in command.Files)
             {
+
                 mailTemplateCreateDto.MailAttachments.Add(
                     new MailAttachmentCreateDto()
                     {
@@ -75,6 +79,7 @@ namespace Application.MailTemplates.Commands
             if (mailTemplateCreateDto.MailAttachments != null
                 && mailTemplateCreateDto.MailAttachments.Count != 0)
             {
+                entity.MailAttachments = new List<MailAttachment>();
                 foreach (var mailAttachmentDto in mailTemplateCreateDto.MailAttachments)
                 {
                     var mailAttachment = new MailAttachment()

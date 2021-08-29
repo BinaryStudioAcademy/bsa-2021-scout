@@ -33,9 +33,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MailTemplateDto>> CreateMailTempale([FromForm] IFormCollection collection)
+        public async Task<ActionResult<MailTemplateDto>> CreateMailTempale([FromForm] string body, List<IFormFile> files)
         {
-            var query = new CreateMailTemplateCommand(collection);
+            var query = new CreateMailTemplateCommand(body, files);
             return Ok(await Mediator.Send(query));
         }
 

@@ -21,9 +21,7 @@ export class MailTemplateService {
   public createMailTempalte(mailTemplate: MailTemplateCreate, files : File[]) {
     const formData = new FormData();
     formData.append('body', JSON.stringify(mailTemplate));
-    files.forEach((file :File) => {
-      formData.append(file.name, file);
-    });
+    files.forEach((f) => formData.append('files', f));
     return this.http.postFullRequest<MailTemplateCreate>(`${this.routePrefix}`, formData);
   }
 
