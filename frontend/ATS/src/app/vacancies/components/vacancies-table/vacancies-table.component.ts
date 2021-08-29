@@ -5,7 +5,6 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-  SimpleChange,
 } from '@angular/core';
 
 import { MatPaginator } from '@angular/material/paginator';
