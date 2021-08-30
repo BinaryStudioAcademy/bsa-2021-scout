@@ -1,19 +1,5 @@
 version: "3.8"
 services:
-  ats_api:
-    container_name: 'ats_api'
-    image: docker.pkg.github.com/binarystudioacademy/bsa-2021-ats/ats-api-develop-deployment:latest
-    restart: on-failure
-    depends_on:
-      - ats_elastic_server
-      - ats_database
-      - ats_mongodb
-    ports:
-      - "5050:80"
-    networks:
-      - backend
-    env_file:
-      - ../.env/ats_api.env
 
   ats_elastic_server:
     image: "docker.elastic.co/elasticsearch/elasticsearch:7.13.4"
@@ -33,17 +19,20 @@ services:
     networks:
       - backend
 
-  ats_database:
-    image: mcr.microsoft.com/mssql/server:2017-latest
-    container_name: "ats_database"
+  ats_api:
+    container_name: 'ats_api'
+    image: docker.pkg.github.com/binarystudioacademy/bsa-2021-ats/ats-api-prod-deployment:latest
+    restart: on-failure
+    depends_on:
+      - ats_elastic_server
+      - ats_database
+      - ats_mongodb
     ports:
-      - 1433:1433
+      - "5050:80"
     networks:
       - backend
     env_file:
-      - ../.env/ats_database.env
-    volumes:
-      - ats_database-data:/var/opt/mssql
+      - ../.env/ats_api.env
 
   ats_mongodb:
     image: mongo
@@ -56,6 +45,21 @@ services:
       - ../.env/ats_mongodb.env
     volumes:
       - ats_mongodb-data:/data/db
+
+  ats_api:
+    container_name: 'ats_api'
+    image: docker.pkg.github.com/binarystudioacademy/bsa-2021-ats/ats-api-develop-deployment:latest
+    restart: on-failure
+    depends_on:
+      - ats_elastic_server
+      - ats_database
+      - ats_mongodb
+    ports:
+      - "5050:80"
+    networks:
+      - backend
+    env_file:
+      - ../.env/ats_api.env
 
   ats_frontend:
     container_name: 'ats_frontend'
@@ -77,4 +81,6 @@ networks:
   backend:
     driver: bridge
   frontend:
+    driver: bridge
+  ats_vault:
     driver: bridge

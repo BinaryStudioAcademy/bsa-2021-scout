@@ -74,7 +74,7 @@ namespace Application.ApplicantCvs.Commands
             string url = $"{_frontendUrl}/create-applicant-variants?data={base64}";
             string body = string.Format(MailBodyFactory.CV_PARSED, url);
 
-            using (ISmtp connection = _smtp.Connect())
+            using (ISmtp connection = await _smtp.Connect())
             {
                 await connection.SendAsync(
                     user.Email,

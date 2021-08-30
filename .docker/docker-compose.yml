@@ -108,5 +108,3 @@ networks:
     driver: bridge
   ats_vault:
     driver: bridge
-  ats_database:
-    driver: bridge

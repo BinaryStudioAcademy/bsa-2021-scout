@@ -13,7 +13,7 @@ namespace Infrastructure.Vault
         public VaultClientSettings Settings => _settings ?? 
             new VaultClientSettings(
                 Environment.GetEnvironmentVariable("VAULT_ADDR"),
-                new TokenAuthMethodInfo("some-root-token")
+                new TokenAuthMethodInfo(Environment.GetEnvironmentVariable("VAULT_TOKEN"))
             );
 
         public IVaultClient Client => _client ?? new VaultClient(Settings);
@@ -22,7 +22,7 @@ namespace Infrastructure.Vault
         {
             _settings = new VaultClientSettings(
                 Environment.GetEnvironmentVariable("VAULT_ADDR"),
-                new TokenAuthMethodInfo("some-root-token")
+                new TokenAuthMethodInfo(Environment.GetEnvironmentVariable("VAULT_TOKEN"))
             );
 
             _client = new VaultClient(_settings);

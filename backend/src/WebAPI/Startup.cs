@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using WebAPI.Extensions;
 using WebAPI.Middleware;
 using Infrastructure.Vault.Extensions;
+using System.Threading.Tasks;
 
 namespace WebAPI
 {

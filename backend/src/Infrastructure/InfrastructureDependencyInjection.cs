@@ -27,6 +27,7 @@ using Infrastructure.AWS.S3;
 using Infrastructure.AWS.S3.Abstraction;
 using Infrastructure.AWS.S3.Services;
 using Infrastructure.AWS.Connection;
+using System.Threading.Tasks;
 
 namespace Infrastructure
 {
@@ -76,8 +77,7 @@ namespace Infrastructure
         }
         private static IServiceCollection AddDatabaseContext(this IServiceCollection services)
         {
-            var repo = services.BuildServiceProvider().GetRequiredService<IVaultReadRepository>();
-            Console.WriteLine(repo.ReadSecretAsync("sql_connection").Result);
+            var vaultReadRepository = services.BuildServiceProvider().GetRequiredService<IVaultReadRepository>();
 
             var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
 

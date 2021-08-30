@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export VAULT_ADDR='http://ats_vault:8200'
-export VAULT_TOKEN='some-root-token'
+export VAULT_TOKEN='s.SDsdAkgkfdvmcxSJFE12461xDKFSDF'
 
 sleep 30
 
@@ -21,4 +21,4 @@ vault write ats-api/database/roles/ats-api-role \
 				CREATE USER [{{name}}] FOR LOGIN [{{name}}];\
         GRANT SELECT,UPDATE,INSERT,DELETE TO [{{name}}];" \
     default_ttl="2m" \
-    max_ttl="5m"
+    max_ttl="43800h"
