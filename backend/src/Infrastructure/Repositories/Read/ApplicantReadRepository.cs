@@ -74,23 +74,30 @@ namespace Infrastructure.Repositories.Read
             SqlConnection connection = _connectionFactory.GetSqlConnection();
 
             string sql = "SELECT Vacancies.Id, Vacancies.Title, Stages.Id, Stages.Name, " +
-                         "CandidateToStages.StageId, VacancyCandidates.Id FROM Vacancies " +
+                         "Projects.Id, Projects.Name, CandidateToStages.StageId, VacancyCandidates.Id FROM Vacancies " +
                          "JOIN Stages ON Vacancies.Id = Stages.VacancyId " +
+                         "JOIN Projects ON Vacancies.ProjectId = Projects.Id " +
                          "JOIN CandidateToStages ON CandidateToStages.StageId = Stages.Id " +
                          "JOIN VacancyCandidates ON CandidateToStages.CandidateId = VacancyCandidates.Id " +
                          $"WHERE VacancyCandidates.ApplicantId = @applicantId";
 
             await connection.OpenAsync();
-            var applicantVacancyInfos = await connection.QueryAsync<Vacancy, Stage, CandidateToStage, VacancyCandidate, ApplicantVacancyInfo>(sql,
-            (v, s, cs, vc) =>
-            {
-                return new ApplicantVacancyInfo()
-                {
-                    Title = v.Title,
-                    Stage = s.Name
-                };
-            }, new { applicantId = @applicantId },
-            splitOn: "Id,StageId,Id");
+
+            var applicantVacancyInfos = await connection
+                .QueryAsync<Vacancy, Stage, Project, CandidateToStage, VacancyCandidate, ApplicantVacancyInfo>(sql,
+                    (v, s, p, cs, vc) =>
+                    {
+                        return new ApplicantVacancyInfo()
+                        {
+                            Title = v.Title,
+                            Stage = s.Name,
+                            Project = p.Name,
+                        };
+                    },
+                    new { applicantId = @applicantId },
+                    splitOn: "Id,Id,StageId,Id"
+                );
+
             await connection.CloseAsync();
 
             return applicantVacancyInfos;

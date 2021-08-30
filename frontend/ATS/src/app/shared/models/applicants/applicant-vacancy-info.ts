@@ -1,4 +1,5 @@
 export interface ApplicantVacancyInfo {
-  title: string
-  stage: string
+  title: string;
+  stage: string;
+  project: string;
 }

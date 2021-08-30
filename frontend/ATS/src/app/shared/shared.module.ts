@@ -47,10 +47,11 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
 import { LogoBlockComponent } from '../users/components/logo-block/logo-block.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { UserRoleDirective } from './directives/user-role.directive';
-import {ClipboardModule} from '@angular/cdk/clipboard';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
 import { TimezonePipe } from './pipes/timezone-pipe';
 import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
+import { TableFilterComponent } from './components/table-filter/table-filter.component';
 
 @NgModule({
   exports: [
@@ -101,6 +102,7 @@ import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.com
     UserProfileComponent,
     TimezonePipe,
     AvatarModalComponent,
+    TableFilterComponent,
   ],
   imports: [
     MatButtonModule,
@@ -160,6 +162,7 @@ import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.com
     CopyClipboardDirective,
     TimezonePipe,
     AvatarModalComponent,
+    TableFilterComponent,
   ],
 })
 export class SharedModule {}
