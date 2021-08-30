@@ -10,7 +10,7 @@ import { CreateTalentpoolModalComponent } from '../create-talentpool-modal/creat
 import { EditAppPoolModalComponent } from '../edit-app-pool-modal/edit-app-pool-modal.component';
 import { ApplicantsPool } from 'src/app/shared/models/applicants-pool/applicants-pool';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 import { PoolService } from 'src/app/shared/services/poolService';
 import { CreatePool } from 'src/app/shared/models/applicants-pool/create-pool';
 import { UpdatePool } from 'src/app/shared/models/applicants-pool/update-pool';
@@ -19,8 +19,9 @@ import { Router } from '@angular/router';
 import { PoolDetailsModalComponent } from '../pool-details-modal/pool-details-modal.component';
 import { DeleteConfirmComponent } from 
   'src/app/shared/components/delete-confirm/delete-confirm.component';
+import { FollowedService } from 'src/app/shared/services/followedService';
+import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 
-const DATA: ApplicantsPool[] = [];
 
 @Component({
   selector: 'app-application-pool',
@@ -32,9 +33,12 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
     private readonly dialogService: MatDialog, 
     private poolService : PoolService,
     private notificationService: NotificationService,
-  ) {}
+    private followService: FollowedService,
+  ) { 
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
+  }
     
-
+  
   displayedColumns: string[] = [
     'position',
     'name',
@@ -44,11 +48,13 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
     'description',
     'actions',
   ];
-
+  mainData: ApplicantsPool[] = [];
   loading : boolean = false;
-  dataSource = new MatTableDataSource(DATA);  
+  dataSource = new MatTableDataSource(this.mainData);  
   private unsubscribe$ = new Subject<void>();
-
+  isFollowedPage: boolean = false;
+  private followedSet: Set<string> = new Set();
+  private readonly followedPageToken: string = 'followedPoolPage';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
@@ -80,10 +86,13 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
 
   loadData() {
     this.loading = true;
-
-    this.poolService
-      .getPools()
-      .pipe(takeUntil(this.unsubscribe$))
+    this.followService.getFollowed(EntityType.Pool)
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        mergeMap(data => {
+          data.forEach(item=>this.followedSet.add(item.entityId));
+          return  this.poolService.getPools();
+        }))
       .subscribe(
         (resp) => {
           this.loading = false;
@@ -94,7 +103,17 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
                 ...value, count: value.applicants.length};                
             },            
           );
-          this.dataSource.data = dataWithTotal;
+          dataWithTotal.forEach((d) => {
+            d.isFollowed = this.followedSet.has(d.id);
+          });
+          if(localStorage.getItem(this.followedPageToken)!==null){
+            this.dataSource.data = dataWithTotal.filter(item=>this.followedSet.has(item.id));
+          }
+          else
+          {
+            this.dataSource.data = dataWithTotal;
+          }
+          this.mainData = dataWithTotal;
           this.updatePaginator();
         },
         (error) => {
@@ -103,7 +122,41 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
         },
       );
   }
-
+  public switchToFollowed(){
+    this.isFollowedPage = true;
+    this.dataSource.data = this.dataSource.data.filter(pool=>pool.isFollowed);
+    this.followService.switchRefreshFollowedPageToken(true, this.followedPageToken);
+    this.directive.applyFilter$.emit();
+  }
+  public switchAwayToAll(){
+    this.isFollowedPage = false;
+    this.dataSource.data = this.mainData;
+    this.followService.switchRefreshFollowedPageToken(false, this.followedPageToken);
+    this.directive.applyFilter$.emit();
+  }
+  public onBookmark(data: ApplicantsPool, perfomToFollowCleanUp: boolean = false){
+    let poolIndex:number = this.dataSource.data.findIndex(pool=>pool.id === data.id)!;
+    data.isFollowed = !data.isFollowed;
+    if(data.isFollowed)
+    {
+      this.followService.createFollowed(
+        {
+          entityId: data.id,
+          entityType: EntityType.Pool,
+        },
+      ).subscribe();
+    }else
+    {
+      this.followService.deleteFollowed(
+        EntityType.Pool, data.id,
+      ).subscribe();
+    }
+    this.dataSource.data[poolIndex] = data;
+    if(perfomToFollowCleanUp){
+      this.dataSource.data = this.dataSource.data.filter(pool=>pool.isFollowed);
+    }
+    this.directive.applyFilter$.emit();
+  }
   createPool(pool: CreatePool) {
     this.loading = true;
     this.poolService

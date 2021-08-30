@@ -33,6 +33,7 @@ button.tub {
     font-weight: 600;
     font-size: 16px;
     line-height: 22px;
+    text-underline-offset: 5px;
 }
 
 button.tub:hover {
@@ -162,7 +163,9 @@ button.tub:focus {
         left: 5px;        
     }
     
-
+    .applyPrimaryColor{
+        color: $primary-color !important;
+    }
     .pool-page .mat-form-field-label-wrapper {
         left: 40px;        
         max-width: 200px;
