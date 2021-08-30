@@ -16,7 +16,8 @@
         <button mat-button (click)="OnCreate()">+ New Project</button>
     </div>
 
-    <app-table-filter [description]="filterDescription" [data]="projects" (filteredDataChange)="setFiltered($event)">
+    <app-table-filter #filter [description]="filterDescription" [data]="projects"
+        (filteredDataChange)="setFiltered($event)">
     </app-table-filter>
 
     <div class="project-list">
