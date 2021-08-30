@@ -19,7 +19,6 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
   templateUrl: './edit-app-pool-modal.component.html',
   styleUrls: [
     './edit-app-pool-modal.component.scss',
-    '../create-talentpool-modal/create-talentpool-modal.component.scss',
   ],
 })
 export class EditAppPoolModalComponent implements OnInit {

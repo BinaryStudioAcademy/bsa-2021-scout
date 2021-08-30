@@ -1,0 +1,115 @@
+@import '/src/common.scss';
+
+.is-done {    
+    background-color: #F0F3F9! important;
+    
+    .header {
+        border-bottom: 2px solid #E0E4EC! important ;
+    }
+}
+
+.card:hover {
+    cursor: pointer;    
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+
+    height: 273px;
+    width: 473px;
+
+    background: #FFFFFF;
+    border: 1px solid #ECF0F7;
+    box-sizing: border-box;
+    box-shadow: 2px 3px 6px 2px rgba(170, 178, 186, 0.15);
+    border-radius: 7px;
+
+    font-weight: 600;
+    font-size: 16px;
+   
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+
+        height:43px;        
+        margin: 17px 17px 0;
+        padding-bottom: 17px;
+        
+        border-bottom: 2px solid #F2F2F2;
+        
+        ::ng-deep {
+            .mat-checkbox-frame {
+                border-color:$primary-color;
+            }
+            .mat-checkbox-disabled .mat-checkbox-label {
+                color:$primary-color;
+            }
+            .is-done .mat-checkbox-background {
+                background-color: $primary-color;
+            }
+        }
+
+        .name {
+            padding: 0 10px;
+            margin-right: auto;
+        }
+    }
+
+    .info {
+        height: 120px;
+        padding: 20px 0 0;
+        
+        .all {
+            display: flex;
+        }
+
+        .done {
+            display: flex;
+        }
+
+        .app-task-info-widget {
+            padding-left: 20px;
+        }
+
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        height: 35px;
+        padding: 0 10px 5px 45px;
+
+        .creator {
+            font-size: 12px;
+            font-weight: 400;
+            color:#4F00B5;
+        }
+
+        .users {
+            padding-right: 15px;
+            cursor: pointer;
+            
+
+            .mat-icon {
+                vertical-align: middle;
+                border-radius: 50%;
+                border: 1px solid $primary-color;
+                color: white;
+                background-color: lightgray;
+                font-size: 30px;
+                height: 30px;
+                width: 30px;
+                margin: 0 -7px;                         
+                       
+            }
+        }
+        
+
+    }
+
+
+}

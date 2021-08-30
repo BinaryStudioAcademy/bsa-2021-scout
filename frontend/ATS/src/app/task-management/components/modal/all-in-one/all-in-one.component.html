@@ -1,0 +1,77 @@
+<div class="dialog-title" mat-dialog-title>
+    <h1>{{formType}} task form</h1>
+    <button mat-icon-button mat-dialog-close="none">
+      <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div class="form-control">
+  <form [formGroup]="taskForm">
+    <h5 class="required-field">Task name</h5>
+    <mat-form-field floatLabel='never' class="al-subscribe-form-field" [ngClass]="getClass('name')">
+      <input matInput type="text" formControlName="name" [(ngModel)]="task.name" placeholder="Enter name of task">
+    </mat-form-field>
+    <div class="custom-error" *ngIf="this.taskForm.controls['name'].dirty && this.taskForm.controls['name'].errors?.required">
+      Please fill name of task.
+    </div>
+    <div class="custom-error" *ngIf="this.taskForm.controls['name'].dirty && this.taskForm.controls['name'].errors?.minlength">
+      Name must be at least 3 characters long.
+    </div>
+    <div class="custom-error" *ngIf="this.taskForm.controls['name'].dirty && this.taskForm.controls['name'].errors?.maxlength">
+      Name must be not greater than 20 characters long.
+    </div>
+    <h5 class="required-field">Candidate</h5>
+    <mat-form-field floatLabel='never' class="al-subscribe-form-field" [ngClass]="getClass('name')">
+      <input matInput type="text" formControlName="candidate" [ngModel]="task.applicant.firstName+' '+task.applicant.lastName" placeholder="Select candidate">
+    </mat-form-field>
+    <h5 class="required-field">Team members</h5>
+    <div class='users'>
+        <mat-icon *ngFor="let user of task.teamMembers" [matTooltip]="user.firstName+' '+user.lastName">account_circle</mat-icon>
+    </div>
+<!--    <mat-form-field class="example-chip-list" floatLabel='never' placeholder="New teamMember">
+        <mat-label>Team members</mat-label>
+        <mat-chip-list #teamMembersList aria-label="teamMembers selection">
+          <mat-chip
+            *ngFor="let teamMember of teamMembers"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="remove(teamMember)">
+            {{task.teamMember.firstName}} {{taskteamMember.lastName}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="New teamMember..."
+            #teamMemberInput
+            [formControl]="teamMembersCtrl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="teamMembersList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let teamMember of filteredteamMembers | async" [value]="filterValue">
+              <mat-icon [ngClass]='getStyle(teamMember)'>done</mat-icon>
+            {{teamMember.firstName}} {{teamMember.lastName}} 
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>-->
+    <h5>Task status</h5>
+    <mat-checkbox formControlName="isDone" [(ngModel)]="task.isDone">To-Do</mat-checkbox>
+    <h5 class="required-field">Due Date</h5>
+    <mat-form-field floatLabel="never">
+        <input matInput [matDatepicker]="dp3" formControlName="dueDate" [(ngModel)]="task.dueDate" >
+        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+        <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <h5>Note</h5>
+    <mat-form-field floatLabel='never' class="al-subscribe-form-field" class="textarea" [ngClass]="getClass('note')">
+        <textarea matInput type="text" autocomplete="off" formControlName="note" placeholder="Enter note"
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="12"
+        cdkAutosizeMaxRows="12"></textarea>
+    </mat-form-field>    
+    <div class="login-button form-group">
+      <button mat-button color="primary" (click)="save()" [disabled]="!taskForm.valid || !this.taskForm.dirty">Save</button>
+    </div>
+  </form>
+</div>

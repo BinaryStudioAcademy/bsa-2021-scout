@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    width: auto;
+    height: 50px;
+    min-width: 152px;
+    padding: 0 40px 5px;
+    align-items: center;
+
+    .mat-icon {
+        color:lightgray;
+        font-size: 35px;
+        vertical-align: middle;
+        height: unset;
+        width: unset;
+    }
+
+    .big {
+        padding-top: 3px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .small {
+        font-size: 12px;
+        font-weight: 600;
+        color: lightgray;
+    }
+    
+}

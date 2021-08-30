@@ -1,0 +1,29 @@
+@import '/src/common.scss';
+@import '/src/app/shared/styles/common-modal-form.scss';
+
+.users {
+    padding-right: 15px;
+    cursor: pointer;
+    
+
+    .mat-icon {
+        vertical-align: middle;
+        border-radius: 50%;
+        border: 1px solid $primary-color;
+        color: white;
+        background-color: lightgray;
+        font-size: 30px;
+        height: 30px;
+        width: 30px;
+        margin: 0 -7px;                         
+               
+    }
+}
+
+.form-control {
+    ::ng-deep {        
+        .mat-form-field-appearance-legacy .mat-datepicker-toggle-default-icon {
+                width: unset;
+        }
+    }
+}

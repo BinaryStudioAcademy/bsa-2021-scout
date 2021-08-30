@@ -25,6 +25,7 @@ import { ProjectsModule } from '../projects/projects.module';
 import { PoolsModule } from '../pools/pools.module';
 import { TaskManagementModule } from '../task-management/task-management.module';
 
+
 @NgModule({
   declarations: [
     AppComponent, 
