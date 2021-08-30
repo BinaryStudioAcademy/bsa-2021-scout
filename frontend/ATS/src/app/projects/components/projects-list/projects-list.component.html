@@ -14,8 +14,13 @@
     <button mat-button (click)="OnCreate()">+ New Project</button>
 </div>
 
-<div class="project-list">
+<app-table-filter
+    [description]="filterDescription"
+    [data]="projects"
+    (filteredDataChange)="setFiltered($event)"
+></app-table-filter>
 
+<div class="project-list">
     <div class="mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort>
             <!-- Position Column -->

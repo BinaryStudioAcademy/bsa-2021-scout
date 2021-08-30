@@ -1,5 +1,11 @@
 import { Observable, Subject } from 'rxjs';
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { map, takeUntil, mergeMap } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,11 +16,15 @@ import { MatPaginator } from '@angular/material/paginator';
 import { StylePaginatorDirective } from 'src/app/shared/directives/style-paginator.directive';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { ViewableApplicant } from 'src/app/shared/models/applicants/viewable-applicant';
-
 import { ActivatedRoute } from '@angular/router';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
-
+import {
+  FilterDescription,
+  FilterType,
+} from 'src/app/shared/components/table-filter/table-filter.component';
+import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
+import { ApplicantVacancyInfo } from 'src/app/shared/models/applicants/applicant-vacancy-info';
 
 @Component({
   selector: 'app-applicants',
@@ -34,87 +44,42 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public dataSource = new MatTableDataSource<ViewableApplicant>();
   public cashedData: ViewableApplicant[] = [];
+  public filteredData: ViewableApplicant[] = [];
+  public filterDescription: FilterDescription = [];
   public searchValue = '';
   public isFollowedPage = false;
   public loading: boolean = true;
-  private followedSet: Set<string> = new Set();
+
   @ViewChild(MatPaginator) public paginator: MatPaginator | undefined =
   undefined;
+
   @ViewChild(StylePaginatorDirective) public directive:
   | StylePaginatorDirective
   | undefined = undefined;
 
-  private readonly unsubscribe$: Subject<void> = new Subject<void>();
+  private followedSet: Set<string> = new Set();
   private readonly followedPageToken: string = 'followedApplicantPage';
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
+
   constructor(
     private readonly notificationsService: NotificationService,
     private readonly applicantsService: ApplicantsService,
     private readonly route: ActivatedRoute,
     private followService: FollowedService,
-
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
-    this.followService.getFollowed(EntityType.Applicant)
+    this.followService
+      .getFollowed(EntityType.Applicant)
       .pipe(
         takeUntil(this.unsubscribe$),
-        mergeMap(data => {
-          data.forEach(item => this.followedSet.add(item.entityId));
+        mergeMap((data) => {
+          data.forEach((item) => this.followedSet.add(item.entityId));
           return this.applicantsService.getApplicants();
         }),
         map((arr) =>
           arr.map((a) => {
-            let viewableApplicant = a as unknown as ViewableApplicant;
-
-            viewableApplicant.isFollowed = this.followedSet.has(a.id);
-            viewableApplicant.isShowAllTags = false;
-
-            if (!a.tags) {
-              viewableApplicant.tags = {
-                id: '',
-                elasticType: 1,
-                tagDtos: [],
-              };
-            }
-
-            return viewableApplicant;
-          }),
-        ),
-      )
-      .subscribe((result: ViewableApplicant[]) => {
-        result.forEach((d, i) => {
-          d.position = i + 1;
-        });
-
-        this.loading = false;
-        if (localStorage.getItem(this.followedPageToken) !== null)
-          this.dataSource.data = result.filter(item => this.followedSet.has(item.id));
-        else
-          this.dataSource.data = result;
-        this.cashedData = result;
-        this.directive!.applyFilter$.emit();
-      },
-      (error: Error) => {
-        this.loading = false;
-
-        this.notificationsService.showErrorMessage(
-          error.message,
-          'Cannot download applicants from the host',
-        );
-      },
-      );
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken) !== null;
-    this.getApplicants();
-  }
-
-  public getApplicants() {
-    this.applicantsService
-      .getApplicants()
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        map((arr) =>
-          arr.map((a) => {
-            let viewableApplicant = a as unknown as ViewableApplicant;
+            let viewableApplicant = a as any as ViewableApplicant;
 
             viewableApplicant.isFollowed = this.followedSet.has(a.id);
             viewableApplicant.isShowAllTags = false;
@@ -138,11 +103,74 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           });
 
           this.loading = false;
-          if (localStorage.getItem(this.followedPageToken) !== null)
-            this.dataSource.data = result.filter(item => this.followedSet.has(item.id));
-          else
+
+          if (localStorage.getItem(this.followedPageToken) !== null) {
+            this.dataSource.data = result.filter((item) =>
+              this.followedSet.has(item.id),
+            );
+          } else {
             this.dataSource.data = result;
+          }
+
           this.cashedData = result;
+          this.renewFilterDescription();
+          this.directive!.applyFilter$.emit();
+        },
+        (error: Error) => {
+          this.loading = false;
+
+          this.notificationsService.showErrorMessage(
+            error.message,
+            'Cannot download applicants from the host',
+          );
+        },
+      );
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) !== null;
+    this.getApplicants();
+  }
+
+  public getApplicants() {
+    this.applicantsService
+      .getApplicants()
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        map((arr) =>
+          arr.map((a) => {
+            let viewableApplicant = a as any as ViewableApplicant;
+
+            viewableApplicant.isFollowed = this.followedSet.has(a.id);
+            viewableApplicant.isShowAllTags = false;
+
+            if (!a.tags) {
+              viewableApplicant.tags = {
+                id: '',
+                elasticType: 1,
+                tagDtos: [],
+              };
+            }
+
+            return viewableApplicant;
+          }),
+        ),
+      )
+      .subscribe(
+        (result: ViewableApplicant[]) => {
+          result.forEach((d, i) => {
+            d.position = i + 1;
+          });
+
+          this.loading = false;
+
+          if (localStorage.getItem(this.followedPageToken) !== null) {
+            this.dataSource.data = result.filter((item) =>
+              this.followedSet.has(item.id),
+            );
+          } else {
+            this.dataSource.data = result;
+          }
+
+          this.cashedData = result;
+          this.renewFilterDescription();
           this.directive!.applyFilter$.emit();
         },
         (error: Error) => {
@@ -176,11 +204,105 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource.filter = this.searchValue.trim().toLowerCase();
   }
 
+  public renewFilterDescription(): void {
+    const detectedTagIds: string[] = [];
+    const detectedVacancyNames: string[] = [];
+
+    const tags: IOption[] = [];
+    const vacancies: IOption[] = [];
+
+    this.cashedData.forEach((a) => {
+      a.tags.tagDtos.forEach((tag) => {
+        if (!detectedTagIds.includes(tag.id)) {
+          tags.push({
+            id: tag.id,
+            value: tag.id,
+            label: tag.tagName,
+          });
+
+          detectedTagIds.push(tag.id);
+        }
+      });
+
+      a.vacancies.forEach((vacancy) => {
+        if (!detectedVacancyNames.includes(vacancy.title)) {
+          vacancies.push({
+            id: vacancy.title,
+            value: vacancy.title,
+            label: vacancy.title,
+          });
+
+          detectedVacancyNames.push(vacancy.title);
+        }
+      });
+    });
+
+    this.filterDescription = [
+      {
+        id: 'firstName',
+        name: 'First name',
+      },
+      {
+        id: 'lastName',
+        name: 'Last name',
+      },
+      {
+        id: 'email',
+        name: 'Email',
+      },
+      {
+        id: 'activeVacancies',
+        property: 'vacancies.length',
+        name: 'Active vacancies amount',
+        type: FilterType.Number,
+        numberSettings: {
+          integer: true,
+          min: 0,
+        },
+      },
+      {
+        id: 'vacancies',
+        name: 'Jobs',
+        type: FilterType.Multiple,
+        multipleSettings: {
+          options: vacancies,
+          valueSelector: (applicant) =>
+            applicant.vacancies.map((vac: ApplicantVacancyInfo) => vac.title),
+        },
+      },
+      {
+        id: 'tags',
+        name: 'Tags',
+        type: FilterType.Multiple,
+        multipleSettings: {
+          options: tags,
+          valueSelector: (applicant) =>
+            applicant.tags.tagDtos.map((tag: Tag) => tag.id),
+        },
+      },
+    ];
+  }
+
+  public setFiltered(data: ViewableApplicant[]): void {
+    this.filteredData = data;
+
+    if (localStorage.getItem(this.followedPageToken) !== null) {
+      this.dataSource.data = this.filteredData.filter((item) =>
+        this.followedSet.has(item.id),
+      );
+    } else {
+      this.dataSource.data = this.filteredData;
+    }
+
+    this.directive?.applyFilter$.emit();
+    this.dataSource.paginator?.firstPage();
+  }
+
   public createApplicant(createdApplicant: Observable<Applicant>): void {
     createdApplicant
       .pipe(
         map((a: Applicant) => {
-          let viewableApplicant = (a as unknown) as ViewableApplicant;
+          let viewableApplicant = a as any as ViewableApplicant;
 
           if (viewableApplicant) {
             viewableApplicant.isShowAllTags = false;
@@ -197,9 +319,12 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           this.dataSource.data = this.cashedData;
 
           if (this.isFollowedPage) {
-            this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
+            this.dataSource.data = this.dataSource.data.filter(
+              (a) => a.isFollowed,
+            );
           }
 
+          this.renewFilterDescription();
           this.directive?.applyFilter$.emit();
 
           this.notificationsService.showSuccessMessage(
@@ -212,14 +337,16 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public updateApplicant(applicant: ViewableApplicant): void {
     if (applicant) {
-      let applicantIndex = this.cashedData.findIndex(a => a.id === applicant.id);
+      let applicantIndex = this.cashedData.findIndex(
+        (a) => a.id === applicant.id,
+      );
       applicant.position = this.cashedData[applicantIndex].position;
       applicant.isFollowed = this.cashedData[applicantIndex].isFollowed;
       this.cashedData[applicantIndex] = applicant;
       this.dataSource.data = this.cashedData;
 
       if (this.isFollowedPage) {
-        this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
+        this.dataSource.data = this.dataSource.data.filter((a) => a.isFollowed);
       }
 
       this.notificationsService.showSuccessMessage(
@@ -238,7 +365,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource.data = this.cashedData;
 
     if (this.isFollowedPage) {
-      this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
+      this.dataSource.data = this.dataSource.data.filter((a) => a.isFollowed);
     }
 
     this.directive?.applyFilter$.emit();
@@ -252,34 +379,43 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isFollowedPage = isFollowed;
 
     if (isFollowed) {
-      this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
-    }
-    else {
+      this.dataSource.data = this.dataSource.data.filter((a) => a.isFollowed);
+    } else {
       this.dataSource.data = this.cashedData;
     }
-    this.followService.switchRefreshFollowedPageToken(isFollowed, this.followedPageToken);
+
+    this.followService.switchRefreshFollowedPageToken(
+      isFollowed,
+      this.followedPageToken,
+    );
+
     this.directive!.applyFilter$.emit();
   }
 
   public onBookmark(applicantId: string) {
-    const applicantIndex = this.cashedData.findIndex(a => a.id === applicantId);
-    this.cashedData[applicantIndex].isFollowed = !this.cashedData[applicantIndex].isFollowed;
+    const applicantIndex = this.cashedData.findIndex(
+      (a) => a.id === applicantId,
+    );
+    this.cashedData[applicantIndex].isFollowed =
+      !this.cashedData[applicantIndex].isFollowed;
     this.dataSource.data = this.cashedData;
     if (this.cashedData[applicantIndex].isFollowed) {
-      this.followService.createFollowed(
-        {
+      this.followService
+        .createFollowed({
           entityId: this.cashedData[applicantIndex].id,
           entityType: EntityType.Applicant,
-        },
-      ).subscribe();
-    }
-    else {
-      this.followService.deleteFollowed(
-        EntityType.Applicant, this.cashedData[applicantIndex].id,
-      ).subscribe();
+        })
+        .subscribe();
+    } else {
+      this.followService
+        .deleteFollowed(
+          EntityType.Applicant,
+          this.cashedData[applicantIndex].id,
+        )
+        .subscribe();
     }
     if (this.isFollowedPage) {
-      this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
+      this.dataSource.data = this.dataSource.data.filter((a) => a.isFollowed);
     }
 
     this.directive!.applyFilter$.emit();

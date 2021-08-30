@@ -15,10 +15,14 @@ import { PoolService } from 'src/app/shared/services/poolService';
 import { CreatePool } from 'src/app/shared/models/applicants-pool/create-pool';
 import { UpdatePool } from 'src/app/shared/models/applicants-pool/update-pool';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { Router } from '@angular/router';
 import { PoolDetailsModalComponent } from '../pool-details-modal/pool-details-modal.component';
-import { DeleteConfirmComponent } from 
-  'src/app/shared/components/delete-confirm/delete-confirm.component';
+// eslint-disable-next-line
+import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm/delete-confirm.component';
+import {
+  FilterDescription,
+  FilterType,
+} from 'src/app/shared/components/table-filter/table-filter.component';
+import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
 
 const DATA: ApplicantsPool[] = [];
 
@@ -29,11 +33,10 @@ const DATA: ApplicantsPool[] = [];
 })
 export class ApplicationPoolComponent implements OnInit, AfterViewInit {
   constructor(
-    private readonly dialogService: MatDialog, 
-    private poolService : PoolService,
+    private readonly dialogService: MatDialog,
+    private poolService: PoolService,
     private notificationService: NotificationService,
   ) {}
-    
 
   displayedColumns: string[] = [
     'position',
@@ -45,8 +48,12 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
     'actions',
   ];
 
-  loading : boolean = false;
-  dataSource = new MatTableDataSource(DATA);  
+  public filterDescription: FilterDescription = [];
+
+  loading: boolean = false;
+  mainData: ApplicantsPool[] = [];
+  filteredData: ApplicantsPool[] = [];
+  dataSource = new MatTableDataSource(DATA);
   private unsubscribe$ = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -62,6 +69,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
   updatePaginator() {
     this.dataSource.paginator = this.paginator;
     this.directive?.applyFilter$.emit();
+    this.dataSource.paginator.firstPage();
   }
 
   applyFilter(event: Event) {
@@ -74,8 +82,8 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit() : void {
-    this.loadData();    
+  ngOnInit(): void {
+    this.loadData();
   }
 
   loadData() {
@@ -88,13 +96,15 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
         (resp) => {
           this.loading = false;
 
-          const dataWithTotal = resp.map(
-            value => {
-              return {
-                ...value, count: value.applicants.length};                
-            },            
-          );
-          this.dataSource.data = dataWithTotal;
+          const dataWithTotal = resp.map((value) => {
+            return {
+              ...value,
+              count: value.applicants.length,
+            };
+          });
+
+          this.mainData = dataWithTotal;
+          this.renewFilterDescription();
           this.updatePaginator();
         },
         (error) => {
@@ -104,22 +114,87 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       );
   }
 
+  public renewFilterDescription(): void {
+    const detectedUserNames: string[] = [];
+    const users: IOption[] = [];
+
+    this.mainData.forEach((pool) => {
+      if (!detectedUserNames.includes(pool.createdBy)) {
+        users.push({
+          id: pool.createdBy,
+          value: pool.createdBy,
+          label: pool.createdBy,
+        });
+
+        detectedUserNames.push(pool.createdBy);
+      }
+    });
+
+    this.filterDescription = [
+      {
+        id: 'name',
+        name: 'Name',
+      },
+      {
+        id: 'createdBy',
+        name: 'Created by',
+        type: FilterType.Multiple,
+        multipleSettings: {
+          options: users,
+          valueSelector: (pool) => pool.createdBy,
+        },
+      },
+      {
+        id: 'dateCreated',
+        name: 'Creation date',
+        type: FilterType.Date,
+      },
+      {
+        id: 'applicantsCount',
+        property: 'applicants.length',
+        name: 'Applicants count',
+        type: FilterType.Number,
+        numberSettings: {
+          integer: true,
+          min: 0,
+        },
+      },
+      {
+        id: 'description',
+        name: 'Description',
+      },
+    ];
+  }
+
+  public setFiltered(data: ApplicantsPool[]): void {
+    this.filteredData = data;
+    this.dataSource.data = data;
+    this.updatePaginator();
+  }
+
   createPool(pool: CreatePool) {
     this.loading = true;
     this.poolService
       .createPool(pool)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        (resp) => {          
-          this.dataSource.data.push(resp);          
-          this.table.renderRows();          
+        (resp) => {
+          this.mainData.push(resp);
+          this.renewFilterDescription();
+          this.table.renderRows();
           this.updatePaginator();
-          this.notificationService.showSuccessMessage('Pool successfully added');
+          this.notificationService.showSuccessMessage(
+            'Pool successfully added',
+          );
         },
-        (error) => {          
-          this.notificationService.showSuccessMessage(`Create pool error: ${error}`);
+        (error) => {
+          this.notificationService.showSuccessMessage(
+            `Create pool error: ${error}`,
+          );
         },
-        () => { this.loading = false; },
+        () => {
+          this.loading = false;
+        },
       );
   }
 
@@ -147,15 +222,14 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
 
     createDialog.afterClosed().subscribe((result) => {});
 
-    const dialogSubmitSubscription = 
-    createDialog.componentInstance.submitClicked.subscribe(result => {
-      this.createPool(result);      
-      dialogSubmitSubscription.unsubscribe();
-    });
+    const dialogSubmitSubscription =
+      createDialog.componentInstance.submitClicked.subscribe((result) => {
+        this.createPool(result);
+        dialogSubmitSubscription.unsubscribe();
+      });
   }
 
-  onDetails(id: string)
-  {
+  onDetails(id: string) {
     this.dialogService.open(PoolDetailsModalComponent, {
       width: '800px',
       height: '90vh',
@@ -179,13 +253,10 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       });
   }
 
-  markPool(row: ApplicantsPool)
-  {
-
-  }
+  markPool(row: ApplicantsPool) {}
 
   updateRowData(row: ApplicantsPool) {
-    let source = this.dataSource.data.find((x) => x.id == row.id);
+    let source = this.mainData.find((x) => x.id == row.id);
     if (source) {
       source.applicants = row.applicants;
       source.name = row.name;
@@ -193,7 +264,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       source.dateCreated = row.dateCreated;
       source.createdBy = row.createdBy;
       source.count = row.applicants.length;
-    }    
+    }
   }
 
   public showDeleteConfirmDialog(pool: ApplicantsPool): void {
@@ -201,26 +272,27 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       width: '400px',
       height: 'min-content',
       autoFocus: false,
-      data:{
+      data: {
         entityName: 'Pool',
       },
     });
 
-    dialogRef.afterClosed()
-      .subscribe((response: boolean) => {
-        if (response) {
-          this.poolService
-            .deletePool(pool.id)
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(_ => {
-              const elementIndex = this.dataSource.data.indexOf(pool);
-              this.dataSource.data.splice(elementIndex,1);
-              this.table.renderRows();          
-              this.updatePaginator();
-              this.notificationService
-                .showSuccessMessage(`Pool ${pool.name} deleted!`);
-            });
-        }
-      });
+    dialogRef.afterClosed().subscribe((response: boolean) => {
+      if (response) {
+        this.poolService
+          .deletePool(pool.id)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe((_) => {
+            const mainDataIndex = this.mainData.indexOf(pool);
+            this.mainData.splice(mainDataIndex, 1);
+            this.renewFilterDescription();
+            this.table.renderRows();
+            this.updatePaginator();
+            this.notificationService.showSuccessMessage(
+              `Pool ${pool.name} deleted!`,
+            );
+          });
+      }
+    });
   }
 }

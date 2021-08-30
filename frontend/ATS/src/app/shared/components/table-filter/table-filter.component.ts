@@ -159,7 +159,7 @@ export class TableFilterComponent implements OnChanges {
   }
 
   public someActive(): boolean {
-    const keys = Object.keys(this.filtersSelected);
+    const keys = Object.values(this.filtersSelected);
     return keys.length > 0 && keys.some(_.identity);
   }
 
@@ -181,7 +181,7 @@ export class TableFilterComponent implements OnChanges {
 
     let allTrue: boolean = true;
 
-    Object.entries(this.filtersSelected).forEach(([key, value]) => {
+    Object.values(this.filtersSelected).forEach((value) => {
       allTrue = allTrue && value;
     });
 
@@ -281,7 +281,11 @@ export class TableFilterComponent implements OnChanges {
             ? filter.multipleSettings.valueSelector(el)
             : el;
 
-          return filterVal.map((opt) => opt.value).includes(dataVal);
+          if (Array.isArray(dataVal)) {
+            return filterVal.some((opt) => dataVal.includes(opt.value));
+          }
+
+          return filterVal.some((opt) => opt.value === dataVal);
         });
       }
       case FilterType.Text:

@@ -114,8 +114,8 @@ implements AfterViewInit, OnInit, OnDestroy
             this.dataSource.data = data;
           }
 
-          this.directive.applyFilter$.emit();
           this.renewFilterDescription();
+          this.directive.applyFilter$.emit();
         },
         () => {
           this.loading = false;
@@ -173,8 +173,8 @@ implements AfterViewInit, OnInit, OnDestroy
             this.dataSource.data = data;
           }
 
-          this.directive.applyFilter$.emit();
           this.renewFilterDescription();
+          this.directive.applyFilter$.emit();
         },
         () => {
           this.loading = false;
@@ -269,6 +269,7 @@ implements AfterViewInit, OnInit, OnDestroy
     }
 
     this.directive.applyFilter$.emit();
+    this.dataSource.paginator?.firstPage();
   }
 
   public openDialog(): void {

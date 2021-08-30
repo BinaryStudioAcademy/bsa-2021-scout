@@ -2,6 +2,11 @@
 <app-applicants-head (search)="applySearchValue($event)" (togglePage)="toggleFollowedOrAll($event)" (applicantsFileUploaded)="updateListApplicants()" (applicantCreated)="createApplicant($event)" #head></app-applicants-head>
 <div class="page-content">
     <app-spinner [loading]="loading"></app-spinner>
+    <app-table-filter
+        [description]="filterDescription"
+        [data]="cashedData"
+        (filteredDataChange)="setFiltered($event)"
+    ></app-table-filter>
     <div class="mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
             <ng-container matColumnDef="position">
