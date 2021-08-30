@@ -17,10 +17,10 @@
     ></app-table-filter>
     <div class="user-list">
         <div class="mat-elevation-z8">
-            <table #mytable mat-table [dataSource]="dataSource" matSort>
+            <table #mytable mat-table [dataSource]="dataSource" matSort matSortActive="creation-date" matSortDirection="desc">
                 <ng-container matColumnDef="position">
                     <th mat-header-cell *matHeaderCellDef> # </th>
-                    <td mat-cell *matCellDef="let row"> {{row.position}} </td>
+                    <td mat-cell *matCellDef="let i = index"> {{ (i+1) + (paginator.pageIndex * paginator.pageSize)}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="full-name">

@@ -22,7 +22,7 @@
 
     <div class="project-list">
         <div class="mat-elevation-z8">
-            <table mat-table [dataSource]="dataSource" matSort>
+            <table mat-table [dataSource]="dataSource" matSort matSortActive="creationDate" matSortDirection="desc">
                 <!-- Position Column -->
                 <ng-container matColumnDef="position">
                     <th mat-header-cell *matHeaderCellDef>  # </th>
