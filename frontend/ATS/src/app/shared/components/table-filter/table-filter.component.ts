@@ -183,6 +183,17 @@ export class TableFilterComponent implements OnChanges {
       | IOption[]
       | undefined;
 
+    if (Array.isArray(options)) {
+      let index: number = options.findIndex(opt => (value ?? []).some(el => el.id === opt.id));
+
+      while (index > -1) {
+        options.splice(index, 1);
+        index = options.findIndex(opt => (value ?? []).some(el => el.id === opt.id));
+      }
+    } else if ((value ?? []).some(el => el.id === options.id)) {
+      return;
+    }
+
     this.filterValues[id] = [
       ...(value ?? []),
       ...(Array.isArray(options) ? options : [options]),
