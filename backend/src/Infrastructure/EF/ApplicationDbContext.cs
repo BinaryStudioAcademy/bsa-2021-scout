@@ -36,6 +36,9 @@ namespace Infrastructure.EF
         public DbSet<RegisterPermission> RegisterPermissions { get; set; }
         public DbSet<UserFollowedEntity>  UserFollowedEntities { get; set; }
 
+        public DbSet<ToDoTask> ToDoTask { get; set; }
+        public DbSet<UserToTask> UserToTask { get; set; }
+
         private readonly IDomainEventService _domainEventService;
 
         public ApplicationDbContext() : base() { }

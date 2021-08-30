@@ -2,7 +2,7 @@ import { Model } from '../model';
 import { ApplicantShort } from './applicant-short';
 import { UserInfo } from './user-short';
 
-export interface Task extends Model {
+export interface UpdateTask extends Model {
   name: string;
   applicant : ApplicantShort;
   dueDate: Date;
@@ -10,6 +10,6 @@ export interface Task extends Model {
   isDone: boolean;
   note?: string;
   createdBy: UserInfo;
-  dateCreated: Date;
+  createdDate: Date;
   teamMembers: UserInfo[];
 }

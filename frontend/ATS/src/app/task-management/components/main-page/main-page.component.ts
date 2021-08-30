@@ -3,6 +3,9 @@ import { Task } from 'src/app/shared/models/task-management/task';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AllInOneComponent} from '../modal/all-in-one/all-in-one.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TaskService } from 'src/app/shared/services/taskService';
 
 interface filterObject {
   userFilter:boolean;
@@ -22,81 +25,45 @@ export class MainPageComponent implements OnInit{
   public filter : filterObject = {userFilter:false, isDoneFilter:false} as filterObject;
   public filterUser : string = 'All';
   public currentUserId : string = '';
+  public loading : boolean = false;
   
+  private unsubscribe$ = new Subject<void>();
 
-  public allTasks : Task[] =  [
-    { id: '1', name: 'Interview', dueDate : new Date(), isDone:true,
-      createdDate: new Date('2021-08-24 09:05'), 
-      createdBy : {id: '1', firstName: 'Lion', lastName: 'King' },
-      teamMembers : [
-        {id: '1', firstName: 'Gerry', lastName: 'Long' },
-        {id: '2', firstName: 'Max', lastName: 'Shure' },
-      ],
-      applicant: {id:'1',firstName:'Sam', lastName:'White',image: ''},
-    },
-    {id:'2',name:'Review candidates', dueDate : new Date(), isDone: false, 
-      createdDate: new Date('2021-08-01 20:15'), 
-      createdBy : {id: '2', firstName: 'Miracle', lastName: 'Madson' },
-      teamMembers : [
-        {id: '1', firstName: 'Gerry', lastName: 'Long' },
-        {id: '2', firstName: 'Max', lastName: 'Shure' },
-        {id: '3', firstName: 'Joe', lastName: 'Silver' },
-      ],
-      applicant: {id:'1',firstName:'Jack', lastName:'Notch',image: ''},
-    },
-    {id:'2',name:'Test', dueDate : new Date(), isDone: true, 
-      createdDate: new Date('2021-08-12 09:05'), 
-      createdBy : {id: '2', firstName: 'Miracle', lastName: 'Madson' },
-      teamMembers : [        
-        {id: '3', firstName: 'Joe', lastName: 'Silver' },
-      ],
-      applicant: {id:'1',firstName:'Vail', lastName:'Blind',image: ''},
-    },
-    {id:'2',name:'Test', dueDate : new Date(), isDone: true, 
-      createdDate: new Date('2021-08-17 19:10'), 
-      createdBy : {id: '3', firstName: 'Stacy', lastName: 'Dru' },
-      teamMembers : [        
-        {id: '3', firstName: 'Joe', lastName: 'Silver' },
-      ],
-      applicant: {id:'1',firstName:'Vail', lastName:'Blind',image: ''},
-    },
-    {id:'2',name:'Technical interview',dueDate : new Date(), isDone: true, 
-      createdDate: new Date('2021-07-29 15:01'), 
-      createdBy : {id: '2', firstName: 'Miracle', lastName: 'Madson' },
-      teamMembers : [        
-        {id: '3', firstName: 'Joe', lastName: 'Silver' },
-        {id: '5', firstName: 'Joe', lastName: 'Silver' },
-        {id: '2', firstName: 'Joe', lastName: 'Silver' },
-      ],
-      applicant: {id:'1',firstName:'Vail', lastName:'Blind',image: ''},
-    },
-    {id:'2',name:'Review candidates', dueDate : new Date(), isDone: false, 
-      createdDate: new Date('2021-08-22 10:35'),
-      createdBy : {id: '1', firstName: 'Jephry', lastName: 'Hanna' },
-      teamMembers : [        
-        {id: '3', firstName: 'Joe', lastName: 'Silver' },
-      ],
-      applicant: {id:'1',firstName:'Vail', lastName:'Blind',image: ''},
-    },
-    {id:'2',name:'Phone call', dueDate : new Date(), isDone: false, 
-      createdDate: new Date('2021-08-14 16:40'), 
-      createdBy : {id: '5', firstName: 'Piter', lastName: 'Double' },
-      teamMembers : [        
-        {id: '3', firstName: 'Joe', lastName: 'Silver' },
-      ],
-      applicant: {id:'1',firstName:'Otto', lastName:'Shmith',image: ''},
-    },
-  ];
+  public allTasks : Task[] =  [];
 
   constructor (
     private readonly dialogService: MatDialog,     
     private notificationService: NotificationService,
+    private taskService: TaskService,
   ) { }
+
 
   ngOnInit() : void {
     console.log('tasks loaded');
-    this.filterData();    
+    this.loadData();      
   }
+
+  loadData() {
+    this.loading = true;
+
+    this.taskService
+      .getTasks()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (resp) => {
+          this.loading = false;
+
+          this.allTasks= resp;
+          this.filterData(); 
+          
+        },
+        (error) => {
+          this.loading = false;
+          this.notificationService.showErrorMessage(error);
+        },
+      );
+  }
+
 
   toggleDone(isDone: boolean) {
     this.filter.isDoneFilter = isDone;

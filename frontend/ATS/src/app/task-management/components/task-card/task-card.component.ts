@@ -24,7 +24,7 @@ export class TaskCardComponent implements OnInit{
 
     this.createdWidget = {
       icon: 'hourglass_top', 
-      lineOne: moment(this.task.createdDate).format('Do MMM hh:mm'), 
+      lineOne: moment(this.task.dateCreated).format('Do MMM hh:mm'), 
       lineTwo: 'Created task',
     };
     this.deadlineWidget = {

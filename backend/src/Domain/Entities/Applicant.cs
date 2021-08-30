@@ -19,5 +19,6 @@ namespace Domain.Entities
         public bool HasCv { get => CvFileInfo != null; }
         public ICollection<PoolToApplicant> ApplicantPools { get; set; } = new List<PoolToApplicant>();
         public ICollection<VacancyCandidate> Candidates { get; set; } = new List<VacancyCandidate>();
+        public ICollection<ToDoTask> Tasks { get; set; } = new List<ToDoTask>();
     }
 }

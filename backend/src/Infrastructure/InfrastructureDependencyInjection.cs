@@ -193,6 +193,9 @@ namespace Infrastructure
 
             services.AddScoped<IWriteRepository<UserFollowedEntity>, WriteRepository<UserFollowedEntity>>();
 
+            services.AddScoped<IWriteRepository<ToDoTask>, WriteRepository<ToDoTask>>();
+            services.AddScoped<IUserToTaskWriteRepository, UserToTaskWriteRepository>();
+
             return services;
         }
 
@@ -239,6 +242,10 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();
 
             services.AddScoped<IReadRepository<Domain.Entities.Action>, ActionReadRepository>();
+
+            services.AddScoped<IReadRepository<ToDoTask>, TaskReadRepository>();
+            services.AddScoped<ITaskReadRepository, TaskReadRepository>();
+
 
             return services;
         }
