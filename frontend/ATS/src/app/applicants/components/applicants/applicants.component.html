@@ -5,10 +5,8 @@
     <div class="mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
             <ng-container matColumnDef="position">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header="position"> # </th>
-                <td mat-cell class="index-cell" *matCellDef="let applicant"> 
-                    <mat-icon class="self-applied" *ngIf="applicant.isSelfApplied">hail</mat-icon> 
-                    {{applicant.position}} 
+                <th mat-header-cell *matHeaderCellDef>  # </th>
+                <td mat-cell *matCellDef="let i = index"> {{ (i+1) + (paginator.pageIndex * paginator.pageSize)}}
                 </td>
             </ng-container>
 

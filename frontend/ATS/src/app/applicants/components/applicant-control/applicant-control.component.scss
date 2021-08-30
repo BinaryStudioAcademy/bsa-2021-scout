@@ -42,6 +42,20 @@ $primary-color: #ee2a64;
     }
 }
 
+.self-applied{
+    display: flex;
+    height: 40px;
+    width: 40px;
+    justify-content: center;
+    align-items: center;
+
+    .mat-icon{
+        cursor: pointer;
+        text-align: center;
+        color: #501cb1d0;
+    }
+}
+
 .applyPrimaryColor{
     color: $primary-color !important;
 }
