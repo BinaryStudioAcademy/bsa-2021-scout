@@ -35,6 +35,8 @@ namespace Infrastructure.EF
         public DbSet<CandidateComment> CandidateComments { get; set; }
         public DbSet<RegisterPermission> RegisterPermissions { get; set; }
         public DbSet<UserFollowedEntity> UserFollowedEntities { get; set; }
+        public DbSet<Interview> Interviews { get; set; }
+        public DbSet<UsersToInterview> UsersToInterviews { get; set; }
 
         private readonly IDomainEventService _domainEventService;
 
