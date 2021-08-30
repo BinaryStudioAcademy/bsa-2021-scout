@@ -13,5 +13,11 @@ namespace WebAPI.Controllers
             string userId = GetUserIdFromToken();
             return Ok(await Mediator.Send(new GetRecentActivityQuery(userId, page)));
         }
+
+        [HttpGet("for-applicant/{id}")]
+        public async Task<ActionResult<RecentActivityInfoDto>> GetForApplicant([FromRoute] string id)
+        {
+            return Ok(await Mediator.Send(new GetRecentActivityForApplicantQuery(id)));
+        }
     }
 }
