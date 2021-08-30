@@ -97,7 +97,7 @@ const routes: Routes = [
       {
         path: AppRoute.UserManagement,
         component: UsersTableComponent,
-        canActivate: [HrLeadGuard],
+        //canActivate: [HrLeadGuard],
         pathMatch: 'full',
       },
       { path: '**', redirectTo: AppRoute.Home },
