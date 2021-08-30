@@ -1,3 +1,4 @@
+using System;
 using Application.Common.Models;
 using System.Collections.Generic;
 using Application.ElasticEnities.Dtos;
@@ -14,6 +15,7 @@ namespace Application.Applicants.Dtos
         public string Skills { get; set; }
         public bool HasCv { get; set; }
         public bool IsSelfApplied { get; set; }
+        public DateTime CreationDate { get; set; }
 
         public IEnumerable<ApplicantVacancyInfoDto> Vacancies { get; set; }
         public ElasticEnitityDto Tags { get; set; }

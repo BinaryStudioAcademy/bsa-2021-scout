@@ -36,9 +36,9 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     'position',
     'name',
     'email',
-    'active_vacancies',
     'jobs_list',
     'tags',
+    'creation_date',
     'control_buttons',
   ];
 
@@ -251,16 +251,6 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         name: 'Email',
       },
       {
-        id: 'activeVacancies',
-        property: 'vacancies.length',
-        name: 'Active vacancies amount',
-        type: FilterType.Number,
-        numberSettings: {
-          integer: true,
-          min: 0,
-        },
-      },
-      {
         id: 'vacancies',
         name: 'Jobs',
         type: FilterType.Multiple,
@@ -279,6 +269,11 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           valueSelector: (applicant) =>
             applicant.tags.tagDtos.map((tag: Tag) => tag.id),
         },
+      },
+      {
+        id: 'creationDate',
+        name: 'Creation date',
+        type: FilterType.Date,
       },
     ];
   }
@@ -451,18 +446,14 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
             );
           case 'email':
             return this.compareRows(a.email, b.email, isAsc);
-          case 'active_vacancies':
-            return this.compareRows(
-              a.vacancies.length,
-              b.vacancies.length,
-              isAsc,
-            );
           case 'tags':
             return this.compareRows(
               a.tags.tagDtos.length,
               b.tags.tagDtos.length,
               isAsc,
             );
+          case 'creation_date':
+            return this.compareDates(a.creationDate, b.creationDate, isAsc);
           default:
             return 0;
         }
@@ -480,5 +471,9 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     isAsc: boolean,
   ): number {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  private compareDates(a: Date, b: Date, isAsc: boolean): number {
+    return (a.getTime() < b.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
