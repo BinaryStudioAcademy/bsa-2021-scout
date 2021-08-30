@@ -171,6 +171,10 @@ export class TableFilterComponent implements OnChanges {
     const currentValue = this.filtersSelected[id];
     this.filtersSelected[id] = !currentValue;
 
+    if (!currentValue) {
+      delete this.filterValues[id];
+    }
+
     const selectedKeys = Object.keys(this.filtersSelected);
 
     if (!this.equalArrays(selectedKeys, this.allKeys)) {

@@ -4,12 +4,10 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  padding: 10px;
+  padding: 10px 5px;
   border-radius: 3px;
   box-sizing: border-box;
   color: $primary-color-darkgrey;
-  background-color: $primary-color-lightgrey;
-  margin: 0 5px 10px 5px;
 
   * {
     word-break: keep-all !important;
