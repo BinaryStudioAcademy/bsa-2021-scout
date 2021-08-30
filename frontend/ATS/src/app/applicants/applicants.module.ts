@@ -20,6 +20,9 @@ import { ApplicantUpdateCsvComponent }
 import { ApplicantCsvListComponent } 
   from './components/applicant-csv-list/applicant-csv-list.component';
 import { SelfApplyingComponent } from './components/self-applying/self-applying.component';
+import { ApplicantHistoryComponent }
+  from './components/applicant-history/applicant-history.component';
+import { ApplicantsRoutingModule } from './applicants-routing.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,7 @@ import { SelfApplyingComponent } from './components/self-applying/self-applying.
     ApplicantUpdateCsvComponent,
     ApplicantCsvListComponent,
     SelfApplyingComponent,
+    ApplicantHistoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +47,7 @@ import { SelfApplyingComponent } from './components/self-applying/self-applying.
     MatSortModule,
     MatPaginatorModule,
     MatChipsModule,
+    ApplicantsRoutingModule,
   ],
   providers: [],
   bootstrap: [ApplicantsComponent],

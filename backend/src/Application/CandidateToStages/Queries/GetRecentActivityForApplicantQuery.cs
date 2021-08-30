@@ -69,6 +69,7 @@ namespace Application.CandidateToStages.Queries
                     );
                 }
 
+                vacancy.Activity = vacancy.Activity.OrderByDescending(act => act.DateAdded);
                 info = info.Append(vacancy);
             }
 
