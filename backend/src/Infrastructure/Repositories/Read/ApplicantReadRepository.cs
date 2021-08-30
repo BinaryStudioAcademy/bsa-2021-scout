@@ -85,7 +85,7 @@ namespace Infrastructure.Repositories.Read
 
             var applicantVacancyInfos = await connection
                 .QueryAsync<Vacancy, Stage, Project, CandidateToStage, VacancyCandidate, ApplicantVacancyInfo>(sql,
-                    (v, p, s, cs, vc) =>
+                    (v, s, p, cs, vc) =>
                     {
                         return new ApplicantVacancyInfo()
                         {
