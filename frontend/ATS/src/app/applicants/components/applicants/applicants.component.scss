@@ -4,6 +4,10 @@ $tag-background-color: rgba($color: (#291965), $alpha: 0.1);
 $tag-font-color: rgba($color: (#291965), $alpha: 0.8);
 $primary-color: #ee2a64;
 
+.tag {
+  cursor: pointer;
+}
+
 :host {
   width: 100%;
 }

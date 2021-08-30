@@ -23,6 +23,7 @@ export enum FilterType {
 
 export interface MultipleSettings {
   options: IOption[];
+  canBeExtraModified?: boolean;
   valueSelector?: (data: any) => any;
 }
 
@@ -152,6 +153,40 @@ export class TableFilterComponent implements OnChanges {
   public setMultiple(filter: FilterDescriptionItem, value: IOption[]): void {
     this.filterValues[filter.id] = value;
     this.applyFilters();
+  }
+
+  /**
+   * For external usage
+   */
+  public extraAdd(id: string, options: IOption): void;
+  public extraAdd(id: string, options: IOption[]): void;
+  public extraAdd(id: string, options: IOption | IOption[]): void {
+    const filter = this.descriptionMap[id];
+
+    if (
+      !filter ||
+      filter.type !== FilterType.Multiple ||
+      !filter.multipleSettings?.canBeExtraModified
+    ) {
+      throw new Error('Filter can\'t be extra-modified');
+    }
+
+    if (!this.filtersSelected[id]) {
+      this.toggleFilter(id);
+    }
+
+    if (!this.filterValues[id]) {
+      this.filterValues[id] = [];
+    }
+
+    const value: IOption[] | undefined = this.filterValues[id] as
+      | IOption[]
+      | undefined;
+
+    this.filterValues[id] = [
+      ...(value ?? []),
+      ...(Array.isArray(options) ? options : [options]),
+    ];
   }
 
   public castOptions(value: FilterValue): IOption[] {

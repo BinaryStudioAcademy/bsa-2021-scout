@@ -74,7 +74,7 @@ namespace Infrastructure.Repositories.Read
             SqlConnection connection = _connectionFactory.GetSqlConnection();
 
             string sql = "SELECT Vacancies.Id, Vacancies.Title, Stages.Id, Stages.Name, " +
-                         "CandidateToStages.StageId, VacancyCandidates.Id FROM Vacancies " +
+                         "Projects.Id, Projects.Name, CandidateToStages.StageId, VacancyCandidates.Id FROM Vacancies " +
                          "JOIN Stages ON Vacancies.Id = Stages.VacancyId " +
                          "JOIN Projects ON Vacancies.ProjectId = Projects.Id " +
                          "JOIN CandidateToStages ON CandidateToStages.StageId = Stages.Id " +
@@ -95,7 +95,7 @@ namespace Infrastructure.Repositories.Read
                         };
                     },
                     new { applicantId = @applicantId },
-                    splitOn: "Id,Id,Id,Id"
+                    splitOn: "Id,Id,StageId,Id"
                 );
 
             await connection.CloseAsync();

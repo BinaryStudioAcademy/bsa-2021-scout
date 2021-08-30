@@ -22,6 +22,7 @@ import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 import {
   FilterDescription,
   FilterType,
+  TableFilterComponent,
 } from 'src/app/shared/components/table-filter/table-filter.component';
 import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
 import { ApplicantVacancyInfo } from 'src/app/shared/models/applicants/applicant-vacancy-info';
@@ -56,6 +57,8 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(StylePaginatorDirective) public directive:
   | StylePaginatorDirective
   | undefined = undefined;
+
+  @ViewChild('filter') public filter!: TableFilterComponent;
 
   private followedSet: Set<string> = new Set();
   private readonly followedPageToken: string = 'followedApplicantPage';
@@ -189,6 +192,14 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe$.complete();
   }
 
+  public onTagClick(tag: Tag): void {
+    this.filter.extraAdd('tags', {
+      id: tag.id,
+      value: tag.id,
+      label: tag.tagName,
+    });
+  }
+
   public applySearchValue(searchValue: string) {
     this.searchValue = searchValue;
     this.dataSource.filter = searchValue;
@@ -266,6 +277,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         type: FilterType.Multiple,
         multipleSettings: {
           options: tags,
+          canBeExtraModified: true,
           valueSelector: (applicant) =>
             applicant.tags.tagDtos.map((tag: Tag) => tag.id),
         },

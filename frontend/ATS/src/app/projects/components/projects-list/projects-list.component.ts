@@ -19,6 +19,7 @@ import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 import {
   FilterDescription,
   FilterType,
+  TableFilterComponent,
 } from 'src/app/shared/components/table-filter/table-filter.component';
 import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
 
@@ -47,6 +48,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
+  @ViewChild('filter') public filter!: TableFilterComponent;
 
   public loading: boolean = false;
   public filterDescription: FilterDescription = [];
@@ -115,6 +117,14 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     this.dataSource.paginator = this.paginator;
   }
 
+  public onTagClick(tag: Tag): void {
+    this.filter.extraAdd('tags', {
+      id: tag.id,
+      value: tag.id,
+      label: tag.tagName,
+    });
+  }
+
   public renewFilterDescription(): void {
     const detectedTagIds: string[] = [];
     const tags: IOption[] = [];
@@ -157,6 +167,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
         type: FilterType.Multiple,
         multipleSettings: {
           options: tags,
+          canBeExtraModified: true,
           valueSelector: (project) =>
             project.tags.tagDtos.map((tag: Tag) => tag.id),
         },
