@@ -51,8 +51,8 @@ namespace Application.Home.Queries
                            var tempList = g.Where(p => p.Candidate is not null);
                            hotVacancy.CandidateCount = tempList.Count();
                            hotVacancy.ProcessedCount = tempList.Count(p => p.CurrentStageIndex == p.LastStageIndex);
-                           hotVacancy.SelfAppliedCount = tempList.Count(p => p.HrWhoAdded is null);
-                           hotVacancy.CandidateNewCount = tempList.Count(p => p.CurrentStageIndex == 0);
+                           hotVacancy.SelfAppliedCount = tempList.Count(p => p.IsSelfApplied == true);
+                           hotVacancy.CandidateNewCount = tempList.Count(p => p.CurrentStageIndex == 0 || p.CurrentStageIndex == 1);
                            return hotVacancy;
                        });
             return hotVacansiesDto.ToList();
