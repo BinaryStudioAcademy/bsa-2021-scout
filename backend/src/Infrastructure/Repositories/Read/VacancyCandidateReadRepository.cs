@@ -124,8 +124,7 @@ namespace Infrastructure.Repositories.Read
             }
 
             candidate.CandidateToStages = candidate.CandidateToStages
-                .OrderBy(cts => cts.DateRemoved)
-                .OrderBy(cts => cts.DateRemoved.HasValue)
+                .OrderByDescending(cts => cts.DateAdded)
                 .ToList();
 
             return candidate;

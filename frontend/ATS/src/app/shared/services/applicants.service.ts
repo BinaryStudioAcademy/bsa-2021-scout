@@ -8,6 +8,8 @@ import { MarkedApplicant } from 'src/app/shared/models/applicants/marked-applica
 import { GetShortApplicant } from '../models/applicants/get-short-applicant';
 import { FileUrl } from '../models/file/file';
 import { CsvApplicant } from 'src/app/applicants/models/CsvApplicant';
+import { VacancyWithRecentActivity }
+  from '../models/candidate-to-stages/vacancy-with-recent-activity';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantsService {
@@ -77,4 +79,9 @@ export class ApplicantsService {
     return this.httpClient.getRequest<Applicant>(`/applicants/property/email/${email}`);
   }
 
+  public getRecentActivity(id: string): Observable<VacancyWithRecentActivity[]> {
+    return this.httpClient.getRequest<VacancyWithRecentActivity[]>(
+      `/recentActivity/for-applicant/${id}`,
+    );
+  }
 }

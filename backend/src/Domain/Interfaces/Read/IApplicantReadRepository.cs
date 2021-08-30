@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Read
 {
-    public interface IApplicantReadRepository: IReadRepository<Applicant>
+    public interface IApplicantReadRepository : IReadRepository<Applicant>
     {
         Task<FileInfo> GetCvFileInfoAsync(string applicantId);
         Task<IEnumerable<ApplicantVacancyInfo>> GetApplicantVacancyInfoListAsync(string applicantId);
@@ -13,6 +13,5 @@ namespace Domain.Interfaces.Read
         Task<Applicant> GetByIdAsync(string applicantId);
         Task<IEnumerable<(Applicant, bool)>> GetApplicantsWithAppliedMark(string vacancyId);
         Task<Applicant> GetByCompanyIdAsync(string id);
-        Task<Applicant> GetByPropertyAsync(string property, string propertyValue);
     }
 }

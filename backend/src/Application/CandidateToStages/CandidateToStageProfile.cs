@@ -19,6 +19,13 @@ namespace Application.CandidateToStages
                     opt.MapFrom(cts => cts.Candidate.Applicant.FirstName + " " + cts.Candidate.Applicant.LastName))
                 .ForMember(dto => dto.StageId, opt => opt.MapFrom(cts => cts.Stage.Id))
                 .ForMember(dto => dto.StageName, opt => opt.MapFrom(cts => cts.Stage.Name));
+
+            CreateMap<CandidateToStage, CandidateToStageApplicantRecentActivityDto>()
+                .ForMember(dto => dto.MoverId, opt => opt.MapFrom(cts => cts.Mover.Id))
+                .ForMember(dto => dto.MoverName, opt =>
+                    opt.MapFrom(cts => cts.Mover.FirstName + " " + cts.Mover.LastName))
+                .ForMember(dto => dto.StageId, opt => opt.MapFrom(cts => cts.Stage.Id))
+                .ForMember(dto => dto.StageName, opt => opt.MapFrom(cts => cts.Stage.Name));
         }
     }
 }

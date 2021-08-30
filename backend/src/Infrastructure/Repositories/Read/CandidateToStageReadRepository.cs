@@ -86,5 +86,53 @@ namespace Infrastructure.Repositories.Read
 
             return (candidateToStages, (skip + RECENT_PAGE_SIZE) >= count);
         }
+
+        public async Task<IEnumerable<CandidateToStage>> GetRecentForApplicantAsync(string applicantId)
+        {
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
+
+            string sql = @"
+                SELECT
+                    CandidateToStages.*,
+                    Stages.Id,
+                    Stages.Name,
+                    Vacancies.Id,
+                    Vacancies.Title,
+                    Projects.Id,
+                    Projects.Name,
+                    Users.Id,
+                    Users.FirstName,
+                    Users.LastName
+                FROM CandidateToStages
+                LEFT JOIN Stages ON Stages.Id = CandidateToStages.StageId
+                LEFT JOIN Vacancies ON Vacancies.Id = Stages.VacancyId
+                LEFT JOIN Projects ON Projects.Id = Vacancies.ProjectId
+                LEFT JOIN Users ON Users.Id = CandidateToStages.MoverId
+                LEFT JOIN VacancyCandidates ON VacancyCandidates.Id = CandidateToStages.CandidateId
+                WHERE VacancyCandidates.ApplicantId = @applicantId
+            ";
+
+            await connection.OpenAsync();
+
+            IEnumerable<CandidateToStage> candidateToStages = await connection
+                .QueryAsync<CandidateToStage, Stage, Vacancy, Project, User, CandidateToStage>(
+                    sql,
+                    (candidateToStage, stage, vacancy, project, user) =>
+                    {
+                        candidateToStage.Stage = stage;
+                        candidateToStage.Stage.Vacancy = vacancy;
+                        candidateToStage.Stage.Vacancy.Project = project;
+                        candidateToStage.Mover = user;
+
+                        return candidateToStage;
+                    },
+                    new { applicantId = applicantId },
+                    splitOn: "Id,Id,Id"
+                );
+
+            await connection.CloseAsync();
+
+            return candidateToStages;
+        }
     }
 }

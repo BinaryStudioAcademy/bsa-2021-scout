@@ -1,0 +1,26 @@
+<div class="space-between" mat-dialog-title>
+  <h1>Recent activity</h1>
+  <button mat-icon-button mat-dialog-close="none">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div class="timeline" mat-dialog-content>
+  <div class="center-item" *ngIf="data.length === 0">
+    <h4>Nothing to show</h4>
+  </div>
+  <ng-container *ngIf="data.length > 0">
+    <ng-container *ngFor="let vacancy of data">
+      <h3 class="bold">{{ vacancy.title }} for {{ vacancy.projectName }}</h3>
+      <div class="timeline-item" *ngFor="let item of vacancy.activity">
+        <h4>
+          <span>Moved to stage </span>
+          <span class="bold">{{ item.stageName }}</span>
+          <span> by </span>
+          <a routerLink="/profile/{{ item.moverId }}">{{ item.moverName }}</a>
+        </h4>
+        <div class="meta">{{ item.dateAdded | timezone }}</div>
+        <div class="circle"></div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
