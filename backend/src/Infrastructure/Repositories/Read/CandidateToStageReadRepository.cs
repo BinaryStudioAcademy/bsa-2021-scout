@@ -98,34 +98,33 @@ namespace Infrastructure.Repositories.Read
                     Stages.Name,
                     Vacancies.Id,
                     Vacancies.Title,
+                    Projects.Id,
+                    Projects.Name,
                     Users.Id,
                     Users.FirstName,
                     Users.LastName
                 FROM CandidateToStages
                 LEFT JOIN Stages ON Stages.Id = CandidateToStages.StageId
                 LEFT JOIN Vacancies ON Vacancies.Id = Stages.VacancyId
+                LEFT JOIN Projects ON Projects.Id = Vacancies.ProjectId
                 LEFT JOIN Users ON Users.Id = CandidateToStages.MoverId
-                LEFT JOIN Applicants ON EXISTS(
-                    SELECT Id
-                    FROM VacancyCandidates
-                    WHERE (
-                        VacancyCandidates.ApplicantId = Applicants.Id AND
-                        CandidateToStages.CandidateId = VacancyCandidates.Id
-                    )
-                )
-                WHERE Applicants.Id = @applicantId
+                LEFT JOIN VacancyCandidates ON VacancyCandidates.Id = CandidateToStages.CandidateId
+                WHERE VacancyCandidates.ApplicantId = @applicantId
             ";
 
-            IEnumerable<CandidateToStage> candidateToStages = await connection
-                .QueryAsync<CandidateToStage, Stage, Vacancy, User, CandidateToStage>(
-                    sql,
-                    (cts, stage, vacancy, user) =>
-                    {
-                        cts.Stage = stage;
-                        cts.Stage.Vacancy = vacancy;
-                        cts.Mover = user;
+            await connection.OpenAsync();
 
-                        return cts;
+            IEnumerable<CandidateToStage> candidateToStages = await connection
+                .QueryAsync<CandidateToStage, Stage, Vacancy, Project, User, CandidateToStage>(
+                    sql,
+                    (candidateToStage, stage, vacancy, project, user) =>
+                    {
+                        candidateToStage.Stage = stage;
+                        candidateToStage.Stage.Vacancy = vacancy;
+                        candidateToStage.Stage.Vacancy.Project = project;
+                        candidateToStage.Mover = user;
+
+                        return candidateToStage;
                     },
                     new { applicantId = applicantId },
                     splitOn: "Id,Id,Id"

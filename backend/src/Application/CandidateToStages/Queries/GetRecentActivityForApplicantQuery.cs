@@ -60,13 +60,16 @@ namespace Application.CandidateToStages.Queries
                     {
                         vacancy.Id = cts.Stage.Vacancy.Id;
                         vacancy.Title = cts.Stage.Vacancy.Title;
+                        vacancy.ProjectName = cts.Stage.Vacancy.Project.Name;
                         first = false;
                     }
 
-                    vacancy.Activity.Append(
+                    vacancy.Activity = vacancy.Activity.Append(
                         _mapper.Map<CandidateToStage, CandidateToStageApplicantRecentActivityDto>(cts)
                     );
                 }
+
+                info = info.Append(vacancy);
             }
 
             return info;
