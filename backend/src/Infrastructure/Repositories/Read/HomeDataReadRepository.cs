@@ -67,7 +67,7 @@ namespace Infrastructure.Repositories.Read
                               S.[Index] AS CurrentStageIndex, 
 	                          (SELECT MAX(S2.[Index]) FROM Stages AS S2 WHERE S2.VacancyId = V.Id) AS LastStageIndex,
 	                          CS.CandidateId AS Candidate,
-                              VC.HrWhoAddedId AS HrWhoAdded
+                              VC.IsSelfApplied
                             FROM Vacancies AS V
                             INNER JOIN Projects AS P ON V.ProjectId = P.Id
                             INNER JOIN Stages AS S ON V.Id = S.VacancyId
