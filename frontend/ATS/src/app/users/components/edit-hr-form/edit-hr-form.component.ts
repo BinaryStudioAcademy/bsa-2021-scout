@@ -41,13 +41,14 @@ import { UserCreate } from '../../models/user-create';
 export class EditHrFormComponent implements OnInit {
     profileForm!: FormGroup;
     submitted: Boolean = false;
-    user:User ={} as User;
+    // @Input()currUser!:User;
     public loading: boolean = true;
     private readonly unsubscribe$: Subject<void> = new Subject<void>();
   
     constructor(
       public dialogRef: MatDialogRef<EditHrFormComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: { userToEdit: UserTableData },
+      // @Inject(MAT_DIALOG_DATA) public data: { userToEdit: UserTableData },
+      @Inject(MAT_DIALOG_DATA) public data: { userToEdit: User},
       private fb: FormBuilder,
       public userService: UserDataService,
       public notificationService: NotificationService,
@@ -57,9 +58,7 @@ export class EditHrFormComponent implements OnInit {
           firstName: ['', [Validators.required]],
           lastName: ['', [Validators.required]],
           birthDay: ['', [Validators.required]],
-          phone: ['',Validators.pattern(
-            '',
-          )],
+          phone: [''],
           skype: [''],
           email: ['', [Validators.required]],
           image: ['', [Validators.required]]
@@ -74,19 +73,23 @@ export class EditHrFormComponent implements OnInit {
     }
   
     ngOnInit() {
+      console.log(this.data.userToEdit)
       if (this.data.userToEdit) {
-        this.userService.getById(this.data.userToEdit.id!).subscribe(
-          response => {
+        // this.userService.getById(this.data.userToEdit.id!).subscribe(
+        //   response => {
+          let response=this.data.userToEdit;
+          console.log(response)
             this.profileForm.setValue({
-              firstName: response.firstName,
+              firstName: this.data.userToEdit.firstName,
               lastName: response.lastName,
-              birthDate: response.birthDate,
-              phone: response.phone,
-              skype: response.skype,
+              birthDay: response.birthDate,
+              phone: response.phone || '',
+              skype: response.skype || '',
               email: response.email,
-              image: response.image
+              image: response.image || ''
             });
-          });
+            console.log(this.profileForm)
+          // });
       }
     }
   

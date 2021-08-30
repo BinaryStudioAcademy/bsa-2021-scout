@@ -7,6 +7,7 @@ import { AuthenticationService } from 'src/app/users/services/auth.service';
 import { EditVacancyComponent } 
   from 'src/app/vacancies/components/edit-vacancy/edit-vacancy.component';
 import { NotificationService } from '../../services/notification.service';
+import { User } from 'src/app/users/models/user';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,21 @@ export class HeaderComponent implements OnDestroy {
   public value: string = '';
   public dropdownOpened: boolean = false;
   @Input() removeButton = false;
+
+  user:User={
+    firstName: "Emma",
+  lastName: "Roberts",
+  birthDate: new Date(1,1,2002),
+  creationDate: new Date(1,1,2002),
+  email: "aaa",
+  isEmailConfirmed: true,
+  roles:[
+    {
+      name:'HR',
+      key:1
+    }
+  ]
+  }
 
   public loading: boolean = false;
 

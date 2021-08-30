@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -15,6 +15,7 @@ import { AuthenticationService } from '../../../users/services/auth.service';
 export class ProfileDropdownMenuComponent implements OnInit {
   
   public loading: boolean = false;
+  @Input() user!:User;
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -22,20 +23,6 @@ export class ProfileDropdownMenuComponent implements OnInit {
     private readonly service: AuthenticationService,
     private dialog: MatDialog
   ) {}
-  user:User = {
-    firstName: "Emma",
-  lastName: "Roberts",
-  birthDate: new Date(1,1,2002),
-  creationDate: new Date(1,1,2002),
-  email: "aaa",
-  isEmailConfirmed: true,
-  roles:[
-    {
-      name:'HR',
-      key:1
-    }
-  ]
-  }
 
   public logout(): void {
     this.loading = true;
@@ -71,15 +58,16 @@ export class ProfileDropdownMenuComponent implements OnInit {
     const dialogRef = this.dialog.open(EditHrsDialogComponent, {
       width: '90%',
       height: 'auto',
-      data: {},
+      data: {currUser:this.user},
     });
   }
 
   onOpenProfile(){
+    console.log(this.user);
     const dialogRef = this.dialog.open(EditHrFormComponent, {
       width: '90%',
       height: 'auto',
-      data: {},
+      data: {userToEdit:this.user},
     });
   }
 
