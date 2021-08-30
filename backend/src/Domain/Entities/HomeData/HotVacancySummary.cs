@@ -9,6 +9,6 @@ namespace Domain.Entities.HomeData
         public int CurrentStageIndex { get; set; }
         public int LastStageIndex { get; set; }
         public string Candidate { get; set; }
-        public string HrWhoAdded { get; set; }
+        public bool IsSelfApplied { get; set; }
     }
 }
