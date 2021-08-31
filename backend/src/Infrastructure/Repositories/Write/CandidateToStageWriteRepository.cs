@@ -27,10 +27,14 @@ namespace Infrastructure.Repositories.Write
         {
             SqlConnection connection = _connectionFactory.GetSqlConnection();
 
-            StringBuilder sql = new StringBuilder();
-            sql.Append("SELECT *");
-            sql.Append(" FROM CandidateToStages");
-            sql.Append($" WHERE CandidateToStages.DateRemoved IS NULL AND CandidateToStages.CandidateId = '{candidateId}'");
+            string sql = @"
+                SELECT *
+                FROM CandidateToStages
+                WHERE (
+                    CandidateToStages.DateRemoved IS NULL AND
+                    CandidateToStages.CandidateId = @id
+                )
+            ";
 
             CandidateToStage newEntity = new CandidateToStage
             {
@@ -39,16 +43,17 @@ namespace Infrastructure.Repositories.Write
                 DateAdded = DateTime.UtcNow,
             };
 
-            CandidateToStage oldEntity = await connection.QueryFirstAsync<CandidateToStage>(sql.ToString());
+            await connection.OpenAsync();
+
+            CandidateToStage oldEntity = await connection
+                .QueryFirstAsync<CandidateToStage>(sql.ToString(), new { id = candidateId });
 
             await connection.CloseAsync();
 
-            _context.Add(newEntity);
-
-            _context.Update(oldEntity);
             oldEntity.DateRemoved = DateTime.UtcNow;
 
-            await _context.SaveChangesAsync();
+            await UpdateAsync(oldEntity);
+            await CreateAsync(newEntity);
         }
     }
 }
