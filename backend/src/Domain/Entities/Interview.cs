@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Domain.Common;
 using Domain.Enums;
 
@@ -18,8 +19,7 @@ namespace Domain.Entities
         public ICollection<User> UserParticipants { get; set; }
         public string CandidateId { get; set; }
         public Applicant Candidate { get; set; }
-        public string NoteId { get; set; }
-        public CandidateComment Note { get; set; }
+        [MaxLength(1000)] public string Note { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }
