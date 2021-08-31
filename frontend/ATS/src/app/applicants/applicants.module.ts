@@ -15,6 +15,14 @@ import { ApplicantControlComponent }
   from './components/applicant-control/applicant-control.component';
 import { ApplicantsUploadCsvComponent } 
   from './components/applicants-upload-csv/applicants-upload-csv.component';
+import { ApplicantUpdateCsvComponent } 
+  from './components/applicant-update-csv/applicant-update-csv.component';
+import { ApplicantCsvListComponent } 
+  from './components/applicant-csv-list/applicant-csv-list.component';
+import { SelfApplyingComponent } from './components/self-applying/self-applying.component';
+import { ApplicantHistoryComponent }
+  from './components/applicant-history/applicant-history.component';
+import { ApplicantsRoutingModule } from './applicants-routing.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +32,10 @@ import { ApplicantsUploadCsvComponent }
     ApplicantsHeadComponent,
     ApplicantControlComponent,
     ApplicantsUploadCsvComponent,
+    ApplicantUpdateCsvComponent,
+    ApplicantCsvListComponent,
+    SelfApplyingComponent,
+    ApplicantHistoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +47,7 @@ import { ApplicantsUploadCsvComponent }
     MatSortModule,
     MatPaginatorModule,
     MatChipsModule,
+    ApplicantsRoutingModule,
   ],
   providers: [],
   bootstrap: [ApplicantsComponent],

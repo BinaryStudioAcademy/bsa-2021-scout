@@ -40,7 +40,7 @@ namespace Application.VacancyCandidates.Commands
             IStageReadRepository stageReadRepository,
             IVacancyCandidateWriteRepository writeRepository,
             ICurrentUserContext currentUserContext,
-        IMapper mapper
+            IMapper mapper
         )
         {
             _candidateToStageWriteRepository = candidateToStageWriteRepository;

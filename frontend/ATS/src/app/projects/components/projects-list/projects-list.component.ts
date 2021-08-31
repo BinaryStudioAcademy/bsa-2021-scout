@@ -1,12 +1,4 @@
-import { Project } from 'src/app/shared/models/projects/project';
-import {
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,19 +10,25 @@ import { ProjectService } from 'src/app/projects/services/projects.service';
 import { ProjectsEditComponent } from '../projects-edit/projects-edit.component';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { Tag } from 'src/app/shared/models/tags/tag';
-import { DeleteConfirmComponent } 
-  from 'src/app/shared/components/delete-confirm/delete-confirm.component';
+// eslint-disable-next-line
+import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
+import {
+  FilterDescription,
+  FilterType,
+  TableFilterComponent,
+} from 'src/app/shared/components/table-filter/table-filter.component';
+import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
 
 @Component({
   selector: 'app-projects-list',
   templateUrl: './projects-list.component.html',
   styleUrls: ['./projects-list.component.scss'],
 })
-export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
+export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   displayedColumns: string[] = [
     'position',
     'name',
@@ -41,16 +39,22 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
     'vacancies',
     'actions',
   ];
+
   projects: ProjectInfo[] = [];
+  filteredData: ProjectInfo[] = [];
   dataSource: MatTableDataSource<ProjectInfo>;
-  isFollowedPage: boolean = false;
+  isFollowedPage: string = 'false';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
+  @ViewChild('filter') public filter!: TableFilterComponent;
 
   public loading: boolean = false;
+  public filterDescription: FilterDescription = [];
+
   private followedSet: Set<string> = new Set();
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
+  private readonly followedPageToken: string = 'followedProjectPage';
 
   constructor(
     private projectService: ProjectService,
@@ -58,29 +62,48 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
     private notificationService: NotificationService,
     private followService: FollowedService,
   ) {
-    this.followService.getFollowed(EntityType.Project)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data=>
-        data.forEach(item=>this.followedSet.add(item.entityId)),
-      );
+    this.followService
+      .getFollowed(EntityType.Project)
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        mergeMap((data) => {
+          data.forEach((item) => this.followedSet.add(item.entityId));
+          return this.projectService.getProjects();
+        }),
+      )
+      .subscribe((resp) => {
+        this.projects = resp.body!;
+        this.projects.forEach((d) => d.isFollowed = this.followedSet.has(d.id));
+        if (localStorage.getItem(this.followedPageToken) == 'true')
+          this.dataSource.data = this.projects.filter((item) =>
+            this.followedSet.has(item.id),
+          );
+        else this.dataSource.data = this.projects;
+        this.renewFilterDescription();
+        this.directive.applyFilter$.emit();
+      });
     this.dataSource = new MatTableDataSource<ProjectInfo>();
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
+      localStorage.getItem(this.followedPageToken)! : 'false';
   }
 
   public getProjects() {
     this.projectService
       .getProjects()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (resp) => {
-          this.projects = resp.body!;
-          this.projects.forEach((d, i) => {
-            d.position = i + 1;
-            d.isFollowed = this.followedSet.has(d.id);
-          });
+      .subscribe((resp) => {
+        this.projects = resp.body!;
+        this.projects.forEach((d) => d.isFollowed = this.followedSet.has(d.id));
+        if (localStorage.getItem(this.followedPageToken) == 'true') {
+          this.dataSource.data = this.projects.filter((item) =>
+            this.followedSet.has(item.id),
+          );
+        } else {
           this.dataSource.data = this.projects;
-          this.directive.applyFilter$.emit();
-        },
-      );
+        }
+        this.renewFilterDescription();
+        this.directive.applyFilter$.emit();
+      });
   }
 
   ngAfterViewInit() {
@@ -88,14 +111,96 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
     this.dataSource.paginator = this.paginator;
   }
 
-  ngOnInit() {
-    this.getProjects();
+  public onTagClick(tag: Tag): void {
+    this.filter.extraAdd('tags', {
+      id: tag.id,
+      value: tag.id,
+      label: tag.tagName,
+    });
   }
+
+  public renewFilterDescription(): void {
+    const detectedTagIds: string[] = [];
+    const tags: IOption[] = [];
+
+    this.projects.forEach((p) =>
+      p.tags.tagDtos.forEach((tag) => {
+        if (!detectedTagIds.includes(tag.id)) {
+          tags.push({
+            id: tag.id,
+            value: tag.id,
+            label: tag.tagName,
+          });
+
+          detectedTagIds.push(tag.id);
+        }
+      }),
+    );
+
+    this.filterDescription = [
+      {
+        id: 'name',
+        name: 'Name',
+      },
+      {
+        id: 'description',
+        name: 'Description',
+      },
+      {
+        id: 'teamInfo',
+        name: 'Team info',
+      },
+      {
+        id: 'creationDate',
+        name: 'Creation date',
+        type: FilterType.Date,
+      },
+      {
+        id: 'tags',
+        name: 'Tags',
+        type: FilterType.Multiple,
+        multipleSettings: {
+          options: tags,
+          canBeExtraModified: true,
+          valueSelector: (project) =>
+            project.tags.tagDtos.map((tag: Tag) => tag.id),
+        },
+      },
+      {
+        id: 'vacancies',
+        property: 'vacancies.length',
+        name: 'Vacancies amount',
+        type: FilterType.Number,
+        numberSettings: {
+          integer: true,
+          min: 0,
+        },
+      },
+    ];
+  }
+
+  public setFiltered(data: ProjectInfo[]): void {
+    this.filteredData = data;
+
+    if (localStorage.getItem(this.followedPageToken) == 'true') {
+      this.dataSource.data = this.filteredData.filter((item) =>
+        this.followedSet.has(item.id),
+      );
+    } else {
+      this.dataSource.data = this.filteredData;
+    }
+
+    this.directive?.applyFilter$.emit();
+    this.dataSource.paginator?.firstPage();
+  }
+
   public switchToFollowed(){
-    this.isFollowedPage = true;
+    this.isFollowedPage = 'true';
     this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    this.followService.switchRefreshFollowedPageToken('true', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
+
   public getFirstTags(project: ProjectInfo): Tag[] {
     if (!project.tags?.tagDtos) {
       return [];
@@ -107,15 +212,16 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public toggleTags(project: ProjectInfo): void {
-    project.isShowAllTags = project.isShowAllTags
-      ? false
-      : true;
+    project.isShowAllTags = project.isShowAllTags ? false : true;
   }
+
   public switchAwayToAll(){
-    this.isFollowedPage = false;
+    this.isFollowedPage = 'false';
     this.dataSource.data = this.projects;
+    this.followService.switchRefreshFollowedPageToken('false', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
+
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -130,26 +236,29 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
       this.dataSource.paginator.firstPage();
     }
   }
-  public onBookmark(data: ProjectInfo, perfomToFollowCleanUp: boolean = false){
-    let projetIndex:number = this.dataSource.data.findIndex(project=>project.id === data.id)!;
+
+  public onBookmark(data: ProjectInfo, perfomToFollowCleanUp: string = 'false'){
+    let projetIndex: number = this.dataSource.data.findIndex(
+      (project) => project.id === data.id,
+    )!;
     data.isFollowed = !data.isFollowed;
-    if(data.isFollowed)
-    {
-      this.followService.createFollowed(
-        {
+    if (data.isFollowed) {
+      this.followService
+        .createFollowed({
           entityId: data.id,
           entityType: EntityType.Project,
-        },
-      ).subscribe();
-    }else
-    {
-      this.followService.deleteFollowed(
-        EntityType.Project, data.id,
-      ).subscribe();
+        })
+        .subscribe();
+    } else {
+      this.followService
+        .deleteFollowed(EntityType.Project, data.id)
+        .subscribe();
     }
     this.dataSource.data[projetIndex] = data;
-    if(perfomToFollowCleanUp){
-      this.dataSource.data = this.dataSource.data.filter(project=>project.isFollowed);
+    if (perfomToFollowCleanUp == 'true') {
+      this.dataSource.data = this.dataSource.data.filter(
+        (project) => project.isFollowed,
+      );
     }
     this.directive.applyFilter$.emit();
   }
@@ -174,23 +283,23 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
       width: '400px',
       height: 'min-content',
       autoFocus: false,
-      data:{
+      data: {
         entityName: 'Project',
       },
     });
 
-    dialogRef.afterClosed()
-      .subscribe((response: boolean) => {
-        if (response) {
-          this.projectService
-            .deleteProject(projectToDelete)
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(_ => {
-              this.notificationService
-                .showSuccessMessage(`Project ${projectToDelete.name} deleted!`);
-              this.getProjects();
-            });
-        }
-      });
+    dialogRef.afterClosed().subscribe((response: boolean) => {
+      if (response) {
+        this.projectService
+          .deleteProject(projectToDelete)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe((_) => {
+            this.notificationService.showSuccessMessage(
+              `Project ${projectToDelete.name} deleted!`,
+            );
+            this.getProjects();
+          });
+      }
+    });
   }
 }

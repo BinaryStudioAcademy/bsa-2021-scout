@@ -1,13 +1,24 @@
-<mat-select #select multiple [formControl]="control" [compareWith]="compareWith" [placeholder]="placeholder">
-  <mat-select-trigger>
-    <div class="topics">
-      <app-topic
-        [text]="opt.label"
-        [removable]="true"
-        (remove)="remove(opt.id)"
-        *ngFor="let opt of control.value"
-      ></app-topic>
-    </div>
-  </mat-select-trigger>
-  <mat-option [value]="opt" *ngFor="let opt of data">{{ opt.label }}</mat-option>
-</mat-select>
+<ng-template #selectBlock>
+  <mat-select #select multiple [formControl]="control" [compareWith]="compareWith" [placeholder]="placeholder">
+    <mat-select-trigger>
+      <div class="topics" [ngClass]="{'styled': !unstyled}">
+        <ng-container *ngFor="let opt of control.value; index as i">
+          <span *ngIf="noTopics">
+            {{ opt.label }}{{ control.value.length === (i + 1) ? "" : "," }}
+          </span>
+          <app-topic
+            [text]="opt.label"
+            [removable]="true"
+            (remove)="remove(opt.id)"
+            *ngIf="!noTopics"
+          ></app-topic>
+        </ng-container>
+      </div>
+    </mat-select-trigger>
+    <mat-option [value]="opt" *ngFor="let opt of data">{{ opt.label }}</mat-option>
+  </mat-select>
+</ng-template>
+<ng-template [ngTemplateOutlet]="selectBlock" *ngIf="unstyled"></ng-template>
+<div class="mat-form-field-wrapper" *ngIf="!unstyled">
+  <ng-template [ngTemplateOutlet]="selectBlock"></ng-template>
+</div>

@@ -20,7 +20,7 @@ function processLinkedInPage() {
     // window of LinkedIn page
 
     const mode = "development"; // TODO: add frontend domain and change to "production"
-    const frontendUrl = "http://localhost:4200/applicants"; // TODO: Change to real url
+    const frontendUrl = "http://develop.bsa21-scout.com/applicants"; // TODO: Change to real url
 
     const leftMainInfoPanel = document.querySelector(".pv-text-details__left-panel");
     const rightMainInfoPanel = document.querySelector(".pv-text-details__right-panel");
@@ -49,10 +49,15 @@ function processLinkedInPage() {
     }
 
     let experience = 0;
+    let index = 0;
+    let experienceDescription = "";
 
     for (const child of experienceElements) {
         const [fromDate, toDate] = child.children[1].innerText.split(" – ");
-        // Be careful, this is not a regular dash (is is longer).      ^
+        // Be careful, this is not a regular dash (it is longer).      ^
+
+        experienceDescription += `${experienceNames[index]} (${fromDate} - ${toDate}), `;
+        index += 1;
 
         let toNum;
 
@@ -69,19 +74,27 @@ function processLinkedInPage() {
         }
     }
 
+    experienceDescription = experienceDescription
+        .substring(0, experienceDescription.length - 2);
+
     const education = [];
 
     for (const child of educationElements) {
         const infoBlock = child.children[0];
         const name = infoBlock.children[0].innerText;
-        const degreePart1 = infoBlock.children[1].children[1].innerText;
-        let degreePart2;
 
-        if (infoBlock.childElementCount > 2) {
-            degreePart2 = ", " + infoBlock.children[2].children[1].innerText;
+        if (infoBlock.children[1] && infoBlock.children[1].childElementCount > 0) {
+            const degreePart1 = infoBlock.children[1].children[1].innerText;
+            let degreePart2;
+
+            if (infoBlock.childElementCount > 2) {
+                degreePart2 = ", " + infoBlock.children[2].children[1].innerText;
+            }
+
+            education.push(`${name} (${degreePart1}${degreePart2})`);
+        } else {
+            education.push(name);
         }
-
-        education.push(`${name} (${degreePart1}${degreePart2})`);
     }
 
     const skills = [];
@@ -96,15 +109,16 @@ function processLinkedInPage() {
         // currentJob,
         // region,
         // jobsAndEducationNames,
-        // experienceNames,
         experience,
+        experienceDescription,
         // education,
         // skills,
         linkedInUrl: window.location.href,
     };
 
     const string = JSON.stringify(data);
-    const base64 = btoa(string);
+    const latin1 = unescape(encodeURIComponent(string));
+    const base64 = btoa(latin1);
 
     if (mode === "development") {
         console.log("Data:");
@@ -116,7 +130,7 @@ function processLinkedInPage() {
 
 parseButton.addEventListener("click", async () => {
     const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    
+
     if (!isLinkedInTab(activeTab)) {
         showNotLinkedInError();
     }

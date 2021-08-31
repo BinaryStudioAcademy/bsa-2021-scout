@@ -29,7 +29,7 @@ namespace Infrastructure.Mongo.Seeding
                 margin: 0 auto;
                 width: 100%;
                 max-width: 700px;
-                background-color: #291965;
+                background-color: #291965D9;
                 box-sizing: border-box;
                 padding: 60px 80px;
             }

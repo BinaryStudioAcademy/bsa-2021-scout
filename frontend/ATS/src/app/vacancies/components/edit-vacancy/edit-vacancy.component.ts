@@ -49,6 +49,8 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   tierFrom: number = 0;
   tierTo: number = 0;
 
+  selfApplyStage: Stage = {} as Stage;
+
   @Output() vacancyChange = new EventEmitter<VacancyFull>();
 
   public loading: boolean = true;
@@ -120,6 +122,15 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
           } else {
             this.elasticEntity.id = response.tags.id;
           }
+          
+          this.selfApplyStage = response.stages[0];
+
+          response.stages.forEach((stage,index) => {
+            if(stage.index==0){
+              response.stages.splice(index,1);
+            }
+          });
+
           this.vacancyForm.setValue({
             title: response.title,
             description: response.description,
@@ -171,6 +182,11 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
 
     this.elasticEntity.tagDtos = this.tags;
     this.elasticEntity.elasticType = ElasticType.VacancyTags;
+
+    if(this.selfApplyStage==null){
+      this.stageList.splice(0,0,this.selfApplyStage);
+    }
+    console.log(this.stageList);
     this.vacancy = {
       title: this.vacancyForm.controls['title'].value,
       description: this.vacancyForm.controls['description'].value,
@@ -265,7 +281,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     {
       id: '',
       name: 'Contacted',
-      index: 0,
+      index: 1,
       type: 0,
       actions: [
         {
@@ -282,23 +298,6 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     {
       id: '',
       name: 'Hr interview',
-      index: 1,
-      type: 3,
-      actions: [
-        {
-          id: '',
-          name: 'Schedule interview action',
-          actionType: 3,
-          stageId: '',
-        },
-      ],
-      reviews: [],
-      IsReviewable: true,
-      vacancyId: '',
-    },
-    {
-      id: '',
-      name: 'Tech interview',
       index: 2,
       type: 3,
       actions: [
@@ -315,8 +314,25 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     },
     {
       id: '',
-      name: 'Live coding session',
+      name: 'Tech interview',
       index: 3,
+      type: 3,
+      actions: [
+        {
+          id: '',
+          name: 'Schedule interview action',
+          actionType: 3,
+          stageId: '',
+        },
+      ],
+      reviews: [],
+      IsReviewable: true,
+      vacancyId: '',
+    },
+    {
+      id: '',
+      name: 'Live coding session',
+      index: 4,
       type: 0,
       actions: [
         {
@@ -333,7 +349,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     {
       id: '',
       name: 'Pre-offer',
-      index: 4,
+      index: 5,
       type: 4,
       actions: [
         {
@@ -350,7 +366,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     {
       id: '',
       name: 'Offer',
-      index: 5,
+      index: 6,
       type: 4,
       actions: [
         {
@@ -375,7 +391,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
 
   //changes indexes of stages
   sortStageList() {
-    let index = 0;
+    let index = 1;
     this.stageList.forEach((x) => {
       x.index = index;
       index++;
@@ -386,17 +402,31 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   //common func for saving
   toSave(newStage: Stage) {
     newStage.vacancyId = this.vacancyId;
+
     if (this.isEditStageMode) {
-      let stage = this.stageList.find((x) => x.index === newStage.index);
+      let index = -1;
+
+      let stage = this.stageList.find((x, i) => {
+        const rightItem = x.index === newStage.index;
+
+        if (rightItem) {
+          index = i;
+        }
+
+        return rightItem;
+      });
+
       if (stage && stage.index >= 0) {
         newStage.id = stage.id;
-        this.stageList[stage?.index] = { ...newStage };
+        this.stageList[index] = { ...newStage };
       }
+
       this.isEditStageMode = false;
     } else {
-      newStage.index = this.stageList.length;
+      newStage.index = this.stageList.length+1;
       this.stageList.push(newStage);
     }
+
     this.stageToEdit = {} as Stage;
   }
 

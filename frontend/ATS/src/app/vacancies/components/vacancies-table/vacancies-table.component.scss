@@ -4,37 +4,41 @@ $primary-color-white: #f6f7f9;
 $primary-color-blue: #291965;
 $primary-font: Nunito;
 
-::ng-deep{
-    .vacancy-options .delete{
-        color: #EF5350;
-    }
+::ng-deep {
+  .vacancy-options .delete {
+    color: #ef5350;
+  }
 
-    .mat-select-panel-wrap .vacancy-options .mat-option {
-        height: 40px;
-        .mat-icon{
-            font-size: 20px;
-            margin-right: 5px;
-        }
+  .mat-select-panel-wrap .vacancy-options .mat-option {
+    height: 40px;
+    .mat-icon {
+      font-size: 20px;
+      margin-right: 5px;
     }
+  }
 
-    .vacancy-options .mat-option-text{
-        font-size: 15px;
-        line-height: 20px;
-    }
+  .vacancy-options .mat-option-text {
+    font-size: 15px;
+    line-height: 20px;
+  }
 }
 
-.vacancies-page{
-/* Header */
-.mat-form-field {
+.name-logo {
+  cursor: pointer;
+}
+
+.vacancies-page {
+  /* Header */
+  .mat-form-field {
     font-size: 14px;
     width: 100%;
   }
   .clicable {
     cursor: pointer;
     text-indent: 1.4em;
-}
+  }
 
-button.tub {
+  button.tub {
     background: transparent;
     border: none;
     margin: 15px;
@@ -43,6 +47,7 @@ button.tub {
     font-weight: 600;
     font-size: 16px;
     line-height: 22px;
+    text-underline-offset: 5px;
   }
 
   button.tub:hover {
@@ -52,7 +57,6 @@ button.tub {
   button.tub:focus {
     color: $primary-color-blue;
     text-decoration: underline;
-    text-underline-offset: 5px;
   }
 
   .vacancies-header {
@@ -70,216 +74,235 @@ button.tub {
 
   /* Table */
 
+  /* Table */
 
-    /* Table */
+  .vacancy-list {
+    overflow: scroll;
+    height: calc(100vh - 300px);
+  }
 
-    .vacancy-page {
-        overflow: scroll;
-        height: calc(100vh - 200px);
-    }
+  table {
+    width: 100%;
+  }
 
-    table {
-        width: 100%;
-    }
+  th.mat-header-cell,
+  td.mat-cell {
+    width: 15%;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  td.mat-cell:first-child {
+    width: 5%;
+    text-indent: 1.35em;
+  }
+  th:first-child,
+  td:first-child {
+    width: 9%;
+    text-indent: 1.4em;
+    justify-content: center;
+  }
 
-    th.mat-header-cell,
-    td.mat-cell {
-        width: 20%;
-        padding-right: 10px;
-        padding-left: 10px;
-    }
-    td.mat-cell:first-child {
-        width: 20%;
-        text-indent: 1.35em;
-    }
-    th:first-child,
-    td:first-child {
-        width: 9%;
-        text-indent: 1.4em;
-        justify-content: center;
-    }
+  tr {
+    height: 55px;
+  }
 
-    tr {
-        height: 55px;
-    }
+  tr:nth-child(2n) {
+    background-color: $primary-color-white;
+  }
 
-    tr:nth-child(2n) {
-        background-color: $primary-color-white;
-    }
+  .icons {
+    display: flex;
+    flex-direction: row;
+    margin-right: 25px;
+  }
 
-    .icons {
-        display: flex;
-        flex-direction: row;
-        margin-right: 25px;
-    }
+  .icons .mat-icon:hover {
+    cursor: pointer;
+    color: $primary-color;
+  }
 
-    .icons .mat-icon:hover {
-        cursor: pointer;
-        color: $primary-color;
-    }
-    /* Project Logo */
+  .mat-paginator-sticky {
+    bottom: 0px;
+    position: sticky;
+    z-index: 10;
+  }
+  /* Project Logo */
+  .name-logo span {
+    vertical-align: 10px !important;
+  }
 
-    .name-logo {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        justify-content: flex-start;
-        align-items: center;
-        img {
-            margin-right: 10px;
-        }
-    }
-
+  .name-logo {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
     img {
-        object-fit: cover;
-        width: 30px;
-        height: 30px;
-        min-width: 30px;
-        min-height: 30px;
-        max-width: 30px;
-        max-height: 30px;
-        border-radius: 50%;
-        border: 1px solid $primary-color;
-        overflow: hidden;
+      margin-right: 10px;
     }
+  }
+
+  img {
+    object-fit: cover;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    border-radius: 50%;
+    border: 1px solid $primary-color;
+    overflow: hidden;
+  }
 
   /* Description + Team info */
 
-    .mat-icon{
-        cursor: pointer;
-    }
-    
-    .module {
-        position: relative;
-        overflow: hidden;
+  .mat-icon {
+    cursor: pointer;
+  }
+
+  .module {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .module:hover {
+    cursor: pointer;
+  }
+
+  .module:hover::after {
+    content: attr(data-title);
+  }
+
+  /* Angular Materials */
+
+  .icons .mat-select {
+    font-size: 20px;
+    height: 24px;
+    width: 24px;
+    line-height: 25px;
+    font-size: 22px;
+    color: #808080;
+  }
+
+  ::ng-deep .icons {
+    .mat-select-arrow::after {
+      font-family: "Material Icons";
+      content: "\e5d3";
+      font-size: 24px;
+      margin-left: 8px;
+      margin-right: 8px;
     }
 
-    .line-clamp {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
+    .mat-select-arrow:hover::after {
+      color: $primary-color;
     }
+  }
 
-    .module:hover {
-        cursor: pointer;
-    }
+  ::ng-deep .icons .mat-select-arrow {
+    border: none;
+    margin: 0;
+    height: 100%;
+  }
 
-    .module:hover::after {
-        content: attr(data-title);
+  ::ng-deep {
+    .to-board-button > .mat-button.mat-button {
+      width: 100px;
     }
-
-
-    /* Angular Materials */
-
-    
-    .icons .mat-select{
-        font-size: 20px;
-        height: 24px;
-        width: 24px;
-        line-height: 25px;
-        font-size: 22px;
-        color: #808080;
+    .to-board-button > button {
+      height: 30px;
     }
-    
-    ::ng-deep .icons {
-        .mat-select-arrow::after{
-            font-family: 'Material Icons';
-            content: "\e5d3";
-            font-size: 24px;
-            margin-left: 8px;
-            margin-right: 8px;
-        }
-    
-        .mat-select-arrow:hover::after{
-            color: $primary-color;
-        }
+    /* Scroll Bar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
     }
-    
-    ::ng-deep .icons .mat-select-arrow {
-        border: none;
-        margin: 0;
-        height: 100%;
+    ::-webkit-scrollbar-track {
+      display: none;
     }
-
-    ::ng-deep {
-        .to-board-button>.mat-button.mat-button{
-            width: 100px;
-        }
-        .to-board-button>button{
-            height: 30px;
-        }
-        /* Scroll Bar */
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            display: none;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgb(41, 25, 101, 0.5);
-            border-radius: 20px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: $primary-color-blue;
-        }
-        app-search-form {
-            display: none;
-        }
-        .applyPrimaryColor{
-            color: $primary-color !important;
-        }
-        /* Mat Form Field */
-        .mat-form-field-wrapper.mat-form-field-wrapper {
-            width: 350px;
-            padding: 0px 5px 0px 5px;
-            border-radius: 50px;
-            margin-left: 30px;
-            max-width: 200px;
-            background: white;
-        }
-        .mat-form-field-appearance-fill .mat-form-field-infix {
-            display: flex;
-            align-items: center;
-            padding: 0;
-        }
-        .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
-            padding: 0;
-        }
-        .mat-paginator-container .mat-paginator-page-size {
-            margin-right: auto;
-            .mat-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-form-field-flex {
-                width: 40px;
-            }
-        }
-        .mat-form-field-flex .mat-form-field-infix {
-            background: white;
-        }
-        .mat-button.mat-button {
-            width: 170px;
-        }
-        /* Table */
-        thead tr.mat-header-row {
-            height: 30px;
-        }
-        tbody tr.mat-row {
-            height: 55px;
-        }
-        td.mat-cell {
-            padding: 0;
-        }
-        td.mat-cell:last-of-type {
-            padding-left: 70px;
-        }
-        .icons > .mat-icon,
-        .vacancies-header .mat-icon {
-            margin-left: 10px;
-            margin-right: 10px;
-            color: gray;
-        }
-        .search.mat-icon {
-            line-height: 25px;
-            font-size: 16px;
-        }
+    ::-webkit-scrollbar-thumb {
+      background: rgb(41, 25, 101, 0.5);
+      border-radius: 20px;
     }
+    ::-webkit-scrollbar-thumb:hover {
+      background: $primary-color-blue;
+    }
+    app-search-form {
+      display: none;
+    }
+    .applyPrimaryColor {
+      color: $primary-color !important;
+    }
+    /* Mat Form Field */
+    .mat-form-field-wrapper.mat-form-field-wrapper {
+      width: 350px;
+      padding: 0px 5px 0px 5px;
+      border-radius: 50px;
+      margin-left: 30px;
+      max-width: 200px;
+      background: white;
+    }
+    .mat-form-field-appearance-fill .mat-form-field-infix {
+      display: flex;
+      align-items: center;
+      padding: 0;
+    }
+    .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+      padding: 0;
+    }
+    .mat-paginator-container .mat-paginator-page-size {
+      margin-right: auto;
+      .mat-form-field-type-mat-select:not(.mat-form-field-disabled)
+        .mat-form-field-flex {
+        width: 40px;
+      }
+    }
+    .mat-form-field-flex .mat-form-field-infix {
+      background: white;
+    }
+    .mat-button.mat-button {
+      width: 170px;
+    }
+    /* Table */
+    thead tr.mat-header-row {
+      height: 30px;
+    }
+    tbody tr.mat-row {
+      height: 55px;
+    }
+    td.mat-cell {
+      padding: 0;
+    }
+    td.mat-cell:nth-child(4) {
+      width: 35%;
+    }
+    td.mat-cell:nth-child(5) {
+      width: 20%;
+    }
+    th:nth-child(7) {
+      text-indent: 1.4em;
+    }
+    td.mat-cell:nth-child(7) {
+      padding-left: 30px;
+    }
+    td.mat-cell:last-of-type {
+      padding-left: 40px;
+    }
+    .icons > .mat-icon,
+    .vacancies-header .mat-icon {
+      margin-left: 10px;
+      margin-right: 10px;
+      color: gray;
+    }
+    .search.mat-icon {
+      line-height: 25px;
+      font-size: 16px;
+    }
+  }
 }

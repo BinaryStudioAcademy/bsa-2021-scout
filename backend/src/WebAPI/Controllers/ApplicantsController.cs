@@ -1,4 +1,5 @@
 using Application.Applicants.Commands;
+using Application.Applicants.Commands.CreateApplicant;
 using Application.Applicants.Commands.DeleteApplicant;
 using Application.Applicants.Dtos;
 using Application.Applicants.Queries;
@@ -8,6 +9,7 @@ using Application.Common.Queries;
 using Application.ElasticEnities.CommandQuery.AddTagCommand;
 using Application.ElasticEnities.CommandQuery.DeleteTagCommand;
 using Application.ElasticEnities.Dtos;
+using Application.VacancyCandidates.Commands;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -70,6 +72,21 @@ namespace WebAPI.Controllers
 
             return Ok(await Mediator.Send(query));
         }
+        [HttpPost("self-apply/{vacancyId}")]
+        public async Task<IActionResult> PostSelfAppliedApplicantAsync(string vacancyId, [FromForm] string body, [FromForm] IFormFile cvFile = null)
+        {
+            var createApplicantDto = JsonConvert.DeserializeObject<CreateApplicantDto>(body);
+
+            var cvFileDto = cvFile != null ? new FileDto(cvFile.OpenReadStream(), cvFile.FileName) : null;
+
+            var commandApplicant = new CreateSelfAppliedApplicantCommand(createApplicantDto!, cvFileDto, vacancyId);
+
+            var applicant= await Mediator.Send(commandApplicant);
+
+            var commandCandidate = new CreateVacancyCandidateNoAuthCommand(applicant.Id, vacancyId);
+
+            return Ok(await Mediator.Send(commandCandidate));
+        }
 
         [HttpPut]
         public async Task<IActionResult> PutApplicantAsync([FromForm] string body, [FromForm] IFormFile cvFile = null)
@@ -123,6 +140,14 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
+        [HttpGet("property/{propertyName}/{property}")]
+        public async Task<IActionResult> GetByPropertyAsync(string propertyName, string property)
+        {
+            var query = new GetApplicantByPropertyQuery(property, propertyName);
+
+            return Ok(await Mediator.Send(query));
+        }
+
         [HttpPost("to_tags/")]
         public async Task<IActionResult> PostElasticAsync([FromBody] CreateElasticEntityDto createDto)
         {
@@ -132,16 +157,24 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("csv/")]
-        public async Task<IActionResult> PostApplicantFromCsv()
+        public async Task<IActionResult> GetApplicantFromCsv()
         {
             var file = Request.Form.Files[0];
 
             using (var fileReadStream = file.OpenReadStream())
             {
-                var command = new CreateApplicantsFromCsvCommand(fileReadStream);
+                var command = new CetApplicantsFromCsvCommand(fileReadStream);
 
                 return Ok(await Mediator.Send(command));
             }
+        }
+
+        [HttpPost("range/")]
+        public async Task<IActionResult> GetApplicantFromCsv(IEnumerable<CreateApplicantDto> applicants)
+        {
+            var command = new CreateRangeOfApplicantsCommand(applicants);
+
+            return Ok(await Mediator.Send(command));
         }
 
         [HttpPost("tags/{entityId}")]

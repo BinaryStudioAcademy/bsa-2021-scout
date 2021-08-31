@@ -5,7 +5,7 @@
   </button>
 </div>
 <div mat-dialog-content class="content">
-  <div class="attention">
+  <div class="attention" *ngIf="data.fixedCriterias.length">
     <h3>Fixed criterias</h3>
     <div class="padding">
       <div class="label">Rates</div>
@@ -18,60 +18,58 @@
         <div class="label">
           {{ crit.name }}
         </div>
-        <mat-form-field>
+        <mat-form-field floatLabel="never">
           <input
             matInput
             placeholder="0-10"
             min="0"
             max="10"
             type="number"
-            [(ngModel)]="rateData[crit.id]"
+            [value]="rateData[crit.id]"
+            (change)="validateMark(crit.id, $event)"
           />
         </mat-form-field>
       </div>
     </div>
   </div>
-  <h3>Additional criterias</h3>
-  <div class="padding">
-    <div class="label">Rates</div>
-    <app-multiselect
-      [data]="optionalCriteriaOptions"
-      [selected]="selectedOptionalCriteriaOptions"
-      (selectedChange)="onChangeOptionalCriterias($event)"
-    ></app-multiselect>
-  </div>
-  <div class="padding" *ngIf="selectedOptionalCriterias.length">
-    <div class="criterias">
-      <div class="criteria" *ngFor="let crit of selectedOptionalCriterias">
-        <div class="label">
-          {{ crit.name }}
+  <ng-container *ngIf="optionalCriteriaOptions.length">
+    <h3>Additional criterias</h3>
+    <div class="padding">
+      <div class="label">Rates</div>
+      <app-multiselect [data]="optionalCriteriaOptions" [selected]="selectedOptionalCriteriaOptions"
+        (selectedChange)="onChangeOptionalCriterias($event)"></app-multiselect>
+    </div>
+    <div class="padding" *ngIf="selectedOptionalCriterias.length">
+      <div class="criterias">
+        <div class="criteria" *ngFor="let crit of selectedOptionalCriterias">
+          <div class="label">
+            {{ crit.name }}
+          </div>
+          <mat-form-field floatLabel="never">
+            <input
+              matInput
+              placeholder="0-10"
+              min="0"
+              max="10"
+              type="number"
+              [value]="rateData[crit.id]"
+              (change)="validateMark(crit.id, $event)"
+            />
+          </mat-form-field>
         </div>
-        <mat-form-field>
-          <input
-            matInput
-            placeholder="0-10"
-            min="0"
-            max="10"
-            type="number"
-            [(ngModel)]="rateData[crit.id]"
-          />
-        </mat-form-field>
       </div>
     </div>
-  </div>
-  <div>
+  </ng-container>
+  <div class="padding">
     <div class="label">Comment</div>
-      <textarea 
-        matInput
-        placeholder="Enter comment"
-        class="textarea"
-        [(ngModel)]="comment"
-      >
+    <mat-form-field class="textarea-form-field" floatLabel="never">
+      <textarea matInput class="textarea" [(ngModel)]="comment">
         {{ comment }}
       </textarea>
+    </mat-form-field>
   </div>
 </div>
-<div mat-dialog-actions>
+<div>
   <button mat-button [disabled]="isButtonDisabled()" class="button" color="primary" (click)="submit()">
     Save
   </button>

@@ -52,9 +52,11 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeletePoolAsync(string id)
         {
-            var query = new DeleteEntityCommand(id);
+            var query = new DeletePoolCommand(id);
+            await Mediator.Send(query);
+            
+            return NoContent();
 
-            return StatusCode(204, await Mediator.Send(query));
         }        
     }
 }

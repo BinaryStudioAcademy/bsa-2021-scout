@@ -63,6 +63,26 @@ export class RateCandidateModalComponent implements OnInit, OnDestroy {
     );
   }
 
+  public validateMark(id: string, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let newValue = Number(input.value);
+
+    if (Math.floor(newValue) !== newValue) {
+      newValue = Math.floor(newValue);
+    }
+
+    if (newValue < 0) {
+      newValue = 0;
+    }
+
+    if (newValue > 10) {
+      newValue = 10;
+    }
+
+    input.value = String(newValue);
+    this.rateData[id] = newValue;
+  }
+
   public submit(): void {
     this.candidateReviewService
       .bulkReview(

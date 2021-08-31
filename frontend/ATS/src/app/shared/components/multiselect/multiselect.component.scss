@@ -2,9 +2,33 @@
 
 .topics {
   overflow-x: scroll;
-  padding: 5px;
+
+  &.styled {
+    padding: 5px;
+  }
 
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+::ng-deep {
+  .mat-select {
+    .mat-select-value {
+      max-width: unset !important;
+    }
+  }
+}
+
+.mat-form-field-wrapper ::ng-deep .mat-select {
+  height: 100%;
+
+  .mat-select-trigger {
+    height: 100%;
+
+    .mat-select-placeholder {
+      padding-top: 5px;
+      box-sizing: border-box;
+    }
   }
 }

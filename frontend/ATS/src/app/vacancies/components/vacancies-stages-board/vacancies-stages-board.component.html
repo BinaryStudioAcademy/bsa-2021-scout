@@ -14,7 +14,7 @@
             +{{ extraAvatarsCount }}
           </div>
         </div>
-        <div class="plus-avatar">
+        <div class="plus-avatar" (click)="openCandidateAddModal()">
           <button mat-icon-button color="accent">
             <mat-icon>add</mat-icon>
           </button>
@@ -26,7 +26,7 @@
           <span>Add candidates</span>
         </button>
         <button mat-icon-button color="accent">
-          <mat-icon>filter_list</mat-icon>
+          <mat-icon>filter_alt</mat-icon>
         </button>
         <button mat-icon-button color="accent">
           <mat-icon>settings</mat-icon>
@@ -34,21 +34,11 @@
       </div>
     </div>
     <div class="board">
-      <div
-        class="column-wrp"
-        [id]="stage.id"
-        cdkDropList
-        [cdkDropListData]="stage.candidates"
-        [cdkDropListConnectedTo]="getLinkedWith(stage.id)"
-        (cdkDropListDropped)="onMove($event)"
-        *ngFor="let stage of data"
-      >
-        <app-candidate-column
-          [title]="stage.name"
-          [data]="stage.candidates"
-          [isDraggable]="true"
-          (clickAction)="openCandidateModal($event)"
-        ></app-candidate-column>
+      <div class="column-wrp" [id]="stage.id" cdkDropList [cdkDropListData]="stage.candidates"
+        [cdkDropListConnectedTo]="getLinkedWith(stage.id)" (cdkDropListDropped)="onMove($event)"
+        *ngFor="let stage of data">
+        <app-candidate-column [title]="stage.name" [data]="stage.candidates" [index]="stage.index" [isDraggable]="true"
+          (clickAction)="openCandidateModal($event)"></app-candidate-column>
       </div>
     </div>
   </ng-container>

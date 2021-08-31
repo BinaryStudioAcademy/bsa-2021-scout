@@ -6,6 +6,6 @@ namespace Domain.Interfaces.Write
 {
     public interface IApplicantsFromCsvWriteRepository
     {
-        Task<ICollection<Applicant>> CreateRangeAsync(ICollection<Applicant> applicants);
+        Task<IEnumerable<Applicant>> CreateRangeAsync(IEnumerable<Applicant> applicants);
     }
 }
