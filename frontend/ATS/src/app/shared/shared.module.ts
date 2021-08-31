@@ -44,6 +44,7 @@ import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.compo
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 import { TimezonePipe } from './pipes/timezone-pipe';
 import { FilesEditComponent } from '../users/components/files-edit/files-edit.component';
+import { PlaceholdersEditComponent } from '../users/components/placeholders/placeholders.component';
 
 @NgModule({
   exports: [
@@ -89,6 +90,7 @@ import { FilesEditComponent } from '../users/components/files-edit/files-edit.co
     DeleteConfirmComponent,
     TimezonePipe,
     FilesEditComponent,
+    PlaceholdersEditComponent,
   ],
   imports: [
     MatButtonModule,
@@ -141,6 +143,7 @@ import { FilesEditComponent } from '../users/components/files-edit/files-edit.co
     DeleteConfirmComponent,
     TimezonePipe,
     FilesEditComponent,
+    PlaceholdersEditComponent,
   ],
 })
 export class SharedModule {}

@@ -116,6 +116,7 @@ export class FileInputComponent implements OnInit {
   private initVariables(): void {
     this.iconName = this.image ? 'image' : 'insert_drive_file';
     this.arrayDefault = [...(this.default ?? [])];
+    console.log(this.arrayDefault);
     this.limitDefault();
 
     if (this.accept) {

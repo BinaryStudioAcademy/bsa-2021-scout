@@ -16,20 +16,22 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
-import { DeleteConfirmComponent } from 
+import { DeleteConfirmComponent } from
   'src/app/shared/components/delete-confirm/delete-confirm.component';
-import { EmailTemplateAddComponent } from '../email-template-add/email-template-add.component';
-import { EmailTemplateEditComponent } from '../email-template-edit/email-template-edit.component';
+import { MailTemplateAddComponent } from '../mail-template-add/mail-template-add.component';
+import { MailTemplateEditComponent } from '../mail-template-edit/mail-template-edit.component';
 import { FollowedService } from 'src/app/shared/services/followedService';
 
 @Component({
-  selector: 'app-email-templates-list',
-  templateUrl: './email-templates-list.component.html',
-  styleUrls: ['./email-templates-list.component.scss'],
+  selector: 'app-mail-templates-list',
+  templateUrl: './mail-templates-list.component.html',
+  styleUrls: ['./mail-templates-list.component.scss'],
 })
-export class EmailTemplatesListComponent implements AfterViewInit, OnInit, OnDestroy{
+export class MailTemplatesListComponent implements AfterViewInit, OnInit, OnDestroy {
   displayedColumns: string[] = [
     'title',
+    'subject',
+    'text',
     'dateCreation',
     'userCreated',
     'attachmentsCount',
@@ -54,8 +56,8 @@ export class EmailTemplatesListComponent implements AfterViewInit, OnInit, OnDes
   ) {
     this.followService.getFollowed(EntityType.MailTemplate)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data=>
-        data.forEach(item=>this.followedSet.add(item.entityId)),
+      .subscribe(data =>
+        data.forEach(item => this.followedSet.add(item.entityId)),
       );
     this.dataSource = new MatTableDataSource<MailTemplateTable>();
   }
@@ -71,18 +73,30 @@ export class EmailTemplatesListComponent implements AfterViewInit, OnInit, OnDes
       .subscribe(
         (resp) => {
           this.mailTemplates = resp.body!;
+          this.mailTemplates.forEach((d) => {
+            d.html = d.html?.replace(/<\/?[^>]+(>|$)/g, ' ');
+            d.isFollowed = this.followedSet.has(d.id);
+          });
           this.dataSource.data = this.mailTemplates;
           this.directive.applyFilter$.emit();
         },
       );
   }
 
-  public switchToFollowed(){
+  public switchToFollowed() {
     this.isFollowedPage = true;
-    this.dataSource.data = this.dataSource.data.filter(mailTemplate=>mailTemplate.isFollowed);
+    this.dataSource.data = this.mailTemplates.filter(mailTemplate => mailTemplate.isFollowed);
     this.directive.applyFilter$.emit();
   }
-  public switchAwayToAll(){
+
+
+  public switchToMyTemplates() {
+    this.isFollowedPage = false;
+    this.dataSource.data = this.mailTemplates
+      .filter(mailTemplate => mailTemplate.visibilitySetting);
+    this.directive.applyFilter$.emit();
+  }
+  public switchAwayToAll() {
     this.isFollowedPage = false;
     this.dataSource.data = this.mailTemplates;
     this.directive.applyFilter$.emit();
@@ -91,7 +105,7 @@ export class EmailTemplatesListComponent implements AfterViewInit, OnInit, OnDes
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -101,50 +115,50 @@ export class EmailTemplatesListComponent implements AfterViewInit, OnInit, OnDes
       this.dataSource.paginator.firstPage();
     }
   }
-  
-  
+
+
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
 
-  public onBookmark(data: MailTemplateTable, perfomToFollowCleanUp: boolean = false){
-    let projetIndex:number = this.dataSource.data.findIndex(project=>project.id === data.id)!;
+  public onBookmark(data: MailTemplateTable, perfomToFollowCleanUp: boolean = false) {
+    let mailTemplateIndex: number = this.dataSource
+      .data
+      .findIndex(mailTemplate => mailTemplate.id === data.id)!;
     data.isFollowed = !data.isFollowed;
-    if(data.isFollowed)
-    {
+    if (data.isFollowed) {
       this.followService.createFollowed(
         {
           entityId: data.id,
           entityType: EntityType.MailTemplate,
         },
       ).subscribe();
-    }else
-    {
+    } else {
       this.followService.deleteFollowed(
         EntityType.MailTemplate, data.id,
       ).subscribe();
     }
-    this.dataSource.data[projetIndex] = data;
-    if(perfomToFollowCleanUp){
-      this.dataSource.data = this.dataSource.data.filter(project=>project.isFollowed);
+    this.dataSource.data[mailTemplateIndex] = data;
+    if (perfomToFollowCleanUp) {
+      this.dataSource.data = this.dataSource.data.filter(mailTemplate => mailTemplate.isFollowed);
     }
     this.directive.applyFilter$.emit();
   }
   public OnCreate(): void {
-    this.dialog.open(EmailTemplateAddComponent);
+    const dialogRef = this.dialog.open(MailTemplateAddComponent);
 
-    this.dialog.afterAllClosed.subscribe((_) => this.getMailTemplates());
+    dialogRef.afterClosed().subscribe(() => this.getMailTemplates());
   }
 
   public OnEdit(mailTemplateToEdit: MailTemplateTable): void {
-    this.dialog.open(EmailTemplateEditComponent, {
+    const dialogRef = this.dialog.open(MailTemplateEditComponent, {
       data: {
         mailTemplate: mailTemplateToEdit,
       },
     });
 
-    this.dialog.afterAllClosed.subscribe((_) => this.getMailTemplates());
+    dialogRef.afterClosed().subscribe(() => this.getMailTemplates());
   }
 
   public showDeleteConfirmDialog(mailTemplateToDelete: MailTemplateTable): void {
@@ -152,8 +166,8 @@ export class EmailTemplatesListComponent implements AfterViewInit, OnInit, OnDes
       width: '400px',
       height: 'min-content',
       autoFocus: false,
-      data:{
-        entityName: 'Project',
+      data: {
+        entityName: 'template',
       },
     });
 

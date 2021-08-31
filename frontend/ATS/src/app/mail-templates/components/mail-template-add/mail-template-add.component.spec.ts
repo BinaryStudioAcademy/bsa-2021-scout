@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EmailTemplatesListComponent } from './email-templates-list.component';
+import { MailTemplateAddComponent } from './mail-template-add.component';
 
-describe('EmailTemplatesListComponent', () => {
-  let component: EmailTemplatesListComponent;
-  let fixture: ComponentFixture<EmailTemplatesListComponent>;
+describe('MailTemplateAddComponent', () => {
+  let component: MailTemplateAddComponent;
+  let fixture: ComponentFixture<MailTemplateAddComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EmailTemplatesListComponent ],
+      declarations: [ MailTemplateAddComponent ],
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmailTemplatesListComponent);
+    fixture = TestBed.createComponent(MailTemplateAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

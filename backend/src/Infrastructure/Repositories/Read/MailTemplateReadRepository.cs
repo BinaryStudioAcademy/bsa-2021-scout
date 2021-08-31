@@ -25,8 +25,7 @@ namespace Infrastructure.Repositories.Read
             var builder = Builders<MailTemplate>.Filter;
             var filter = builder.Empty;
             filter = builder.Ne(x => x.Slug, "default") 
-                & builder.Eq(x => x.UserCreatedId, userId)
-                & builder.Eq(x => x.VisibilitySetting, VisibilitySetting.VisibleForEveryone);
+                & builder.Where(x => x.UserCreatedId == userId || x.VisibilitySetting == VisibilitySetting.VisibleForEveryone );
 
             IAsyncCursor<MailTemplate> cursor = await _connectionFactory
                 .GetMongoConnection()

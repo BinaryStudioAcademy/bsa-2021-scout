@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EmailTemplatesListComponent } from
-  './components/email-templates-list/email-templates-list.component';
-import { EmailTemplateAddComponent } from
-  './components/email-template-add/email-template-add.component';
-import { EmailTemplateEditComponent } from
-  './components/email-template-edit/email-template-edit.component';
+import { MailTemplatesListComponent } from
+  './components/mail-templates-list/mail-templates-list.component';
+import { MailTemplateAddComponent } from
+  './components/mail-template-add/mail-template-add.component';
+import { MailTemplateEditComponent } from
+  './components/mail-template-edit/mail-template-edit.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,14 +20,14 @@ import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-
+import { DxHtmlEditorModule, DxPopupModule } from 'devextreme-angular';
 
 
 @NgModule({
   declarations: [
-    EmailTemplatesListComponent,
-    EmailTemplateAddComponent,
-    EmailTemplateEditComponent,
+    MailTemplatesListComponent,
+    MailTemplateAddComponent,
+    MailTemplateEditComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +45,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     ReactiveFormsModule,
     HttpClientModule, 
     AngularEditorModule,
+    DxHtmlEditorModule, 
+    DxPopupModule,
   ],
   exports:[
     MatButtonModule,
@@ -57,4 +59,4 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     MatPaginatorModule,
   ],
 })
-export class EmailTemplatesModule { }
+export class MailTemplatesModule { }

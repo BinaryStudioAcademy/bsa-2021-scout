@@ -9,14 +9,32 @@ import { takeUntil } from 'rxjs/operators';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
-  selector: 'app-email-template-add',
-  templateUrl: './email-template-add.component.html',
-  styleUrls: ['./email-template-add.component.scss'],
+  selector: 'app-mail-template-add',
+  templateUrl: './mail-template-add.component.html',
+  styleUrls: ['./mail-template-add.component.scss'],
 })
-export class EmailTemplateAddComponent implements OnDestroy {
+export class MailTemplateAddComponent implements OnDestroy {
 
   mailTemplate: MailTemplateCreate = {} as MailTemplateCreate;
   files: File[] = [];
+  isShow: boolean = false;
+  popupVisible: boolean = false;
+  editorValue: string = '';
+
+  
+  toolbarButtonOptions: any = {
+    text: 'Show markup',
+    stylingMode: 'text',
+    onClick: () => (this.popupVisible = true),
+  };
+
+  hideButtonOptions: any = {
+    text: 'Show all',
+    stylingMode: 'text',
+    onClick: () => {
+      this.isShow = !this.isShow;
+    },
+  };
   
   public loading: boolean = false;
 
@@ -71,7 +89,7 @@ export class EmailTemplateAddComponent implements OnDestroy {
   constructor(
     private mailTemplateService: MailTemplateService,
     private notificationService: NotificationService,
-    private dialogRef: MatDialogRef<EmailTemplateAddComponent>,
+    private dialogRef: MatDialogRef<MailTemplateAddComponent>,
   ) {
     this.dialogRef.disableClose = true;
     this.dialogRef.backdropClick().subscribe((_) => this.onFormClose());

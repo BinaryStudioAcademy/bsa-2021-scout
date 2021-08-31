@@ -11,18 +11,39 @@ import { MailTemplate } from 'src/app/shared/models/mail-template/mail-template'
 import { MailAttachment } from 'src/app/shared/models/mail-attachment/mail-attachment';
 
 @Component({
-  selector: 'app-email-template-edit',
-  templateUrl: './email-template-edit.component.html',
-  styleUrls: ['./email-template-edit.component.scss'],
+  selector: 'app-mail-template-edit',
+  templateUrl: './mail-template-edit.component.html',
+  styleUrls: ['./mail-template-edit.component.scss'],
 })
-export class EmailTemplateEditComponent implements OnDestroy {
+export class MailTemplateEditComponent implements OnDestroy {
 
   mailTemplateUpdate: MailTemplate = {} as MailTemplate;
   mailTemplate: MailTemplate = {} as MailTemplate;
-  mailAttachments: MailAttachment[] = [];
+  mailAttachmentsNames: string[] = [];
+  deletedMailAttachmentsNames: string[] = [];
   files: File[] = [];
+  popupVisible: boolean = false;
+  editorValue: string = '';
+  isShow: boolean = false;
+  isFileInputChanged: boolean = false;
+
+  toolbarButtonOptions: any = {
+    text: 'Show markup',
+    stylingMode: 'text',
+    onClick: () => (this.popupVisible = true),
+  };
+
+  hideButtonOptions: any = {
+    text: 'Show all',
+    stylingMode: 'text',
+    onClick: () => {
+      this.isShow = !this.isShow;
+    },
+  };
 
   public loading: boolean = false;
+  public isFormFinishLoad: boolean = false;
+
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -75,7 +96,7 @@ export class EmailTemplateEditComponent implements OnDestroy {
   constructor(
     private mailTemplateService: MailTemplateService,
     private notificationService: NotificationService,
-    private dialogRef: MatDialogRef<EmailTemplateEditComponent>,
+    private dialogRef: MatDialogRef<MailTemplateEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { mailTemplate: MailTemplateTable },
   ) {
     this.mailTemplateService
@@ -84,14 +105,16 @@ export class EmailTemplateEditComponent implements OnDestroy {
       .subscribe(
         (resp) => {
           this.mailTemplate = resp;
-          console.log(this.mailTemplate);
-
           this.mailTemplateCreateForm.controls['slug'].setValue(this.mailTemplate.slug);
           this.mailTemplateCreateForm.controls['subject'].setValue(this.mailTemplate.subject);
           this.mailTemplateCreateForm.controls['visibilitySetting']
             .setValue(this.mailTemplate.visibilitySetting);
           this.mailTemplateCreateForm.controls['html'].setValue(this.mailTemplate.html);
-          
+
+          this.mailTemplate.mailAttachments.forEach((mailAttachment: MailAttachment) => {
+            this.mailAttachmentsNames.push(mailAttachment.name);
+          });
+          this.isFormFinishLoad = true;
           this.loading = false;
         },
         (error) => {
@@ -99,10 +122,10 @@ export class EmailTemplateEditComponent implements OnDestroy {
           this.notificationService.showErrorMessage(error.message);
         },
       );
+
     this.dialogRef.disableClose = true;
     this.dialogRef.backdropClick().subscribe((_) => this.onFormClose());
   }
-
 
   mailTemplateCreateForm = new FormGroup({
     'slug': new FormControl(this.mailTemplate.slug,
@@ -135,15 +158,12 @@ export class EmailTemplateEditComponent implements OnDestroy {
   }
 
   public onSubmited() {
-    console.log(this.data.mailTemplate.id);
     this.mailTemplateUpdate = this.mailTemplateCreateForm.value;
     this.mailTemplateUpdate.id = this.data.mailTemplate.id;
-    console.log(this.mailTemplate.mailAttachments);
     this.mailTemplateUpdate.mailAttachments = this.mailTemplate.mailAttachments;
     this.mailTemplateUpdate.visibilitySetting = this.mailTemplateCreateForm
       .controls['visibilitySetting'].value ? 1 : 0;
     this.loading = true;
-    console.log(this.mailTemplateUpdate);
     this.mailTemplateService
       .updateMailTempalte(this.mailTemplateUpdate, this.files)
       .pipe(takeUntil(this.unsubscribe$))
@@ -169,6 +189,20 @@ export class EmailTemplateEditComponent implements OnDestroy {
     files.forEach((file: File) => {
       this.files.push(file);
     });
-
+    this.isFileInputChanged = true;
+    console.log(this.isFileInputChanged);
   }
+
+  public deleteExistedAttachment(files: string[]): void {
+    var leftoverFiles: MailAttachment[] = [];
+    files.forEach((fileName: string) => {
+      leftoverFiles
+        .push(this.mailTemplate.mailAttachments
+          .find(x => x.name == fileName) as MailAttachment);
+    });
+    this.mailTemplate.mailAttachments = leftoverFiles;
+    this.isFileInputChanged = true;
+    console.log(this.isFileInputChanged);
+  }
+
 }
