@@ -20,6 +20,11 @@
     font-weight: bold;
   }
 
+  .one-line {
+    word-break: keep-all;
+    white-space: nowrap;
+  }
+
   .icon-link {
     display: flex;
     align-items: center;
@@ -123,7 +128,7 @@
 
       .reviews {
         & > * {
-          width: 50%;
+          min-width: 50%;
           max-width: 200px;
         }
       }

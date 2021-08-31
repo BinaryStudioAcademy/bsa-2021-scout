@@ -18,6 +18,8 @@ export class ApplicantsHeadComponent implements OnInit{
   public page: string = 'all';
   public creationData?: CreateApplicant;
 
+  private readonly applicantPageToken: string = 'applicantPageToken';
+
   @Output() public search = new EventEmitter<string>();
   @Output() public applicantCreated = new EventEmitter<Observable<Applicant>>();
   @Output() public applicantsFileUploaded = new EventEmitter<void>();
@@ -27,15 +29,19 @@ export class ApplicantsHeadComponent implements OnInit{
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
   ) {}
-  private readonly applicantPageToken: string = 'applicantPageToken';
+
   public ngOnInit(): void {
     this.route.queryParams.subscribe((query) => {
       if (query['data']) {
-        const creationData: CreateApplicant = JSON.parse(atob(query['data']));
+        const latin1 = atob(query['data']);
+        const json = decodeURIComponent(escape(latin1));
+        const creationData: CreateApplicant = JSON.parse(json);
+
         this.creationData = creationData;
         this.showApplicantsCreateDialog();
       }
     });
+
     this.page = localStorage.getItem(this.applicantPageToken) ? 
       localStorage.getItem(this.applicantPageToken)! : 'all';
   }
