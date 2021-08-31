@@ -60,6 +60,7 @@ export class EditHrFormComponent implements OnInit {
           birthDay: ['', [Validators.required]],
           phone: [''],
           skype: [''],
+          slack:[''],
           email: ['', [Validators.required]],
           image: ['', [Validators.required]]
         }

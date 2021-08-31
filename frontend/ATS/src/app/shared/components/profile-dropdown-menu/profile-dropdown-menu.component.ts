@@ -65,7 +65,7 @@ export class ProfileDropdownMenuComponent implements OnInit {
   onOpenProfile(){
     console.log(this.user);
     const dialogRef = this.dialog.open(EditHrFormComponent, {
-      width: '90%',
+      width: '70%',
       height: 'auto',
       data: {userToEdit:this.user},
     });
