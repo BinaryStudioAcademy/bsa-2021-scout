@@ -72,14 +72,12 @@ namespace Application.ApplicantCvs.Commands
             ApplicantCreationVariantsDto dto = await _parser.FinishParsingAsync(text, parsed.Entities);
 
             IEnumerable<string> pathItems = job.OriginalFilePath.Split("/");
-            Console.WriteLine(pathItems.First(), pathItems.Last());
             dto.Cv = await _s3ReadRepository.GetPublicUrlAsync(pathItems.First(), pathItems.Last());
 
             string stringDto = JsonConvert.SerializeObject(dto);
             byte[] bytesDto = Encoding.UTF8.GetBytes(stringDto);
             string base64 = Convert.ToBase64String(bytesDto);
             string url = $"{_frontendUrl}/applicants?variants=1&data={base64}";
-            Console.WriteLine($"\n\n\n\n{url}\n\n\n\n");
             string body = string.Format(MailBodyFactory.CV_PARSED, url);
 
             using (ISmtp connection = _smtp.Connect())
