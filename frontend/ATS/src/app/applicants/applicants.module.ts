@@ -25,6 +25,10 @@ import { ApplicantHistoryComponent }
 import { ApplicantsRoutingModule } from './applicants-routing.module';
 import { CreateApplicantFromVariantsComponent }
   from './components/create-applicant-from-variants/create-applicant-from-variants.component';
+import { StartCvParsingModalComponent }  
+  from './components/start-cv-parsing-modal/start-cv-parsing-modal.component';
+import { CvParsingStartedModalComponent }
+  from './components/cv-parsing-started-modal/cv-parsing-started-modal.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +43,8 @@ import { CreateApplicantFromVariantsComponent }
     SelfApplyingComponent,
     ApplicantHistoryComponent,
     CreateApplicantFromVariantsComponent,
+    StartCvParsingModalComponent,
+    CvParsingStartedModalComponent,
   ],
   imports: [
     BrowserModule,
