@@ -67,7 +67,7 @@ services:
     ports: 
       - 8200:8200
     env_file: 
-      - ../.env/ats_vault.env
+      - ../.env/ats_vault_server.env
     cap_add:
       - IPC_LOCK
     networks:
@@ -81,6 +81,8 @@ services:
       - ats_vault
     networks: 
       - ats_vault
+    env_file: 
+      - ../.env/ats_vault_client.env
 
   ats_api:
     container_name: 'ats_api'
@@ -93,6 +95,7 @@ services:
       - ats_vault
     env_file:
       - ../.env/ats_api.env
+      - ../.env/ats_vault_client.env
 
 
 volumes:

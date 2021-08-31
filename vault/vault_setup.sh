@@ -1,8 +1,5 @@
 #!/bin/bash
 
-export VAULT_ADDR='http://ats_vault:8200'
-export VAULT_TOKEN='s.SDsdAkgkfdvmcxSJFE12461xDKFSDF'
-
 sleep 30
 
 vault secrets enable -path='ats-api/database' database
