@@ -13,5 +13,6 @@ namespace Application.Applicants.Dtos
         public IEnumerable<string> Skills { get; set; }
         public IEnumerable<string> Company { get; set; }
         public IEnumerable<string> BirthDate { get; set; }
+        public string Cv { get; set; }
     }
 }
