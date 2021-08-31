@@ -22,9 +22,9 @@ export const applicantGroup = new FormGroup({
   ]),
   skills: new FormControl('', [Validators.required]),
   skype: new FormControl('', [
-    Validators.pattern('^https:\\/\\/skype.com\\/\\S{6,32}'),
+    Validators.pattern(/^https:\/\/(www\.)?skype\.com\/\S{6,32}/g),
   ]),
   linkedInUrl: new FormControl('', [
-    Validators.pattern('^https:\\/\\/www.linkedin.com\\/[a-z0-9\\-]+'),
+    Validators.pattern(/^https:\/\/(www\.)?linkedin\.com\/in\/[a-z0-9\-]+\/?$/g),
   ]),
 });
