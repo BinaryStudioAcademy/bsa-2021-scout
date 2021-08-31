@@ -74,10 +74,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe((resp) => {
         this.projects = resp.body!;
-        this.projects.forEach((d, i) => {
-          d.position = i + 1;
-          d.isFollowed = this.followedSet.has(d.id);
-        });
+        this.projects.forEach((d) => d.isFollowed = this.followedSet.has(d.id));
         if (localStorage.getItem(this.followedPageToken) !== null)
           this.dataSource.data = this.projects.filter((item) =>
             this.followedSet.has(item.id),
@@ -96,10 +93,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
         this.projects = resp.body!;
-        this.projects.forEach((d, i) => {
-          d.position = i + 1;
-          d.isFollowed = this.followedSet.has(d.id);
-        });
+        this.projects.forEach((d) => d.isFollowed = this.followedSet.has(d.id));
         if (localStorage.getItem(this.followedPageToken) !== null) {
           this.dataSource.data = this.projects.filter((item) =>
             this.followedSet.has(item.id),

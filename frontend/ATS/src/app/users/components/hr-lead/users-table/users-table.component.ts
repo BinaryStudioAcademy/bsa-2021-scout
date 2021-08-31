@@ -99,6 +99,7 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe(
         (resp) => {
+          resp.forEach((user) => user.isFollowed = this.followedSet.has(user.id ?? ''));
           this.users = resp;
           if (localStorage.getItem(this.followedPageToken) !== null) {
             this.dataSource.data = this.users.filter((item) => item.isFollowed);
@@ -123,6 +124,7 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe(
         (resp) => {
+          resp.forEach((user) => user.isFollowed = this.followedSet.has(user.id ?? ''));
           this.users = resp;
           if (localStorage.getItem(this.followedPageToken) !== null)
             this.dataSource.data = this.users.filter((item) => item.isFollowed);
