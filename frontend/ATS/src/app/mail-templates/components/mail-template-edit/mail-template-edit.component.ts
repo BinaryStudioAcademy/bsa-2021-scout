@@ -204,5 +204,4 @@ export class MailTemplateEditComponent implements OnDestroy {
     this.isFileInputChanged = true;
     console.log(this.isFileInputChanged);
   }
-
 }
