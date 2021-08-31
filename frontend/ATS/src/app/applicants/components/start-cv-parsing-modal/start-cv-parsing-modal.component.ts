@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { FileType } from 'src/app/shared/enums/file-type.enum';
 import { ApplicantCvService } from 'src/app/shared/services/applicant-cv.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { CvParsingStartedModalComponent }
@@ -15,6 +16,7 @@ import { CvParsingStartedModalComponent }
 export class StartCvParsingModalComponent implements OnDestroy {
   public file?: File;
   public loading: boolean = false;
+  public accept: FileType = FileType.Pdf;
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 

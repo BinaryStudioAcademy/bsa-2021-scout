@@ -5,7 +5,7 @@
     <mat-icon>close</mat-icon>
   </button>
 </div>
-<app-file-input [accent]="accept" [single]="true" (upload)="upload($event)"></app-file-input>
+<app-file-input [accept]="accept" [single]="true" (upload)="upload($event)"></app-file-input>
 <div mat-dialog-actions>
   <button mat-button color="primary" [disabled]="!file" (click)="startParsing()">
     Parse CV
