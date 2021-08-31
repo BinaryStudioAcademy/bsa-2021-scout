@@ -74,12 +74,8 @@
         <h3>Reviews</h3>
         <div class="reviews">
           <div *ngFor="let item of data.reviews">
-            <h4 class="only-color dark meta">{{ item.reviewName }}</h4>
-            <mat-progress-bar
-              color="accent"
-              mode="determinate"
-              [value]="item.mark * 10"
-            ></mat-progress-bar>
+            <h4 class="only-color dark meta one-line">{{ item.reviewName }}</h4>
+            <mat-progress-bar color="accent" mode="determinate" [value]="item.mark * 10"></mat-progress-bar>
           </div>
         </div>
       </div>
