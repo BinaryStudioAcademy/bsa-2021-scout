@@ -33,6 +33,7 @@ import { ApplicantCsvListComponent }
   from '../applicants/components/applicant-csv-list/applicant-csv-list.component';
 import { ApplicantsRoutingModule } from '../applicants/applicants-routing.module';
 import { UserProfileComponent } from '../shared/components/user-profile/user-profile.component';
+import { InterviewsPageComponent } from '../interviews/interviews-page/interviews-page.component';
 
 const routes: Routes = [
   {
@@ -68,7 +69,7 @@ const routes: Routes = [
       },
       {
         path: AppRoute.Interviews,
-        component: VacanciesListComponent,
+        component: InterviewsPageComponent,
         pathMatch: 'full',
       },
       {
