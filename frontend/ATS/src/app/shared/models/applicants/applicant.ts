@@ -17,6 +17,7 @@ export interface Applicant {
   companyId?: string;
   isSelected?: boolean;
   hasCv: boolean;
+  creationDate: Date;
 
   tags: ElasticEntity;
   vacancies: ApplicantVacancyInfo[];

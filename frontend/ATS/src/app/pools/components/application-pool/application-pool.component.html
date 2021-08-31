@@ -1,5 +1,6 @@
 <app-header></app-header>
 <div class="pool-page">
+    <app-spinner *ngIf="loading"></app-spinner>
     <div class="header">
         <button class="tub" [style.text-decoration]="isFollowedPage == 'false' ? 'underline' : 'none'"
             (click)="switchAwayToAll()">All</button>
@@ -11,7 +12,11 @@
         </mat-form-field>
         <button mat-button (click)="onCreate()"> + New pool</button>
     </div>
-    <app-spinner *ngIf="loading"></app-spinner>
+    <app-table-filter
+        [description]="filterDescription"
+        [data]="mainData"
+        (filteredDataChange)="setFiltered($event)"
+    ></app-table-filter>
     <div class="pool-list">
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>

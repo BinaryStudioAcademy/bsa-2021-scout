@@ -4,5 +4,6 @@ namespace Domain.Entities
     {
         public string Title { get; set; }
         public string Stage { get; set; }
+        public string Project { get; set; }
     }
 }
