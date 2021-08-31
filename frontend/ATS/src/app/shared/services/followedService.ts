@@ -17,14 +17,8 @@ export class FollowedService {
   public getFollowed(type: EntityType) {
     return this.http.getRequest<Followed[]>(`${this.routePrefix}/${type}`);
   }
-  public switchRefreshFollowedPageToken(toFollowedPage: boolean, token: string) {
-    if (toFollowedPage) {
-      localStorage.setItem(token, 'true');
-    }
-    else 
-    {
-      localStorage.removeItem(token);
-    }
+  public switchRefreshFollowedPageToken(page: string, token: string) {
+    localStorage.setItem(token, page);
   }
   public createFollowed(follow: Followed): Observable<Followed> {
     return this.http.postRequest<Followed>(

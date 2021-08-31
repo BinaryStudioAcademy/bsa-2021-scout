@@ -1,5 +1,6 @@
-<button class="tub" [style.text-decoration]="!isFollowedPage ? 'underline' : 'none'" (click)="toggleFollowedOrAll(false)">All</button>
-<button class="tub" [style.text-decoration]="isFollowedPage ? 'underline' : 'none'" (click)="toggleFollowedOrAll(true)">Followed</button>
+<button class="tub" [style.text-decoration]="page === 'all' ? 'underline' : 'none'" (click)="toggleFollowedOrAll('all')">All</button>
+<button class="tub" [style.text-decoration]="page === 'followed' ? 'underline' : 'none'" (click)="toggleFollowedOrAll('followed')">Followed</button>
+<button class="tub" [style.text-decoration]="page === 'self-applied' ? 'underline' : 'none'" (click)="toggleFollowedOrAll('self-applied')">Self Applied</button>
 <mat-form-field appearance="fill">
     <mat-icon>search</mat-icon>
     <input #input [(ngModel)]="searchValue" matInput type="text" class="search-input" placeholder="Search..." (keyup)="applySearchValue()">
