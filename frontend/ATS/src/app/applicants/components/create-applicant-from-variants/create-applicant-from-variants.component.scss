@@ -2,18 +2,22 @@
   margin-top: 20px;
 }
 
-.variant-input {
+.variants-input {
   display: flex;
   gap: 20px;
 
-  .variant {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 5px;
+  .variants {
+    padding-top: 15px;
 
-    &:not(&.inactive) {
-      cursor: pointer;
+    .variant {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 5px;
+
+      &:not(&.inactive) {
+        cursor: pointer;
+      }
     }
   }
 }

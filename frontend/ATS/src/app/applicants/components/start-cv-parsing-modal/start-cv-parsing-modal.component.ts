@@ -45,7 +45,7 @@ export class StartCvParsingModalComponent implements OnDestroy {
           this.loading = false;
 
           this.dialogService.open(CvParsingStartedModalComponent, {
-            maxWidth: '300px',
+            maxWidth: '600px',
           });
 
           this.dialog.close();

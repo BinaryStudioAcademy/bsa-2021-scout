@@ -1,6 +1,10 @@
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClientService } from './http-client.service';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class ApplicantCvService {
   public constructor(private readonly http: HttpClientService) {}
 
