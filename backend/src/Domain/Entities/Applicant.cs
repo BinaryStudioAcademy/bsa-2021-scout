@@ -6,6 +6,11 @@ namespace Domain.Entities
 {
     public class Applicant : Human
     {
+        public Applicant()
+        {
+            CreationDate = DateTime.Now;
+        }
+
         public string LinkedInUrl { get; set; }
         public double Experience { get; set; }
         public string ExperienceDescription { get; set; }
