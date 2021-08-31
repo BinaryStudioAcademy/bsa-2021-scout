@@ -79,6 +79,7 @@ export class RateCandidateModalComponent implements OnInit, OnDestroy {
       newValue = 10;
     }
 
+    input.value = String(newValue);
     this.rateData[id] = newValue;
   }
 

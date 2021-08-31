@@ -74,6 +74,9 @@ function processLinkedInPage() {
         }
     }
 
+    experienceDescription = experienceDescription
+        .substring(0, experienceDescription.length - 2);
+
     const education = [];
 
     for (const child of educationElements) {
@@ -114,7 +117,8 @@ function processLinkedInPage() {
     };
 
     const string = JSON.stringify(data);
-    const base64 = btoa(string);
+    const latin1 = unescape(encodeURIComponent(string));
+    const base64 = btoa(latin1);
 
     if (mode === "development") {
         console.log("Data:");
@@ -126,7 +130,7 @@ function processLinkedInPage() {
 
 parseButton.addEventListener("click", async () => {
     const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    
+
     if (!isLinkedInTab(activeTab)) {
         showNotLinkedInError();
     }

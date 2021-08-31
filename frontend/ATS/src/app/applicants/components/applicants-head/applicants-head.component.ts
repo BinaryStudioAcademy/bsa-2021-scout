@@ -15,28 +15,35 @@ import { CreateApplicantComponent } from '../create-applicant/create-applicant.c
 })
 export class ApplicantsHeadComponent implements OnInit{
   public searchValue = '';
-  public isFollowedPage = false;
+  public page: string = 'all';
   public creationData?: CreateApplicant;
+
+  private readonly applicantPageToken: string = 'applicantPageToken';
 
   @Output() public search = new EventEmitter<string>();
   @Output() public applicantCreated = new EventEmitter<Observable<Applicant>>();
   @Output() public applicantsFileUploaded = new EventEmitter<void>();
-  @Output() public togglePage = new EventEmitter<boolean>();
+  @Output() public togglePage = new EventEmitter<string>();
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
   ) {}
-  private readonly followedPageToken: string = 'followedApplicantPage';
+
   public ngOnInit(): void {
     this.route.queryParams.subscribe((query) => {
       if (query['data']) {
-        const creationData: CreateApplicant = JSON.parse(atob(query['data']));
+        const latin1 = atob(query['data']);
+        const json = decodeURIComponent(escape(latin1));
+        const creationData: CreateApplicant = JSON.parse(json);
+
         this.creationData = creationData;
         this.showApplicantsCreateDialog();
       }
     });
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
+
+    this.page = localStorage.getItem(this.applicantPageToken) ? 
+      localStorage.getItem(this.applicantPageToken)! : 'all';
   }
 
   public applySearchValue(): void {
@@ -64,8 +71,8 @@ export class ApplicantsHeadComponent implements OnInit{
       .subscribe(_=>this.applicantsFileUploaded.emit());
   }
 
-  public toggleFollowedOrAll(isFollowedPage: boolean): void {
-    this.isFollowedPage = isFollowedPage;
-    this.togglePage.emit(isFollowedPage);
+  public toggleFollowedOrAll(page: string): void {
+    this.page = page;
+    this.togglePage.emit(page);
   }
 }

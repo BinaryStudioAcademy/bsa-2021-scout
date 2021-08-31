@@ -1,0 +1,60 @@
+@import "../../../../common.scss";
+
+h1,
+h4 {
+  padding: 0;
+  margin: 0;
+}
+
+h3 {
+  padding: 10px 0;
+  margin: 0;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timeline {
+  width: 100%;
+  max-height: 70vh;
+  overflow-y: auto;
+  position: relative;
+
+  .timeline-item {
+    padding: 5px 15px;
+    box-sizing: border-box;
+    border-left: 2px solid $accent-color;
+    position: relative;
+    margin-left: 4px;
+
+    &:hover {
+      background-color: $primary-color-lightgrey;
+    }
+
+    h4 {
+      font-weight: 400;
+    }
+
+    .circle {
+      width: 10px;
+      height: 10px;
+      background-color: $accent-color;
+      border-radius: 50%;
+      position: absolute;
+      left: -6px;
+      top: calc(50% - 5px);
+    }
+  }
+
+  .center-item {
+    display: flex;
+    justify-content: center;
+  }
+}

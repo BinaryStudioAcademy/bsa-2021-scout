@@ -37,6 +37,8 @@ namespace Infrastructure.Repositories.Read
                     CandidateToStages.*,
                     Stages.Id,
                     Stages.Name,
+                    Vacancies.Id,
+                    Vacancies.Title,
                     VacancyCandidates.Id,
                     Applicants.Id,
                     Applicants.FirstName,
@@ -46,6 +48,7 @@ namespace Infrastructure.Repositories.Read
                     Users.LastName
                 FROM CandidateToStages
                 LEFT JOIN Stages ON Stages.Id = CandidateToStages.StageId
+                LEFT JOIN Vacancies ON Vacancies.Id = Stages.VacancyId
                 LEFT JOIN VacancyCandidates ON VacancyCandidates.Id = CandidateToStages.CandidateId
                 LEFT JOIN Applicants ON Applicants.Id = VacancyCandidates.ApplicantId
                 LEFT JOIN Users ON Users.Id = CandidateToStages.MoverId
@@ -65,11 +68,12 @@ namespace Infrastructure.Repositories.Read
             await connection.OpenAsync();
 
             IEnumerable<CandidateToStage> candidateToStages = await connection
-                .QueryAsync<CandidateToStage, Stage, VacancyCandidate, Applicant, User, CandidateToStage>(
+                .QueryAsync<CandidateToStage, Stage, Vacancy, VacancyCandidate, Applicant, User, CandidateToStage>(
                     sql,
-                    (candidateToStage, stage, candidate, applicant, user) =>
+                    (candidateToStage, stage, vacancy, candidate, applicant, user) =>
                     {
                         candidateToStage.Stage = stage;
+                        candidateToStage.Stage.Vacancy = vacancy;
                         candidateToStage.Candidate = candidate;
                         candidateToStage.Candidate.Applicant = applicant;
                         candidateToStage.Mover = user;
@@ -85,6 +89,54 @@ namespace Infrastructure.Repositories.Read
             await connection.CloseAsync();
 
             return (candidateToStages, (skip + RECENT_PAGE_SIZE) >= count);
+        }
+
+        public async Task<IEnumerable<CandidateToStage>> GetRecentForApplicantAsync(string applicantId)
+        {
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
+
+            string sql = @"
+                SELECT
+                    CandidateToStages.*,
+                    Stages.Id,
+                    Stages.Name,
+                    Vacancies.Id,
+                    Vacancies.Title,
+                    Projects.Id,
+                    Projects.Name,
+                    Users.Id,
+                    Users.FirstName,
+                    Users.LastName
+                FROM CandidateToStages
+                LEFT JOIN Stages ON Stages.Id = CandidateToStages.StageId
+                LEFT JOIN Vacancies ON Vacancies.Id = Stages.VacancyId
+                LEFT JOIN Projects ON Projects.Id = Vacancies.ProjectId
+                LEFT JOIN Users ON Users.Id = CandidateToStages.MoverId
+                LEFT JOIN VacancyCandidates ON VacancyCandidates.Id = CandidateToStages.CandidateId
+                WHERE VacancyCandidates.ApplicantId = @applicantId
+            ";
+
+            await connection.OpenAsync();
+
+            IEnumerable<CandidateToStage> candidateToStages = await connection
+                .QueryAsync<CandidateToStage, Stage, Vacancy, Project, User, CandidateToStage>(
+                    sql,
+                    (candidateToStage, stage, vacancy, project, user) =>
+                    {
+                        candidateToStage.Stage = stage;
+                        candidateToStage.Stage.Vacancy = vacancy;
+                        candidateToStage.Stage.Vacancy.Project = project;
+                        candidateToStage.Mover = user;
+
+                        return candidateToStage;
+                    },
+                    new { applicantId = applicantId },
+                    splitOn: "Id,Id,Id"
+                );
+
+            await connection.CloseAsync();
+
+            return candidateToStages;
         }
     }
 }

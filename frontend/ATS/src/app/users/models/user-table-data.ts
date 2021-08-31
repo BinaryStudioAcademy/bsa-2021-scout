@@ -7,6 +7,5 @@ export interface UserTableData {
   creationDate: Date;
   email: string;
   isEmailConfirmed: boolean;
-  position?: number;
   isFollowed?: boolean;
 }

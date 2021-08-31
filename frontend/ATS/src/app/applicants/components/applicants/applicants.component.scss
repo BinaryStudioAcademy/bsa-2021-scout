@@ -4,6 +4,10 @@ $tag-background-color: rgba($color: (#291965), $alpha: 0.1);
 $tag-font-color: rgba($color: (#291965), $alpha: 0.8);
 $primary-color: #ee2a64;
 
+.tag {
+  cursor: pointer;
+}
+
 :host {
   width: 100%;
 }
@@ -48,17 +52,6 @@ $primary-color: #ee2a64;
   bottom: 0px;
   position: sticky;
   z-index: 4;
-}
-
-.self-applied{
-  position: absolute;
-  left: 3px;
-  margin-top: auto;
-  margin-bottom: auto;
-  top: 0;
-  bottom: 0;
-  text-align: center;
-  color: #501cb1d0;
 }
 
 /* Table */
@@ -244,8 +237,9 @@ $primary-color: #ee2a64;
   }
 
   .mat-row:nth-child(even) {
-    background-color: #f0f3f9;
+    background-color: #f6f7f9;
   }
+
 }
 
 /* Paginator */

@@ -18,10 +18,10 @@ namespace Application.Applicants.Commands.CreateApplicant
     public class CreateSelfAppliedApplicantCommand : IRequest<ApplicantDto>
     {
         public CreateApplicantDto ApplicantDto { get; set; }
-        public FileDto? CvFileDto { get; set; }
+        public FileDto CvFileDto { get; set; }
         public string VacancyId { get; set; }
 
-        public CreateSelfAppliedApplicantCommand(CreateApplicantDto applicantDto, FileDto? cvFileDto, string vacancyId)
+        public CreateSelfAppliedApplicantCommand(CreateApplicantDto applicantDto, FileDto cvFileDto, string vacancyId)
         {
             ApplicantDto = applicantDto;
             CvFileDto = cvFileDto;
