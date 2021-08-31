@@ -123,7 +123,8 @@ implements AfterViewInit, OnInit, OnDestroy
         },
       );
 
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken) !== null;
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
+      localStorage.getItem(this.followedPageToken)! : 'false';
   }
 
   public ngAfterViewInit(): void {
@@ -260,7 +261,7 @@ implements AfterViewInit, OnInit, OnDestroy
   public setFiltered(data: VacancyData[]): void {
     this.filteredData = data;
 
-    if (localStorage.getItem(this.followedPageToken) !== null) {
+    if (localStorage.getItem(this.followedPageToken) == 'true') {
       this.dataSource.data = this.filteredData.filter((item) =>
         this.followedSet.has(item.id),
       );

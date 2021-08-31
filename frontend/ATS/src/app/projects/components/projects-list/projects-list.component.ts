@@ -188,7 +188,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   public setFiltered(data: ProjectInfo[]): void {
     this.filteredData = data;
 
-    if (localStorage.getItem(this.followedPageToken) !== null) {
+    if (localStorage.getItem(this.followedPageToken) == 'true') {
       this.dataSource.data = this.filteredData.filter((item) =>
         this.followedSet.has(item.id),
       );

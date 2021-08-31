@@ -115,7 +115,8 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
           this.notificationService.showErrorMessage('Something went wrong');
         },
       );
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken) !== null;
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
+      localStorage.getItem(this.followedPageToken)! : 'false';
   }
 
   public getUsers() {
@@ -147,7 +148,7 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
     this.filteredData = filtered;
     this.dataSource.data = this.filteredData;
 
-    if (localStorage.getItem(this.followedPageToken) !== null) {
+    if (localStorage.getItem(this.followedPageToken) == 'true') {
       this.dataSource.data = this.filteredData.filter((item) =>
         this.followedSet.has(item.id ?? ''),
       );

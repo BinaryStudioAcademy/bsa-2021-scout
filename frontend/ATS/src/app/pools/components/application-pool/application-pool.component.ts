@@ -190,7 +190,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
     this.filteredData = data;
     this.dataSource.data = data;
 
-    if (localStorage.getItem(this.followedPageToken) !== null) {
+    if (localStorage.getItem(this.followedPageToken) == 'true') {
       this.dataSource.data = this.filteredData.filter((item) =>
         this.followedSet.has(item.id),
       );

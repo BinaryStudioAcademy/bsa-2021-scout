@@ -288,7 +288,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public setFiltered(data: ViewableApplicant[]): void {
     this.filteredData = data;
 
-    if (localStorage.getItem(this.followedPageToken) !== null) {
+    if (localStorage.getItem(this.applicantPageToken) == 'followed') {
       this.dataSource.data = this.filteredData.filter((item) =>
         this.followedSet.has(item.id),
       );
