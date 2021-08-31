@@ -43,7 +43,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   ];
   projects: ProjectInfo[] = [];
   dataSource: MatTableDataSource<ProjectInfo>;
-  isFollowedPage: boolean = false;
+  isFollowedPage: string = 'false';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
@@ -71,7 +71,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
           d.position = i + 1;
           d.isFollowed = this.followedSet.has(d.id);
         });
-        if(localStorage.getItem(this.followedPageToken)!==null)
+        if(localStorage.getItem(this.followedPageToken)=='true')
           this.dataSource.data = this.projects.filter(item=>this.followedSet.has(item.id));
         else
           this.dataSource.data = this.projects;
@@ -79,7 +79,8 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
       },
       );
     this.dataSource = new MatTableDataSource<ProjectInfo>();
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
+      localStorage.getItem(this.followedPageToken)! : 'false';
   }
 
   public getProjects() {
@@ -94,7 +95,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
             d.position = i + 1;
             d.isFollowed = this.followedSet.has(d.id);
           });
-          if(localStorage.getItem(this.followedPageToken)!==null)
+          if(localStorage.getItem(this.followedPageToken)=='true')
           {
             this.dataSource.data = this.projects.filter(item=>this.followedSet.has(item.id));
           
@@ -114,9 +115,9 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   }
 
   public switchToFollowed(){
-    this.isFollowedPage = true;
+    this.isFollowedPage = 'true';
     this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
-    this.followService.switchRefreshFollowedPageToken(true, this.followedPageToken);
+    this.followService.switchRefreshFollowedPageToken('true', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
   public getFirstTags(project: ProjectInfo): Tag[] {
@@ -135,9 +136,9 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
       : true;
   }
   public switchAwayToAll(){
-    this.isFollowedPage = false;
+    this.isFollowedPage = 'false';
     this.dataSource.data = this.projects;
-    this.followService.switchRefreshFollowedPageToken(false, this.followedPageToken);
+    this.followService.switchRefreshFollowedPageToken('false', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
   public ngOnDestroy(): void {
@@ -154,7 +155,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
       this.dataSource.paginator.firstPage();
     }
   }
-  public onBookmark(data: ProjectInfo, perfomToFollowCleanUp: boolean = false){
+  public onBookmark(data: ProjectInfo, perfomToFollowCleanUp: string = 'false'){
     let projetIndex:number = this.dataSource.data.findIndex(project=>project.id === data.id)!;
     data.isFollowed = !data.isFollowed;
     if(data.isFollowed)
@@ -172,7 +173,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
       ).subscribe();
     }
     this.dataSource.data[projetIndex] = data;
-    if(perfomToFollowCleanUp){
+    if(perfomToFollowCleanUp == 'true'){
       this.dataSource.data = this.dataSource.data.filter(project=>project.isFollowed);
     }
     this.directive.applyFilter$.emit();

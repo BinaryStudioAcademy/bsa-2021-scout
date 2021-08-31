@@ -35,7 +35,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public dataSource = new MatTableDataSource<ViewableApplicant>();
   public cashedData: ViewableApplicant[] = [];
   public searchValue = '';
-  public isFollowedPage = false;
+  public page:string = 'all';
   public loading: boolean = true;
   private followedSet: Set<string> = new Set();
   @ViewChild(MatPaginator) public paginator: MatPaginator | undefined =
@@ -45,7 +45,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   | undefined = undefined;
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
-  private readonly followedPageToken: string = 'followedApplicantPage';
+  private readonly applicantPageToken: string = 'applicantPageToken';
   constructor(
     private readonly notificationsService: NotificationService,
     private readonly applicantsService: ApplicantsService,
@@ -87,10 +87,16 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         this.loading = false;
-        if (localStorage.getItem(this.followedPageToken) !== null)
-          this.dataSource.data = result.filter(item => this.followedSet.has(item.id));
-        else
-          this.dataSource.data = result;
+        this.dataSource.data = result;
+
+        if (localStorage.getItem(this.applicantPageToken) == 'followed') {
+          this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
+        }
+    
+        if (localStorage.getItem(this.applicantPageToken) == 'self-applied') {
+          this.dataSource.data = this.dataSource.data.filter(a => a.isSelfApplied);
+        }
+
         this.cashedData = result;
         this.directive!.applyFilter$.emit();
       },
@@ -103,7 +109,8 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         );
       },
       );
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken) !== null;
+    this.page = localStorage.getItem(this.applicantPageToken) ? 
+      localStorage.getItem(this.applicantPageToken)! : 'all';
     this.getApplicants();
   }
 
@@ -138,10 +145,8 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           });
 
           this.loading = false;
-          if (localStorage.getItem(this.followedPageToken) !== null)
-            this.dataSource.data = result.filter(item => this.followedSet.has(item.id));
-          else
-            this.dataSource.data = result;
+          this.dataSource.data = result;
+            
           this.cashedData = result;
           this.directive!.applyFilter$.emit();
         },
@@ -196,7 +201,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           this.cashedData.unshift(result);
           this.dataSource.data = this.cashedData;
 
-          if (this.isFollowedPage) {
+          if (this.page) {
             this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
           }
 
@@ -218,7 +223,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.cashedData[applicantIndex] = applicant;
       this.dataSource.data = this.cashedData;
 
-      if (this.isFollowedPage) {
+      if (this.page) {
         this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
       }
 
@@ -237,7 +242,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cashedData.splice(applicantIndex, 1);
     this.dataSource.data = this.cashedData;
 
-    if (this.isFollowedPage) {
+    if (this.page) {
       this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
     }
 
@@ -248,16 +253,20 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  public toggleFollowedOrAll(isFollowed: boolean): void {
-    this.isFollowedPage = isFollowed;
+  public toggleFollowedOrAll(page: string): void {
+    this.page = page;
 
-    if (isFollowed) {
+    this.dataSource.data = this.cashedData;
+
+    if (page == 'followed') {
       this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
     }
-    else {
-      this.dataSource.data = this.cashedData;
+
+    if (page == 'self-applied') {
+      this.dataSource.data = this.dataSource.data.filter(a => a.isSelfApplied);
     }
-    this.followService.switchRefreshFollowedPageToken(isFollowed, this.followedPageToken);
+
+    this.followService.switchRefreshFollowedPageToken(page, this.applicantPageToken);
     this.directive!.applyFilter$.emit();
   }
 
@@ -278,8 +287,12 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         EntityType.Applicant, this.cashedData[applicantIndex].id,
       ).subscribe();
     }
-    if (this.isFollowedPage) {
+    if (this.page == 'followed') {
       this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
+    }
+
+    if (this.page == 'self-applied') {
+      this.dataSource.data = this.dataSource.data.filter(a => a.isSelfApplied);
     }
 
     this.directive!.applyFilter$.emit();

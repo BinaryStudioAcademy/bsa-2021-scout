@@ -1,9 +1,9 @@
 <app-header></app-header>
 <div class="pool-page">
     <div class="header">
-        <button class="tub" [style.text-decoration]="!isFollowedPage ? 'underline' : 'none'"
+        <button class="tub" [style.text-decoration]="isFollowedPage == 'false' ? 'underline' : 'none'"
             (click)="switchAwayToAll()">All</button>
-        <button class="tub" [style.text-decoration]="isFollowedPage ? 'underline' : 'none'"
+        <button class="tub" [style.text-decoration]="isFollowedPage == 'true' ? 'underline' : 'none'"
             (click)="switchToFollowed()">Followed</button>
         <mat-form-field floatLabel="never">
             <mat-icon class="search">search</mat-icon>
@@ -51,9 +51,9 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let row" class="actions">
-                        <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="row.isFollowedPage"
-                                (click)="$event.stopPropagation();onBookmark(row, true)" class="applyPrimaryColor">bookmark</mat-icon>
-                        <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="!row.isFollowedPage"
+                        <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="isFollowedPage == 'true'"
+                                (click)="$event.stopPropagation();onBookmark(row, 'true')" class="applyPrimaryColor">bookmark</mat-icon>
+                        <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="isFollowedPage == 'false'"
                                 (click)="$event.stopPropagation();onBookmark(row)">bookmark</mat-icon>
                         <mat-icon (click)="$event.stopPropagation();editPool(row)">edit</mat-icon>
                         <mat-icon (click)="onDetails(row.id)">more_horiz</mat-icon>

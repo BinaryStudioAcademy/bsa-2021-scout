@@ -35,7 +35,8 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
     private notificationService: NotificationService,
     private followService: FollowedService,
   ) { 
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
+      localStorage.getItem(this.followedPageToken)! : 'false';
   }
     
   
@@ -52,7 +53,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
   loading : boolean = false;
   dataSource = new MatTableDataSource(this.mainData);  
   private unsubscribe$ = new Subject<void>();
-  isFollowedPage: boolean = false;
+  isFollowedPage: string = 'false';
   private followedSet: Set<string> = new Set();
   private readonly followedPageToken: string = 'followedPoolPage';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -106,7 +107,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
           dataWithTotal.forEach((d) => {
             d.isFollowed = this.followedSet.has(d.id);
           });
-          if(localStorage.getItem(this.followedPageToken)!==null){
+          if(localStorage.getItem(this.followedPageToken) == 'true'){
             this.dataSource.data = dataWithTotal.filter(item=>this.followedSet.has(item.id));
           }
           else
@@ -123,18 +124,18 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       );
   }
   public switchToFollowed(){
-    this.isFollowedPage = true;
+    this.isFollowedPage = 'true';
     this.dataSource.data = this.dataSource.data.filter(pool=>pool.isFollowed);
-    this.followService.switchRefreshFollowedPageToken(true, this.followedPageToken);
+    this.followService.switchRefreshFollowedPageToken('true', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
   public switchAwayToAll(){
-    this.isFollowedPage = false;
+    this.isFollowedPage = 'false';
     this.dataSource.data = this.mainData;
-    this.followService.switchRefreshFollowedPageToken(false, this.followedPageToken);
+    this.followService.switchRefreshFollowedPageToken('false', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
-  public onBookmark(data: ApplicantsPool, perfomToFollowCleanUp: boolean = false){
+  public onBookmark(data: ApplicantsPool, perfomToFollowCleanUp: string = 'false'){
     let poolIndex:number = this.dataSource.data.findIndex(pool=>pool.id === data.id)!;
     data.isFollowed = !data.isFollowed;
     if(data.isFollowed)
@@ -152,11 +153,12 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       ).subscribe();
     }
     this.dataSource.data[poolIndex] = data;
-    if(perfomToFollowCleanUp){
+    if(perfomToFollowCleanUp == 'true'){
       this.dataSource.data = this.dataSource.data.filter(pool=>pool.isFollowed);
     }
     this.directive.applyFilter$.emit();
   }
+
   createPool(pool: CreatePool) {
     this.loading = true;
     this.poolService

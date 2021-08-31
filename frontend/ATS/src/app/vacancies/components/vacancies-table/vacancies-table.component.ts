@@ -47,7 +47,7 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
     'creationDate', 'candidatesAmount', 'actions'];
   dataSource: MatTableDataSource<VacancyData> = new MatTableDataSource<VacancyData>();
   mainData!: VacancyData[];
-  isFollowedPage: boolean = false;
+  isFollowedPage: string = 'false';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
@@ -70,7 +70,7 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
         }))
       .subscribe(data => {
         this.mainData = data;
-        if(localStorage.getItem(this.followedPageToken)!==null)
+        if(localStorage.getItem(this.followedPageToken) == 'true')
           this.dataSource.data = data.filter(item=>this.followedSet.has(item.id));
         else
           this.dataSource.data = data;
@@ -85,7 +85,8 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
         this.notificationService.showErrorMessage('Failed to get vacancies.');
       },
       );
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken)!== null;
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
+      localStorage.getItem(this.followedPageToken)! : 'false';
   }
   private readonly followedPageToken: string = 'followedVacancyPage';
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
@@ -104,7 +105,7 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
       .subscribe(
         data => {
           this.mainData = data;
-          if(localStorage.getItem(this.followedPageToken)!==null)
+          if(localStorage.getItem(this.followedPageToken) == 'true')
             this.dataSource.data = data.filter(item=>this.followedSet.has(item.id));
           else
             this.dataSource.data = data;
@@ -132,18 +133,18 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
     dialogRef.afterClosed().subscribe(() => this.getVacancies());
   }
   public switchToFollowed(){
-    this.isFollowedPage = true;
+    this.isFollowedPage = 'true';
     this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
-    this.followService.switchRefreshFollowedPageToken(true, this.followedPageToken);
+    this.followService.switchRefreshFollowedPageToken('true', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
   public switchAwayToAll(){
-    this.isFollowedPage = false;
+    this.isFollowedPage = 'false';
     this.dataSource.data = this.mainData;
-    this.followService.switchRefreshFollowedPageToken(false, this.followedPageToken);
+    this.followService.switchRefreshFollowedPageToken('false', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
-  public onBookmark(data: VacancyData, perfomToFollowCleanUp: boolean = false){
+  public onBookmark(data: VacancyData, perfomToFollowCleanUp: string = 'false'){
     let vacancyIndex:number = this.dataSource.data.findIndex(vacancy=>vacancy.id === data.id)!;
     data.isFollowed = !data.isFollowed;
     if(data.isFollowed)
@@ -161,7 +162,7 @@ export class VacanciesTableComponent implements AfterViewInit, OnDestroy {
       ).subscribe();
     }
     this.dataSource.data[vacancyIndex] = data;
-    if(perfomToFollowCleanUp){
+    if(perfomToFollowCleanUp == 'true'){
       this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
     }
     this.directive.applyFilter$.emit();
