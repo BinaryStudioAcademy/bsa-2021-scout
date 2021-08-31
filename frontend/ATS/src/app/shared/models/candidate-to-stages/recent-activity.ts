@@ -7,5 +7,7 @@ export interface RecentActivity extends Model {
   candidateName: string;
   stageId: string;
   stageName: string;
+  vacancyId: string;
+  vacancyName: string;
   dateAdded: Date;
 }
