@@ -74,6 +74,9 @@ function processLinkedInPage() {
         }
     }
 
+    experienceDescription = experienceDescription
+        .substring(0, experienceDescription.length - 2);
+
     const education = [];
 
     for (const child of educationElements) {
