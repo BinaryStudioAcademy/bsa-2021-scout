@@ -440,6 +440,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   }
 
   cancelStageEdit() {
+    this.isEditStageMode = false;
     this.stageToEdit = {} as Stage;
     this.displayCreateStage();
   }
