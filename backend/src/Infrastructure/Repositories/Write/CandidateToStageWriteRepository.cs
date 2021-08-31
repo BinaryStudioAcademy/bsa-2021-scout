@@ -52,8 +52,10 @@ namespace Infrastructure.Repositories.Write
 
             oldEntity.DateRemoved = DateTime.UtcNow;
 
-            await UpdateAsync(oldEntity);
-            await CreateAsync(newEntity);
+            _context.CandidateToStages.Add(newEntity);
+            _context.CandidateToStages.Update(oldEntity);
+
+            await _context.SaveChangesAsync();
         }
     }
 }
