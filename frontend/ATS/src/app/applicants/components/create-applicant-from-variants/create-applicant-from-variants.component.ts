@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { applicantGroup } from '../../validators/applicant-validator';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
@@ -10,13 +10,14 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { FileType } from 'src/app/shared/enums/file-type.enum';
+import { ApplicantCreationVariants } from 'src/app/shared/models/applicants/creation-variants';
 
 @Component({
   selector: 'app-create-applicant-from-variants',
   templateUrl: 'create-applicant-from-variants.component.html',
   styleUrls: ['create-applicant-from-variants.component.scss', '../../common/common.scss'],
 })
-export class CreateApplicantFromVariantsComponent implements OnInit, OnDestroy {
+export class CreateApplicantFromVariantsComponent implements OnDestroy {
   public validationGroup: FormGroup | undefined = undefined;
   public loading: boolean = false;
 
@@ -46,7 +47,7 @@ export class CreateApplicantFromVariantsComponent implements OnInit, OnDestroy {
     private readonly applicantsService: ApplicantsService,
     private readonly dialogRef: MatDialogRef<CreateApplicantFromVariantsComponent>,
     private readonly notificationsService: NotificationService,
-    @Inject(MAT_DIALOG_DATA) public data?: CreateApplicant,
+    @Inject(MAT_DIALOG_DATA) public data: ApplicantCreationVariants,
   ) {
     this.validationGroup = applicantGroup;
   }
@@ -73,13 +74,15 @@ export class CreateApplicantFromVariantsComponent implements OnInit, OnDestroy {
       );
   }
 
-  public ngOnInit(): void {
-    if (this.data) {
-      this.createdApplicant = {
-        ...this.createdApplicant,
-        ...this.data,
-      };
-    }
+  public set(control: string, value: any): void {
+    this.validationGroup?.get(control)?.setValue(value);
+  }
+
+  public addTag(tag: string): void {
+    this.updateTags([...this.createdApplicant.tags.tagDtos, {
+      id: '',
+      tagName: tag,
+    }]);
   }
 
   public updateTags(tags: Tag[]): void {

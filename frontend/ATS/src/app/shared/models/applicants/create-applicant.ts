@@ -11,13 +11,11 @@ export class CreateApplicant {
   experience: number = 0;
   experienceDescription?: string;
   skills?: string;
-
   tags: ElasticEntity = new ElasticEntity();
-
   cv: File | null = null;
 
-  constructor(csvApplicant: CsvApplicant | null) {
-    if(csvApplicant){
+  public constructor(csvApplicant: CsvApplicant | null) {
+    if (csvApplicant){
       this.firstName = csvApplicant.firstName;
       this.lastName = csvApplicant.lastName;
       this.email = csvApplicant.email;
@@ -27,5 +25,4 @@ export class CreateApplicant {
       this.experience = csvApplicant.experience;
     }
   }
-
 }
