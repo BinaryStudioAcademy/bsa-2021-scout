@@ -110,6 +110,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
         this.vacancyCandidateService
           .changeCandidateStage(
             event.item.element.nativeElement.id, // Stores candidate id
+            this.vacancyId,
             event.container.id, // Stores new stage id
           )
           .subscribe(

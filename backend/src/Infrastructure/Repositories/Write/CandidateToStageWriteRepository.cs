@@ -2,6 +2,8 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Dapper;
 using Domain.Entities;
 using Domain.Interfaces.Write;
@@ -23,14 +25,16 @@ namespace Infrastructure.Repositories.Write
             _connectionFactory = connectionFactory;
         }
 
-        public async Task ReplaceForCandidate(string candidateId, string newStageId)
+        public async Task ReplaceForCandidate(string candidateId, string vacancyId, string newStageId)
         {
             SqlConnection connection = _connectionFactory.GetSqlConnection();
 
             string sql = @"
-                SELECT *
+                SELECT CandidateToStages.*
                 FROM CandidateToStages
+                LEFT JOIN Stages ON Stages.Id = CandidateToStages.StageId
                 WHERE (
+                    Stages.VacancyId = @vacancyId AND
                     CandidateToStages.DateRemoved IS NULL AND
                     CandidateToStages.CandidateId = @id
                 )
@@ -46,16 +50,14 @@ namespace Infrastructure.Repositories.Write
             await connection.OpenAsync();
 
             CandidateToStage oldEntity = await connection
-                .QueryFirstAsync<CandidateToStage>(sql.ToString(), new { id = candidateId });
+                .QueryFirstAsync<CandidateToStage>(sql.ToString(), new { id = candidateId, vacancyId = vacancyId });
 
             await connection.CloseAsync();
 
             oldEntity.DateRemoved = DateTime.UtcNow;
+            await UpdateAsync(oldEntity);
 
-            _context.CandidateToStages.Add(newEntity);
-            _context.CandidateToStages.Update(oldEntity);
-
-            await _context.SaveChangesAsync();
+            await CreateAsync(newEntity);
         }
     }
 }
