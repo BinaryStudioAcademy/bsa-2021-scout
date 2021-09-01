@@ -11,7 +11,6 @@ namespace Application.Applicants.Dtos
     public class GetApplicantDto : HumanDto
     {
         public string Phone { get; set; }
-        public string Skype { get; set; }
         public double Experience { get; set; }
     }
 
@@ -20,7 +19,6 @@ namespace Application.Applicants.Dtos
         public GetApplicantDtoValidator()
         {
             RuleFor(a => a.Phone).NotNull().NotEmpty();
-            RuleFor(a => a.Skype).NotNull().NotEmpty();
             RuleFor(a => a.Experience).GreaterThanOrEqualTo(0);
         }
     }

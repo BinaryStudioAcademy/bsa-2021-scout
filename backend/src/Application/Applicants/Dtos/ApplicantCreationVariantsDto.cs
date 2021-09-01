@@ -17,9 +17,6 @@ namespace Application.Applicants.Dtos
         [JsonProperty("phone")]
         public IEnumerable<string> Phone { get; set; }
 
-        [JsonProperty("skype")]
-        public IEnumerable<string> Skype { get; set; }
-
         [JsonProperty("email")]
         public IEnumerable<string> Email { get; set; }
 
