@@ -132,7 +132,6 @@ $primary-color: #ee2a64;
       height: min-content;
       width: fit-content;
       max-width: none;
-
       max-height: $row-height - 15px;
       margin: auto 0;
 
@@ -142,6 +141,10 @@ $primary-color: #ee2a64;
 
         .mat-list-item-content {
           padding-left: 0;
+        }
+
+        &:nth-child(2) .mat-list-item-content::after {
+          content: "...";
         }
       }
     }
@@ -161,6 +164,10 @@ $primary-color: #ee2a64;
 
         .mat-list-item-content {
           padding: 5px 15px;
+
+          &::after {
+            content: "";
+          }
         }
       }
     }

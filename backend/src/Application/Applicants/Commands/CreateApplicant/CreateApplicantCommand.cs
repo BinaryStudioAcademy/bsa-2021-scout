@@ -68,6 +68,7 @@ namespace Application.Applicants.Commands
                 Experience = command.ApplicantDto.Experience,
                 LinkedInUrl = command.ApplicantDto.LinkedInUrl,
                 CompanyId = creatorUser.CompanyId,
+                CreationDate = DateTime.Now,
             };
 
             await UploadCvFileIfExists(applicant, command);
