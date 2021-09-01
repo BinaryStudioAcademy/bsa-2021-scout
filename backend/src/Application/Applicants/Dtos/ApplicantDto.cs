@@ -8,7 +8,6 @@ namespace Application.Applicants.Dtos
     public class ApplicantDto : HumanDto
     {
         public string Phone { get; set; }
-        public string Skype { get; set; }
         public string LinkedInUrl { get; set; }
         public double Experience { get; set; }
         public string ExperienceDescription { get; set; }

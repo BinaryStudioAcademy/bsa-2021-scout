@@ -25,7 +25,6 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
     lastName: '',
     email: '',
     phone: '',
-    skype: '',
     linkedInUrl: '',
     experience: 0,
     experienceDescription: '',
