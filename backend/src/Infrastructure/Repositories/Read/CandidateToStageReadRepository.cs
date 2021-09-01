@@ -37,6 +37,8 @@ namespace Infrastructure.Repositories.Read
                     CandidateToStages.*,
                     Stages.Id,
                     Stages.Name,
+                    Vacancies.Id,
+                    Vacancies.Title,
                     VacancyCandidates.Id,
                     Applicants.Id,
                     Applicants.FirstName,
@@ -46,6 +48,7 @@ namespace Infrastructure.Repositories.Read
                     Users.LastName
                 FROM CandidateToStages
                 LEFT JOIN Stages ON Stages.Id = CandidateToStages.StageId
+                LEFT JOIN Vacancies ON Vacancies.Id = Stages.VacancyId
                 LEFT JOIN VacancyCandidates ON VacancyCandidates.Id = CandidateToStages.CandidateId
                 LEFT JOIN Applicants ON Applicants.Id = VacancyCandidates.ApplicantId
                 LEFT JOIN Users ON Users.Id = CandidateToStages.MoverId
@@ -65,11 +68,12 @@ namespace Infrastructure.Repositories.Read
             await connection.OpenAsync();
 
             IEnumerable<CandidateToStage> candidateToStages = await connection
-                .QueryAsync<CandidateToStage, Stage, VacancyCandidate, Applicant, User, CandidateToStage>(
+                .QueryAsync<CandidateToStage, Stage, Vacancy, VacancyCandidate, Applicant, User, CandidateToStage>(
                     sql,
-                    (candidateToStage, stage, candidate, applicant, user) =>
+                    (candidateToStage, stage, vacancy, candidate, applicant, user) =>
                     {
                         candidateToStage.Stage = stage;
+                        candidateToStage.Stage.Vacancy = vacancy;
                         candidateToStage.Candidate = candidate;
                         candidateToStage.Candidate.Applicant = applicant;
                         candidateToStage.Mover = user;

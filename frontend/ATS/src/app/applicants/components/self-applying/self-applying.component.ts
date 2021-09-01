@@ -53,9 +53,6 @@ export class SelfApplyingComponent {
       Validators.required,
       Validators.pattern('^\\+?[0-9]{8,16}'),
     ]),
-    skype: new FormControl('', [
-      Validators.pattern('^https:\\/\\/skype.com\\/\\S{6,32}'),
-    ]),
     linkedInUrl: new FormControl('', [
       Validators.pattern('^https:\\/\\/www.linkedin.com\\/[a-z0-9\\-]+'),
     ]),

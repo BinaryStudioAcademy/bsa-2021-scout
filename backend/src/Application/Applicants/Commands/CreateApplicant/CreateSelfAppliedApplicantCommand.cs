@@ -63,7 +63,6 @@ namespace Application.Applicants.Commands.CreateApplicant
                 BirthDate = command.ApplicantDto.BirthDate,
                 Email = command.ApplicantDto.Email,
                 Phone = command.ApplicantDto.Phone,
-                Skype = command.ApplicantDto.Skype,
                 Experience = command.ApplicantDto.Experience,
                 ExperienceDescription = command.ApplicantDto.ExperienceDescription,
                 LinkedInUrl = command.ApplicantDto.LinkedInUrl,

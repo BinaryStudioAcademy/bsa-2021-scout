@@ -10,7 +10,7 @@
         <h4>
           <a routerLink="/profile/{{ item.moverId }}">{{ item.moverName }}</a>
           <span> moved </span>
-          <a routerLink="/candidate/{{ item.candidateId }}">{{ item.candidateName }}</a>
+          <a (click)="showOneCandidate(item)">{{ item.candidateName }}</a>
           <span> to stage </span>
           <span class="bold">{{ item.stageName }}</span>
         </h4>
