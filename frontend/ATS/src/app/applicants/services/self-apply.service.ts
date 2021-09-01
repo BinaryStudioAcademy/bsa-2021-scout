@@ -22,8 +22,8 @@ export class SelfApplyService {
   }
 
   public getApplyConfirmEmailToken(email: string, vacancyId: string): Observable<string[]> {
-    return this.httpService.getRequest<string[]>(`/SelfApply/email-confirm-apply/
-    ${vacancyId}/${email}`);
+    return this.httpService
+      .getRequest<string[]>(`/SelfApply/email-confirm-apply/${vacancyId}/${email}`);
   }
 
   public addSelfAppliedApplicant(createApplicant: CreateApplicant, 
