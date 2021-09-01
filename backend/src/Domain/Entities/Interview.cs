@@ -11,6 +11,7 @@ namespace Domain.Entities
         public string Title { get; set; }
         public string MeetingLink { get; set; }
         public MeetingSource MeetingSource { get; set; }
+        public string CompanyId { get; set; }
         public string VacancyId { get; set; }
         public Vacancy Vacancy { get; set; }
         public DateTime Scheduled { get; set; }
