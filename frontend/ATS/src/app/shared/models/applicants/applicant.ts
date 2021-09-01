@@ -8,7 +8,6 @@ export interface Applicant {
   birthDate?: Date;
   email: string;
   phone?: string;
-  skype?: string;
   linkedInUrl?: string;
   experience?: number;
   experienceDescription?: string;

@@ -13,7 +13,6 @@ namespace Application.Applicants.Dtos
         public DateTime BirthDate { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string Skype { get; set; }
         public string LinkedInUrl { get; set; }
         public double Experience { get; set; }
         public bool IsValid { get; set; }

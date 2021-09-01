@@ -88,13 +88,10 @@
                                 </div>
                             </ng-template>
 
-                            <p class="required-field">Experience description</p>
-                            <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors? 'invalid-input' : ''">
-                                <input required formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description" [(ngModel)]="applicant.experienceDescription">
+                            <p>Experience description</p>
+                            <mat-form-field class="wide" appearance="fill">
+                                <textarea formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description" [(ngModel)]="applicant.experienceDescription"></textarea>
                             </mat-form-field>
-                            <div class="validation-error" *ngIf="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors?.required">
-                                It`s required field
-                            </div>
 
                             <p class="required-field">Experience</p>
                             <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors? 'invalid-input' : ''">
@@ -116,14 +113,6 @@
                                     A phone number can only contain integers and has a length from 8 to 16. In has to match the pattern +&lt;code&gt;&lt;number&gt; or &lt;number&gt;
                                 </div>
                             </ng-template>
-
-                            <p>Skype</p>
-                            <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['skype'].dirty && validationGroup!.controls['skype'].errors? 'invalid-input' : ''">
-                                <input formControlName="skype" type="text" matInput placeholder="Enter skype" [(ngModel)]="applicant.skype">
-                            </mat-form-field>
-                            <div class="validation-error" *ngIf="validationGroup!.controls['skype'].dirty && validationGroup!.controls['skype'].errors?.pattern">
-                                A skype url must match the pattern https://skype.com/&lt;skype&gt;<br/> A skype has to has a length from 6 to 32 not space characters
-                            </div>
 
                             <p>LinkedIn url</p>
                             <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['linkedInUrl'].dirty && validationGroup!.controls['linkedInUrl'].errors? 'invalid-input' : ''">
