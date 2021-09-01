@@ -8,7 +8,7 @@ namespace Domain.Entities
     {
         public Applicant()
         {
-            CreationDate = DateTime.Now;
+            CreationDate = DateTime.UtcNow;
         }
 
         public string LinkedInUrl { get; set; }
