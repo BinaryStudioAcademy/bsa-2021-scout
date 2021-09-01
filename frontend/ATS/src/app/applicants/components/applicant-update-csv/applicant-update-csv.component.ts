@@ -29,9 +29,6 @@ export class ApplicantUpdateCsvComponent {
       Validators.required,
       Validators.pattern('^\\+?[0-9]{8,16}'),
     ]),
-    skype: new FormControl('', [
-      Validators.required,
-    ]),
     linkedInUrl: new FormControl('', [
       Validators.pattern('^https:\\/\\/www.linkedin.com\\/[a-z0-9\\-]+'),
     ]),

@@ -6,7 +6,6 @@ export interface UpdateApplicant {
   lastName: string;
   email: string;
   phone: string;
-  skype: string;
   linkedInUrl: string;
   experience: number;
   experienceDescription?: string;

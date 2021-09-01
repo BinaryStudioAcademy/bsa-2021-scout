@@ -6,7 +6,6 @@ export class CreateApplicant {
   lastName: string = '';
   email: string = '';
   phone: string = '';
-  skype: string = '';
   linkedInUrl: string = '';
   experience: number = 0;
   experienceDescription?: string;
@@ -22,7 +21,6 @@ export class CreateApplicant {
       this.lastName = csvApplicant.lastName;
       this.email = csvApplicant.email;
       this.phone = csvApplicant.phone;
-      this.skype = csvApplicant.skype;
       this.linkedInUrl = csvApplicant.linkedInUrl;
       this.experience = csvApplicant.experience;
     }

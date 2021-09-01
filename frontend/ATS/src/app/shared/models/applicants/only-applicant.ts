@@ -6,7 +6,6 @@ export interface OnlyApplicant extends Model {
   birthDate: Date;
   email: string;
   phone: string;
-  skype: string;
   experience: string;
   experienceDescription?: string;
   skills?: string;
