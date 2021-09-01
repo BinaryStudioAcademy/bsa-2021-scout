@@ -21,7 +21,7 @@
         margin:  1px;
         text-align: center;
     }
-    .grey {color: red}
+    .grey {color: #B8B8B8}
     .selected 
     {background-color: #948CB226;}
     .blue{
@@ -69,8 +69,8 @@
       }
       
       .calendar-day {
-        height: 12vh;
-        max-height: 12vh;
+        height: 7vh;
+        max-height: 7vh;
         cursor: pointer;
       }
       
