@@ -82,18 +82,22 @@ namespace Application.Vacancies.Commands.Edit
             {
                 foreach (var stage in updateVacancy.Stages)
                 {
-                    if (stage.Id == null || stage.Id == "")
+                    if (stage != null && (stage.Id == null || stage.Id == ""))
                     {
                         await _mediator.Send(new CreateVacancyStageCommand(_mapper.Map<StageCreateDto>(stage), command.Id));
                     }
-                    if (stages.Any(x => x.Id == stage.Id))
+                    if (stage != null && stages.Any(x => x.Id == stage.Id))
                     {
                         var thisStageActions = actions.Where(x => x.StageId == stage.Id).ToList();
                         foreach (var action in stage.Actions)
                         {
-                            if (action.Id != null && action.Id != "")
+                            if (thisStageActions.Any(x => x.Id == action.Id))
                             {
                                 thisStageActions.Remove(thisStageActions.First(x => x.Id == action.Id));
+                            }
+                            else
+                            {
+                                action.Id = null;
                             }
                         }
                         if (thisStageActions.Count() > 0)

@@ -106,14 +106,26 @@ namespace Application.Stages.Commands
                 rts.Review = null;
                 await _reviewToStageWriteRepository.CreateAsync(rts);
             }
-
+            
             if (updateStage.ReviewToStages.Count < existedStage.ReviewToStages.Count)
             {
+                var reviewsToStagesToDeleteIds = new List<string>();
                 foreach (ReviewToStage rts in existedStage.ReviewToStages)
                 {
                     if (updateStage.ReviewToStages.All(updateRts => updateRts.ReviewId != rts.ReviewId))
                     {
-                        await _reviewToStageWriteRepository.DeleteAsync(rts.Id);
+                        reviewsToStagesToDeleteIds.Add(rts.Id);
+                    }
+                }
+                if (reviewsToStagesToDeleteIds.Count() != 0)
+                {
+                    foreach (var reviewToStagesToDeleteId in reviewsToStagesToDeleteIds)
+                    {
+                        if (existedStage.ReviewToStages.Count() != 0)
+                        {
+                            existedStage.ReviewToStages.Remove(existedStage.ReviewToStages.First(x => x.Id == reviewToStagesToDeleteId));
+                        }
+                        await _reviewToStageWriteRepository.DeleteAsync(reviewToStagesToDeleteId);
                     }
                 }
             }

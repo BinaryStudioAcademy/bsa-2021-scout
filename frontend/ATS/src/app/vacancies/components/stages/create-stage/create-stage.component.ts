@@ -102,7 +102,7 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
       this.stageForm
         .get('reviews')
         ?.setValue(changes.stage.currentValue.reviews);
-      this.editModeItemIndex = changes.stage.currentValue.index;
+      this.editModeItemIndex = changes.stage.currentValue.index ?? -1;
     }
   }
 
@@ -192,6 +192,9 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
   onStageSave() {
     this.submitted = true;
     this.stage = { ...this.stageForm.value };
+    if(this.stage!.reviews == null){
+      this.stage!.reviews = [];
+    }
     this.stage!.index = this.editModeItemIndex;
     this.stageForm.reset();
     this.stageChange.emit(this.stage);
