@@ -66,6 +66,8 @@ namespace Application.Applicants.Commands
                 Phone = command.ApplicantDto.Phone,
                 Experience = command.ApplicantDto.Experience,
                 LinkedInUrl = command.ApplicantDto.LinkedInUrl,
+                ExperienceDescription = command.ApplicantDto.ExperienceDescription,
+                Skills = command.ApplicantDto.Skills,
                 CompanyId = creatorUser.CompanyId,
             };
 
