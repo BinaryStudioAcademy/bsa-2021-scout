@@ -65,9 +65,11 @@ namespace Application.Applicants.Commands.CreateApplicant
                 Phone = command.ApplicantDto.Phone,
                 Skype = command.ApplicantDto.Skype,
                 Experience = command.ApplicantDto.Experience,
+                ExperienceDescription = command.ApplicantDto.ExperienceDescription,
                 LinkedInUrl = command.ApplicantDto.LinkedInUrl,
                 CompanyId = vacancy.CompanyId,
-                IsSelfApplied = true
+                IsSelfApplied = true,
+                CreationDate = DateTime.Now
             };
 
             await UploadCvFileIfExists(applicant, command);
