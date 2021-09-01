@@ -242,6 +242,9 @@ namespace Infrastructure
 
             services.AddScoped<IReadRepository<Domain.Entities.Action>, ActionReadRepository>();
 
+            services.AddScoped<IReadRepository<ReviewToStage>, ReviewToStageReadRepository>();
+
+
             return services;
         }
     }

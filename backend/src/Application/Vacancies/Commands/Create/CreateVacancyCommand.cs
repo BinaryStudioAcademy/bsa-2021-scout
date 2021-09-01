@@ -31,18 +31,15 @@ namespace Application.Vacancies.Commands.Create
     public class CreateVacancyCommandHandler : IRequestHandler<CreateVacancyCommand, VacancyDto>
     {
         private readonly IWriteRepository<Vacancy> _writeRepository;
-        private readonly IWriteRepository<Stage> _writeStageRepository;
         private readonly IMapper _mapper;
         private readonly ISender _mediator;
         private readonly ICurrentUserContext _currUser;
         private readonly string DefaultColumnName = "Self-Applied";
         public CreateVacancyCommandHandler(
                 IWriteRepository<Vacancy> writeRepository,
-                IWriteRepository<Stage> writeStageRepository,
                 IMapper mapper, ISender mediator, ICurrentUserContext currUser
             )
         {
-            _writeStageRepository = writeStageRepository;
             _writeRepository = writeRepository;
             _mapper = mapper;
             _mediator = mediator;
