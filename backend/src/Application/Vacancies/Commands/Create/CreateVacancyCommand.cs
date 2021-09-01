@@ -74,6 +74,18 @@ namespace Application.Vacancies.Commands.Create
             newVacancy.DateOfOpening = newVacancy.CreationDate; // Must be changed in future
             newVacancy.ModificationDate = DateTime.UtcNow;
 
+
+            var stagesWithReview = newVacancy.Stages.Where(x => x.ReviewToStages != null && x.ReviewToStages.Count() != 0);
+            if (stagesWithReview.Count() !=0)
+            {
+                foreach (var stage in stagesWithReview)
+                {
+                    foreach (var reviewToStages in stage.ReviewToStages)
+                    {
+                        reviewToStages.Review = null;
+                    }
+                }
+            }
             await _writeRepository.CreateAsync(newVacancy);
 
             var elasticQuery = new CreateElasticDocumentCommand<CreateElasticEntityDto>(new CreateElasticEntityDto()

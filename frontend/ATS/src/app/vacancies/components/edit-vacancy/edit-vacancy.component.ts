@@ -282,7 +282,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Contacted',
       index: 1,
-      type: 0,
+      type: 1,
       actions: [
         {
           id: '1',
@@ -333,7 +333,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Live coding session',
       index: 4,
-      type: 0,
+      type: 1,
       actions: [
         {
           id: '',
