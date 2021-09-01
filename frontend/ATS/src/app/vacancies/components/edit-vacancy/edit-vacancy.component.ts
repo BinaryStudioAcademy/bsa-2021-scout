@@ -287,7 +287,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         {
           id: '1',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -304,7 +304,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -321,7 +321,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -338,7 +338,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -353,9 +353,9 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       type: 4,
       actions: [
         {
-          id: '1',
+          id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -372,7 +372,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],

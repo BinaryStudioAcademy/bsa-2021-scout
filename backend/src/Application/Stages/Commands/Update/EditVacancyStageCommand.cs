@@ -8,6 +8,8 @@ using Domain.Entities;
 using Domain.Interfaces.Read;
 using Domain.Interfaces.Abstractions;
 using MediatR;
+using System.Collections.Generic;
+using Action = Domain.Entities.Action;
 
 namespace Application.Stages.Commands
 {
@@ -31,6 +33,7 @@ namespace Application.Stages.Commands
         private readonly IStageReadRepository _readStageRepository;
         private readonly IReadRepository<Vacancy> _readVacancyRepository;
         private readonly IWriteRepository<ReviewToStage> _reviewToStageWriteRepository;
+        private readonly IWriteRepository<Action> _writeActionRepository;
         private readonly IMapper _mapper;
 
         public EditVacancyStageCommandHandler(
@@ -38,6 +41,7 @@ namespace Application.Stages.Commands
             IReadRepository<Vacancy> readVacancyRepository,
             IStageReadRepository readStageRepository,
             IWriteRepository<ReviewToStage> reviewToStageWriteRepository,
+            IWriteRepository<Action> writeActionRepository,
             IMapper mapper
         )
         {
@@ -45,6 +49,7 @@ namespace Application.Stages.Commands
             _writeStageRepository = writeStageRepository;
             _readStageRepository = readStageRepository;
             _reviewToStageWriteRepository = reviewToStageWriteRepository;
+            _writeActionRepository = writeActionRepository;
             _mapper = mapper;
         }
 
@@ -66,6 +71,26 @@ namespace Application.Stages.Commands
             existedStage.IsReviewable = updateStage.IsReviewable;
             existedStage.Actions = updateStage.Actions;
             existedStage.ReviewToStages = null;
+
+            existedStage.Actions = new List<Action>();
+            foreach (var action in updateStage.Actions)
+            {
+                if(action.Id == null || action.Id == "")
+                {
+                    var addedAction = new Action()
+                    {
+                        ActionType = action.ActionType,
+                        Name = action.Name,
+                        StageId = command.StageId
+                    };
+                    await _writeActionRepository.CreateAsync(addedAction);
+                    existedStage.Actions.Add(addedAction);
+                }
+                else
+                {
+                    existedStage.Actions.Add(action);
+                }
+            }
 
             await _writeStageRepository.UpdateAsync(existedStage);
             existedStage.ReviewToStages = existedRts;

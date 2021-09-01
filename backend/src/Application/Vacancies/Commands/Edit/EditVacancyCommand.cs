@@ -82,7 +82,7 @@ namespace Application.Vacancies.Commands.Edit
             {
                 foreach (var stage in updateVacancy.Stages)
                 {
-                    if (stage.Id == null)
+                    if (stage.Id == null || stage.Id == "")
                     {
                         await _mediator.Send(new CreateVacancyStageCommand(_mapper.Map<StageCreateDto>(stage), command.Id));
                     }
@@ -91,7 +91,7 @@ namespace Application.Vacancies.Commands.Edit
                         var thisStageActions = actions.Where(x => x.StageId == stage.Id).ToList();
                         foreach (var action in stage.Actions)
                         {
-                            if (action.Id != null)
+                            if (action.Id != null && action.Id != "")
                             {
                                 thisStageActions.Remove(thisStageActions.First(x => x.Id == action.Id));
                             }

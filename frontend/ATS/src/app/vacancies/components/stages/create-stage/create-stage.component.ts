@@ -45,25 +45,19 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
 
   private actions: Action[] = [
     {
-      id: '1',
-      name: 'None',
-      actionType: ActionType.None,
-      stageId: this.stageId,
-    },
-    {
-      id: '2',
+      id: '',
       name: 'Send mail',
       actionType: ActionType.SendMail,
       stageId: this.stageId,
     },
     {
-      id: '3',
+      id: '',
       name: 'Add task',
       actionType: ActionType.AddTask,
       stageId: this.stageId,
     },
     {
-      id: '4',
+      id: '',
       name: 'Schedule interview action',
       actionType: ActionType.ScheduleInterviewAction,
       stageId: this.stageId,
