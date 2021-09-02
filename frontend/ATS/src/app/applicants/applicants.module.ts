@@ -14,15 +14,18 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ApplicantControlComponent } 
   from './components/applicant-control/applicant-control.component';
 import { ApplicantsUploadCsvComponent } 
-  from './components/applicants-upload-csv/applicants-upload-csv.component';
+  from './components/CsvComponents/applicants-upload-csv/applicants-upload-csv.component';
 import { ApplicantUpdateCsvComponent } 
   from './components/applicant-update-csv/applicant-update-csv.component';
-import { ApplicantCsvListComponent } 
-  from './components/applicant-csv-list/applicant-csv-list.component';
+import { ApplicantFileTablesComponent } 
+  from './components/CsvComponents/applicant-csv-file-tables/applicant-csv-file-tables.component';
 import { SelfApplyingComponent } from './components/self-applying/self-applying.component';
 import { ApplicantHistoryComponent }
   from './components/applicant-history/applicant-history.component';
 import { ApplicantsRoutingModule } from './applicants-routing.module';
+/* eslint-disable max-len */
+import { ApplicantCsvFilesListComponent } from './components/CsvComponents/applicant-csv-files-list/applicant-csv-files-list.component';
+import { CsvFileComponent } from './components/CsvComponents/one-csv-file/one-csv-file.component';
 
 @NgModule({
   declarations: [
@@ -33,9 +36,11 @@ import { ApplicantsRoutingModule } from './applicants-routing.module';
     ApplicantControlComponent,
     ApplicantsUploadCsvComponent,
     ApplicantUpdateCsvComponent,
-    ApplicantCsvListComponent,
+    ApplicantFileTablesComponent,
     SelfApplyingComponent,
     ApplicantHistoryComponent,
+    ApplicantCsvFilesListComponent,
+    CsvFileComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,5 @@
+import { User } from 'src/app/users/models/user';
+
 export class CsvApplicant {
   firstName: string='';
   lastName: string='';
@@ -9,7 +11,10 @@ export class CsvApplicant {
   isValid: boolean=false;
   isExist: boolean=false;
   isRepeat: boolean=false;
-
+  isAdded: boolean=false;
+  creationDate: Date = new Date();
+  user: User | null = null;
+  
   constructor(applicant?: CsvApplicant){
     if(applicant){
       this.firstName=applicant.firstName;

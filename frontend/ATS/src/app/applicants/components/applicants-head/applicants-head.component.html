@@ -5,9 +5,8 @@
     <mat-icon>search</mat-icon>
     <input #input [(ngModel)]="searchValue" matInput type="text" class="search-input" placeholder="Search..." (keyup)="applySearchValue()">
 </mat-form-field>
-<button mat-button color="accent" class="csv-button" (click)="showUploadCSVDialog()">
-    <mat-icon>attach_file</mat-icon>
-    <span>Upload from CSV</span>
+<button mat-button color="accent" class="csv-button" routerLink='/applicants/csvfiles'>
+    <span>CSV Files</span>
 </button>
 <app-button class="create-button" (click)="showApplicantsCreateDialog()">
     + New applicant

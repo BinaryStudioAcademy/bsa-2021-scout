@@ -4,8 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { CreateApplicant } from 'src/app/shared/models/applicants/create-applicant';
-import { ApplicantsUploadCsvComponent } 
-  from '../applicants-upload-csv/applicants-upload-csv.component';
 import { CreateApplicantComponent } from '../create-applicant/create-applicant.component';
 
 @Component({
@@ -22,7 +20,6 @@ export class ApplicantsHeadComponent implements OnInit{
 
   @Output() public search = new EventEmitter<string>();
   @Output() public applicantCreated = new EventEmitter<Observable<Applicant>>();
-  @Output() public applicantsFileUploaded = new EventEmitter<void>();
   @Output() public togglePage = new EventEmitter<string>();
 
   constructor(
@@ -59,16 +56,6 @@ export class ApplicantsHeadComponent implements OnInit{
     });
 
     this.applicantCreated.emit(dialogRef.afterClosed());
-  }
-
-  public showUploadCSVDialog(): void{
-    const dialogRef = this.dialog.open(ApplicantsUploadCsvComponent, {
-      width: '600px',
-      panelClass: 'applicants-csv-modal',
-      autoFocus: false,
-    })
-      .afterClosed()
-      .subscribe(_=>this.applicantsFileUploaded.emit());
   }
 
   public toggleFollowedOrAll(page: string): void {

@@ -69,6 +69,7 @@ namespace Application.Applicants.Commands
                 ExperienceDescription = command.ApplicantDto.ExperienceDescription,
                 Skills = command.ApplicantDto.Skills,
                 CompanyId = creatorUser.CompanyId,
+                CreationDate = DateTime.Now
             };
 
             await UploadCvFileIfExists(applicant, command);

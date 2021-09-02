@@ -315,12 +315,13 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
       ({ reviews, vacancy }) => {
         this.loading = false;
 
-        if (vacancy.stages[0].candidates.length != 0) {
-          this.data = [...vacancy.stages];
-        } else {
-          vacancy.stages.splice(0, 1);
-          this.data = [...vacancy.stages];
-        }
+        this.data = [...vacancy.stages];
+        vacancy.stages.forEach((stage,index) =>{
+          if(stage.index==0 && stage.candidates.length == 0){
+            vacancy.stages.splice(index, 1);
+            this.data = [...vacancy.stages];
+          }
+        });
 
         this.reviews = [...reviews];
         this.title = vacancy.title;

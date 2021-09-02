@@ -156,27 +156,6 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
-        [HttpPost("csv/")]
-        public async Task<IActionResult> GetApplicantFromCsv()
-        {
-            var file = Request.Form.Files[0];
-
-            using (var fileReadStream = file.OpenReadStream())
-            {
-                var command = new CetApplicantsFromCsvCommand(fileReadStream);
-
-                return Ok(await Mediator.Send(command));
-            }
-        }
-
-        [HttpPost("range/")]
-        public async Task<IActionResult> GetApplicantFromCsv(IEnumerable<CreateApplicantDto> applicants)
-        {
-            var command = new CreateRangeOfApplicantsCommand(applicants);
-
-            return Ok(await Mediator.Send(command));
-        }
-
         [HttpPost("tags/{entityId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> PostTagAsync(string entityId, [FromBody] TagDto createDto)
