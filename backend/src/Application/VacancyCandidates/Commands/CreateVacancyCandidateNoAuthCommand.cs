@@ -61,7 +61,7 @@ namespace Application.VacancyCandidates.Commands
                 var candidate = new VacancyCandidate
                 {
                     ApplicantId = command.Id,
-                    DateAdded = DateTime.Now,
+                    DateAdded = DateTime.UtcNow,
                     IsSelfApplied = true,
                 };
 
@@ -71,7 +71,7 @@ namespace Application.VacancyCandidates.Commands
                 {
                     CandidateId = candidate.Id,
                     StageId = stageId,
-                    DateAdded = DateTime.Now
+                    DateAdded = DateTime.UtcNow
                 });
             }
 
