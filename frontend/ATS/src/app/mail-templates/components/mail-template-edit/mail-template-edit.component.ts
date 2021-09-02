@@ -44,7 +44,6 @@ export class MailTemplateEditComponent implements OnDestroy {
   public loading: boolean = false;
   public isFormFinishLoad: boolean = false;
 
-
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   editorConfig: AngularEditorConfig = {

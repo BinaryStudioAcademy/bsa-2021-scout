@@ -89,7 +89,6 @@ export class MailTemplatesListComponent implements AfterViewInit, OnInit, OnDest
     this.directive.applyFilter$.emit();
   }
 
-
   public switchToMyTemplates() {
     this.isFollowedPage = false;
     this.dataSource.data = this.mailTemplates
@@ -115,7 +114,6 @@ export class MailTemplatesListComponent implements AfterViewInit, OnInit, OnDest
       this.dataSource.paginator.firstPage();
     }
   }
-
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;

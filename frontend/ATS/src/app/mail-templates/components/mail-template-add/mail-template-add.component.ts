@@ -37,7 +37,6 @@ export class MailTemplateAddComponent implements OnDestroy {
   };
   
   public loading: boolean = false;
-
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   editorConfig: AngularEditorConfig = {
@@ -89,8 +88,7 @@ export class MailTemplateAddComponent implements OnDestroy {
   constructor(
     private mailTemplateService: MailTemplateService,
     private notificationService: NotificationService,
-    private dialogRef: MatDialogRef<MailTemplateAddComponent>,
-  ) {
+    private dialogRef: MatDialogRef<MailTemplateAddComponent>) {
     this.dialogRef.disableClose = true;
     this.dialogRef.backdropClick().subscribe((_) => this.onFormClose());
   }

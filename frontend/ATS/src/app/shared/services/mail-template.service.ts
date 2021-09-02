@@ -32,7 +32,6 @@ export class MailTemplateService {
     return this.http.postFullRequest<MailTemplateCreate>(`${this.routePrefix}`, formData);
   }
 
-
   public updateMailTempalte(mailTemplate: MailTemplate, files : File[]) {
     console.log(mailTemplate.id);
     const formData = new FormData();

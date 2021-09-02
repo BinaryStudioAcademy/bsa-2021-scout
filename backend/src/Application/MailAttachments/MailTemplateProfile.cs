@@ -9,8 +9,7 @@ namespace Application.MailTemplates
     {
         public MailAttachmentProfile()
         {
-            CreateMap<MailAttachment, MailAttachmentDto>(); 
-            CreateMap<MailAttachmentDto, MailAttachment>();
+            CreateMap<MailAttachment, MailAttachmentDto>().ReverseMap(); 
             CreateMap<MailAttachmentCreateDto, MailAttachment>();
             CreateMap<MailAttachmentUpdateDto, MailAttachment>();
             CreateMap<MailAttachmentUpdateDto, MailAttachmentCreateDto>();

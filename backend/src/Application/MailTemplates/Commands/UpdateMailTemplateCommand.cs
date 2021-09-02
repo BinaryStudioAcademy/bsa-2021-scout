@@ -73,12 +73,8 @@ namespace Application.MailTemplates.Commands
             {
                 throw new NotFoundException(typeof(MailTemplate), mailTemplateUpdateDto.Id);
             }
-            var updatedMailTemplate = new MailTemplate();
+            var updatedMailTemplate = _mapper.Map<MailTemplate>(mailTemplateUpdateDto);
 
-            updatedMailTemplate.Id = mailTemplate.Id;
-            updatedMailTemplate.Html = mailTemplateUpdateDto.Html;
-            updatedMailTemplate.Slug = mailTemplateUpdateDto.Slug;
-            updatedMailTemplate.Subject = mailTemplateUpdateDto.Subject;
             updatedMailTemplate.CompanyId = mailTemplate.CompanyId;
             updatedMailTemplate.DateCreation = mailTemplate.DateCreation;
             updatedMailTemplate.UserCreatedId = mailTemplate.UserCreatedId;

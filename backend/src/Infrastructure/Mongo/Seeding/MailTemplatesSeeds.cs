@@ -54,8 +54,7 @@ namespace Infrastructure.Mongo.Seeding
                     <img class='logo' src='https://i.postimg.cc/Kcp5snw2/logo-scout-white.png' />
                 </center>
                 <div class='content'>
-                    <p>{{BODY}}</p>
-                    <p>Best regards, Scout team</p>
+                    {{BODY}}
                 </div>
             </div>
         </div>

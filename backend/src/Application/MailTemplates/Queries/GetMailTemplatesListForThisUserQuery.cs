@@ -33,10 +33,7 @@ namespace Application.MailTemplates.Queries
         {
             return _mapper.Map<IEnumerable<MailTemplateTableDto>>(
                 await _mailTemplateReadRepository
-                .GetMailTemplatesForThisUser(
-                (await _currentUserContext
-                .GetCurrentUser())
-                .Id));
+                    .GetMailTemplatesForThisUser((await _currentUserContext.GetCurrentUser()).Id));
         }
     }
 }

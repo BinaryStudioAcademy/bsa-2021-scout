@@ -22,7 +22,6 @@ import { HttpClientModule} from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { DxHtmlEditorModule, DxPopupModule } from 'devextreme-angular';
 
-
 @NgModule({
   declarations: [
     MailTemplatesListComponent,

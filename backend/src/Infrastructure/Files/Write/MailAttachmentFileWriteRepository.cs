@@ -25,12 +25,6 @@ namespace Infrastructure.Files.Read
                 mailAttachmentFileContent);
         }
 
-
-        public Task UpdateAsync(string applicantId, Stream cvFileContent)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public Task DeleteAsync(string filePath, string fileName)
         {
             return _awsS3WriteRepository.DeleteAsync(filePath, fileName);
