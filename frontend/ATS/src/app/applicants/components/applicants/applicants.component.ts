@@ -487,10 +487,6 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  public updateListApplicants() {
-    this.getApplicants();
-  }
-
   private compareRows(
     a: number | string,
     b: number | string,

@@ -5,8 +5,6 @@ import { Observable } from 'rxjs';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { CreateApplicant } from 'src/app/shared/models/applicants/create-applicant';
 import { ApplicantCreationVariants } from 'src/app/shared/models/applicants/creation-variants';
-import { ApplicantsUploadCsvComponent } 
-  from '../applicants-upload-csv/applicants-upload-csv.component';
 import { CreateApplicantFromVariantsComponent }
   from '../create-applicant-from-variants/create-applicant-from-variants.component';
 import { CreateApplicantComponent } from '../create-applicant/create-applicant.component';
@@ -27,7 +25,6 @@ export class ApplicantsHeadComponent implements OnInit{
 
   @Output() public search = new EventEmitter<string>();
   @Output() public applicantCreated = new EventEmitter<Observable<Applicant>>();
-  @Output() public applicantsFileUploaded = new EventEmitter<void>();
   @Output() public togglePage = new EventEmitter<string>();
 
   constructor(
@@ -76,17 +73,6 @@ export class ApplicantsHeadComponent implements OnInit{
 
     this.creationData = undefined;
     this.applicantCreated.emit(dialogRef.afterClosed());
-  }
-
-  public showUploadCSVDialog(): void {
-    this.dialog
-      .open(ApplicantsUploadCsvComponent, {
-        width: '600px',
-        panelClass: 'applicants-csv-modal',
-        autoFocus: false,
-      })
-      .afterClosed()
-      .subscribe(_=>this.applicantsFileUploaded.emit());
   }
 
   public showUploadCvDialog(): void {
