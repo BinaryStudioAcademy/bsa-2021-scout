@@ -171,20 +171,21 @@
             </div>
             <div class="workflow-container">
                 <h2><b>Workflow</b></h2>
-                <div #contenedor class="example-list" cdkDropListGroup>
-                    <ng-container *ngFor="let _stage of sortStageList();let i=index">
-                        <div class="example-box" cdkDropList cdkDropListOrientation="horizontal"
-                            [cdkDropListData]="{item:_stage,index:i}" (cdkDropListDropped)="dropStage($event)">
-                            <div cdkDrag>
-                                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                                <app-stage [stage]=_stage (isDeletedStage)="onDeleteStage($event)"
-                                    (isEditStage)="onEditStage($event)"></app-stage>
+                <div>
+                    <div #contenedor class="example-list" cdkDropListGroup>
+                        <ng-container *ngFor="let _stage of sortStageList();let i=index">
+                            <div class="example-box" cdkDropList cdkDropListOrientation="horizontal"
+                                [cdkDropListData]="{item:_stage,index:i}" (cdkDropListDropped)="dropStage($event)">
+                                <div cdkDrag>
+                                    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                                    <app-stage [stage]=_stage (isDeletedStage)="onDeleteStage($event)"
+                                        (isEditStage)="onEditStage($event)"></app-stage>
+                                </div>
                             </div>
-                        </div>
-                    </ng-container>
-                    <button mat-stroked-button class="add-stage-button" *ngIf="!isOpenCreateStage"
-                        (click)="displayCreateStage()">+ Add new stage</button>
-
+                        </ng-container>
+                        <button mat-stroked-button class="add-stage-button" *ngIf="!isOpenCreateStage"
+                            (click)="displayCreateStage()">+ Add new stage</button>
+                    </div>
                 </div>
                 <div *ngIf="isOpenCreateStage">
                     <app-create-stage [stage]="stageToEdit" (stageChange)="saveStage($event)"

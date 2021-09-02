@@ -10,13 +10,24 @@
 
 .workflow-container{
     margin: 30px 0px;
+    display: grid;
+    grid-template-columns: 50% minmax(100px, 50%);
+    grid-gap: 0 20px;
+}
+
+.workflow-container h2{
+    grid-column: 1 / 3;
+    grid-row: 1; 
+    margin: 0;
 }
 
 .form-container{
+    margin: 20px;
     display: flex;
     flex-direction: column;
     width: 100%;
     box-sizing: border-box;
+    margin-top: 10px;
 }
 
 .edit-vacancy-container{
@@ -80,20 +91,17 @@
     border: 2.5px solid #909090;
     font-size:16px;
     font-weight:700;
-    height:100px;
     border-radius:10px;
 }
 
 .example-list {
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap:20px;
   }
 
   .example-box {
     box-sizing: border-box;
     cursor: move;
+    margin: 10px 0 10px 0;
   }
 
   .cdk-drag-preview {
@@ -232,7 +240,10 @@ $primary-color: #291965;
         font-size: 90%;
         padding: 0;
     }
-
+    .mat-select-arrow-wrapper{
+        display: flex;
+        align-items: center;
+    }
     .mat-form-field-appearance-fill .mat-select-arrow-wrapper{
         padding-top:15px
     }
@@ -265,7 +276,8 @@ $primary-color: #291965;
     }
 
     .mat-select-trigger{
-        display: block;
+        display: grid;
+        grid-template-columns: 1fr 18px;
     }
 
     .mat-select-value-text{
