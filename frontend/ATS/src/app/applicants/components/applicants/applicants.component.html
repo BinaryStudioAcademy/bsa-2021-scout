@@ -1,6 +1,6 @@
 <app-header></app-header>
 <app-applicants-head (search)="applySearchValue($event)" (togglePage)="toggleFollowedOrAll($event)"
-    (applicantsFileUploaded)="updateListApplicants()" (applicantCreated)="createApplicant($event)" #head>
+    (applicantCreated)="createApplicant($event)" #head>
 </app-applicants-head>
 <app-table-filter #filter [description]="filterDescription" [data]="cashedData"
         (filteredDataChange)="setFiltered($event)"></app-table-filter>
