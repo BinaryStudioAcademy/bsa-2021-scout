@@ -82,7 +82,7 @@ namespace Infrastructure
                 options => options.UseSqlServer(
                     connectionString,
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
-                )
+                ).EnableSensitiveDataLogging()
             );
 
             return services;
@@ -159,6 +159,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<Company>, WriteRepository<Company>>();
             services.AddScoped<IWriteRepository<Stage>, WriteRepository<Stage>>();
             services.AddScoped<IWriteRepository<RefreshToken>, WriteRepository<RefreshToken>>();
+            services.AddScoped<IWriteRepository<ApplyToken>, WriteRepository<ApplyToken>>();
             services.AddScoped<IWriteRepository<Role>, WriteRepository<Role>>();
             services.AddScoped<IWriteRepository<UserToRole>, WriteRepository<UserToRole>>();
             services.AddScoped<IWriteRepository<RegisterPermission>, WriteRepository<RegisterPermission>>();
@@ -203,6 +204,7 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<Company>, CompanyReadRepository>();
             services.AddScoped<IReadRepository<Role>, RoleReadRepository>();
             services.AddScoped<IReadRepository<UserToRole>, UserToRoleReadRepository>();
+            services.AddScoped<IReadRepository<ApplyToken>, ApplyTokenReadRepository>();
             services.AddScoped<IReadRepository<Action>, ActionReadRepository>();
             services.AddScoped<IReadRepository<CandidateReview>, CandidateReviewReadRepository>();
             services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();

@@ -3,11 +3,12 @@
     (applicantsFileUploaded)="updateListApplicants()" (applicantCreated)="createApplicant($event)" #head>
 </app-applicants-head>
 <app-table-filter #filter [description]="filterDescription" [data]="cashedData"
-    (filteredDataChange)="setFiltered($event)"></app-table-filter>
+        (filteredDataChange)="setFiltered($event)"></app-table-filter>
 <div class="page-content">
     <app-spinner [loading]="loading"></app-spinner>
     <div class="mat-elevation-z8">
-        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" matSortActive="creation_date" matSortDirection="desc">
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
+            matSortActive="creation_date" matSortDirection="desc">
             <ng-container matColumnDef="position">
                 <th mat-header-cell *matHeaderCellDef>  # </th>
                 <td mat-cell *matCellDef="let i = index"> {{ (i+1) + (paginator.pageIndex * paginator.pageSize)}}
@@ -30,7 +31,7 @@
                 <td mat-cell *matCellDef="let applicant" class="jobs-list-cell">
                     <mat-list class="jobs-list" [class.jobs-pop-up-list]="applicant.vacancies.length > 2">
                         <mat-list-item *ngFor="let vacancy of applicant.vacancies; index as i">
-                            {{vacancy.title}} for {{vacancy.project}} ({{vacancy.stage}}){{i === 1 ? "..." : ""}}
+                            {{vacancy.title}} for {{vacancy.project}} ({{vacancy.stage}})
                         </mat-list-item>
                     </mat-list>
                 </td>

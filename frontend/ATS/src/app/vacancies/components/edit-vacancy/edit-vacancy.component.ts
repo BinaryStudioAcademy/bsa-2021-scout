@@ -186,6 +186,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     if(this.selfApplyStage==null){
       this.stageList.splice(0,0,this.selfApplyStage);
     }
+
     this.vacancy = {
       title: this.vacancyForm.controls['title'].value,
       description: this.vacancyForm.controls['description'].value,

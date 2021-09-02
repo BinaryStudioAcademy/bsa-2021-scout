@@ -71,7 +71,7 @@ namespace Application.Vacancies.Commands.Edit
             existedVacancy.Sources = updateVacancy.Sources;
             existedVacancy.IsHot = updateVacancy.IsHot;
             existedVacancy.IsRemote = updateVacancy.IsRemote;
-            existedVacancy.ModificationDate = DateTime.Now;
+            existedVacancy.ModificationDate = DateTime.UtcNow;
 
             await _writeRepository.UpdateAsync(existedVacancy);
 
