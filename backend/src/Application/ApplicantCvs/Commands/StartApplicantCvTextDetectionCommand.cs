@@ -38,13 +38,14 @@ namespace Application.ApplicantCvs.Commands
 
         public async Task<Unit> Handle(StartApplicantCvTextDetectionCommand command, CancellationToken _)
         {
-            string awsId = await _parser.StartParsingAsync(command.Bytes);
+            var (awsId, filePath) = await _parser.StartParsingAsync(command.Bytes);
             UserDto user = await _currentUserContext.GetCurrentUser();
 
             CvParsingJob job = new CvParsingJob
             {
                 TriggerId = user.Id,
                 AWSJobId = awsId,
+                FilePath = filePath,
             };
 
             await _repository.CreateAsync(job);

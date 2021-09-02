@@ -198,6 +198,8 @@ export class TableFilterComponent implements OnChanges {
       ...(value ?? []),
       ...(Array.isArray(options) ? options : [options]),
     ];
+
+    this.applyFilters();
   }
 
   public castOptions(value: FilterValue): IOption[] {
