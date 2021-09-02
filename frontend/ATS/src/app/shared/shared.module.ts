@@ -52,6 +52,7 @@ import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
 import { TimezonePipe } from './pipes/timezone-pipe';
 import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
 import { TableFilterComponent } from './components/table-filter/table-filter.component';
+import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
 
 @NgModule({
   exports: [
@@ -103,6 +104,7 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
     TimezonePipe,
     AvatarModalComponent,
     TableFilterComponent,
+    MarkBarComponent,
   ],
   imports: [
     MatButtonModule,
@@ -163,6 +165,7 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
     TimezonePipe,
     AvatarModalComponent,
     TableFilterComponent,
+    MarkBarComponent,
   ],
 })
 export class SharedModule {}
