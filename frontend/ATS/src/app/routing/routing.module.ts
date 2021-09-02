@@ -31,10 +31,12 @@ import {
 import { PoolsRoutingModule } from '../pools/pools-routing.module';
 import { MailTemplatesListComponent } from 
   '../mail-templates/components/mail-templates-list/mail-templates-list.component';
-import { ApplicantCsvListComponent } 
-  from '../applicants/components/applicant-csv-list/applicant-csv-list.component';
+/* eslint-disable max-len */
+import { ApplicantFileTablesComponent } from '../applicants/components/CsvComponents/applicant-csv-file-tables/applicant-csv-file-tables.component';
 import { ApplicantsRoutingModule } from '../applicants/applicants-routing.module';
 import { UserProfileComponent } from '../shared/components/user-profile/user-profile.component';
+/* eslint-disable max-len */
+import { ApplicantCsvFilesListComponent } from '../applicants/components/CsvComponents/applicant-csv-files-list/applicant-csv-files-list.component';
 
 const routes: Routes = [
   {
@@ -107,7 +109,12 @@ const routes: Routes = [
       },
       {
         path: AppRoute.ApplicantsCsv,
-        component: ApplicantCsvListComponent,
+        component: ApplicantFileTablesComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: AppRoute.ApplicantsCsvFilesList,
+        component: ApplicantCsvFilesListComponent,
         pathMatch: 'full',
       },
       { path: '**', redirectTo: AppRoute.Home },

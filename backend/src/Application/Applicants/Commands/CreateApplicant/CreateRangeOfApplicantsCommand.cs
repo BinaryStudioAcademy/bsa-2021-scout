@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.Applicants.Commands.CreateApplicant
 {
-    public class CreateRangeOfApplicantsCommand : IRequest<IEnumerable<ApplicantDto>>
+    public class CreateRangeOfApplicantsCommand : IRequest<IEnumerable<ApplicantCsvGetDto>>
     {
         public IEnumerable<CreateApplicantDto> ApplicantsDtos { get; set; }
 
@@ -23,7 +23,7 @@ namespace Application.Applicants.Commands.CreateApplicant
         }
     }
 
-    public class CreateRangeOfApplicantsCommandHandler : IRequestHandler<CreateRangeOfApplicantsCommand, IEnumerable<ApplicantDto>>
+    public class CreateRangeOfApplicantsCommandHandler : IRequestHandler<CreateRangeOfApplicantsCommand, IEnumerable<ApplicantCsvGetDto>>
     {
         protected readonly IApplicantsFromCsvWriteRepository _repository;
         protected readonly ICurrentUserContext _currentUserContext;
@@ -39,21 +39,28 @@ namespace Application.Applicants.Commands.CreateApplicant
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ApplicantDto>> Handle(CreateRangeOfApplicantsCommand command, CancellationToken _)
+        public async Task<IEnumerable<ApplicantCsvGetDto>> Handle(CreateRangeOfApplicantsCommand command, CancellationToken _)
         {
-            var company = await _currentUserContext.GetCurrentUser();
-            var companyId = company.CompanyId;
+            var user = await _currentUserContext.GetCurrentUser();
+            var companyId = user.CompanyId;
 
             var applicants = _mapper.Map<IEnumerable<Applicant>>(command.ApplicantsDtos);
 
             foreach (var applicant in applicants)
             {
                 applicant.CompanyId = companyId;
+                applicant.CreationDate = DateTime.Now;
             }
 
-            var result = _mapper.Map<IEnumerable<ApplicantDto>>(await _repository.CreateRangeAsync(applicants));
+            var result = await _repository.CreateRangeAsync(applicants);
 
-            return result;
+            var createdApplicants = _mapper.Map<IEnumerable<ApplicantCsvGetDto>>(result);
+
+            foreach (var applicant in createdApplicants)
+            {
+                applicant.User = user;
+            }
+            return createdApplicants;
         }
     }
 }

@@ -1,0 +1,49 @@
+@import "../../../../../common.scss";
+
+p {
+    margin-bottom: 0;
+    margin-right: 20px;
+}
+
+.csv-file {
+    margin: 10px;
+    background-color: $primary-color-white;
+    padding: 20px 15px 10px 15px;
+    border-radius: 5px;
+    max-width: 300px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.csv-file:hover {
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(80, 28, 177, 0.5);
+}
+
+.header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+
+    .mat-icon {
+        height: 30px;
+        font-size: 30px;
+        margin-right: 15px;
+        color: #501cb19a;
+        cursor: pointer;
+    }
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+
+    p{
+        max-width: 70%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin: 0;
+    }
+}
+

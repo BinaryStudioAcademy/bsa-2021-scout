@@ -49,7 +49,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   tierFrom: number = 0;
   tierTo: number = 0;
 
-  selfApplyStage: Stage = {} as Stage;
+  selfApplyStage: Stage | null = {} as Stage;
 
   @Output() vacancyChange = new EventEmitter<VacancyFull>();
 
@@ -123,8 +123,13 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
             this.elasticEntity.id = response.tags.id;
           }
           
-          this.selfApplyStage = response.stages[0];
-
+          this.selfApplyStage = null;
+          response.stages.forEach(stage=>{
+            if(stage.index == 0){
+              this.selfApplyStage = stage;
+            }
+          });
+          
           response.stages.forEach((stage,index) => {
             if(stage.index==0){
               response.stages.splice(index,1);
@@ -180,12 +185,12 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     this.submitted = true;
     this.loading = true;
 
-    this.elasticEntity.tagDtos = this.tags;
-    this.elasticEntity.elasticType = ElasticType.VacancyTags;
-
-    if(this.selfApplyStage==null){
+    if(this.selfApplyStage != null){
       this.stageList.splice(0,0,this.selfApplyStage);
     }
+
+    this.elasticEntity.tagDtos = this.tags;
+    this.elasticEntity.elasticType = ElasticType.VacancyTags;
 
     this.vacancy = {
       title: this.vacancyForm.controls['title'].value,
@@ -282,12 +287,12 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Contacted',
       index: 1,
-      type: 0,
+      type: 1,
       actions: [
         {
           id: '1',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -304,7 +309,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -321,7 +326,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -333,12 +338,12 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Live coding session',
       index: 4,
-      type: 0,
+      type: 1,
       actions: [
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -353,9 +358,9 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       type: 4,
       actions: [
         {
-          id: '1',
+          id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -372,7 +377,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -440,6 +445,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   }
 
   cancelStageEdit() {
+    this.isEditStageMode = false;
     this.stageToEdit = {} as Stage;
     this.displayCreateStage();
   }

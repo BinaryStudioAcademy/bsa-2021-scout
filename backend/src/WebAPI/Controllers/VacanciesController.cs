@@ -83,7 +83,8 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteVacancy(string id)
         {
             var command = new DeleteVacancyCommand(id);
-            return StatusCode(204, await Mediator.Send(command));
+            await Mediator.Send(command);
+            return StatusCode(204);
         }
     }
 }

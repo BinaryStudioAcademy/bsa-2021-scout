@@ -1,0 +1,15 @@
+<div class="csv-file" (click)="moveToTablesPage()">
+    <div class="header">
+        <mat-icon>description</mat-icon>
+        <p>{{csvFile.name}}</p>
+    </div>
+    <div class="info">
+        <p>Imported by 
+            <a routerLink="/profile/{{ csvFile.user!.id }}" data-title="{{csvFile.user!.firstName}} {{csvFile.user!.lastName}}">
+                {{csvFile.user!.firstName}} {{csvFile.user!.lastName}}
+            </a>
+        </p>
+        <p>{{csvFile.dateAdded | date:'dd.MM.yyyy'}}</p>
+    </div>
+</div>
+
