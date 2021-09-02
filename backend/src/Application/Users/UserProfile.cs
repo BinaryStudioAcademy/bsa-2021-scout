@@ -22,6 +22,9 @@ namespace Application.Users
                         RoleId = role.Id
                     })));
 
+            CreateMap<UserUpdateDto, User>()
+                .ForMember(dest => dest.DomainEvents, opt => opt.Ignore());
+
             CreateMap<UserRegisterDto, User>()
                 .ForMember(dest => dest.DomainEvents, opt => opt.Ignore())
                 .ForMember(dest => dest.UserRoles, opt => opt.MapFrom(src =>
