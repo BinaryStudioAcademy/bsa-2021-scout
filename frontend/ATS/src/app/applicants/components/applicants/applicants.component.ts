@@ -292,7 +292,11 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.dataSource.data = this.filteredData.filter((item) =>
         this.followedSet.has(item.id),
       );
-    } else {
+    } 
+    else if (this.page == 'self-applied') {
+      this.dataSource.data = this.dataSource.data.filter(a => a.isSelfApplied);
+    } 
+    else {
       this.dataSource.data = this.filteredData;
     }
 
