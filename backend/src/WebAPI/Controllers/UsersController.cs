@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Application.Users.Queries;
 using System;
 using Application.Projects.Commands;
+using Application.Users.Commands.Create;
 
 namespace WebAPI.Controllers
 {
@@ -62,6 +63,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CurrentHRProjects()
         {
             var query = new GetProjectsByCurrentHRCompanyCommand();
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutUserAsync([FromBody] UserUpdateDto updateDto)
+        {
+            var query = new UpdateUserCommand(updateDto);
+
             return Ok(await Mediator.Send(query));
         }
     }
