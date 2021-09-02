@@ -7,6 +7,7 @@ import { AuthenticationService } from 'src/app/users/services/auth.service';
 import { EditVacancyComponent } 
   from 'src/app/vacancies/components/edit-vacancy/edit-vacancy.component';
 import { NotificationService } from '../../services/notification.service';
+import { User } from 'src/app/users/models/user';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,22 @@ export class HeaderComponent implements OnDestroy {
   public value: string = '';
   public dropdownOpened: boolean = false;
   @Input() removeButton = false;
+
+  user:User={
+    firstName: "Emma",
+  lastName: "Roberts",
+  birthDate: new Date(1,1,2002),
+  creationDate: new Date(1,1,2002),
+  email: "emma.roberts@gmail.com",
+  isEmailConfirmed: true,
+  roles:[
+    {
+      name:'HR',
+      key:1
+    }
+  ],
+  image:"https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg"
+}
 
   public loading: boolean = false;
 
@@ -33,23 +50,7 @@ export class HeaderComponent implements OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  public logout(): void {
-    this.loading = true;
 
-    this.service
-      .logout()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        () => {
-          this.loading = false;
-          window.location.replace('/login');
-        },
-        () => {
-          this.loading = false;
-          window.location.replace('/login');
-        },
-      );
-  }
   openDialog(): void {
     const dialogRef = this.dialog.open(EditVacancyComponent, {
       width: '914px',

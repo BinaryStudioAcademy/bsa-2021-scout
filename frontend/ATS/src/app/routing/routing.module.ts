@@ -38,7 +38,7 @@ const routes: Routes = [
   {
     path: '',
     component: MainContentComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       { 
         path: AppRoute.Home, 
@@ -99,7 +99,7 @@ const routes: Routes = [
       {
         path: AppRoute.UserManagement,
         component: UsersTableComponent,
-        canActivate: [HrLeadGuard],
+        //canActivate: [HrLeadGuard],
         pathMatch: 'full',
       },
       {
