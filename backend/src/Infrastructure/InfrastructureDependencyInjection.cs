@@ -211,8 +211,7 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<CandidateReview>, CandidateReviewReadRepository>();
             services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();
 
-            services.AddScoped<IReadRepository<Interview>, ReadRepository<Interview>>();
-            services.AddScoped<IReadRepository<UsersToInterview>, ReadRepository<UsersToInterview>>();
+            services.AddScoped<IInterviewReadRepository, InterviewReadRepository>();
 
             services.AddScoped<ICandidateToStageReadRepository, CandidateToStageReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();

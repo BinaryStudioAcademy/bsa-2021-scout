@@ -22,12 +22,12 @@ namespace Application.Interviews.Queries
 
     public class GetInterviewsListQueryHandler : IRequestHandler<GetInterviewsListQuery, IEnumerable<InterviewDto>>
     {
-        protected readonly IReadRepository<Interview> _interviewRepository;
+        protected readonly IInterviewReadRepository _interviewRepository;
 
         protected readonly ICurrentUserContext _currentUserContext;
         protected readonly IMapper _mapper;
 
-        public GetInterviewsListQueryHandler(IReadRepository<Interview> interviewRepository,
+        public GetInterviewsListQueryHandler(IInterviewReadRepository interviewRepository,
                                    ICurrentUserContext currentUserContext, IMapper mapper)
         {
             _interviewRepository = interviewRepository;
@@ -42,9 +42,13 @@ namespace Application.Interviews.Queries
             if (currUser is null)
                 throw new Exception("There is no such user");
 
-            var interviews = await _interviewRepository.GetEnumerableAsync();
+            var interviewsList = await _interviewRepository.GetInterviewsByCompanyIdAsync(currUser.CompanyId);
+            foreach(var interview in interviewsList)
+            {
+                await _interviewRepository.LoadInterviewersAsync(interview);
+            }
             
-            return _mapper.Map<List<InterviewDto>>(interviews);
+            return _mapper.Map<List<InterviewDto>>(interviewsList);
         }
     }
 }

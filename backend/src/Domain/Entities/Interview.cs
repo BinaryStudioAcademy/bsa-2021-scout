@@ -17,7 +17,7 @@ namespace Domain.Entities
         public DateTime Scheduled { get; set; }
         public double Duration { get; set; }
         public InterviewType InterviewType { get; set; }
-        public ICollection<User> UserParticipants { get; set; }
+        public ICollection<UsersToInterview> UserParticipants { get; set; }
         public string CandidateId { get; set; }
         public Applicant Candidate { get; set; }
         [MaxLength(1000)] public string Note { get; set; }
