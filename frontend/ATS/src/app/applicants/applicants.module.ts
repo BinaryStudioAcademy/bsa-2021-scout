@@ -23,6 +23,12 @@ import { SelfApplyingComponent } from './components/self-applying/self-applying.
 import { ApplicantHistoryComponent }
   from './components/applicant-history/applicant-history.component';
 import { ApplicantsRoutingModule } from './applicants-routing.module';
+import { CreateApplicantFromVariantsComponent }
+  from './components/create-applicant-from-variants/create-applicant-from-variants.component';
+import { StartCvParsingModalComponent }  
+  from './components/start-cv-parsing-modal/start-cv-parsing-modal.component';
+import { CvParsingStartedModalComponent }
+  from './components/cv-parsing-started-modal/cv-parsing-started-modal.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +42,9 @@ import { ApplicantsRoutingModule } from './applicants-routing.module';
     ApplicantCsvListComponent,
     SelfApplyingComponent,
     ApplicantHistoryComponent,
+    CreateApplicantFromVariantsComponent,
+    StartCvParsingModalComponent,
+    CvParsingStartedModalComponent,
   ],
   imports: [
     BrowserModule,

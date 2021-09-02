@@ -43,8 +43,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   projects: ProjectInfo[] = [];
   filteredData: ProjectInfo[] = [];
   dataSource: MatTableDataSource<ProjectInfo>;
-  isFollowedPage: boolean = false;
-
+  isFollowedPage: string = 'false';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
@@ -74,11 +73,8 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe((resp) => {
         this.projects = resp.body!;
-        this.projects.forEach((d, i) => {
-          d.position = i + 1;
-          d.isFollowed = this.followedSet.has(d.id);
-        });
-        if (localStorage.getItem(this.followedPageToken) !== null)
+        this.projects.forEach((d) => d.isFollowed = this.followedSet.has(d.id));
+        if (localStorage.getItem(this.followedPageToken) == 'true')
           this.dataSource.data = this.projects.filter((item) =>
             this.followedSet.has(item.id),
           );
@@ -87,7 +83,8 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
         this.directive.applyFilter$.emit();
       });
     this.dataSource = new MatTableDataSource<ProjectInfo>();
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken) !== null;
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
+      localStorage.getItem(this.followedPageToken)! : 'false';
   }
 
   public getProjects() {
@@ -96,11 +93,8 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
         this.projects = resp.body!;
-        this.projects.forEach((d, i) => {
-          d.position = i + 1;
-          d.isFollowed = this.followedSet.has(d.id);
-        });
-        if (localStorage.getItem(this.followedPageToken) !== null) {
+        this.projects.forEach((d) => d.isFollowed = this.followedSet.has(d.id));
+        if (localStorage.getItem(this.followedPageToken) == 'true') {
           this.dataSource.data = this.projects.filter((item) =>
             this.followedSet.has(item.id),
           );
@@ -188,7 +182,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   public setFiltered(data: ProjectInfo[]): void {
     this.filteredData = data;
 
-    if (localStorage.getItem(this.followedPageToken) !== null) {
+    if (localStorage.getItem(this.followedPageToken) == 'true') {
       this.dataSource.data = this.filteredData.filter((item) =>
         this.followedSet.has(item.id),
       );
@@ -200,15 +194,10 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     this.dataSource.paginator?.firstPage();
   }
 
-  public switchToFollowed() {
-    this.isFollowedPage = true;
-    this.dataSource.data = this.dataSource.data.filter(
-      (vacancy) => vacancy.isFollowed,
-    );
-    this.followService.switchRefreshFollowedPageToken(
-      true,
-      this.followedPageToken,
-    );
+  public switchToFollowed(){
+    this.isFollowedPage = 'true';
+    this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    this.followService.switchRefreshFollowedPageToken('true', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
 
@@ -226,13 +215,10 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     project.isShowAllTags = project.isShowAllTags ? false : true;
   }
 
-  public switchAwayToAll() {
-    this.isFollowedPage = false;
+  public switchAwayToAll(){
+    this.isFollowedPage = 'false';
     this.dataSource.data = this.projects;
-    this.followService.switchRefreshFollowedPageToken(
-      false,
-      this.followedPageToken,
-    );
+    this.followService.switchRefreshFollowedPageToken('false', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
 
@@ -251,7 +237,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public onBookmark(data: ProjectInfo, perfomToFollowCleanUp: boolean = false) {
+  public onBookmark(data: ProjectInfo, perfomToFollowCleanUp: string = 'false'){
     let projetIndex: number = this.dataSource.data.findIndex(
       (project) => project.id === data.id,
     )!;
@@ -269,7 +255,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
         .subscribe();
     }
     this.dataSource.data[projetIndex] = data;
-    if (perfomToFollowCleanUp) {
+    if (perfomToFollowCleanUp == 'true') {
       this.dataSource.data = this.dataSource.data.filter(
         (project) => project.isFollowed,
       );

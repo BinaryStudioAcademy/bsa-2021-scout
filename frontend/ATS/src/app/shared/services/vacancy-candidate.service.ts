@@ -18,10 +18,11 @@ export class VacancyCandidateService {
 
   public changeCandidateStage(
     id: string,
+    vacancyId: string,
     stageId: string,
   ): Observable<VacancyCandidate> {
     return this.http.putClearRequest(
-      `/vacancyCandidates/${id}/set-stage/${stageId}`,
+      `/vacancyCandidates/${id}/set-stage/${vacancyId}/${stageId}`,
     );
   }
 

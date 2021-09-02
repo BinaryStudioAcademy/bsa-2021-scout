@@ -46,24 +46,18 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
   private actions: Action[] = [
     {
       id: '1',
-      name: 'None',
-      actionType: ActionType.None,
-      stageId: this.stageId,
-    },
-    {
-      id: '2',
       name: 'Send mail',
       actionType: ActionType.SendMail,
       stageId: this.stageId,
     },
     {
-      id: '3',
+      id: '2',
       name: 'Add task',
       actionType: ActionType.AddTask,
       stageId: this.stageId,
     },
     {
-      id: '4',
+      id: '3',
       name: 'Schedule interview action',
       actionType: ActionType.ScheduleInterviewAction,
       stageId: this.stageId,
@@ -108,7 +102,7 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
       this.stageForm
         .get('reviews')
         ?.setValue(changes.stage.currentValue.reviews);
-      this.editModeItemIndex = changes.stage.currentValue.index;
+      this.editModeItemIndex = changes.stage.currentValue.index ?? -1;
     }
   }
 
@@ -198,6 +192,9 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
   onStageSave() {
     this.submitted = true;
     this.stage = { ...this.stageForm.value };
+    if(this.stage!.reviews == null){
+      this.stage!.reviews = [];
+    }
     this.stage!.index = this.editModeItemIndex;
     this.stageForm.reset();
     this.stageChange.emit(this.stage);

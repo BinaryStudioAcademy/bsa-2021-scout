@@ -1,4 +1,5 @@
-﻿using Application.VacancyCandidates.Dtos;
+﻿using Application.Common.Exceptions;
+using Application.VacancyCandidates.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
@@ -30,6 +31,7 @@ namespace Application.VacancyCandidates.Commands
         private readonly IStageReadRepository _stageReadRepository;
         private readonly IVacancyCandidateWriteRepository _writeRepository;
         private readonly IVacancyCandidateReadRepository _readRepository;
+        private readonly IVacancyReadRepository _vacancyReadRepository;
         private readonly IMapper _mapper;
 
         public CreateVacancyCandidateNoAuthCommandHandler(
@@ -38,6 +40,7 @@ namespace Application.VacancyCandidates.Commands
             IStageReadRepository stageReadRepository,
             IVacancyCandidateWriteRepository writeRepository,
             IVacancyCandidateReadRepository readRepository,
+            IVacancyReadRepository vacancyReadRepository,
             IMapper mapper
         )
         {
@@ -46,11 +49,19 @@ namespace Application.VacancyCandidates.Commands
             _stageReadRepository = stageReadRepository;
             _writeRepository = writeRepository;
             _readRepository = readRepository;
+            _vacancyReadRepository = vacancyReadRepository;
             _mapper = mapper;
         }
 
         public async Task<VacancyCandidateDto> Handle(CreateVacancyCandidateNoAuthCommand command, CancellationToken _)
         {
+            var vacancy = await _vacancyReadRepository.GetAsync(command.VacancyId);
+
+            if (vacancy is null)
+            {
+                throw new NotFoundException(nameof(Vacancy));
+            }
+
             var stageId = (await _stageReadRepository.GetByVacancyIdWithZeroIndex(command.VacancyId)).Id;
             var vacancyCandidate = await _readRepository.GetFullByApplicantAndStageAsync(command.Id, stageId);
 
@@ -61,7 +72,7 @@ namespace Application.VacancyCandidates.Commands
                 var candidate = new VacancyCandidate
                 {
                     ApplicantId = command.Id,
-                    DateAdded = DateTime.Now,
+                    DateAdded = DateTime.UtcNow,
                     IsSelfApplied = true,
                 };
 
@@ -71,7 +82,7 @@ namespace Application.VacancyCandidates.Commands
                 {
                     CandidateId = candidate.Id,
                     StageId = stageId,
-                    DateAdded = DateTime.Now
+                    DateAdded = DateTime.UtcNow
                 });
             }
 

@@ -69,7 +69,7 @@ implements AfterViewInit, OnInit, OnDestroy
 
   mainData!: VacancyData[];
   filteredData!: VacancyData[];
-  isFollowedPage: boolean = false;
+  isFollowedPage: string = 'false';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -103,10 +103,11 @@ implements AfterViewInit, OnInit, OnDestroy
       )
       .subscribe(
         (data) => {
-          data.map((d) => ({ ...d, isFollowed: this.followedSet.has(d.id) }));
+          data.forEach((d) => {
+            d.isFollowed = this.followedSet.has(d.id);
+          });
           this.mainData = data;
-
-          if (localStorage.getItem(this.followedPageToken) !== null) {
+          if (localStorage.getItem(this.followedPageToken) == 'true') {
             this.dataSource.data = data.filter((item) =>
               this.followedSet.has(item.id),
             );
@@ -123,7 +124,8 @@ implements AfterViewInit, OnInit, OnDestroy
         },
       );
 
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken) !== null;
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
+      localStorage.getItem(this.followedPageToken)! : 'false';
   }
 
   public ngAfterViewInit(): void {
@@ -165,7 +167,7 @@ implements AfterViewInit, OnInit, OnDestroy
           this.mainData = data;
           this.filteredData = data;
 
-          if (localStorage.getItem(this.followedPageToken) !== null) {
+          if (localStorage.getItem(this.followedPageToken) == 'true') {
             this.dataSource.data = data.filter((item) =>
               this.followedSet.has(item.id),
             );
@@ -260,7 +262,7 @@ implements AfterViewInit, OnInit, OnDestroy
   public setFiltered(data: VacancyData[]): void {
     this.filteredData = data;
 
-    if (localStorage.getItem(this.followedPageToken) !== null) {
+    if (localStorage.getItem(this.followedPageToken) == 'true') {
       this.dataSource.data = this.filteredData.filter((item) =>
         this.followedSet.has(item.id),
       );
@@ -282,29 +284,19 @@ implements AfterViewInit, OnInit, OnDestroy
     dialogRef.afterClosed().subscribe(() => this.getVacancies());
   }
 
-  public switchToFollowed() {
-    this.isFollowedPage = true;
-    this.dataSource.data = this.dataSource.data.filter(
-      (vacancy) => vacancy.isFollowed,
-    );
-    this.followService.switchRefreshFollowedPageToken(
-      true,
-      this.followedPageToken,
-    );
+  public switchToFollowed(){
+    this.isFollowedPage = 'true';
+    this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
+    this.followService.switchRefreshFollowedPageToken('true', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
-
-  public switchAwayToAll() {
-    this.isFollowedPage = false;
+  public switchAwayToAll(){
+    this.isFollowedPage = 'false';
     this.dataSource.data = this.mainData;
-    this.followService.switchRefreshFollowedPageToken(
-      false,
-      this.followedPageToken,
-    );
+    this.followService.switchRefreshFollowedPageToken('false', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
-
-  public onBookmark(data: VacancyData, perfomToFollowCleanUp: boolean = false) {
+  public onBookmark(data: VacancyData, perfomToFollowCleanUp: string = 'false'){
     let vacancyIndex: number = this.dataSource.data.findIndex(
       (vacancy) => vacancy.id === data.id,
     )!;
@@ -322,7 +314,7 @@ implements AfterViewInit, OnInit, OnDestroy
         .subscribe();
     }
     this.dataSource.data[vacancyIndex] = data;
-    if (perfomToFollowCleanUp) {
+    if (perfomToFollowCleanUp == 'true') {
       this.dataSource.data = this.dataSource.data.filter(
         (vacancy) => vacancy.isFollowed,
       );

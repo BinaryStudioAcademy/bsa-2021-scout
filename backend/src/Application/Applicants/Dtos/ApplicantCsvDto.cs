@@ -12,7 +12,6 @@ namespace Application.Applicants.Dtos
         public DateTime BirthDate { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string Skype { get; set; }
         public string LinkedInUrl { get; set; }
         public double Experience { get; set; }
     }
@@ -42,7 +41,6 @@ namespace Application.Applicants.Dtos
             Map(a => a.BirthDate).Name("BirthDate");
             Map(a => a.Email).Name("Email");
             Map(a => a.Phone).Name("Phone");
-            Map(a => a.Skype).Name("Skype");
             Map(a => a.LinkedInUrl).Name("LinkedInUrl");
             Map(a => a.Experience).Name("Experience");
         }

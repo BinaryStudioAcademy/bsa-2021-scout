@@ -6,8 +6,8 @@ namespace Application.Interfaces.AWS
     public interface ITextParser
     {
         Task<string> GetText(string jobId);
-        Task<string> StartParsingAsync(byte[] fileContent);
-        Task<string> StartParsingAsync(string fileContent);
-        Task<string> StartParsingAsync(string fileContent, Encoding enconding);
+        Task<(string, string)> StartParsingAsync(byte[] fileContent);
+        Task<(string, string)> StartParsingAsync(string fileContent);
+        Task<(string, string)> StartParsingAsync(string fileContent, Encoding enconding);
     }
 }

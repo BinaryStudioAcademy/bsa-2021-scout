@@ -61,7 +61,7 @@ namespace Application.VacancyCandidates.Commands
                 candidates.Add(new VacancyCandidate
                 {
                     ApplicantId = id,
-                    DateAdded = DateTime.Now,
+                    DateAdded = DateTime.UtcNow,
                     HrWhoAddedId = user.Id
                 });
             }
@@ -76,7 +76,7 @@ namespace Application.VacancyCandidates.Commands
                 {
                     CandidateId = candidate.Id,
                     StageId = stageId,
-                    DateAdded = DateTime.Now
+                    DateAdded = DateTime.UtcNow
                 });
             }
 

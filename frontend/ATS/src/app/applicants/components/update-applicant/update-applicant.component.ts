@@ -26,7 +26,6 @@ export class UpdateApplicantComponent implements OnDestroy {
     lastName: '',
     email: '',
     phone: '',
-    skype: '',
     linkedInUrl: '',
     experience: 0,
     experienceDescription: '',
@@ -56,7 +55,6 @@ export class UpdateApplicantComponent implements OnDestroy {
     this.updatedApplicant.email = applicant.email;
     this.updatedApplicant.phone = applicant.phone ?? '';
     this.updatedApplicant.linkedInUrl = applicant.linkedInUrl ?? '';
-    this.updatedApplicant.skype = applicant.skype ?? '';
     this.updatedApplicant.experience = applicant.experience ?? 0;
     this.updatedApplicant.experienceDescription = applicant.experienceDescription;
     this.updatedApplicant.skills = applicant.skills;

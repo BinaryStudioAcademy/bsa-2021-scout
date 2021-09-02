@@ -1,7 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import moment from 'moment';
-
-// This line can't be shorter
 // eslint-disable-next-line max-len
 import { ShortVacancyCandidateWithApplicant } from 'src/app/shared/models/vacancy-candidates/short-with-applicant';
 

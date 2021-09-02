@@ -13,6 +13,7 @@ namespace Domain.Entities
             DomainEvents = new List<DomainEvent>();
         }
 
+        public string Skype { get; set; }
         public string Password { get; set; }
         public string PasswordSalt { get; set; }
         public string ResetPasswordToken { get; set; }

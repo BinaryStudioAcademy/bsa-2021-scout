@@ -46,7 +46,7 @@ namespace WebAPI.Controllers
             [FromRoute] string Id)
         {
             var query = new GetVacancyByIdNoAuth(Id);
-            return StatusCode(201, await Mediator.Send(query));
+            return StatusCode(200, await Mediator.Send(query));
         }
         [HttpGet("applicant/{applicantId}")]
         public async Task<IActionResult> GetAllNotAppliedVacanciesByApplicant(string applicantId)
@@ -88,7 +88,8 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteVacancy(string id)
         {
             var command = new DeleteVacancyCommand(id);
-            return StatusCode(204, await Mediator.Send(command));
+            await Mediator.Send(command);
+            return StatusCode(204);
         }
     }
 }

@@ -86,9 +86,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Skills")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Skype")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("ToBeContacted")
                         .HasColumnType("datetime2");
 
@@ -99,6 +96,34 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CvFileInfoId");
 
                     b.ToTable("Applicants");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ApplyToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VacancyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VacancyId");
+
+                    b.ToTable("ApplyTokens");
                 });
 
             modelBuilder.Entity("Domain.Entities.CandidateComment", b =>
@@ -214,6 +239,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AWSJobId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TriggerId")
@@ -508,6 +536,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("OriginalFilePath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OutputPath")
                         .HasColumnType("nvarchar(max)");
@@ -826,6 +857,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("CvFileInfo");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ApplyToken", b =>
+                {
+                    b.HasOne("Domain.Entities.Vacancy", "Vacancy")
+                        .WithMany("ApplyTokens")
+                        .HasForeignKey("VacancyId")
+                        .HasConstraintName("apply_token__vacancy_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Vacancy");
                 });
 
             modelBuilder.Entity("Domain.Entities.CandidateComment", b =>
@@ -1231,6 +1273,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Vacancy", b =>
                 {
+                    b.Navigation("ApplyTokens");
+
                     b.Navigation("Stages");
                 });
 

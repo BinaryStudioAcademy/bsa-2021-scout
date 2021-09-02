@@ -4,7 +4,6 @@ import { VacancyInfo } from '../../shared/models/vacancy/vacancy-info';
 
 export class ProjectInfo{
   id:string='';
-  position: number = 0;
   isFollowed: boolean = false;
   logo : string='';
   name : string='';

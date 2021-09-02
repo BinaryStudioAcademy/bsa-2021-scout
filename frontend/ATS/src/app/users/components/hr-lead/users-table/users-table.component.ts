@@ -67,7 +67,7 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
 
   public dataSource: MatTableDataSource<UserTableData>;
   public loading: boolean = true;
-  public isFollowedPage: boolean = false;
+  public isFollowedPage: string = 'false';
   public users: UserTableData[] = [];
 
   private filteredData: UserTableData[] = [];
@@ -99,12 +99,9 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe(
         (resp) => {
-          resp.forEach((user, index) => {
-            user.position = index + 1;
-            user.isFollowed = this.followedSet.has(user.id ?? '');
-          });
+          resp.forEach((user) => user.isFollowed = this.followedSet.has(user.id ?? ''));
           this.users = resp;
-          if (localStorage.getItem(this.followedPageToken) !== null) {
+          if (localStorage.getItem(this.followedPageToken) == 'true') {
             this.dataSource.data = this.users.filter((item) => item.isFollowed);
           } else {
             this.dataSource.data = this.users;
@@ -115,7 +112,8 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
           this.notificationService.showErrorMessage('Something went wrong');
         },
       );
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken) !== null;
+    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
+      localStorage.getItem(this.followedPageToken)! : 'false';
   }
 
   public getUsers() {
@@ -127,12 +125,9 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe(
         (resp) => {
-          resp.forEach((user, index) => {
-            user.position = index + 1;
-            user.isFollowed = this.followedSet.has(user.id ?? '');
-          });
+          resp.forEach((user) => user.isFollowed = this.followedSet.has(user.id ?? ''));
           this.users = resp;
-          if (localStorage.getItem(this.followedPageToken) !== null)
+          if (localStorage.getItem(this.followedPageToken) == 'true')
             this.dataSource.data = this.users.filter((item) => item.isFollowed);
           else this.dataSource.data = this.users;
           this.directive.applyFilter$.emit();
@@ -147,7 +142,7 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
     this.filteredData = filtered;
     this.dataSource.data = this.filteredData;
 
-    if (localStorage.getItem(this.followedPageToken) !== null) {
+    if (localStorage.getItem(this.followedPageToken) == 'true') {
       this.dataSource.data = this.filteredData.filter((item) =>
         this.followedSet.has(item.id ?? ''),
       );
@@ -204,31 +199,20 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
   }
 
   public switchToFollowed() {
-    this.isFollowedPage = true;
-    this.dataSource.data = this.dataSource.data.filter(
-      (user) => user.isFollowed,
-    );
-    this.followService.switchRefreshFollowedPageToken(
-      true,
-      this.followedPageToken,
-    );
+    this.isFollowedPage = 'true';
+    this.dataSource.data = this.dataSource.data.filter(user => user.isFollowed);
+    this.followService.switchRefreshFollowedPageToken('true', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
 
   public switchAwayToAll() {
-    this.isFollowedPage = false;
+    this.isFollowedPage = 'false';
     this.dataSource.data = this.users;
-    this.followService.switchRefreshFollowedPageToken(
-      false,
-      this.followedPageToken,
-    );
+    this.followService.switchRefreshFollowedPageToken('false', this.followedPageToken);
     this.directive.applyFilter$.emit();
   }
 
-  public onBookmark(
-    data: UserTableData,
-    perfomToFollowCleanUp: boolean = false,
-  ) {
+  public onBookmark(data: UserTableData, perfomToFollowCleanUp: string = 'false') {
     data.isFollowed = !data.isFollowed;
     if (data.isFollowed) {
       this.followService
@@ -242,10 +226,8 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
         .deleteFollowed(EntityType.User, data.id ?? '')
         .subscribe();
     }
-    if (perfomToFollowCleanUp) {
-      this.dataSource.data = this.dataSource.data.filter(
-        (user) => user.isFollowed,
-      );
+    if (perfomToFollowCleanUp == 'true') {
+      this.dataSource.data = this.dataSource.data.filter(user => user.isFollowed);
     }
     this.directive.applyFilter$.emit();
   }

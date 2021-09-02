@@ -6,6 +6,6 @@ namespace Domain.Interfaces.Write
 {
     public interface ICandidateToStageWriteRepository : IWriteRepository<CandidateToStage>
     {
-        Task ReplaceForCandidate(string candidateId, string newStageId);
+        Task ReplaceForCandidate(string candidateId, string vacancyId, string newStageId);
     }
 }
