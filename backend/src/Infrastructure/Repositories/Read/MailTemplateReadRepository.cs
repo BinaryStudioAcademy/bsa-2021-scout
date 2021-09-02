@@ -23,9 +23,8 @@ namespace Infrastructure.Repositories.Read
         public async Task<IEnumerable<MailTemplate>> GetMailTemplatesForThisUser(string userId)
         {
             var builder = Builders<MailTemplate>.Filter;
-            var filter = builder.Empty;
-            filter = builder.Ne(x => x.Slug, "default") 
-                & builder.Where(x => x.UserCreatedId == userId || x.VisibilitySetting == VisibilitySetting.VisibleForEveryone );
+            var filter = builder.Where(x => x.Id != "6130e8ed3c08bd065627b24e"
+            && (x.UserCreatedId == userId || x.VisibilitySetting == VisibilitySetting.VisibleForEveryone));
 
             IAsyncCursor<MailTemplate> cursor = await _connectionFactory
                 .GetMongoConnection()
