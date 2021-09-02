@@ -6,6 +6,7 @@ namespace Domain.Enums
         Applicant,
         Project,
         Vacancy,
-        Pool
+        Pool,
+        MailTemplate
     }
 }

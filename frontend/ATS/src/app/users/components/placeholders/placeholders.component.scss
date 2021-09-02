@@ -1,0 +1,30 @@
+  
+:host ::ng-deep .placeholders-input {
+    .mat-form-field-wrapper {
+        align-content: flex-start;
+        align-items: flex-start;
+        height: min-content !important;
+        padding-bottom: 20px;
+    
+        .mat-form-field-infix {
+            height: min-content;
+        }
+
+        .mat-chip-list-wrapper .mat-chip {
+            box-sizing: border-box;
+            color: rgba($color: (#291965), $alpha: 0.8);
+            background-color: rgba($color: (#291965), $alpha: 0.1);
+            font-weight: 700;
+            padding: 5 10px;
+            font-size: 14px;
+            min-height: 0;
+            height: 35px;
+        }
+    }
+
+    .mat-input-element {
+        width: min-content;
+        height: min-content;
+        font-size: 14px;
+    }
+}

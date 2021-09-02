@@ -20,6 +20,7 @@ import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 
 import { ProjectsModule } from '../projects/projects.module';
 import { PoolsModule } from '../pools/pools.module';
+import { MailTemplatesModule } from '../mail-templates/mail-templates.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,6 +38,7 @@ import { PoolsModule } from '../pools/pools.module';
     UsersModule,
     ProjectsModule,
     PoolsModule,
+    MailTemplatesModule,
   ],
   providers: [
     SidenavService,

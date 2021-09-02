@@ -29,6 +29,8 @@ import {
   ApplicationPoolComponent,
 } from '../pools/components/application-pool/application-pool.component';
 import { PoolsRoutingModule } from '../pools/pools-routing.module';
+import { MailTemplatesListComponent } from 
+  '../mail-templates/components/mail-templates-list/mail-templates-list.component';
 /* eslint-disable max-len */
 import { ApplicantFileTablesComponent } from '../applicants/components/CsvComponents/applicant-csv-file-tables/applicant-csv-file-tables.component';
 import { ApplicantsRoutingModule } from '../applicants/applicants-routing.module';
@@ -42,6 +44,7 @@ const routes: Routes = [
     component: MainContentComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: AppRoute.Templates, component: MailTemplatesListComponent, pathMatch: 'full' },
       { 
         path: AppRoute.Home, 
         component: HomeComponent, 
