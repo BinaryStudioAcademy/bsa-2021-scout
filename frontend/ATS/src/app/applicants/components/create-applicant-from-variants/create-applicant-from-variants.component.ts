@@ -26,7 +26,6 @@ export class CreateApplicantFromVariantsComponent implements OnDestroy {
     lastName: '',
     email: '',
     phone: '',
-    skype: '',
     linkedInUrl: '',
     experience: 0,
     experienceDescription: '',
