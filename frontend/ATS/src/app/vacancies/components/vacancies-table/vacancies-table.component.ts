@@ -103,9 +103,10 @@ implements AfterViewInit, OnInit, OnDestroy
       )
       .subscribe(
         (data) => {
-          data.map((d) => ({ ...d, isFollowed: this.followedSet.has(d.id) }));
+          data.forEach((d) => {
+            d.isFollowed = this.followedSet.has(d.id);
+          });
           this.mainData = data;
-
           if (localStorage.getItem(this.followedPageToken) == 'true') {
             this.dataSource.data = data.filter((item) =>
               this.followedSet.has(item.id),

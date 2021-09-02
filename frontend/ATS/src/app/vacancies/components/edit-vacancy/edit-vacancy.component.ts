@@ -287,12 +287,12 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Contacted',
       index: 1,
-      type: 0,
+      type: 1,
       actions: [
         {
           id: '1',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -309,7 +309,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -326,7 +326,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -338,12 +338,12 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       id: '',
       name: 'Live coding session',
       index: 4,
-      type: 0,
+      type: 1,
       actions: [
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -358,9 +358,9 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       type: 4,
       actions: [
         {
-          id: '1',
+          id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -377,7 +377,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         {
           id: '',
           name: 'Schedule interview action',
-          actionType: 3,
+          actionType: 2,
           stageId: '',
         },
       ],
@@ -445,6 +445,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   }
 
   cancelStageEdit() {
+    this.isEditStageMode = false;
     this.stageToEdit = {} as Stage;
     this.displayCreateStage();
   }

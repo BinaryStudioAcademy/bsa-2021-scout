@@ -26,6 +26,12 @@ import { ApplicantsRoutingModule } from './applicants-routing.module';
 /* eslint-disable max-len */
 import { ApplicantCsvFilesListComponent } from './components/CsvComponents/applicant-csv-files-list/applicant-csv-files-list.component';
 import { CsvFileComponent } from './components/CsvComponents/one-csv-file/one-csv-file.component';
+import { CreateApplicantFromVariantsComponent }
+  from './components/create-applicant-from-variants/create-applicant-from-variants.component';
+import { StartCvParsingModalComponent }  
+  from './components/start-cv-parsing-modal/start-cv-parsing-modal.component';
+import { CvParsingStartedModalComponent }
+  from './components/cv-parsing-started-modal/cv-parsing-started-modal.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +47,9 @@ import { CsvFileComponent } from './components/CsvComponents/one-csv-file/one-cs
     ApplicantHistoryComponent,
     ApplicantCsvFilesListComponent,
     CsvFileComponent,
+    CreateApplicantFromVariantsComponent,
+    StartCvParsingModalComponent,
+    CvParsingStartedModalComponent,
   ],
   imports: [
     BrowserModule,

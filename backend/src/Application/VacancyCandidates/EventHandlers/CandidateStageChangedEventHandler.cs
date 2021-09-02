@@ -7,7 +7,8 @@ using Application.Common.Models;
 
 namespace Application.VacancyCandidates.EventHandlers
 {
-    public class CandidateStageChangedEventHandler : INotificationHandler<DomainEventNotification<CandidateStageChangedEvent>>
+    public class CandidateStageChangedEventHandler
+        : INotificationHandler<DomainEventNotification<CandidateStageChangedEvent>>
     {
         private readonly ILogger<CandidateStageChangedEventHandler> _logger;
 
@@ -19,9 +20,10 @@ namespace Application.VacancyCandidates.EventHandlers
         public Task Handle(DomainEventNotification<CandidateStageChangedEvent> notification, CancellationToken _)
         {
             _logger.LogInformation(
-                "Candidate with id {id} is now on stage with id {stageId}",
+                "Candidate with id {id} is now on stage with id {stageId} (vacancy with id {vacancyId})",
                 notification.Event.Id,
-                notification.Event.StageId
+                notification.Event.StageId,
+                notification.Event.VacancyId
             );
 
             return Task.CompletedTask;

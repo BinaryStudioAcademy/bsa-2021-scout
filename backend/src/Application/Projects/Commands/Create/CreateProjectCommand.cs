@@ -30,7 +30,7 @@ namespace Application.Projects.Commands.Create
         protected readonly IMapper _mapper;
         private readonly ISender _mediator;
 
-        public CreateProjectCommandHandler(IWriteRepository<Project> repository, 
+        public CreateProjectCommandHandler(IWriteRepository<Project> repository,
             ICurrentUserContext currentUserContext, IMapper mapper, ISender mediator)
         {
             _repository = repository;
@@ -44,7 +44,7 @@ namespace Application.Projects.Commands.Create
             Project entity = _mapper.Map<Project>(command.Project);
 
             entity.Id = Guid.NewGuid().ToString();
-            entity.CreationDate = DateTime.Now;
+            entity.CreationDate = DateTime.UtcNow;
             entity.CompanyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
 
             var created = await _repository.CreateAsync(entity);
