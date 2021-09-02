@@ -82,7 +82,7 @@ namespace Infrastructure
                 options => options.UseSqlServer(
                     connectionString,
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
-                ).EnableSensitiveDataLogging()
+                )
             );
 
             return services;
