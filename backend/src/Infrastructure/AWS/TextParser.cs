@@ -47,7 +47,7 @@ namespace Infrastructure.AWS
             return text;
         }
 
-        public async Task<string> StartParsingAsync(byte[] fileContent)
+        public async Task<(string, string)> StartParsingAsync(byte[] fileContent)
         {
             string fileName = $"cv-{Guid.NewGuid().ToString()}.pdf";
             string filePath = $"cvs/{fileName}";
@@ -63,16 +63,16 @@ namespace Infrastructure.AWS
             request.NotificationChannel.SNSTopicArn = _topic;
 
             StartDocumentTextDetectionResponse response = await _textract.StartDocumentTextDetectionAsync(request);
-            return response.JobId;
+            return (response.JobId, filePath);
         }
 
-        public async Task<string> StartParsingAsync(string fileContent)
+        public async Task<(string, string)> StartParsingAsync(string fileContent)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(fileContent);
             return await StartParsingAsync(bytes);
         }
 
-        public async Task<string> StartParsingAsync(string fileContent, Encoding enconding)
+        public async Task<(string, string)> StartParsingAsync(string fileContent, Encoding enconding)
         {
             byte[] bytes = enconding.GetBytes(fileContent);
             return await StartParsingAsync(bytes);

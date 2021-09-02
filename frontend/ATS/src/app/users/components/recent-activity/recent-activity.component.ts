@@ -19,7 +19,6 @@ export class RecentActivityComponent implements OnInit, OnDestroy {
   public loading: boolean = false;
 
   private page: number = 1;
-  private candidateInfoMap: Record<string, any> = {};
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   public constructor(

@@ -239,20 +239,5 @@ namespace Infrastructure.Repositories.Read
             await connection.CloseAsync();
             return stages.First();
         }
-
-        private class StageIdEqualityComparer : IEqualityComparer<Stage>
-        {
-            public bool Equals(Stage a, Stage b)
-            {
-                System.Console.WriteLine(a.Id + " " + b.Id);
-                return a.Id == b.Id;
-            }
-
-            public int GetHashCode(Stage obj)
-            {
-                System.Console.WriteLine(obj.Id);
-                return obj.GetHashCode();
-            }
-        }
     }
 }

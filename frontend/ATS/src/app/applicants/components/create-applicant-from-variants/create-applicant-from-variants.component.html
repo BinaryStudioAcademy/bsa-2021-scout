@@ -1,0 +1,205 @@
+<app-spinner [loading]="loading"></app-spinner>
+<div class="dialog-header-bar">
+  <h1 mat-dialog-title>Applicant creation form</h1>
+  <mat-dialog-actions>
+    <mat-icon mat-dialog-close>close</mat-icon>
+  </mat-dialog-actions>
+</div>
+<form class="applicant-form" [formGroup]="validationGroup!" novalidate>
+  <div class="variants-input">
+    <div>
+      <p class="required-field">First name</p>
+      <mat-form-field appearance="fill"
+        [ngClass]="validationGroup!.controls['firstName'].dirty && validationGroup!.controls['firstName'].errors? 'invalid-input' : ''">
+        <input formControlName="firstName" type="text" matInput placeholder="Enter first name"
+          [(ngModel)]="createdApplicant.firstName" required>
+      </mat-form-field>
+      <div class="validation-error"
+        *ngIf="validationGroup!.controls['firstName'].dirty && validationGroup!.controls['firstName'].errors?.required; else firstNamePatternError">
+        It&apos;s required field
+      </div>
+    </div>
+    <div class="variants">
+      <div class="variant" (click)="set('firstName', available)" *ngFor="let available of data.firstName">
+        <mat-icon color="accent">add</mat-icon>
+        <span>{{ available }}</span>
+      </div>
+    </div>
+  </div>
+  <ng-template #firstNamePatternError>
+    <div class="validation-error"
+      *ngIf="validationGroup!.controls['firstName'].dirty && validationGroup!.controls['firstName'].errors?.pattern">
+      A first name can only contain latin letters and start with an upper case letter
+    </div>
+  </ng-template>
+  <div class="variants-input">
+    <div>
+      <p class="required-field">Last name</p>
+      <mat-form-field appearance="fill"
+        [ngClass]="validationGroup!.controls['lastName'].dirty && validationGroup!.controls['lastName'].errors? 'invalid-input' : ''">
+        <input required formControlName="lastName" type="text" matInput placeholder="Enter last name"
+          [(ngModel)]="createdApplicant.lastName">
+      </mat-form-field>
+      <div class="validation-error"
+        *ngIf="validationGroup!.controls['lastName'].dirty && validationGroup!.controls['lastName'].errors?.required; else lastNamePatternError">
+        It&apos;s required field
+      </div>
+    </div>
+    <div class="variants">
+      <div class="variant" (click)="set('lastName', available)" *ngFor="let available of data.lastName">
+        <mat-icon color="accent">add</mat-icon>
+        <span>{{ available }}</span>
+      </div>
+    </div>
+  </div>
+  <ng-template #lastNamePatternError>
+    <div class="validation-error"
+      *ngIf="validationGroup!.controls['lastName'].dirty && validationGroup!.controls['lastName'].errors?.pattern">
+      A last name can only contain latin letters and start with an upper case letter
+    </div>
+  </ng-template>
+  <div class="variants-input">
+    <div>
+      <p class="required-field">Email</p>
+      <mat-form-field appearance="fill"
+        [ngClass]="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors? 'invalid-input' : ''">
+        <input required formControlName="email" type="email" matInput placeholder="Enter email"
+          [(ngModel)]="createdApplicant.email">
+      </mat-form-field>
+      <div class="validation-error"
+        *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.required; else emailPatternError">
+        It&apos;s required field
+      </div>
+    </div>
+    <div class="variants">
+      <div class="variant" (click)="set('email', available)" *ngFor="let available of data.email">
+        <mat-icon color="accent">add</mat-icon>
+        <span>{{ available }}</span>
+      </div>
+    </div>
+  </div>
+  <ng-template #emailPatternError>
+    <div class="validation-error"
+      *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.pattern">
+      Please enter a valid email address.
+    </div>
+  </ng-template>
+  <div class="variants-input">
+    <div>
+      <p class="required-field">Experience description</p>
+      <mat-form-field appearance="fill"
+        [ngClass]="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors? 'invalid-input' : ''">
+        <input required formControlName="experienceDescription" type="text" matInput
+          placeholder="Enter experience description" [(ngModel)]="createdApplicant.experienceDescription">
+      </mat-form-field>
+      <div class="validation-error"
+        *ngIf="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors?.required">
+        It&apos;s required field
+      </div>
+    </div>
+    <div class="variants">
+      <div class="variant" (click)="set('experienceDescription', available)" *ngFor="let available of data.experience">
+        <mat-icon color="accent">add</mat-icon>
+        <span>{{ available }}</span>
+      </div>
+    </div>
+  </div>
+  <p class="required-field">Experience years</p>
+  <mat-form-field appearance="fill"
+    [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors? 'invalid-input' : ''">
+    <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60"
+      [(ngModel)]="createdApplicant.experience">
+  </mat-form-field>
+  <div class="validation-error"
+    *ngIf="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors?.required">
+    Please enter a valid experience number in range from 0 to 60
+  </div>
+  <div class="variants-input">
+    <div>
+      <p class="required-field">Phone</p>
+      <mat-form-field appearance="fill"
+        [ngClass]="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors? 'invalid-input' : ''">
+        <input required formControlName="phone" type="tel" matInput placeholder="Enter phone number"
+          [(ngModel)]="createdApplicant.phone">
+      </mat-form-field>
+      <div class="validation-error"
+        *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.required; else phonePatternError">
+        It&apos;s required field
+      </div>
+    </div>
+    <div class="variants">
+      <div class="variant" (click)="set('phone', available)" *ngFor="let available of data.phone">
+        <mat-icon color="accent">add</mat-icon>
+        <span>{{ available }}</span>
+      </div>
+    </div>
+  </div>
+  <ng-template #phonePatternError>
+    <div class="validation-error"
+      *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.pattern">
+      A phone number can only contain integers and has a length from 8 to 16. In has to match the pattern
+      +&lt;code&gt;&lt;number&gt; or &lt;number&gt;
+    </div>
+  </ng-template>
+  <div class="variants-input">
+    <div>
+      <p>Tags</p>
+      <app-tags-edit [tags]="createdApplicant.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
+    </div>
+    <div class="variants">
+      <div class="variant" (click)="addTag(available)" *ngFor="let available of data.skills">
+        <mat-icon color="accent">add</mat-icon>
+        <span>{{ available }}</span>
+      </div>
+    </div>
+  </div>
+  <p class="required-field">Skills additional information</p>
+  <mat-form-field class="wide" appearance="fill">
+    <textarea formControlName="skills" matInput placeholder="Enter skills additional information"
+      [(ngModel)]="createdApplicant.skills"></textarea>
+  </mat-form-field>
+  <div class="validation-error"
+    *ngIf="validationGroup!.controls['skills'].dirty && validationGroup!.controls['skills'].errors?.required">
+    It&apos;s required field
+  </div>
+  <div class="variants-input">
+    <div>
+      <p>Skype</p>
+      <mat-form-field appearance="fill"
+        [ngClass]="validationGroup!.controls['skype'].dirty && validationGroup!.controls['skype'].errors? 'invalid-input' : ''">
+        <input formControlName="skype" type="text" matInput placeholder="Enter skype"
+          [(ngModel)]="createdApplicant.skype">
+      </mat-form-field>
+      <div class="validation-error"
+        *ngIf="validationGroup!.controls['skype'].dirty && validationGroup!.controls['skype'].errors?.pattern">
+        A skype url must match the pattern https://skype.com/&lt;skype&gt;.
+        A skype has to has a length from 6 to 32 not space characters
+      </div>
+    </div>
+    <div class="variants">
+      <div class="variant" (click)="set('skype', 'https://skype.com/' + available)"
+        *ngFor="let available of data.skype">
+        <mat-icon color="accent">add</mat-icon>
+        <span>{{ available }}</span>
+      </div>
+    </div>
+  </div>
+  <p>LinkedIn url</p>
+  <mat-form-field appearance="fill"
+    [ngClass]="validationGroup!.controls['linkedInUrl'].dirty && validationGroup!.controls['linkedInUrl'].errors? 'invalid-input' : ''">
+    <input formControlName="linkedInUrl" type="text" matInput placeholder="Enter LinkedIn url"
+      [(ngModel)]="createdApplicant.linkedInUrl">
+  </mat-form-field>
+  <div class="validation-error"
+    *ngIf="validationGroup!.controls['linkedInUrl'].dirty && validationGroup!.controls['linkedInUrl'].errors?.pattern">
+    LinkedIn url must match the pattern https://www.linkedin.com/in/&lt;username&gt;/
+  </div>
+  <p>CV</p>
+  <app-file-input (upload)="uploadApplicantCv($event)" [default]="[data.cv]" [accept]="allowedCvFileType">
+  </app-file-input>
+  <mat-dialog-actions class="publish-action">
+    <button [disabled]="validationGroup!.invalid" (click)="createApplicant()" mat-button>
+      Publish
+    </button>
+  </mat-dialog-actions>
+</form>

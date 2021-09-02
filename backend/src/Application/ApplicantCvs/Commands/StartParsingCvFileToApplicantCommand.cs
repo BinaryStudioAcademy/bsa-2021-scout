@@ -50,6 +50,7 @@ namespace Application.ApplicantCvs.Commands
                 TriggerId = job.TriggerId,
                 TextPath = inputPath,
                 OutputPath = outputPath,
+                OriginalFilePath = job.FilePath,
             };
 
             await _skillsRepository.CreateAsync(skillsJob);

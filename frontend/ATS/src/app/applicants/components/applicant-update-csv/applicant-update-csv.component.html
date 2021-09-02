@@ -75,15 +75,6 @@
         </div>
     </ng-template>
 
-    <!-- Skype -->
-    <p>Skype</p>
-    <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['skype'].errors? 'invalid-input' : ''">
-        <input formControlName="skype" type="text" matInput placeholder="Enter skype" [(ngModel)]="updatedApplicant.skype">
-    </mat-form-field>
-    <div class="validation-error" *ngIf="validationGroup!.controls['skype'].errors?.pattern">
-        A skype url must match the pattern https://skype.com/&lt;skype&gt;. A skype has to has a length from 6 to 32 not space characters
-    </div>
-
     <!-- LinkedIn url -->
     <p>LinkedIn url</p>
     <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['linkedInUrl'].errors? 'invalid-input' : ''">
