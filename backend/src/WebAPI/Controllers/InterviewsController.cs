@@ -10,6 +10,7 @@ namespace WebAPI.Controllers
     [Authorize]
     public class InterviewsController : ApiController
     {
+        [HttpGet]
         public async Task<IActionResult> GetInterviewList()
         {
             var query = new GetInterviewsListQuery();

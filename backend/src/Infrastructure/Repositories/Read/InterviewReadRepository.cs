@@ -28,11 +28,28 @@ namespace Infrastructure.Repositories.Read
 
             IEnumerable<Interview> interviews = await connection
                 .QueryAsync<Interview>(sql.ToString(), new { companyId = @companyId });
-
             await connection.CloseAsync();
+            foreach(var interview in interviews)
+            {
+                await LoadCandidateAsync(interview);
+            }
             return interviews;
         }
-        
+        public async Task LoadCandidateAsync(Interview interview)
+        {
+            var connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
+            var sql = new StringBuilder();
+            sql.Append("SELECT * ");
+            sql.Append(" FROM Applicants");
+            sql.Append(" WHERE Applicants.Id = @candidateId;");
+
+            IEnumerable<Applicant> applicants = await connection
+                .QueryAsync<Applicant>(sql.ToString(), new { candidateId = interview.CandidateId });
+           
+            await connection.CloseAsync();
+            interview.Candidate = applicants.FirstOrDefault();
+        }
         public async Task LoadInterviewersAsync(Interview interview)
         {
             var connection = _connectionFactory.GetSqlConnection();

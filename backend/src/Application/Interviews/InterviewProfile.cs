@@ -13,12 +13,15 @@ namespace Application.Interviews
             CreateMap<Interview, InterviewDto>()
             .ForMember(dest => dest.UserParticipants,
                 opt => opt.MapFrom(src => src.UserParticipants.Select(ui => ui.User))
-            );
+            ).ForMember(dest=> dest.Candidate, 
+                opt => opt.MapFrom(src => src.Candidate)
+            )
+            ;
             CreateMap<CreateInterviewDto, Interview>() 
             .ForMember(dest => dest.UserParticipants,
                 opt => opt.MapFrom(src => src.UserParticipants.Select(ui => new UsersToInterview()
                 {
-                    UserId = ui.Id
+                    UserId = ui
                 }))
             );
         }
