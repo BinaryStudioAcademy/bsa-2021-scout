@@ -164,6 +164,10 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<ApplyToken>, WriteRepository<ApplyToken>>();
             services.AddScoped<IWriteRepository<Role>, WriteRepository<Role>>();
             services.AddScoped<IWriteRepository<UserToRole>, WriteRepository<UserToRole>>();
+
+            services.AddScoped<IWriteRepository<Interview>, WriteRepository<Interview>>();
+            services.AddScoped<IWriteRepository<UsersToInterview>, WriteRepository<UsersToInterview>>();
+
             services.AddScoped<IWriteRepository<RegisterPermission>, WriteRepository<RegisterPermission>>();
             services.AddScoped<IWriteRepository<Action>, ActionWriteRepository>();
             services.AddScoped<IWriteRepository<CandidateReview>, CandidateReviewWriteRepository>();
@@ -213,6 +217,9 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<Action>, ActionReadRepository>();
             services.AddScoped<IReadRepository<CandidateReview>, CandidateReviewReadRepository>();
             services.AddScoped<IReadRepository<CandidateToStage>, CandidateToStageReadRepository>();
+
+            services.AddScoped<IInterviewReadRepository, InterviewReadRepository>();
+
             services.AddScoped<ICandidateToStageReadRepository, CandidateToStageReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();

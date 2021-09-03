@@ -4,14 +4,16 @@ using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210830202102_UserToInterviewsMigration")]
+    partial class UserToInterviewsMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,6 +88,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Skills")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Skype")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ToBeContacted")
                         .HasColumnType("datetime2");
 
@@ -96,34 +101,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CvFileInfoId");
 
                     b.ToTable("Applicants");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ApplyToken", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VacancyId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VacancyId");
-
-                    b.ToTable("ApplyTokens");
                 });
 
             modelBuilder.Entity("Domain.Entities.CandidateComment", b =>
@@ -241,9 +218,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("AWSJobId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FilePath")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TriggerId")
                         .HasColumnType("nvarchar(450)");
 
@@ -304,9 +278,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CandidateId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CompanyId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -322,9 +293,8 @@ namespace Infrastructure.Migrations
                     b.Property<int>("MeetingSource")
                         .HasColumnType("int");
 
-                    b.Property<string>("Note")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                    b.Property<string>("NoteId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Scheduled")
                         .HasColumnType("datetime2");
@@ -338,6 +308,8 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CandidateId");
+
+                    b.HasIndex("NoteId");
 
                     b.HasIndex("VacancyId");
 
@@ -537,9 +509,6 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("OriginalFilePath")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("OutputPath")
                         .HasColumnType("nvarchar(max)");
 
@@ -607,6 +576,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("InterviewId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsEmailConfirmed")
                         .HasColumnType("bit");
 
@@ -631,6 +603,8 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("InterviewId");
 
                     b.ToTable("Users");
                 });
@@ -854,17 +828,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("CvFileInfo");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ApplyToken", b =>
-                {
-                    b.HasOne("Domain.Entities.Vacancy", "Vacancy")
-                        .WithMany("ApplyTokens")
-                        .HasForeignKey("VacancyId")
-                        .HasConstraintName("apply_token__vacancy_FK")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Vacancy");
-                });
-
             modelBuilder.Entity("Domain.Entities.CandidateComment", b =>
                 {
                     b.HasOne("Domain.Entities.VacancyCandidate", "Candidate")
@@ -966,11 +929,17 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("CandidateId");
 
+                    b.HasOne("Domain.Entities.CandidateComment", "Note")
+                        .WithMany()
+                        .HasForeignKey("NoteId");
+
                     b.HasOne("Domain.Entities.Vacancy", "Vacancy")
                         .WithMany()
                         .HasForeignKey("VacancyId");
 
                     b.Navigation("Candidate");
+
+                    b.Navigation("Note");
 
                     b.Navigation("Vacancy");
                 });
@@ -1091,6 +1060,10 @@ namespace Infrastructure.Migrations
                         .HasConstraintName("user_company_FK")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("Domain.Entities.Interview", null)
+                        .WithMany("UserParticipants")
+                        .HasForeignKey("InterviewId");
+
                     b.Navigation("Company");
                 });
 
@@ -1125,11 +1098,11 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.UsersToInterview", b =>
                 {
                     b.HasOne("Domain.Entities.Interview", "Interview")
-                        .WithMany("UserParticipants")
+                        .WithMany()
                         .HasForeignKey("InterviewId");
 
                     b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("UsersToInterviews")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Interview");
@@ -1259,15 +1232,11 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("UserRoles");
 
-                    b.Navigation("UsersToInterviews");
-
                     b.Navigation("Vacancies");
                 });
 
             modelBuilder.Entity("Domain.Entities.Vacancy", b =>
                 {
-                    b.Navigation("ApplyTokens");
-
                     b.Navigation("Stages");
                 });
 
