@@ -30,7 +30,7 @@ namespace Application.Pools.Commands
     {
         protected readonly ISender _mediator;
         protected readonly IWriteRepository<Pool> _poolWriteRepository;
-        protected readonly IReadRepository<Applicant> _applicantReadRepository; 
+        protected readonly IReadRepository<Applicant> _applicantReadRepository;
         protected readonly IPoolReadRepository _poolReadRepository;
         protected readonly ICurrentUserContext _userContext;
         protected readonly ISecurityService _securityService;
@@ -39,7 +39,7 @@ namespace Application.Pools.Commands
         public CreatePoolCommandHandler(ISender mediator, IWriteRepository<Pool> poolWriteRepository, IPoolReadRepository poolReadRepository, ICurrentUserContext userContext, ISecurityService securityService, IMapper mapper)
         {
             _mediator = mediator;
-            _poolWriteRepository = poolWriteRepository; 
+            _poolWriteRepository = poolWriteRepository;
             _poolReadRepository = poolReadRepository;
             _userContext = userContext;
             _securityService = securityService;
@@ -52,22 +52,22 @@ namespace Application.Pools.Commands
 
             var currentUser = await _userContext.GetCurrentUser();
 
-            if(currentUser!= null)
+            if (currentUser != null)
             {
                 newPool.CompanyId = currentUser.CompanyId;
                 newPool.CreatedById = currentUser.Id;
             }
 
-            newPool.DateCreated = DateTime.Now;    
-            
+            newPool.DateCreated = DateTime.UtcNow;
+
             var pool = await _poolWriteRepository.CreateAsync(newPool);
 
             var createdPool = await _poolReadRepository.GetPoolWithApplicantsByIdAsync(pool.Id);
 
-            return  _mapper.Map<PoolDto>(createdPool);
+            return _mapper.Map<PoolDto>(createdPool);
 
         }
 
-        
+
     }
 }

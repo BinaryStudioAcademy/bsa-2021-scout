@@ -1,0 +1,19 @@
+h1 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.mat-button {
+    margin-top: 10px;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    app-file-input{
+        width: 100%;
+    }
+}
+

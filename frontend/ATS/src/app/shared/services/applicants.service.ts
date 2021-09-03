@@ -36,16 +36,6 @@ export class ApplicantsService {
     return this.httpClient.postRequest<Applicant>('/applicants', formData);
   }
 
-  public addSelfAppliedApplicant(createApplicant: CreateApplicant, 
-    vacancyId: string): Observable<Applicant> {
-    const formData = new FormData();
-    formData.append('body', JSON.stringify(createApplicant));
-    if (createApplicant.cv) {
-      formData.append('cvFile', createApplicant.cv, createApplicant.cv.name);
-    }
-    return this.httpClient.postRequest<Applicant>(`/applicants/self-apply/${vacancyId}`, formData);
-  }
-
   public updateApplicant(updateApplicant: UpdateApplicant): Observable<Applicant> {
     const formData = new FormData();
     formData.append('body', JSON.stringify(updateApplicant));
@@ -63,16 +53,6 @@ export class ApplicantsService {
 
   public getCv(applicantId: string): Observable<FileUrl> {
     return this.httpClient.getRequest<FileUrl>(`/applicants/${applicantId}/cv`);
-  }
-
-  public getApplicantsFromCSV(file: File) {
-    const fd = new FormData();
-    fd.append('file', file, file.name);
-    return this.httpClient.postFullRequest<CsvApplicant[]>('/applicants/csv', fd);
-  }
-
-  public addRangeApplicants(applicants: CreateApplicant[]) {
-    return this.httpClient.postFullRequest<Applicant[]>('/applicants/range', applicants);
   }
 
   public getApplicantByEmail(email: string): Observable<Applicant>{

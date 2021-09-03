@@ -33,7 +33,7 @@ namespace Infrastructure.AWS.S3
             {
                 BucketName = _awsS3Connection.GetBucketName(),
                 Key = AwsS3Helpers.GetFileKey(filePath, fileName),
-                Expires = DateTime.Now.Add(timeSpan),
+                Expires = DateTime.UtcNow.Add(timeSpan),
             };
 
             var preSignedUrl = _awsS3Connection.GetAwsS3().GetPreSignedURL(preSignedUrlRequest);

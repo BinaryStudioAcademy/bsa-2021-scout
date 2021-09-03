@@ -32,5 +32,6 @@ namespace Domain.Entities
         public Project Project { get; set; }
         public ICollection<Stage> Stages { get; set; }
         //public ICollection<TagToVacancy> VacancyTags { get; set; }
+        public ICollection<ApplyToken> ApplyTokens { get; set; }
     }
 }

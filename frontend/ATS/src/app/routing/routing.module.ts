@@ -29,10 +29,15 @@ import {
   ApplicationPoolComponent,
 } from '../pools/components/application-pool/application-pool.component';
 import { PoolsRoutingModule } from '../pools/pools-routing.module';
-import { ApplicantCsvListComponent } 
-  from '../applicants/components/applicant-csv-list/applicant-csv-list.component';
+import { MailTemplatesListComponent } from 
+  '../mail-templates/components/mail-templates-list/mail-templates-list.component';
+/* eslint-disable max-len */
+import { ApplicantFileTablesComponent } from '../applicants/components/CsvComponents/applicant-csv-file-tables/applicant-csv-file-tables.component';
 import { ApplicantsRoutingModule } from '../applicants/applicants-routing.module';
 import { UserProfileComponent } from '../shared/components/user-profile/user-profile.component';
+import { InterviewsPageComponent } from '../interviews/interviews-page/interviews-page.component';
+/* eslint-disable max-len */
+import { ApplicantCsvFilesListComponent } from '../applicants/components/CsvComponents/applicant-csv-files-list/applicant-csv-files-list.component';
 
 const routes: Routes = [
   {
@@ -40,6 +45,7 @@ const routes: Routes = [
     component: MainContentComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: AppRoute.Templates, component: MailTemplatesListComponent, pathMatch: 'full' },
       { 
         path: AppRoute.Home, 
         component: HomeComponent, 
@@ -68,7 +74,7 @@ const routes: Routes = [
       },
       {
         path: AppRoute.Interviews,
-        component: VacanciesListComponent,
+        component: InterviewsPageComponent,
         pathMatch: 'full',
       },
       {
@@ -104,7 +110,12 @@ const routes: Routes = [
       },
       {
         path: AppRoute.ApplicantsCsv,
-        component: ApplicantCsvListComponent,
+        component: ApplicantFileTablesComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: AppRoute.ApplicantsCsvFilesList,
+        component: ApplicantCsvFilesListComponent,
         pathMatch: 'full',
       },
       { path: '**', redirectTo: AppRoute.Home },

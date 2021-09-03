@@ -33,6 +33,7 @@ import {
 
 import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
 import { D } from '@angular/cdk/keycodes';
+import { environment } from '../../../../environments/environment';
 
 const STATUES: VacancyStatus[] = [
   VacancyStatus.Active,
@@ -103,9 +104,10 @@ implements AfterViewInit, OnInit, OnDestroy
       )
       .subscribe(
         (data) => {
-          data.map((d) => ({ ...d, isFollowed: this.followedSet.has(d.id) }));
+          data.forEach((d) => {
+            d.isFollowed = this.followedSet.has(d.id);
+          });
           this.mainData = data;
-
           if (localStorage.getItem(this.followedPageToken) == 'true') {
             this.dataSource.data = data.filter((item) =>
               this.followedSet.has(item.id),
@@ -381,6 +383,14 @@ implements AfterViewInit, OnInit, OnDestroy
           );
       }
     });
+  }
+
+  generateLink(id: string){
+    return environment.clientUrl + `/vacancy/apply/${id}`;
+  }
+
+  successMessage(message: string){
+    this.notificationService.showSuccessMessage(message);
   }
 
   applyFilter(event: Event) {

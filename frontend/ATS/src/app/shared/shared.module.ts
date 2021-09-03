@@ -50,8 +50,11 @@ import { UserRoleDirective } from './directives/user-role.directive';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
 import { TimezonePipe } from './pipes/timezone-pipe';
+import { FilesEditComponent } from '../users/components/files-edit/files-edit.component';
+import { PlaceholdersEditComponent } from '../users/components/placeholders/placeholders.component';
 import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
 import { TableFilterComponent } from './components/table-filter/table-filter.component';
+import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
 
 @NgModule({
   exports: [
@@ -101,8 +104,11 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
     ClipboardModule,
     UserProfileComponent,
     TimezonePipe,
+    FilesEditComponent,
+    PlaceholdersEditComponent,
     AvatarModalComponent,
     TableFilterComponent,
+    MarkBarComponent,
   ],
   imports: [
     MatButtonModule,
@@ -161,8 +167,11 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
     UserRoleDirective,
     CopyClipboardDirective,
     TimezonePipe,
+    FilesEditComponent,
+    PlaceholdersEditComponent,
     AvatarModalComponent,
     TableFilterComponent,
+    MarkBarComponent,
   ],
 })
 export class SharedModule {}

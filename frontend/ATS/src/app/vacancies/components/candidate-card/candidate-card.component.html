@@ -13,6 +13,6 @@
     {{ candidate.dateAdded | timezone:"fromnow" }}
   </div>
   <div class="mark data" *ngIf="candidate.averageMark || candidate.averageMark === 0">
-    <mat-progress-bar color="accent" mode="determinate" [value]="candidate.averageMark * 10"></mat-progress-bar>
+    <app-mark-bar [mark]="candidate.averageMark"></app-mark-bar>
   </div>
 </div>

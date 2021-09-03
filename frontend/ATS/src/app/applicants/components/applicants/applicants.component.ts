@@ -292,7 +292,11 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.dataSource.data = this.filteredData.filter((item) =>
         this.followedSet.has(item.id),
       );
-    } else {
+    } 
+    else if (this.page == 'self-applied') {
+      this.dataSource.data = this.dataSource.data.filter(a => a.isSelfApplied);
+    } 
+    else {
       this.dataSource.data = this.filteredData;
     }
 
@@ -340,14 +344,22 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
       let applicantIndex = this.cashedData.findIndex(
         (a) => a.id === applicant.id,
       );
+
       applicant.position = this.cashedData[applicantIndex].position;
       applicant.isFollowed = this.cashedData[applicantIndex].isFollowed;
-      this.cashedData[applicantIndex] = applicant;
+
+      const newCachedData = [...this.cashedData];
+      newCachedData[applicantIndex] = applicant;
+
+      this.cashedData = [...newCachedData];
       this.dataSource.data = this.cashedData;
 
       if (this.page) {
         this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
       }
+
+      this.renewFilterDescription();
+      this.directive?.applyFilter$.emit();
 
       this.notificationsService.showSuccessMessage(
         'An applicant was succesfully updated',
@@ -361,14 +373,19 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
       (a) => a.id === applicantId,
     );
 
-    this.cashedData.splice(applicantIndex, 1);
+    const newCachedData = [...this.cashedData];
+    newCachedData.splice(applicantIndex, 1);
+
+    this.cashedData = [...newCachedData];
     this.dataSource.data = this.cashedData;
 
     if (this.page) {
       this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
     }
 
+    this.renewFilterDescription();
     this.directive?.applyFilter$.emit();
+
     this.notificationsService.showSuccessMessage(
       'The applicant was successfully deleted',
       'Success!',
@@ -468,10 +485,6 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       },
     );
-  }
-
-  public updateListApplicants() {
-    this.getApplicants();
   }
 
   private compareRows(
