@@ -49,7 +49,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   tierFrom: number = 0;
   tierTo: number = 0;
 
-  selfApplyStage: Stage | null = {} as Stage;
+  selfApplyStage: Stage | null = null;
 
   @Output() vacancyChange = new EventEmitter<VacancyFull>();
 
