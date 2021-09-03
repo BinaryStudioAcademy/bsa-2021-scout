@@ -351,8 +351,8 @@ export class TableFilterComponent implements OnChanges, OnInit {
       }
       case FilterType.Text:
       default: {
-        const regex = new RegExp(value as string, 'gim');
-        return data.filter((el) => regex.test(_.get(el, propName)));
+        const regex = new RegExp(value as string, 'i');
+        return data.filter((el) => String(_.get(el, propName)).match(regex) !== null);
       }
     }
   }
