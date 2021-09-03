@@ -1,22 +1,23 @@
 <div class="container">
   <app-spinner [loading]="loading"></app-spinner>
   <ng-container *ngIf="!loading">
-    <div class="avatar-col">
-      <img class="avatar" src="../../../../assets/images/defaultAvatar.png" (click)="enlargeAvatar()" />
-    </div>
     <div class="content-col">
       <div class="top block">
-        <h2>{{ data.fullName }}</h2>
-        <p class="only-color meta">
-          <span *ngIf="data.isSelfApplied">Self applied candidate</span>
-          <span *ngIf="!data.isSelfApplied">Added by </span>
-          <a *ngIf="!data.isSelfApplied" routerLink="/profile/{{ data.hrWhoAddedId }}">{{ data.hrWhoAddedFullName }}</a>
-          <span> {{ data.dateAdded | timezone }}</span>
-        </p>
-        <p class="only-color meta">
-          <span>Current stage: </span>
-          <span class="only-color dark meta">{{ data.currentStageName }}</span>
-        </p>
+        <img class="avatar" src="../../../../assets/images/defaultAvatar.png" (click)="enlargeAvatar()" />
+        <div class="text">
+          <h2>{{ data.fullName }}</h2>
+          <p class="only-color meta">
+            <span *ngIf="data.isSelfApplied">Self applied candidate</span>
+            <span *ngIf="!data.isSelfApplied">Added by </span>
+            <a *ngIf="!data.isSelfApplied" routerLink="/profile/{{ data.hrWhoAddedId }}">{{ data.hrWhoAddedFullName
+              }}</a>
+            <span> {{ data.dateAdded | timezone }}</span>
+          </p>
+          <p class="only-color meta">
+            <span>Current stage: </span>
+            <span class="only-color dark meta">{{ data.currentStageName }}</span>
+          </p>
+        </div>
       </div>
       <mat-divider></mat-divider>
       <div class="block">
