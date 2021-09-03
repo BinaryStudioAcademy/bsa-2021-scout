@@ -8,6 +8,7 @@
             <mat-icon class="search">search</mat-icon>
             <input matInput type="text" (keyup)="applyFilter($event)" placeholder="Search..." #input>
         </mat-form-field>
+        <button mat-button color="accent" (click)="openPendingRegistrationsDialog()">Pending registrations</button>
         <button mat-button (click)="OpenSendRegistrationLinkDialog()">Send registration link</button>
     </div>
     <app-table-filter

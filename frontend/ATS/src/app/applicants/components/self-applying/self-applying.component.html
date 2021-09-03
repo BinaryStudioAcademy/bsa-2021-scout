@@ -93,11 +93,11 @@
                                 <textarea formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description" [(ngModel)]="applicant.experienceDescription"></textarea>
                             </mat-form-field>
 
-                            <p class="required-field">Experience</p>
-                            <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors? 'invalid-input' : ''">
+                            <p>Experience</p>
+                            <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors ? 'invalid-input' : ''">
                                 <input formControlName="experience" type="number" matInput step=".1" min="0" max="60" [(ngModel)]="applicant.experience">
                             </mat-form-field>
-                            <div class="validation-error" *ngIf="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors?.required">
+                            <div class="validation-error" *ngIf="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors">
                                 Please enter a valid experience number in range from 0 to 60
                             </div>
 

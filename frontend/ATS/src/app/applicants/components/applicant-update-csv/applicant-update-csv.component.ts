@@ -24,7 +24,7 @@ export class ApplicantUpdateCsvComponent {
       Validators.email,
       Validators.pattern('^\\S{1,}@\\S{3,}\\.[a-z]+'),
     ]),
-    experience: new FormControl('', [Validators.required]),
+    experience: new FormControl(''),
     phone: new FormControl('', [
       Validators.required,
       Validators.pattern('^\\+?[0-9]{8,16}'),
