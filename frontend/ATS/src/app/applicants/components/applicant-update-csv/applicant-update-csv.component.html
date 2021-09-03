@@ -53,11 +53,11 @@
     </ng-template>
 
     <!-- Experience -->
-    <p class="required-field">Experience</p>
+    <p>Experience</p>
     <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experience'].errors? 'invalid-input' : ''">
         <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60" [(ngModel)]="updatedApplicant.experience">
     </mat-form-field>
-    <div class="validation-error" *ngIf="validationGroup!.controls['experience'].errors?.required">
+    <div class="validation-error" *ngIf="validationGroup!.controls['experience'].errors">
         Please enter a valid experience number in range from 0 to 60
     </div>
 

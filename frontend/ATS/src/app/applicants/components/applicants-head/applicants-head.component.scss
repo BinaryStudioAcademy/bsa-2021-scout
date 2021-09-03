@@ -29,7 +29,7 @@ button.tub:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 45px;
+    height: 40px;
     margin-right: 10px;
     line-height: 24px;
     span{
@@ -46,6 +46,10 @@ button.tub:focus {
 }
 .cv-button{
     width: 440px;
+}
+
+.create-button{
+    width: 360px;
 }
 
 :host {

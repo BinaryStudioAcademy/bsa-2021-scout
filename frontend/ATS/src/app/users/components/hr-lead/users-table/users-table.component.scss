@@ -36,6 +36,11 @@ $primary-font: Nunito;
 
     .mat-button {
         min-width: fit-content;
+        height: 40px;
+    }
+
+    .mat-accent {
+        margin-right: 10px;
     }
 
     .header {
@@ -45,6 +50,10 @@ $primary-font: Nunito;
         height: 60px;
         padding: 10px 20px 10px 20px;
         background: $primary-color-white;
+    }
+
+    & ::ng-deep .filter {
+        background-color: $primary-color-white;
     }
 
     /* Table */

@@ -25,6 +25,9 @@ import {
 import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
+import { ApplicantIsSelected } from 'src/app/shared/models/applicants/applicant-select';
+import { AddCandidateModalComponent } 
+  from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
 
 @Component({
   selector: 'app-application-pool',
@@ -290,6 +293,29 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
         this.createPool(result);
         dialogSubmitSubscription.unsubscribe();
       });
+  }
+
+  onAddApplicantsFromPoolToVacancy(applicants: ApplicantIsSelected[]){
+    if(applicants != null && applicants.length != 0){
+      let ids: string[] = [];
+
+      applicants.forEach(applicant => {
+        ids.push(applicant.id);
+      });
+
+      this.dialogService.open(AddCandidateModalComponent, {
+        width: '400px',
+        autoFocus: false,
+        panelClass: 'applicants-options',
+        data: {
+          applicantsIds: ids,
+        },
+      });
+    }
+    else
+    {
+      this.notificationService.showInfoMessage('There is no applicants in pool');
+    }
   }
 
   onDetails(id: string) {

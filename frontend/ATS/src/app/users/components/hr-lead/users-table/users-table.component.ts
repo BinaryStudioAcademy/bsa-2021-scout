@@ -14,7 +14,8 @@ import { UserDataService } from 'src/app/users/services/user-data.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { takeUntil, mergeMap } from 'rxjs/operators';
 // eslint-disable-next-line
-import { SendingRegisterLinkDialogComponent } from '../send-registration-link-dialog/sending-register-link-dialog.component';
+import { SendingRegisterLinkDialogComponent }
+  from '../send-registration-link-dialog/sending-register-link-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserTableData } from 'src/app/users/models/user-table-data';
 import { Subject } from 'rxjs';
@@ -24,6 +25,8 @@ import {
   FilterDescription,
   FilterType,
 } from 'src/app/shared/components/table-filter/table-filter.component';
+import { PendingRegistrationsComponent }
+  from '../pending-registrations/pending-registrations.component';
 
 @Component({
   selector: 'app-users-table',
@@ -195,6 +198,14 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
     this.dialog.open(SendingRegisterLinkDialogComponent, {
       disableClose: true,
       maxWidth: '400px',
+    });
+  }
+
+  public openPendingRegistrationsDialog(): void {
+    this.dialog.open(PendingRegistrationsComponent, {
+      width: '800px',
+      height: '80vh',
+      autoFocus: false,
     });
   }
 

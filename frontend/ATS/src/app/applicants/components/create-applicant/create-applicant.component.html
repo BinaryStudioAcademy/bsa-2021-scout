@@ -59,12 +59,12 @@
 
     <p>Experience years</p>
     <mat-form-field appearance="fill"
-        [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors? 'invalid-input' : ''">
+        [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors ? 'invalid-input' : ''">
         <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60"
             [(ngModel)]="createdApplicant.experience">
     </mat-form-field>
     <div class="validation-error"
-        *ngIf="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors?.required">
+        *ngIf="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors">
         Please enter a valid experience number in range from 0 to 60
     </div>
 

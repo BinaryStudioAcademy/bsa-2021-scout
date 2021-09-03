@@ -1,3 +1,4 @@
+import { InterviewsModule } from './../interviews/interviews.module';
 /* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -35,6 +36,7 @@ import { MailTemplatesModule } from '../mail-templates/mail-templates.module';
     SharedModule,
     ApplicantsModule,
     VacanciesModule,
+    InterviewsModule,
     UsersModule,
     ProjectsModule,
     PoolsModule,

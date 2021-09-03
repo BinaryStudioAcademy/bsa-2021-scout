@@ -3,6 +3,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChange,
   SimpleChanges,
@@ -51,9 +52,10 @@ export type FilterValue = string | [Date, Date] | number | boolean | IOption[];
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.scss'],
 })
-export class TableFilterComponent implements OnChanges {
+export class TableFilterComponent implements OnChanges, OnInit {
   @Input() public description!: FilterDescription;
   @Input() public data: Record<string, any>[] = [];
+  @Input() public panelClass?: string;
 
   @Output() public filteredDataChange: EventEmitter<any[]> = new EventEmitter<
   any[]
@@ -65,6 +67,7 @@ export class TableFilterComponent implements OnChanges {
   public menuOpen: boolean = false;
   public all: boolean = false;
   public descriptionMap: Record<string, FilterDescriptionItem> = {};
+  public additionalClass: string = '';
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
@@ -73,6 +76,12 @@ export class TableFilterComponent implements OnChanges {
 
     if (changes.description) {
       this.renewDescription(changes.description);
+    }
+  }
+
+  public ngOnInit(): void {
+    if (this.panelClass) {
+      this.additionalClass = this.panelClass;
     }
   }
 
@@ -342,8 +351,8 @@ export class TableFilterComponent implements OnChanges {
       }
       case FilterType.Text:
       default: {
-        const regex = new RegExp(value as string, 'gim');
-        return data.filter((el) => regex.test(_.get(el, propName)));
+        const regex = new RegExp(value as string, 'i');
+        return data.filter((el) => String(_.get(el, propName)).match(regex) !== null);
       }
     }
   }

@@ -295,6 +295,55 @@ namespace Infrastructure.Migrations
                     b.ToTable("FileInfos");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Interview", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CandidateId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Duration")
+                        .HasColumnType("float");
+
+                    b.Property<int>("InterviewType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MeetingLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MeetingSource")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("Scheduled")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VacancyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CandidateId");
+
+                    b.HasIndex("VacancyId");
+
+                    b.ToTable("Interviews");
+                });
+
             modelBuilder.Entity("Domain.Entities.Pool", b =>
                 {
                     b.Property<string>("Id")
@@ -629,6 +678,27 @@ namespace Infrastructure.Migrations
                     b.ToTable("UserToRoles");
                 });
 
+            modelBuilder.Entity("Domain.Entities.UsersToInterview", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("InterviewId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InterviewId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UsersToInterviews");
+                });
+
             modelBuilder.Entity("Domain.Entities.Vacancy", b =>
                 {
                     b.Property<string>("Id")
@@ -890,6 +960,21 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Interview", b =>
+                {
+                    b.HasOne("Domain.Entities.Applicant", "Candidate")
+                        .WithMany()
+                        .HasForeignKey("CandidateId");
+
+                    b.HasOne("Domain.Entities.Vacancy", "Vacancy")
+                        .WithMany()
+                        .HasForeignKey("VacancyId");
+
+                    b.Navigation("Candidate");
+
+                    b.Navigation("Vacancy");
+                });
+
             modelBuilder.Entity("Domain.Entities.Pool", b =>
                 {
                     b.HasOne("Domain.Entities.Company", "Company")
@@ -1037,6 +1122,21 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.UsersToInterview", b =>
+                {
+                    b.HasOne("Domain.Entities.Interview", "Interview")
+                        .WithMany("UserParticipants")
+                        .HasForeignKey("InterviewId");
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("UsersToInterviews")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Interview");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.Vacancy", b =>
                 {
                     b.HasOne("Domain.Entities.Company", "Company")
@@ -1103,6 +1203,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Vacancies");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Interview", b =>
+                {
+                    b.Navigation("UserParticipants");
+                });
+
             modelBuilder.Entity("Domain.Entities.Pool", b =>
                 {
                     b.Navigation("PoolApplicants");
@@ -1153,6 +1258,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("SkillsParsingJobs");
 
                     b.Navigation("UserRoles");
+
+                    b.Navigation("UsersToInterviews");
 
                     b.Navigation("Vacancies");
                 });
