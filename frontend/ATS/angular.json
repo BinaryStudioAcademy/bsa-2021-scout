@@ -35,9 +35,10 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/devextreme/dist/css/dx.common.css",
+              "node_modules/devextreme/dist/css/dx.light.css",
               "src/styles.scss",
-              "node_modules/ngx-toastr/toastr.css",
-              "node_modules/devextreme/dist/css/dx.light.css"
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           },
@@ -69,7 +70,15 @@
                   "with": "src/environments/environment.prod-deployment.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              }
             },
             "develop-deployment": {
               "budgets": [
@@ -90,7 +99,15 @@
                   "with": "src/environments/environment.develop-deployment.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              }
             }
           },
           "defaultConfiguration": "production"
