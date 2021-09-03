@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -20,11 +21,13 @@ export class PendingRegistrationsComponent implements OnDestroy, AfterViewInit {
   public cashedData: RegistrationPermissionShort[] = [];
   public dataSource: MatTableDataSource<RegistrationPermissionShort>
   = new MatTableDataSource<RegistrationPermissionShort>();
+
+  public searchValue: string = '';
     
   public displayedColumns = [
     'position',
     'email',
-    'date',
+    'expires_in',
     'status',
     'actions',
   ];
@@ -57,6 +60,16 @@ export class PendingRegistrationsComponent implements OnDestroy, AfterViewInit {
     return isActive
       ? 'Active'
       : 'Inactive';
+  }
+
+  public applySearchValue() {
+    this.searchValue = this.searchValue;
+    this.dataSource.filter = this.searchValue;
+
+    if (this.dataSource.paginator) {
+      this.directive?.applyFilter$.emit();
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   public resendInvitationLink(registrationPermission: RegistrationPermissionShort): void {
@@ -100,5 +113,40 @@ export class PendingRegistrationsComponent implements OnDestroy, AfterViewInit {
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  public sortData(sort: Sort): void {
+    this.dataSource.data = this.dataSource.data.sort(
+      (a, b) => {
+        const isAsc = sort.direction === 'asc';
+
+        switch (sort.active) {
+          case 'email':
+            return this.compareRows(a.email, b.email, isAsc);
+          case 'expires_in':
+            return this.compareDates(a.date, b.date, isAsc);
+          case 'status':
+            return this.compareBooleans(a.isActive, b.isActive, isAsc);
+          default:
+            return 0;
+        }
+      },
+    );
+  }
+
+  private compareBooleans(a: boolean, b: boolean, isAsc: boolean): number {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  private compareRows(
+    a: number | string,
+    b: number | string,
+    isAsc: boolean,
+  ): number {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  private compareDates(a: Date, b: Date, isAsc: boolean): number {
+    return (a.getTime() < b.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }

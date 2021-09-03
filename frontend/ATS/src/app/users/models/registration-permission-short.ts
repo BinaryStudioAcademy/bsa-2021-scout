@@ -1,6 +1,6 @@
 export interface RegistrationPermissionShort {
   id: string;
   email: string;
-  date: string;
+  date: Date;
   isActive: boolean;
 }
