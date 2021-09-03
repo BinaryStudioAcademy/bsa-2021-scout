@@ -29,6 +29,9 @@ namespace Application.Users
                     {
                         RoleId = role.Id
                     })));
+
+            CreateMap<RegisterPermission, RegisterPermissionShortDto>()
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Expires));
         }
     }
 }

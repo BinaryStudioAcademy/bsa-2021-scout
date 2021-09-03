@@ -49,5 +49,21 @@ namespace WebAPI.Controllers
             await Mediator.Send(command);
             return Ok();
         }
+
+        [Authorize(Roles = "HrLead")]
+        [HttpPut("resend-registration-link")]
+        public async Task<IActionResult> ResendRegistrationLink([FromBody] RegisterPermissionShortDto registerPermissionShortDto)
+        {
+            var command = new ResendRegistrationLinkCommand(registerPermissionShortDto);
+            return Ok(await Mediator.Send(command));
+        }
+
+        [Authorize(Roles = "HrLead")]
+        [HttpDelete("revoke-registration-link/{id}")]
+        public async Task<IActionResult> RevokeRegistrationLink(string id)
+        {
+            var command = new RevokeRegistrationLinkCommand(id);
+            return Ok(await Mediator.Send(command));
+        }
     }
 }

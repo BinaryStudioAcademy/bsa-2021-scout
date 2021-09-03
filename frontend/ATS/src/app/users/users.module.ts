@@ -42,6 +42,9 @@ import {
 } from './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
 
 import { RecentActivityComponent } from './components/recent-activity/recent-activity.component';
+import { PendingRegistrationsComponent }
+  from './components/hr-lead/pending-registrations/pending-registrations.component';
+import { RegistrationPermissionsService } from './services/registration-permissions.service';
 
 @NgModule({
   declarations: [
@@ -63,6 +66,7 @@ import { RecentActivityComponent } from './components/recent-activity/recent-act
     HomeComponent,
     VacancyCardComponent,
     RecentActivityComponent,
+    PendingRegistrationsComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
@@ -71,6 +75,7 @@ import { RecentActivityComponent } from './components/recent-activity/recent-act
     UserDataService,
     LoggedInUserGuard,
     HomeDataService,
+    RegistrationPermissionsService,
   ],
 })
 export class UsersModule {}

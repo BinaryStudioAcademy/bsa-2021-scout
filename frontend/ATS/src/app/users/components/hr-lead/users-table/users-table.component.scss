@@ -36,6 +36,11 @@ $primary-font: Nunito;
 
     .mat-button {
         min-width: fit-content;
+        height: 40px;
+    }
+
+    .mat-accent {
+        margin-right: 10px;
     }
 
     .header {

@@ -1,0 +1,138 @@
+.dialog-header-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    height: min-content;
+    align-items: flex-start;
+}
+
+.mat-dialog-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    height: min-content;
+}
+
+.mat-dialog-actions {
+    height: min-content;
+    padding: 0;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    min-height: 0;
+
+    .mat-icon {
+        color: #000;
+
+        &:hover {
+            cursor: pointer;
+            color: #ee2a64;
+        }
+    }
+}
+
+.mat-table {
+    width: 100%;
+
+    .mat-header-row {
+        height: 30px;
+    }
+    
+    .mat-cell {
+        height: 40px;
+        vertical-align: middle;
+        padding-right: 15px;
+    }
+
+    tr {
+        width: 100%;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f6f7f9;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        
+        :first-child {
+            margin-right: 10px;
+        }
+
+        .mat-button {
+            font-size: 13px;
+            line-height: 25px;
+            width: fit-content;
+        }
+    }
+}
+
+:host ::ng-deep .mat-paginator {
+    box-sizing: border-box;
+    outline: 1px solid rgba(0, 0, 0, 0.12);
+
+    .mat-paginator-container {
+        justify-content: space-between;
+
+        .mat-paginator-page-size {
+        margin-right: auto;
+
+        .mat-form-field-type-mat-select:not(.mat-form-field-disabled)
+            .mat-form-field-flex {
+            width: 40px;
+            margin-left: 15px;
+
+            .mat-selector {
+            background: none;
+            }
+        }
+        }
+    }
+
+    .mat-form-field-wrapper {
+        background: none;
+    }
+}
+
+
+:host ::ng-deep .search-bar {
+    width: 100%;
+    margin: 15px 0 30px;
+
+    .mat-form-field-wrapper {
+        height: 40px;
+        padding: 0;
+        border-radius: 50px;
+        text-align: left;
+        background-color: rgba(226, 226, 226, 0.5);
+        color: rgba(0, 0, 0, 0.87);
+    }
+
+    .mat-form-field-infix{
+        display:flex;
+        align-items: center;
+        padding: 0;
+        height: 24px;
+        background: none;
+    }
+
+    .mat-form-field-flex{
+        padding: 0 5px;
+        background: none;
+    }
+
+    .mat-icon{
+        display: inline-block;
+        color: gray;
+        font-size: 16px;
+        height: 24px;
+        width: 24px;
+        line-height: 25px;
+        vertical-align: middle;
+        margin: 0 10px;
+    }
+
+    .mat-icon-button .mat-icon {
+        line-height: 1;
+    }
+}
