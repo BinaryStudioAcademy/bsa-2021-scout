@@ -9,6 +9,7 @@ using Domain.Interfaces.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
+using MongoDB.Bson;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ namespace Application.MailTemplates.Commands
             }
 
             var entity = new MailTemplate();
-
+            entity.Id = entity.Id = ObjectId.GenerateNewId().ToString();
             var currentUser = await _currentUserContext.GetCurrentUser();
 
             entity.Slug = mailTemplateCreateDto.Slug;
