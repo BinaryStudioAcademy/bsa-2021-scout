@@ -8,7 +8,13 @@ namespace Application.MailTemplates
     {
         public MailTemplateProfile()
         {
-            CreateMap<MailTemplate, MailTemplateDto>();
+            CreateMap<MailTemplate, MailTemplateDto>(); 
+            CreateMap<MailTemplateDto, MailTemplate>();
+            CreateMap<MailTemplateCreateDto, MailTemplate>();
+            CreateMap<MailTemplateUpdateDto, MailTemplate>();
+            CreateMap<MailTemplate, MailTemplateTableDto>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Slug))
+                .ForMember(dest => dest.AttachmentsCount, opt => opt.MapFrom(src => src.MailAttachments.Count));
         }
     }
 }

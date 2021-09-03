@@ -148,6 +148,8 @@ namespace Infrastructure
             services.AddScoped<IApplicantCvFileReadRepository, ApplicantCvFileReadRepository>();
             services.AddScoped<IApplicantCvFileWriteRepository, ApplicantCvFileWriteRepository>();
 
+            services.AddScoped<IMailAttachmentFileWriteRepository, MailAttachmentFileWriteRepository>();
+
             return services;
         }
 
@@ -183,6 +185,7 @@ namespace Infrastructure
             services.AddScoped<ICandidateReviewWriteRepository, CandidateReviewWriteRepository>();
             services.AddScoped<IVacancyCandidateWriteRepository, VacancyCandidateWriteRepository>();
             services.AddScoped<IWriteRepository<EmailToken>, WriteRepository<EmailToken>>();
+            services.AddScoped<IWriteRepository<MailTemplate>, MongoWriteRepository<MailTemplate>>();
             services.AddScoped<IWriteRepository<Project>, WriteRepository<Project>>();
             services.AddScoped<IWriteRepository<Review>, WriteRepository<Review>>();
             services.AddScoped<IWriteRepository<ReviewToStage>, WriteRepository<ReviewToStage>>();
@@ -191,10 +194,12 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<PoolToApplicant>, PoolToApplicantWriteRepository>();
             services.AddScoped<IPoolToApplicantWriteRepository, PoolToApplicantWriteRepository>();
             services.AddScoped<IWriteRepository<MailTemplate>, MongoWriteRepository<MailTemplate>>();
+            services.AddScoped<IWriteRepository<CsvFile>, MongoWriteRepository<CsvFile>>();
             services.AddScoped<IWriteRepository<CvParsingJob>, WriteRepository<CvParsingJob>>();
             services.AddScoped<IWriteRepository<SkillsParsingJob>, WriteRepository<SkillsParsingJob>>();
 
             services.AddScoped<IWriteRepository<Domain.Entities.Action>, WriteRepository<Domain.Entities.Action>>();
+            services.AddScoped<IWriteRepository<MailAttachment>, MongoWriteRepository<MailAttachment>>();
 
             services.AddScoped<IWriteRepository<UserFollowedEntity>, WriteRepository<UserFollowedEntity>>();
 
@@ -241,6 +246,7 @@ namespace Infrastructure
 
             services.AddScoped<IReadRepository<Project>, ProjectReadRepository>();
             services.AddScoped<IReadRepository<MailTemplate>, MongoReadRespoitory<MailTemplate>>();
+            services.AddScoped<IReadRepository<CsvFile>, MongoReadRespoitory<CsvFile>>();
             services.AddScoped<IReadRepository<EmailToken>, EmailTokenReadRepository>();
             services.AddScoped<IReadRepository<Review>, ReviewReadRepository>();
 
@@ -251,8 +257,9 @@ namespace Infrastructure
 
             services.AddScoped<IReadRepository<Domain.Entities.Action>, ActionReadRepository>();
 
-            services.AddScoped<IReadRepository<ReviewToStage>, ReviewToStageReadRepository>();
+            services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
 
+            services.AddScoped<IReadRepository<ReviewToStage>, ReviewToStageReadRepository>();
 
             return services;
         }

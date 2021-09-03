@@ -1,17 +1,59 @@
-@import "../../../../common.scss";
+@import "../../../../../common.scss";
 $primary-color: #ee2a64;
 $primary-color-white: #f6f7f9;
+
 * {
     box-sizing: border-box;
 }
 
+a.no-underline:hover {
+    text-decoration: none;
+}
+
+/* File Info */
+
+.file-info {
+    display: flex;
+    align-items: center;
+    position: relative;
+    
+    background: white;
+    padding: 10px;
+    margin: 10px;
+    margin-bottom: 0px;
+    border-radius: 10px;
+    
+    div {
+        margin-right: 10px;
+    }
+
+    .mat-icon {
+        display: flex;
+        height: 30px;
+        font-size: 30px;
+        margin-right: 15px;
+        line-height: 30px;
+        color: #501cb19a;
+    }
+    
+    .mat-icon.arrow:hover {
+        cursor: pointer;
+        color: #501cb1;
+    }
+}
+
+.vertical-line {
+    width: 1px;
+    height: 28px;
+    background-color: #501cb19a;
+}
 
 /* Table */
 
 .tables-container {
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 120px);
+    height: calc(100vh - 190px);
     width: 100%;
     padding: 10px;
 }
@@ -137,12 +179,13 @@ table {
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 240px;
-    background-color: $primary-color-white;
+    background-color: white;
     color: black;
     padding: 5px 12px;
     border-radius: 6px;
     position: absolute;
     top: 25px;
+    left: 10px;
     z-index: 1000;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     p {

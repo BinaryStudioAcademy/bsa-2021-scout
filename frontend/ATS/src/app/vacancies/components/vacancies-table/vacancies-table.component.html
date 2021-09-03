@@ -9,9 +9,9 @@
             <mat-icon class="search">search</mat-icon>
             <input matInput type="text" (keyup)="applyFilter($event)" placeholder="Search..." #input>
         </mat-form-field>
-        <app-button class="create-button" (click)="openDialog()">
+        <button mat-button class="create-button" (click)="openDialog()">
             + New vacancy
-        </app-button>
+        </button>
     </div>
     <app-table-filter
         [description]="filterDescription"
@@ -82,6 +82,9 @@
                             <mat-select panelClass="vacancy-options">
                                 <mat-option class="delete" (click)="showDeleteConfirmDialog(row)">
                                     <mat-icon>delete</mat-icon>Delete
+                                </mat-option>
+                                <mat-option [cdkCopyToClipboard]="generateLink(row.id)" (click)="successMessage('Copied!')">
+                                    <mat-icon>link</mat-icon>Copy Applying Link
                                 </mat-option>
                             </mat-select>
                         </div>

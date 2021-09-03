@@ -1,0 +1,8 @@
+<mat-form-field class="tags-input" appearance="fill">
+    <mat-chip-list #filesList>
+        <mat-chip *ngFor="let file of files" [selectable]="true" [removable]="true" (removed)="removeFile(file.id)">
+            {{file.name}}
+            <mat-icon matChipRemove>close</mat-icon>
+        </mat-chip>
+    </mat-chip-list>
+</mat-form-field>

@@ -3,5 +3,6 @@ export enum EntityType{
   Applicant,
   Project,
   Vacancy,
-  Pool
+  Pool,
+  MailTemplate
 }

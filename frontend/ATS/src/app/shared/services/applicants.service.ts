@@ -55,16 +55,6 @@ export class ApplicantsService {
     return this.httpClient.getRequest<FileUrl>(`/applicants/${applicantId}/cv`);
   }
 
-  public getApplicantsFromCSV(file: File) {
-    const fd = new FormData();
-    fd.append('file', file, file.name);
-    return this.httpClient.postFullRequest<CsvApplicant[]>('/applicants/csv', fd);
-  }
-
-  public addRangeApplicants(applicants: CreateApplicant[]) {
-    return this.httpClient.postFullRequest<Applicant[]>('/applicants/range', applicants);
-  }
-
   public getApplicantByEmail(email: string): Observable<Applicant>{
     return this.httpClient.getRequest<Applicant>(`/applicants/property/email/${email}`);
   }

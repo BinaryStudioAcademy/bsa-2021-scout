@@ -17,17 +17,17 @@ using System.Threading.Tasks;
 
 namespace Application.Applicants.Queries
 {
-    public class CetApplicantsFromCsvCommand : IRequest<ICollection<GetApplicantCsvDto>>
+    public class GetApplicantsFromCsvCommand : IRequest<ICollection<GetApplicantCsvDto>>
     {
         public Stream Stream { get; set; }
 
-        public CetApplicantsFromCsvCommand(Stream stream)
+        public GetApplicantsFromCsvCommand(Stream stream)
         {
             Stream = stream;
         }
     }
 
-    public class GetApplicantsFromCsvCommandHandler : IRequestHandler<CetApplicantsFromCsvCommand, ICollection<GetApplicantCsvDto>>
+    public class GetApplicantsFromCsvCommandHandler : IRequestHandler<GetApplicantsFromCsvCommand, ICollection<GetApplicantCsvDto>>
     {
         protected readonly IApplicantsFromCsvWriteRepository _repository;
         protected readonly ICurrentUserContext _currentUserContext;
@@ -45,7 +45,7 @@ namespace Application.Applicants.Queries
             _mapper = mapper;
         }
 
-        public async Task<ICollection<GetApplicantCsvDto>> Handle(CetApplicantsFromCsvCommand command, CancellationToken _)
+        public async Task<ICollection<GetApplicantCsvDto>> Handle(GetApplicantsFromCsvCommand command, CancellationToken _)
         {
             var applicantsEmails = (await _applicantReadRepository.GetEnumerableAsync()).Select(applicant=>applicant.Email);
 

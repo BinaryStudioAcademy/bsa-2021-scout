@@ -49,7 +49,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
   tierFrom: number = 0;
   tierTo: number = 0;
 
-  selfApplyStage: Stage = {} as Stage;
+  selfApplyStage: Stage | null = null;
 
   @Output() vacancyChange = new EventEmitter<VacancyFull>();
 
@@ -123,8 +123,13 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
             this.elasticEntity.id = response.tags.id;
           }
           
-          this.selfApplyStage = response.stages[0];
-
+          this.selfApplyStage = null;
+          response.stages.forEach(stage=>{
+            if(stage.index == 0){
+              this.selfApplyStage = stage;
+            }
+          });
+          
           response.stages.forEach((stage,index) => {
             if(stage.index==0){
               response.stages.splice(index,1);
@@ -180,12 +185,12 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
     this.submitted = true;
     this.loading = true;
 
-    this.elasticEntity.tagDtos = this.tags;
-    this.elasticEntity.elasticType = ElasticType.VacancyTags;
-
-    if(this.selfApplyStage==null){
+    if(this.selfApplyStage != null){
       this.stageList.splice(0,0,this.selfApplyStage);
     }
+
+    this.elasticEntity.tagDtos = this.tags;
+    this.elasticEntity.elasticType = ElasticType.VacancyTags;
 
     this.vacancy = {
       title: this.vacancyForm.controls['title'].value,

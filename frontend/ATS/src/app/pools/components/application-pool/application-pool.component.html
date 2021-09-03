@@ -10,7 +10,7 @@
             <mat-icon class="search">search</mat-icon>
             <input matInput type="text" (keyup)="applyFilter($event)" placeholder="Search..." #input>
         </mat-form-field>
-        <button mat-button (click)="onCreate()"> + New pool</button>
+        <button mat-button class="create-button" (click)="onCreate()"> + New pool</button>
     </div>
     <app-table-filter
         [description]="filterDescription"
@@ -60,12 +60,19 @@
                         <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="isFollowedPage === 'false'"
                                 (click)="$event.stopPropagation();onBookmark(row)">bookmark</mat-icon>
                         <mat-icon (click)="$event.stopPropagation();editPool(row)">edit</mat-icon>
-                        <mat-icon (click)="onDetails(row.id)">more_horiz</mat-icon>
+                        <mat-select panelClass="pool-options">
+                            <mat-option (click)="onDetails(row.id)">
+                                <mat-icon class="info">info</mat-icon>Details
+                            </mat-option>
+                            <mat-option (click)="onAddApplicantsFromPoolToVacancy(row.applicants)">
+                                <mat-icon>done_all</mat-icon>Apply Pool To Vacancy
+                            </mat-option>
+                        </mat-select>
                     </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onDetails(row.id)"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
                 <tr class="mat-row" *matNoDataRow>
                     <td class="mat-cell" colspan="4">No data maching the filter</td>

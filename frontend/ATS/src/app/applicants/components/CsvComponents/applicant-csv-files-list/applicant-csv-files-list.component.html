@@ -1,0 +1,18 @@
+<app-header></app-header>
+
+<!-- Header -->
+<div class="csv-list-header">
+    <a routerLink='/applicants'>
+        <mat-icon class="arrow">arrow_back</mat-icon>
+        <p>Applicants page</p>
+    </a>
+    <button mat-button color="accent" class="upload-button" (click)="showUploadCSVDialog()">
+        <mat-icon>attach_file</mat-icon>
+        <span>Upload CSV file</span>
+    </button>
+</div>
+
+<!-- Files List -->
+<div class="files-list">
+    <app-one-csv-file [csvFile]="csvFile" *ngFor="let csvFile of csvFiles"></app-one-csv-file>
+</div>

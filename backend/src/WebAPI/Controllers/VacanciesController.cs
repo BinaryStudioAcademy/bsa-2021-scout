@@ -22,11 +22,6 @@ namespace WebAPI.Controllers
     [ApiController]
     public class VacanciesController : ApiController
     {
-
-        public VacanciesController()
-        {
-
-        }
         [HttpGet]
         public async Task<IActionResult> GetAllVacancies()
         {
@@ -47,6 +42,12 @@ namespace WebAPI.Controllers
         {
             var query = new GetVacancyByIdNoAuth(Id);
             return StatusCode(200, await Mediator.Send(query));
+        }
+        [HttpGet("short")]
+        public async Task<IActionResult> GetAllShort()
+        {
+            var command = new GetShortVacanciesWithDepartmentQuery();
+            return Ok(await Mediator.Send(command));
         }
         [HttpGet("applicant/{applicantId}")]
         public async Task<IActionResult> GetAllNotAppliedVacanciesByApplicant(string applicantId)
