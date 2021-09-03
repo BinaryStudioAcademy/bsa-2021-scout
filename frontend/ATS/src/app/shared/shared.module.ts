@@ -54,6 +54,7 @@ import { FilesEditComponent } from '../users/components/files-edit/files-edit.co
 import { PlaceholdersEditComponent } from '../users/components/placeholders/placeholders.component';
 import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
 import { TableFilterComponent } from './components/table-filter/table-filter.component';
+import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
 
 @NgModule({
   exports: [
@@ -107,6 +108,7 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
     PlaceholdersEditComponent,
     AvatarModalComponent,
     TableFilterComponent,
+    MarkBarComponent,
   ],
   imports: [
     MatButtonModule,
@@ -169,6 +171,7 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
     PlaceholdersEditComponent,
     AvatarModalComponent,
     TableFilterComponent,
+    MarkBarComponent,
   ],
 })
 export class SharedModule {}
