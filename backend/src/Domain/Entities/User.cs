@@ -19,7 +19,6 @@ namespace Domain.Entities
         public string ResetPasswordToken { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public string CompanyId { get; set; }
-        public string Skype { get; set; }
         public DateTime CreationDate { get; set; }
 
         public Company Company { get; set; }
