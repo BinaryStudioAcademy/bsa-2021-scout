@@ -5,10 +5,9 @@
     <app-spinner [loading]="loading"></app-spinner>
 
     <div class="projects-header">
-        <button class="tub" [style.text-decoration]="isFollowedPage === 'false' ? 'underline' : 'none'"
-            (click)="switchAwayToAll()">All</button>
-        <button class="tub" [style.text-decoration]="isFollowedPage === 'true' ? 'underline' : 'none'"
-            (click)="switchToFollowed()">Followed</button>
+        <button class="tub" [style.text-decoration]="page ? 'none' : 'underline'" (click)="setPage()">All</button>
+        <button class="tub" [style.text-decoration]="page === 'followed' ? 'underline' : 'none'"
+            (click)="setPage('followed')">Followed</button>
         <mat-form-field appearance="fill" floatLabel="never">
             <mat-icon class="search">search</mat-icon>
             <input matInput type="text" (keyup)="applyFilter($event)" placeholder="Search..." #input>
@@ -16,8 +15,8 @@
         <button mat-button (click)="OnCreate()">+ New Project</button>
     </div>
 
-    <app-table-filter #filter [description]="filterDescription" [data]="projects"
-        (filteredDataChange)="setFiltered($event)">
+    <app-table-filter #filter [description]="filterDescription" [pageDescription]="pageDescription" [data]="projects"
+        [pageToken]="pageToken" (filteredDataChange)="setFiltered($event)">
     </app-table-filter>
 
     <div class="project-list">
@@ -104,8 +103,10 @@
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let row">
                         <div class="icons">
-                            <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="isFollowedPage === 'true'" (click)="onBookmark(row, 'true')" class="applyPrimaryColor">bookmark</mat-icon>
-                            <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="isFollowedPage === 'false'" (click)="onBookmark(row)">bookmark</mat-icon>
+                            <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="page === 'followed'"
+                                (click)="onBookmark(row, 'true')" class="applyPrimaryColor">bookmark</mat-icon>
+                            <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="!page"
+                                (click)="onBookmark(row)">bookmark</mat-icon>
                             <mat-icon (click)="OnEdit(row)">edit</mat-icon>
                             <mat-select panelClass="project-options">
                                 <mat-option class="delete" (click)="showDeleteConfirmDialog(row)">

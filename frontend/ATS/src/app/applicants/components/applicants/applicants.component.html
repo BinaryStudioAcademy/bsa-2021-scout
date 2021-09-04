@@ -1,9 +1,9 @@
 <app-header></app-header>
-<app-applicants-head (search)="applySearchValue($event)" (togglePage)="toggleFollowedOrAll($event)"
+<app-applicants-head (search)="applySearchValue($event)" (togglePage)="filter.setPage($event)"
     (applicantCreated)="createApplicant($event)" #head>
 </app-applicants-head>
-<app-table-filter #filter [description]="filterDescription" [data]="cashedData"
-        (filteredDataChange)="setFiltered($event)"></app-table-filter>
+<app-table-filter #filter [description]="filterDescription" [pageDescription]="pageDescription" [data]="cashedData"
+    pageToken="applicantPageToken" (filteredDataChange)="setFiltered($event)"></app-table-filter>
 <div class="page-content">
     <app-spinner [loading]="loading"></app-spinner>
     <div class="mat-elevation-z8">

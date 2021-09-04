@@ -24,6 +24,8 @@ import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 import {
   FilterDescription,
   FilterType,
+  PageDescription,
+  TableFilterComponent,
 } from 'src/app/shared/components/table-filter/table-filter.component';
 import { PendingRegistrationsComponent }
   from '../pending-registrations/pending-registrations.component';
@@ -68,6 +70,16 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
     },
   ];
 
+  public pageToken: string = 'followedUserPage';
+  public page?: string = localStorage.getItem(this.pageToken) ?? undefined;
+
+  public pageDescription: PageDescription = [
+    {
+      id: 'followed',
+      selector: (user: UserTableData) => user.isFollowed ?? false,
+    },
+  ];
+
   public dataSource: MatTableDataSource<UserTableData>;
   public loading: boolean = true;
   public isFollowedPage: string = 'false';
@@ -80,8 +92,7 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild(MatSort) sort!: MatSort;
-
-  private readonly followedPageToken: string = 'followedUserPage';
+  @ViewChild('filter') public filter!: TableFilterComponent;
 
   constructor(
     private userDataService: UserDataService,
@@ -104,19 +115,13 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
         (resp) => {
           resp.forEach((user) => user.isFollowed = this.followedSet.has(user.id ?? ''));
           this.users = resp;
-          if (localStorage.getItem(this.followedPageToken) == 'true') {
-            this.dataSource.data = this.users.filter((item) => item.isFollowed);
-          } else {
-            this.dataSource.data = this.users;
-          }
+          this.dataSource.data = this.users;
           this.directive.applyFilter$.emit();
         },
         () => {
           this.notificationService.showErrorMessage('Something went wrong');
         },
       );
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
-      localStorage.getItem(this.followedPageToken)! : 'false';
   }
 
   public getUsers() {
@@ -130,9 +135,7 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
         (resp) => {
           resp.forEach((user) => user.isFollowed = this.followedSet.has(user.id ?? ''));
           this.users = resp;
-          if (localStorage.getItem(this.followedPageToken) == 'true')
-            this.dataSource.data = this.users.filter((item) => item.isFollowed);
-          else this.dataSource.data = this.users;
+          this.dataSource.data = this.users;
           this.directive.applyFilter$.emit();
         },
         () => {
@@ -144,15 +147,6 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
   public setFiltered(filtered: UserTableData[]): void {
     this.filteredData = filtered;
     this.dataSource.data = this.filteredData;
-
-    if (localStorage.getItem(this.followedPageToken) == 'true') {
-      this.dataSource.data = this.filteredData.filter((item) =>
-        this.followedSet.has(item.id ?? ''),
-      );
-    } else {
-      this.dataSource.data = this.filteredData;
-    }
-
     this.directive.applyFilter$.emit();
     this.dataSource.paginator?.firstPage();
   }
@@ -194,6 +188,11 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  public setPage(page?: string): void {
+    this.filter.setPage(page);
+    this.page = page;
+  }
+
   public OpenSendRegistrationLinkDialog(): void {
     this.dialog.open(SendingRegisterLinkDialogComponent, {
       disableClose: true,
@@ -207,20 +206,6 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
       height: '80vh',
       autoFocus: false,
     });
-  }
-
-  public switchToFollowed() {
-    this.isFollowedPage = 'true';
-    this.dataSource.data = this.dataSource.data.filter(user => user.isFollowed);
-    this.followService.switchRefreshFollowedPageToken('true', this.followedPageToken);
-    this.directive.applyFilter$.emit();
-  }
-
-  public switchAwayToAll() {
-    this.isFollowedPage = 'false';
-    this.dataSource.data = this.users;
-    this.followService.switchRefreshFollowedPageToken('false', this.followedPageToken);
-    this.directive.applyFilter$.emit();
   }
 
   public onBookmark(data: UserTableData, perfomToFollowCleanUp: string = 'false') {

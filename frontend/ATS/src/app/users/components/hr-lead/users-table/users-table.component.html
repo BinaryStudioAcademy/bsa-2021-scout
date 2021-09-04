@@ -2,10 +2,9 @@
 <div class="users-page">
     <app-spinner *ngIf="loading"></app-spinner>
     <div class="header">
-        <button class="tub" [style.text-decoration]="isFollowedPage === 'false' ? 'underline' : 'none'"
-            (click)="switchAwayToAll()">All</button>
-        <button class="tub" [style.text-decoration]="isFollowedPage === 'true' ? 'underline' : 'none'"
-            (click)="switchToFollowed()">Followed</button>
+        <button class="tub" [style.text-decoration]="page ? 'none' : 'underline'" (click)="setPage()">All</button>
+        <button class="tub" [style.text-decoration]="page === 'followed' ? 'underline' : 'none'"
+            (click)="setPage('followed')">Followed</button>
         <mat-form-field appearance="fill" floatLabel="never">
             <mat-icon class="search">search</mat-icon>
             <input matInput type="text" (keyup)="applyFilter($event)" placeholder="Search..." #input>
@@ -13,8 +12,9 @@
         <button mat-button color="accent" (click)="openPendingRegistrationsDialog()">Pending registrations</button>
         <button mat-button (click)="OpenSendRegistrationLinkDialog()">Send registration link</button>
     </div>
-    <app-table-filter [description]="filterDescription" [data]="users" panelClass="filter"
-        (filteredDataChange)="setFiltered($event)"></app-table-filter>
+    <app-table-filter [description]="filterDescription" [pageDescription]="pageDescription" [pageToken]="pageToken"
+        [data]="users" #filter (filteredDataChange)="setFiltered($event)">
+    </app-table-filter>
     <div class="user-list">
         <div class="mat-elevation-z8">
             <table #mytable mat-table [dataSource]="dataSource" matSort matSortActive="creation-date"
