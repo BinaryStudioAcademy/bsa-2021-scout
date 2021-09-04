@@ -12,9 +12,6 @@
                 <mat-option (click)="addPlaceholder(' {vacancy.requirements} ')">
                     requirements
                 </mat-option>
-                <mat-option (click)="addPlaceholder(' {vacancy.project} ')">
-                    project
-                </mat-option>
                 <mat-option (click)="addPlaceholder(' {vacancy.salaryFrom} ')">
                     salary from
                 </mat-option>
@@ -40,6 +37,38 @@
                 </mat-option>
                 <mat-option (click)="addPlaceholder(' {project.websiteLink} ')">
                     website link
+                </mat-option>
+            </mat-select>
+        </mat-chip>
+        <mat-chip [selectable]="true">
+            <mat-label>applicant</mat-label>
+            <mat-select>
+                <mat-option (click)="addPlaceholder(' {applicant.firstName} ')">
+                    first name
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.lastName} ')">
+                    fast name
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.birthDate } ')">
+                    birthdate
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.phone} ')">
+                    phone
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.skype} ')">
+                    skype
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.linkedInUrl} ')">
+                    linkedIn url
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.experience} ')">
+                    experience
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.experienceDescription} ')">
+                    experience description
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.skills} ')">
+                    skills
                 </mat-option>
             </mat-select>
         </mat-chip>
