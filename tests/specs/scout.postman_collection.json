@@ -1,0 +1,2239 @@
+{
+	"info": {
+		"_postman_id": "af9a2ade-7d9e-40a9-a773-d43a9ace79ec",
+		"name": "Scout final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authorization",
+			"item": [
+				{
+					"name": "Login with valid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"            \"user\": { \r",
+									"                \"type\": \"object\",\r",
+									"                \"properties\": {\r",
+									"                    \"firstName\": { \"type\": \"string\" },\r",
+									"                    \"lastName\": { \"type\": \"string\" },\r",
+									"                    \"birthDate\": { \"type\": \"string\" },\r",
+									"                    \"creationDate\": { \"type\": \"string\" },\r",
+									"                    \"email\": { \"type\": \"string\" },\r",
+									"                    \"companyId\": { \"type\": \"string\" },\r",
+									"                    \"phone\": { \"type\": [\"string\", \"null\"] },\r",
+									"                    \"skype\": { \"type\": [\"string\", \"null\"] },\r",
+									"                    \"roles\": {\r",
+									"                        \"type\": \"array\",\r",
+									"                        \"items\": [\r",
+									"                            {\r",
+									"                                \"type\": \"object\",\r",
+									"                                \"properties\": {\r",
+									"                                    \"name\": { \"type\": \"string\" },\r",
+									"                                    \"key\": { \"type\": \"integer\" },\r",
+									"                                    \"id\": { \"type\": \"string\" }\r",
+									"                                },\r",
+									"                                \"required\": [\"name\", \"key\", \"id\"]\r",
+									"                            }\r",
+									"                        ]\r",
+									"                    },\r",
+									"                    \"isEmailConfirmed\": { \"type\": \"boolean\" },\r",
+									"                    \"id\": { \"type\": \"string\" },\r",
+									"                },\r",
+									"                \"required\": [\"firstName\", \"lastName\", \"birthDate\", \"creationDate\", \"email\", \"companyId\", \"skype\", \"roles\", \"isEmailConfirmed\", \"id\"]\r",
+									"            },\r",
+									"            \"token\": { \r",
+									"                \"type\": \"object\",\r",
+									"                \"properties\": {\r",
+									"                    \"accessToken\": { \r",
+									"                        \"type\": \"object\",\r",
+									"                        \"properties\": {\r",
+									"                            \"token\": { \"type\": \"string\" },\r",
+									"                            \"expiresIn\": { \"type\": \"integer\" }\r",
+									"                        },\r",
+									"                        \"required\": [\"token\", \"expiresIn\"]\r",
+									"                    },\r",
+									"                    \"refreshToken\": { \"type\": \"string\" },\r",
+									"                },\r",
+									"                \"required\": [\"accessToken\", \"refreshToken\"]\r",
+									"            }\r",
+									"          },\r",
+									"    \"required\": [\"user\", \"token\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{hrLeadEmail}}\",\r\n  \"password\": \"{{hrLeadPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login with wrong credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const message = \"Invalid username or password.\";\r",
+									"\r",
+									"pm.test(\"Response message\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql(message);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{fakeUser}}\",\r\n  \"password\": \"{{fakePassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login without email field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const message = \"Invalid username or password.\";\r",
+									"\r",
+									"pm.test(\"Response message\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql(message);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"password\": \"{{fakePassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login without password field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const message = \"Invalid username or password.\";\r",
+									"\r",
+									"pm.test(\"Response message\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql(message);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{fakeUser}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tokens",
+			"item": [
+				{
+					"name": "Login with valid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"            \"user\": { \r",
+									"                \"type\": \"object\",\r",
+									"                \"properties\": {\r",
+									"                    \"firstName\": { \"type\": \"string\" },\r",
+									"                    \"lastName\": { \"type\": \"string\" },\r",
+									"                    \"birthDate\": { \"type\": \"string\" },\r",
+									"                    \"creationDate\": { \"type\": \"string\" },\r",
+									"                    \"email\": { \"type\": \"string\" },\r",
+									"                    \"companyId\": { \"type\": \"string\" },\r",
+									"                    \"phone\": { \"type\": [\"string\", \"null\"] },\r",
+									"                    \"skype\": { \"type\": [\"string\", \"null\"] },\r",
+									"                    \"roles\": {\r",
+									"                        \"type\": \"array\",\r",
+									"                        \"items\": [\r",
+									"                            {\r",
+									"                                \"type\": \"object\",\r",
+									"                                \"properties\": {\r",
+									"                                    \"name\": { \"type\": \"string\" },\r",
+									"                                    \"key\": { \"type\": \"integer\" },\r",
+									"                                    \"id\": { \"type\": \"string\" }\r",
+									"                                }\r",
+									"                            }\r",
+									"                        ]\r",
+									"                    },\r",
+									"                    \"isEmailConfirmed\": { \"type\": \"boolean\" },\r",
+									"                    \"id\": { \"type\": \"string\" },\r",
+									"                }\r",
+									"            },\r",
+									"            \"token\": { \r",
+									"                \"type\": \"object\",\r",
+									"                \"properties\": {\r",
+									"                    \"accessToken\": { \r",
+									"                        \"type\": \"object\",\r",
+									"                        \"properties\": {\r",
+									"                            \"token\": { \"type\": \"string\" },\r",
+									"                            \"expiresIn\": { \"type\": \"integer\" }\r",
+									"                        }\r",
+									"                    },\r",
+									"                    \"refreshToken\": { \"type\": \"string\" },\r",
+									"                }\r",
+									"            }\r",
+									"          }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"pm.collectionVariables.set(\"accessToken\", responseJson.token.accessToken.token);\r",
+									"pm.collectionVariables.set(\"refreshToken\", responseJson.token.refreshToken);\r",
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{hrLeadEmail}}\",\r\n  \"password\": \"{{hrLeadPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh token with valid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"accessToken\": { \r",
+									"            \"type\": \"object\",\r",
+									"            \"properties\": {\r",
+									"                \"token\": { \"type\": \"string\" },\r",
+									"                \"expiresIn\": { \"type\": \"integer\" }\r",
+									"            }\r",
+									"        },\r",
+									"        \"refreshToken\": { \"type\": \"string\" },\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"pm.collectionVariables.set(\"accessToken\", responseJson.accessToken.token);\r",
+									"pm.collectionVariables.set(\"refreshToken\", responseJson.refreshToken);"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"accessToken\": \"{{accessToken}}\",\r\n  \"refreshToken\": \"{{refreshToken}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Token/refresh",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Token",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh token with wrong data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"  pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const message = \"{\\\"type\\\":\\\"InvalidToken\\\",\\\"description\\\":\\\"Invalid refresh token\\\"}\";\r",
+									"\r",
+									"pm.test(\"Response message\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql(message);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"accessToken\": \"{{accessToken}}\",\r\n  \"refreshToken\": \"wrongRefreshToken\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Token/refresh",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Token",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Revoke token with wrong data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"  pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"const message = \"{\\\"type\\\":\\\"InvalidToken\\\",\\\"description\\\":\\\"Invalid refresh token\\\"}\";\r",
+									"\r",
+									"pm.test(\"Response message\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql(message);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"refreshToken\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Token/revoke",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Token",
+								"revoke"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Revoke token with wrong `refreshToken`",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"  pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"const message = \"{\\\"type\\\":\\\"InvalidToken\\\",\\\"description\\\":\\\"Invalid refresh token\\\"}\";\r",
+									"\r",
+									"pm.test(\"Response message\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql(message);\r",
+									"});\r",
+									"\r",
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"refreshToken\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Token/revoke",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Token",
+								"revoke"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Revoke token with valid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"refreshToken\": \"{{refreshToken}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Token/revoke",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Token",
+								"revoke"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Get Projects",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": [\r",
+									"        {\r",
+									"            \"type\": \"object\",\r",
+									"            \"properties\": {\r",
+									"                \"companyId\": { \"type\": \"string\" },\r",
+									"                \"creationDate\": { \"type\": \"string\" },\r",
+									"                \"vacancies\": { \"type\": \"array\" },\r",
+									"                \"logo\": {\r",
+									"                    \"anyOf\": [{ \"type\": \"string\" }, { \"type\": \"null\" }]\r",
+									"                },\r",
+									"                \"name\": { \"type\": \"string\" },\r",
+									"                \"description\": { \"type\": \"string\" },\r",
+									"                \"teamInfo\": { \"type\": \"string\" },\r",
+									"                \"websiteLink\": { \"type\": \"string\" },\r",
+									"                \"id\": { \"type\": \"string\" }\r",
+									"            },\r",
+									"            \"requeried\": [\"companyId\", \"creationDate\", \"vacancies\", \"logo\", \"name\", \"description\", \"teamInfo\", \"websiteLink\", \"id\"]\r",
+									"        }\r",
+									"    ]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"  pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"logo\": { \"type\": \"string\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"teamInfo\": { \"type\": \"string\" },\r",
+									"        \"websiteLink\": { \"type\": \"string\" },\r",
+									"        \"tags\": { \"type\": [\"array\", \"null\"] },\r",
+									"        \"id\": { \"type\": \"string\" }\r",
+									"    },\r",
+									"    \"required\": [\"logo\", \"name\", \"description\", \"teamInfo\", \"websiteLink\", \"tags\", \"id\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"pm.collectionVariables.set(\"projectId\", responseJson.id);\r",
+									"pm.collectionVariables.set(\"companytId\", responseJson.companyId);"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Postman Name\",\r\n    \"logo\": \"https://seeklogo.com/images/P/postman-logo-F43375A2EB-seeklogo.com.png\",\r\n    \"description\": \"Defauld description\",\r\n    \"teamInfo\": \"Base team info\",\r\n    \"websiteLink\": \"https://www.postman.com/\",\r\n    \"tags\": {\r\n        \"id\": \"\",\r\n        \"elasticType\": 0,\r\n        \"tagDtos\": []\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"  pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"logo\": { \"type\": \"string\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"teamInfo\": { \"type\": \"string\" },\r",
+									"        \"websiteLink\": { \"type\": \"string\" },\r",
+									"        \"tags\": { \"type\": [\"array\", \"null\"] },\r",
+									"        \"id\": { \"type\": \"string\" }\r",
+									"    },\r",
+									"    \"required\": [\"logo\", \"name\", \"description\", \"teamInfo\", \"websiteLink\", \"tags\", \"id\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyId\": \"{{companyId}}\",\r\n    \"creationDate\": \"2021-08-29T11:41:54.8141546\",\r\n    \"vacancies\": [],\r\n    \"logo\": \"https://seeklogo.com/images/P/postman-logo-F43375A2EB-seeklogo.com.png\",\r\n    \"name\": \"Postman Name\",\r\n    \"description\": \"Default description\",\r\n    \"teamInfo\": \"Base team info\",\r\n    \"websiteLink\": \"https://www.postman.com/\",\r\n    \"tags\": {\r\n        \"elasticType\": 3,\r\n        \"tagDtos\": [],\r\n        \"id\": \"{{projectId}}\"\r\n    },\r\n    \"id\": \"{{projectId}}\",\r\n    \"position\": 8,\r\n    \"isFollowed\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"companyId\": { \"type\": \"string\" },\r",
+									"        \"creationDate\": { \"type\": \"string\" },\r",
+									"        \"vacancies\": { \"type\": \"array\" },\r",
+									"        \"logo\": { \"type\": [\"string\", \"null\"] },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"teamInfo\": { \"type\": \"string\" },\r",
+									"        \"websiteLink\": { \"type\": \"string\" },\r",
+									"        \"id\": { \"type\": \"string\" }\r",
+									"    },\r",
+									"    \"required\": [\"companyId\", \"creationDate\", \"vacancies\", \"logo\", \"name\", \"description\", \"teamInfo\", \"websiteLink\", \"id\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects/{{projectId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Projects by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"  pm.response.to.have.status(204);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects/{{projectId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Projects without authorization",
+			"item": [
+				{
+					"name": "Get Projects",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"  pm.response.to.have.status(401);\r",
+									"});\r",
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"  pm.response.to.have.status(401);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Postman Name\",\r\n    \"logo\": \"https://seeklogo.com/images/P/postman-logo-F43375A2EB-seeklogo.com.png\",\r\n    \"description\": \"Defauld description\",\r\n    \"teamInfo\": \"Base team info\",\r\n    \"websiteLink\": \"https://www.postman.com/\",\r\n    \"tags\": {\r\n        \"id\": \"\",\r\n        \"elasticType\": 0,\r\n        \"tagDtos\": []\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"  pm.response.to.have.status(401);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyId\": \"{{companyId}}\",\r\n    \"creationDate\": \"2021-08-29T11:41:54.8141546\",\r\n    \"vacancies\": [],\r\n    \"logo\": \"https://seeklogo.com/images/P/postman-logo-F43375A2EB-seeklogo.com.png\",\r\n    \"name\": \"Postman Name\",\r\n    \"description\": \"Default description\",\r\n    \"teamInfo\": \"Base team info\",\r\n    \"websiteLink\": \"https://www.postman.com/\",\r\n    \"tags\": {\r\n        \"elasticType\": 3,\r\n        \"tagDtos\": [],\r\n        \"id\": \"{{projectId}}\"\r\n    },\r\n    \"id\": \"{{projectId}}\",\r\n    \"position\": 8,\r\n    \"isFollowed\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"  pm.response.to.have.status(401);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects/{{projectId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Projects by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"  pm.response.to.have.status(401);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects/{{projectId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "invalidToken",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Projects Not Found",
+			"item": [
+				{
+					"name": "Update Project invalid ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"message\": { \"type\": \"string\" }\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"const message = \"Entity of type Project with id invalidId is not found\";\r",
+									"\r",
+									"pm.test(\"Response message\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql(message);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyId\": \"{{companyId}}\",\r\n    \"creationDate\": \"2021-08-29T11:41:54.8141546\",\r\n    \"vacancies\": [],\r\n    \"logo\": \"https://seeklogo.com/images/P/postman-logo-F43375A2EB-seeklogo.com.png\",\r\n    \"name\": \"Postman Name\",\r\n    \"description\": \"Default description\",\r\n    \"teamInfo\": \"Base team info\",\r\n    \"websiteLink\": \"https://www.postman.com/\",\r\n    \"tags\": {\r\n        \"elasticType\": 3,\r\n        \"tagDtos\": [],\r\n        \"id\": \"invalidId\"\r\n    },\r\n    \"id\": \"invalidId\",\r\n    \"position\": 8,\r\n    \"isFollowed\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects by ID not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"message\": { \"type\": \"string\" }\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"const message = \"Entity of type Project with id invalidId is not found\";\r",
+									"\r",
+									"pm.test(\"Response message\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql(message);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects/invalidId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects",
+								"invalidId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Projects by ID not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"message\": { \"type\": \"string\" }\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"const message = \"Entity of type Project with id invalidId is not found\";\r",
+									"\r",
+									"pm.test(\"Response message\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql(message);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Projects/invalidId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Projects",
+								"invalidId"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Home",
+			"item": [
+				{
+					"name": "Widgets data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"applicantCount\": { \"type\": \"integer\" },\r",
+									"        \"vacancies\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": [\r",
+									"                {\r",
+									"                    \"type\": \"object\",\r",
+									"                    \"properties\": {\r",
+									"                        \"title\": { \"type\": \"string\" },\r",
+									"                        \"isHot\": { \"type\": \"boolean\" },\r",
+									"                        \"id\": { \"type\": \"string\" }\r",
+									"                    },\r",
+									"                    \"required\": [\"title\", \"isHot\", \"id\"]\r",
+									"                }\r",
+									"            ]\r",
+									"        },\r",
+									"    },\r",
+									"    \"required\": [\"applicantCount\", \"vacancies\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/home/widgets-data",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"home",
+								"widgets-data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vacancies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": [\r",
+									"        {\r",
+									"            \"type\": \"object\",\r",
+									"            \"properties\": {\r",
+									"                \"title\": { \"type\": \"string\" },\r",
+									"                \"projectName\": { \"type\": \"string\" },\r",
+									"                \"candidateCount\": { \"type\": \"integer\" },\r",
+									"                \"processedCount\": { \"type\": \"integer\" },\r",
+									"                \"selfAppliedCount\": { \"type\": \"integer\" },\r",
+									"                \"candidateNewCount\": { \"type\": \"integer\" },\r",
+									"                \"id\": { \"type\": \"string\" }\r",
+									"            }, \r",
+									"            \"required\": [\"title\", \"projectName\", \"candidateCount\", \"processedCount\", \"selfAppliedCount\", \"candidateNewCount\", \"id\"]\r",
+									"        }\r",
+									"    ]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/home/vacancies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"home",
+								"vacancies"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vacancies",
+			"item": [
+				{
+					"name": "POST Vacancies valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"pm.collectionVariables.set(\"id\", responseJson.id);\r",
+									"pm.collectionVariables.set(\"projectId\", responseJson.projectId);\r",
+									"pm.collectionVariables.set(\"companyId\", responseJson.companyId);\r",
+									"pm.collectionVariables.set(\"vacancyId\", responseJson.vacancyId);\r",
+									"pm.collectionVariables.set(\"stageId\", responseJson.stageId);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Wdrgrg\",\r\n  \"description\": \"ghfhfh\",\r\n  \"requirements\": \"dhdfhdhd\",\r\n  \"projectId\": \"{{projectId}}\",\r\n  \"salaryFrom\": 20,\r\n  \"salaryTo\": 300,\r\n  \"tierFrom\": 2,\r\n  \"tierTo\": 4,\r\n  \"sources\": \"{{baseUrl}}/vacancies\",\r\n  \"isHot\": false,\r\n  \"isRemote\": true,\r\n  \"tags\": {\r\n    \"tagDtos\": [\r\n      {\r\n        \"tagName\": \"rwerwer\",\r\n        \"id\": \"0\"\r\n      }\r\n    ],\r\n    \"elasticType\": 2\r\n  },\r\n  \"stages\": [\r\n    {\r\n      \"id\": \"\",\r\n      \"name\": \"Contacted\",\r\n      \"index\": 1,\r\n      \"type\": 0,\r\n      \"actions\": [\r\n        {\r\n          \"id\": \"1\",\r\n          \"name\": \"Schedule interview action\",\r\n          \"actionType\": 3,\r\n          \"stageId\": \"\"\r\n        }\r\n      ],\r\n      \"reviews\": [],\r\n      \"IsReviewable\": true,\r\n      \"vacancyId\": \"\"\r\n    },\r\n    {\r\n      \"id\": \"\",\r\n      \"name\": \"Hr interview\",\r\n      \"index\": 2,\r\n      \"type\": 3,\r\n      \"actions\": [\r\n        {\r\n          \"id\": \"\",\r\n          \"name\": \"Schedule interview action\",\r\n          \"actionType\": 3,\r\n          \"stageId\": \"\"\r\n        }\r\n      ],\r\n      \"reviews\": [],\r\n      \"IsReviewable\": true,\r\n      \"vacancyId\": \"\"\r\n    },\r\n    {\r\n      \"id\": \"\",\r\n      \"name\": \"Tech interview\",\r\n      \"index\": 3,\r\n      \"type\": 3,\r\n      \"actions\": [\r\n        {\r\n          \"id\": \"\",\r\n          \"name\": \"Schedule interview action\",\r\n          \"actionType\": 3,\r\n          \"stageId\": \"\"\r\n        }\r\n      ],\r\n      \"reviews\": [],\r\n      \"IsReviewable\": true,\r\n      \"vacancyId\": \"\"\r\n    },\r\n    {\r\n      \"id\": \"\",\r\n      \"name\": \"Live coding session\",\r\n      \"index\": 4,\r\n      \"type\": 0,\r\n      \"actions\": [\r\n        {\r\n          \"id\": \"\",\r\n          \"name\": \"Schedule interview action\",\r\n          \"actionType\": 3,\r\n          \"stageId\": \"\"\r\n        }\r\n      ],\r\n      \"reviews\": [],\r\n      \"IsReviewable\": true,\r\n      \"vacancyId\": \"\"\r\n    },\r\n    {\r\n      \"id\": \"\",\r\n      \"name\": \"Pre-offer\",\r\n      \"index\": 5,\r\n      \"type\": 4,\r\n      \"actions\": [\r\n        {\r\n          \"id\": \"1\",\r\n          \"name\": \"Schedule interview action\",\r\n          \"actionType\": 3,\r\n          \"stageId\": \"\"\r\n        }\r\n      ],\r\n      \"reviews\": [],\r\n      \"IsReviewable\": true,\r\n      \"vacancyId\": \"\"\r\n    },\r\n    {\r\n      \"id\": \"\",\r\n      \"name\": \"Offer\",\r\n      \"index\": 6,\r\n      \"type\": 4,\r\n      \"actions\": [\r\n        {\r\n          \"id\": \"\",\r\n          \"name\": \"Schedule interview action\",\r\n          \"actionType\": 3,\r\n          \"stageId\": \"\"\r\n        }\r\n      ],\r\n      \"reviews\": [],\r\n      \"IsReviewable\": true,\r\n      \"vacancyId\": \"\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Vacancies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Vacancies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Vacancies valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"pm.collectionVariables.set(\"id\", responseJson.id);\r",
+									"pm.collectionVariables.set(\"projectId\", responseJson.projectId);\r",
+									"pm.collectionVariables.set(\"companyId\", responseJson.companyId);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Wdrgrg\",\r\n    \"description\": \"ghfhfh\",\r\n    \"requirements\": \"dhdfhdhd\",\r\n    \"projectId\": \"{{projectId}}\",\r\n    \"salaryFrom\": 20,\r\n    \"salaryTo\": 300,\r\n    \"tierFrom\": 2,\r\n    \"tierTo\": 4,\r\n    \"sources\": \"{{baseUrl}}/vacancies\",\r\n    \"isHot\": false,\r\n    \"isRemote\": true,\r\n    \"companyId\": \"{{companyId}}\",\r\n    \"responsibleHrId\": \"1\",\r\n    \"status\": 1,\r\n    \"creationDate\": \"2021-08-31T09:21:41.4352767Z\",\r\n    \"dateOfOpening\": \"2021-08-31T09:21:41.4352767Z\",\r\n    \"modificationDate\": \"2021-08-31T09:21:41.4352774Z\",\r\n    \"completionDate\": null,\r\n    \"plannedCompletionDate\": \"0001-01-01T00:00:00\",\r\n    \"stages\": [\r\n        {\r\n            \"name\": \"Contacted\",\r\n            \"type\": 0,\r\n            \"index\": 1,\r\n            \"isReviewable\": true,\r\n            \"vacancyId\": \"{{vacancyId}}\",\r\n            \"actions\": [\r\n                {\r\n                    \"id\": \"{{id}}\",\r\n                    \"name\": \"Schedule interview action\",\r\n                    \"actionType\": 3,\r\n                    \"stageId\": \"{{stageId}}\"\r\n                }\r\n            ],\r\n            \"candidateToStages\": [],\r\n            \"reviews\": [],\r\n            \"id\": \"{{id}}\"\r\n        },\r\n        {\r\n            \"name\": \"Hr interview\",\r\n            \"type\": 3,\r\n            \"index\": 2,\r\n            \"isReviewable\": true,\r\n            \"vacancyId\": \"{{vacancyId}}\",\r\n            \"actions\": [\r\n                {\r\n                    \"id\": \"{{id}}\",\r\n                    \"name\": \"Schedule interview action\",\r\n                    \"actionType\": 3,\r\n                    \"stageId\": \"{{stageId}}\"\r\n                }\r\n            ],\r\n            \"candidateToStages\": [],\r\n            \"reviews\": [],\r\n            \"id\": \"{{id}}\"\r\n        },\r\n        {\r\n            \"name\": \"Tech interview\",\r\n            \"type\": 3,\r\n            \"index\": 3,\r\n            \"isReviewable\": true,\r\n            \"vacancyId\": \"{{vacancyId}}\",\r\n            \"actions\": [\r\n                {\r\n                    \"id\": \"{{id}}\",\r\n                    \"name\": \"Schedule interview action\",\r\n                    \"actionType\": 3,\r\n                    \"stageId\": \"{{stageId}}\"\r\n                }\r\n            ],\r\n            \"candidateToStages\": [],\r\n            \"reviews\": [],\r\n            \"id\": \"{{id}}\"\r\n        },\r\n        {\r\n            \"name\": \"Live coding session\",\r\n            \"type\": 0,\r\n            \"index\": 4,\r\n            \"isReviewable\": true,\r\n            \"vacancyId\": \"{{vacancyId}}\",\r\n            \"actions\": [\r\n                {\r\n                    \"id\": \"{{id}}\",\r\n                    \"name\": \"Schedule interview action\",\r\n                    \"actionType\": 3,\r\n                    \"stageId\": \"{{stageId}}\"\r\n                }\r\n            ],\r\n            \"candidateToStages\": [],\r\n            \"reviews\": [],\r\n            \"id\": \"{{id}}\"\r\n        },\r\n        {\r\n            \"name\": \"Pre-offer\",\r\n            \"type\": 4,\r\n            \"index\": 5,\r\n            \"isReviewable\": true,\r\n            \"vacancyId\": \"{{vacancyId}}\",\r\n            \"actions\": [\r\n                {\r\n                    \"id\": \"{{id}}\",\r\n                    \"name\": \"Schedule interview action\",\r\n                    \"actionType\": 3,\r\n                    \"stageId\": \"{{stageId}}\"\r\n                }\r\n            ],\r\n            \"candidateToStages\": [],\r\n            \"reviews\": [],\r\n            \"id\": \"{{id}}\"\r\n        },\r\n        {\r\n            \"name\": \"Offer\",\r\n            \"type\": 4,\r\n            \"index\": 6,\r\n            \"isReviewable\": true,\r\n            \"vacancyId\": \"{{vacancyId}}\",\r\n            \"actions\": [\r\n                {\r\n                    \"id\": \"{{id}}\",\r\n                    \"name\": \"Schedule interview action\",\r\n                    \"actionType\": 3,\r\n                    \"stageId\": \"{{stageId}}\"\r\n                }\r\n            ],\r\n            \"candidateToStages\": [],\r\n            \"reviews\": [],\r\n            \"id\": \"{{id}}\"\r\n        },\r\n        {\r\n            \"name\": \"Self-Applied\",\r\n            \"type\": 0,\r\n            \"index\": 0,\r\n            \"isReviewable\": false,\r\n            \"vacancyId\": \"{{vacancyId}}\",\r\n            \"actions\": [],\r\n            \"candidateToStages\": [],\r\n            \"reviews\": [],\r\n            \"id\": \"{{id}}\"\r\n        }\r\n    ],\r\n    \"tags\": {\r\n        \"elasticType\": 1,\r\n        \"tagDtos\": [\r\n            {\r\n                \"tagName\": \"rwerwer\",\r\n                \"id\": \"{{id}}\"\r\n            }\r\n        ],\r\n        \"id\": \"{{id}}\"\r\n    },\r\n    \"id\": \"{{id}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Vacancies/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Vacancies",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Vacancies valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Vacancies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Vacancies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Vacancies valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Vacancies/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Vacancies",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Applicants",
+			"item": [
+				{
+					"name": "Create Applicant new",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"\r",
+									"    \"required\": [\r",
+									"        \"phone\",\r",
+									"        \"experience\",\r",
+									"        \"experienceDescription\",\r",
+									"        \"skills\",\r",
+									"        \"creationDate\",\r",
+									"        \"firstName\",\r",
+									"        \"lastName\",\r",
+									"        \"birthDate\",\r",
+									"        \"email\",\r",
+									"        \"id\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"phone\": {\"type\": \"string\"},\r",
+									"        \"skype\": {\"type\": \"string\"},\r",
+									"        \"linkedInUrl\": {\"type\": \"string\"},\r",
+									"        \"experience\": {\"type\": \"number\"},\r",
+									"        \"experienceDescription\": {\"type\":[\"string\",\"null\"]},\r",
+									"        \"skills\": {\"type\": [\"string\",\"null\"]},\r",
+									"        \"hasCv\": {\"type\": \"boolean\"},\r",
+									"        \"isSelfApplied\": {\"type\": \"boolean\"},\r",
+									"        \"creationDate\": {\"type\": \"string\"},\r",
+									"        \"vacancies\": {\"type\": \"array\"},\r",
+									"        \"tags\": {\r",
+									"            \"type\": \"object\",\r",
+									"            \"properties\": {\r",
+									"                \"elasticType\": {\"type\": \"integer\"},\r",
+									"                \"tagDtos\": {\"type\": \"array\"},\r",
+									"                \"id\": { \"type\": \"string\"},\r",
+									"            \"additionalProperties\": true\r",
+									"        },\r",
+									"        \"firstName\": {\"type\": \"string\"},\r",
+									"        \"lastName\": {\"type\": \"string\"},\r",
+									"        \"birthDate\": {\"type\": \"string\"},\r",
+									"        \"email\": {\"type\": \"string\"},\r",
+									"        \"id\": {\"type\": \"string\"},\r",
+									"    \"additionalProperties\": true\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"  \r",
+									"pm.test(\"Response validation\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"pm.collectionVariables.set(\"id\", responseJson.id);\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "body",
+									"value": "{\n \"firstName\": \"Bogdan\",\n \"lastName\": \"Filenko\",\n \"email\": \"bfilenko@gmail.com\",\n \"phone\": \"9375884723\",\n \"skype\": \"http://skype.com/imcudkam\",\n \"linkedInUrl\": \"http://linkedin.com/imcudkam\",\n \"experience\": 5.3,\n \"experienceDescription\": null,\n \"skills\": null,\n \"hasCv\": false,\n \"isSelfApplied\": false,\n \"vacancies\": [],\n \"tags\": {\n \"elasticType\": 1,\n \"tagDtos\": []\n }\n }",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/applicants",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"applicants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Display of applicant by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"\r",
+									"    \"required\": [\r",
+									"        \"phone\",\r",
+									"        \"experience\",\r",
+									"        \"experienceDescription\",\r",
+									"        \"skills\",\r",
+									"        \"creationDate\",\r",
+									"        \"firstName\",\r",
+									"        \"lastName\",\r",
+									"        \"birthDate\",\r",
+									"        \"email\",\r",
+									"        \"id\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"phone\": {\"type\": \"string\"},\r",
+									"        \"skype\": {\"type\": \"string\"},\r",
+									"        \"linkedInUrl\": {\"type\": \"string\"},\r",
+									"        \"experience\": {\"type\": \"number\"},\r",
+									"        \"experienceDescription\": {\"type\": [\"string\",\"null\"]},\r",
+									"        \"skills\": {\"type\": [\"string\",\"null\"]},\r",
+									"        \"hasCv\": {\"type\": \"boolean\"},\r",
+									"        \"isSelfApplied\": {\"type\": \"boolean\"},\r",
+									"        \"creationDate\": {\"type\": \"string\"},\r",
+									"        \"vacancies\": {\"type\": \"array\"},\r",
+									"        \"tags\": {\r",
+									"            \"type\": \"object\",\r",
+									"            \"properties\": {\r",
+									"                \"elasticType\": {\"type\": \"integer\"},\r",
+									"                \"tagDtos\": {\"type\": \"array\"},\r",
+									"                \"id\": { \"type\": \"string\"},\r",
+									"            \"additionalProperties\": true\r",
+									"        },\r",
+									"        \"firstName\": {\"type\": \"string\"},\r",
+									"        \"lastName\": {\"type\": \"string\"},\r",
+									"        \"birthDate\": {\"type\": \"string\"},\r",
+									"        \"email\": {\"type\": \"string\"},\r",
+									"        \"id\": {\"type\": \"string\"},\r",
+									"    \"additionalProperties\": true\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"  \r",
+									"pm.test(\"Response validation\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"pm.collectionVariables.set(\"id\", responseJson.id);\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/applicants/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"applicants",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Display of all applicants",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/applicants",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"applicants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete applicant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/applicants/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"applicants",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pools",
+			"item": [
+				{
+					"name": "Create pool",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"required\": [\r",
+									"        \"name\",\r",
+									"        \"dateCreated\",\r",
+									"        \"createdBy\",\r",
+									"        \"description\",\r",
+									"        \"company\",\r",
+									"        \"applicants\",\r",
+									"        \"id\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"name\": {\"type\": \"string\"},\r",
+									"        \"dateCreated\": {\"type\": \"string\"},\r",
+									"        \"createdBy\": {\"type\": \"string\"},\r",
+									"        \"description\": {\"type\": \"string\"},\r",
+									"        \"company\": {\"type\": \"string\"},\r",
+									"        \"applicants\": {\"type\": \"array\"},\r",
+									"        \"id\": {\"type\": \"string\"},\r",
+									"    \"additionalProperties\": true\r",
+									"}\r",
+									"}\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response validation\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"pm.collectionVariables.set(\"id\", responseJson.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"wereewe\",\r\n  \"description\": \"werwerwrwr\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pools",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pools"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit pools",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"required\": [\r",
+									"        \"name\",\r",
+									"        \"dateCreated\",\r",
+									"        \"createdBy\",\r",
+									"        \"description\",\r",
+									"        \"company\",\r",
+									"        \"applicants\",\r",
+									"        \"id\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"name\": {\"type\": \"string\"},\r",
+									"        \"dateCreated\": {\"type\": \"string\"},\r",
+									"        \"createdBy\": {\"type\": \"string\"},\r",
+									"        \"description\": {\"type\": \"string\"},\r",
+									"        \"company\": {\"type\": \"string\"},\r",
+									"        \"applicants\": {\"type\": \"array\"},\r",
+									"        \"id\": {\"type\": \"string\"},\r",
+									"    \"additionalProperties\": true\r",
+									"}\r",
+									"}\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response validation\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"applicants\": null,\r\n    \"applicantsIds\": \"\",\r\n     \"description\": \"Candidate have enough work experience, however there is a big time gap from previous employment.ggfnhgh\",\r\n     \"id\": \"{{id}}\",\r\n    \"name\": \"With big t\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pools",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pools"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Display of pool",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"required\": [\r",
+									"        \"name\",\r",
+									"        \"dateCreated\",\r",
+									"        \"createdBy\",\r",
+									"        \"description\",\r",
+									"        \"company\",\r",
+									"        \"applicants\",\r",
+									"        \"id\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"name\": {\"type\": \"string\"},\r",
+									"        \"dateCreated\": {\"type\": \"string\"},\r",
+									"        \"createdBy\": {\"type\": \"string\"},\r",
+									"        \"description\": {\"type\": \"string\"},\r",
+									"        \"company\": {\"type\": \"string\"},\r",
+									"        \"applicants\": {\"type\": \"array\"},\r",
+									"        \"id\": {\"type\": \"string\"},\r",
+									"    \"additionalProperties\": true\r",
+									"}\r",
+									"}\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response validation\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/pools/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pools",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Display of pools",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/pools",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pools"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete pool",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/pools/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pools",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "randomNum",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "projectId",
+			"value": ""
+		},
+		{
+			"key": "fakeUser",
+			"value": "fakeUser"
+		},
+		{
+			"key": "fakePassword",
+			"value": "fakePassword"
+		},
+		{
+			"key": "hrLeadEmail",
+			"value": "hrlead@gmail.com"
+		},
+		{
+			"key": "hrLeadPassword",
+			"value": "hrlead"
+		},
+		{
+			"key": "baseUrl",
+			"value": "http://localhost"
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "companyId",
+			"value": ""
+		},
+		{
+			"key": "vacancyId",
+			"value": ""
+		},
+		{
+			"key": "stageId",
+			"value": ""
+		},
+		{
+			"key": "companytId",
+			"value": ""
+		}
+	]
+}

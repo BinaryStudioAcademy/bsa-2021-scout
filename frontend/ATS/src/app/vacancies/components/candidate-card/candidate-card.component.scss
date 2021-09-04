@@ -9,22 +9,18 @@
   box-sizing: border-box;
   position: relative;
 
-  .self-applied{
-  position: absolute;
-  top: 18px;
-  right: 18px;
+  .self-applied {
+    position: absolute;
+    top: 18px;
+    right: 18px;
 
-    .mat-icon{
+    .mat-icon {
       color: #501cb1d0;
     }
   }
 
   & > * {
     width: 100%;
-  }
-
-  &.draggable {
-    cursor: all-scroll;
   }
 
   &.clickable {
@@ -34,18 +30,18 @@
       padding: 17px 12px;
       border: 3px solid $accent-color;
 
-      .self-applied{
+      .self-applied {
         top: 15px;
         right: 15px;
       }
     }
   }
 
-  &.not-viewed{
+  &.not-viewed {
     padding: 17px 12px;
     border: 3px solid #501cb19a;
 
-    .self-applied{
+    .self-applied {
       top: 15px;
       right: 15px;
     }
@@ -53,10 +49,6 @@
 
   .data {
     margin-top: 10px;
-
-    &.mark {
-      margin-top: 26px;
-    }
   }
 
   .user-data {

@@ -7,7 +7,6 @@ namespace Application.Applicants.Dtos
     public class UpdateApplicantDto : HumanDto
     {
         public string Phone { get; set; }
-        public string Skype { get; set; }
         public double Experience { get; set; }
         public string ExperienceDescription { get; set; }
         public string Skills { get; set; }
@@ -19,7 +18,6 @@ namespace Application.Applicants.Dtos
         public UpdateApplicantDtoValidator()
         {
             RuleFor(a => a.Phone).NotNull().NotEmpty();
-            RuleFor(a => a.Skype).NotNull().NotEmpty();
             RuleFor(a => a.Experience).GreaterThanOrEqualTo(0);
         }
     }

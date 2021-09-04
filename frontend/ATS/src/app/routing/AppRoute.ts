@@ -16,4 +16,6 @@ export enum AppRoute {
   SuccessfulRegistration = 'successful-registration',
   ResetPassword = 'reset-password',
   ResendEmail = 'resend-email',
+  ApplicantsCsv = 'applicants/csv',
+  ApplicantsCsvFilesList = 'applicants/csvfiles'
 }

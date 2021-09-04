@@ -8,7 +8,7 @@ namespace Infrastructure.Mongo.Seeding
         {
             return new MailTemplate
             {
-                Id = "9afbc102-4153-4944-9dd9-b2789d5fc023",
+                Id = "6130e8ed3c08bd065627b24e",
                 Slug = "default",
                 Html = @"<!DOCTYPE html>
 <html lang='en'>
@@ -54,8 +54,7 @@ namespace Infrastructure.Mongo.Seeding
                     <img class='logo' src='https://i.postimg.cc/Kcp5snw2/logo-scout-white.png' />
                 </center>
                 <div class='content'>
-                    <p>{{BODY}}</p>
-                    <p>Best regards, Scout team</p>
+                    {{BODY}}
                 </div>
             </div>
         </div>

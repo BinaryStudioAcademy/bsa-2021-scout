@@ -71,5 +71,12 @@ namespace WebAPI.Controllers
             var query = new GetProjectsByCurrentHRCompanyCommand();
             return Ok(await Mediator.Send(query));
         }
+
+        [HttpGet("pending-registrations")]
+        public async Task<IActionResult> GetPendingRegistrations()
+        {
+            var query = new GetPendingRegistrationsQuery();
+            return Ok(await Mediator.Send(query));
+        }
     }
 }

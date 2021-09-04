@@ -1,0 +1,85 @@
+@import "/src/common.scss";
+
+$card-height: 240px;
+
+.vacancy-card-wrapper {
+  padding: 20px 10px 20px 10px;
+  margin: auto;
+  box-sizing: border-box;
+  border-radius: 7px;
+
+  width: 95%;
+  height: $card-height;
+ 
+  font-family: $primary-font;
+  background-color: $primary-color-white;
+
+  h2,
+  h3,
+  h4 {
+    margin-bottom: 5px;
+    overflow-x: hidden;
+  }
+
+  h3 span {
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  h2 {
+    font-weight: 700;
+  }
+
+  .vacancy-summary-info {
+    display: grid;
+
+    mat-icon {
+      color: $primary-color-icons;
+      vertical-align: middle;
+      font-size: 20px;
+    }
+
+    span {
+      min-width: 135px;
+      vertical-align: middle;
+      padding: 5px 0;
+    }
+  }
+
+  .hot {
+    color: white;
+    background: $primary-color;
+    border-radius: 15px;
+    padding: 2px;
+    vertical-align: middle;
+  }
+
+  .light {
+    font-weight: 100;
+  }
+
+  .bold {
+    font-weight: 600;
+  }
+
+  .bold-plus {
+    font-weight: 800;
+  }
+
+  .vacancy-title {
+    display: flex;
+    justify-content: space-between;
+    white-space: nowrap;
+  }
+
+  .vacancy-title:hover {
+    cursor: pointer;
+    color: $primary-color;
+  }
+}
+
+.blur {
+  filter: blur(2px);
+}

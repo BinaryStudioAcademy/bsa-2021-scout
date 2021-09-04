@@ -15,11 +15,13 @@ namespace Application.VacancyCandidates.Commands
     {
         public string Id { get; set; }
         public string StageId { get; set; }
+        public string VacancyId { get; set; }
 
-        public ChangeCandidateStageCommand(string id, string stageId)
+        public ChangeCandidateStageCommand(string id, string vacancyId, string stageId)
         {
             Id = id;
             StageId = stageId;
+            VacancyId = vacancyId;
         }
     }
 
@@ -49,10 +51,11 @@ namespace Application.VacancyCandidates.Commands
                 throw new NotFoundException(typeof(VacancyCandidate), command.Id);
             }
 
-            var changedEvent = new CandidateStageChangedEvent(command.Id, command.StageId);
+            var changedEvent = new CandidateStageChangedEvent(command.Id, command.VacancyId, command.StageId);
             candidate.DomainEvents.Add(changedEvent);
 
-            await _candidateToStageWriteRepository.ReplaceForCandidate(command.Id, command.StageId);
+            await _candidateToStageWriteRepository
+                .ReplaceForCandidate(command.Id, command.VacancyId, command.StageId);
 
             return _mapper.Map<VacancyCandidate, VacancyCandidateDto>(candidate);
         }

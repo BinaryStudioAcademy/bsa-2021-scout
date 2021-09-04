@@ -1,0 +1,77 @@
+<mat-form-field class="placeholders-input" appearance="fill">
+    <mat-chip-list #filesList>
+        <mat-chip [selectable]="true">
+            <mat-label>vacancy</mat-label>
+            <mat-select>
+                <mat-option (click)="addPlaceholder(' {vacancy.title} ')">
+                    title
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {vacancy.description} ')">
+                    description
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {vacancy.requirements} ')">
+                    requirements
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {vacancy.salaryFrom} ')">
+                    salary from
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {vacancy.salaryTo} ')">
+                    salary to
+                </mat-option>
+            </mat-select>
+        </mat-chip>
+        <mat-chip [selectable]="true">
+            <mat-label>project</mat-label>
+            <mat-select>
+                <mat-option (click)="addPlaceholder(' {project.title} ')">
+                    name
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {project.logo} ')">
+                    logo
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {project.description } ')">
+                    description
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {project.teamInfo} ')">
+                    team info
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {project.websiteLink} ')">
+                    website link
+                </mat-option>
+            </mat-select>
+        </mat-chip>
+        <mat-chip [selectable]="true">
+            <mat-label>applicant</mat-label>
+            <mat-select>
+                <mat-option (click)="addPlaceholder(' {applicant.firstName} ')">
+                    first name
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.lastName} ')">
+                    fast name
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.birthDate } ')">
+                    birthdate
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.phone} ')">
+                    phone
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.skype} ')">
+                    skype
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.linkedInUrl} ')">
+                    linkedIn url
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.experience} ')">
+                    experience
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.experienceDescription} ')">
+                    experience description
+                </mat-option>
+                <mat-option (click)="addPlaceholder(' {applicant.skills} ')">
+                    skills
+                </mat-option>
+            </mat-select>
+        </mat-chip>
+    </mat-chip-list>
+</mat-form-field>
+

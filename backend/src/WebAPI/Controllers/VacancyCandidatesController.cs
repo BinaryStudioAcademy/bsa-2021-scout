@@ -18,13 +18,14 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
-        [HttpPut("{id}/set-stage/{stageId}")]
+        [HttpPut("{id}/set-stage/{vacancyId}/{stageId}")]
         public async Task<ActionResult<VacancyCandidateDto>> ChangeCandidateStage(
             [FromRoute] string id,
+            [FromRoute] string vacancyId,
             [FromRoute] string stageId
         )
         {
-            var command = new ChangeCandidateStageCommand(id, stageId);
+            var command = new ChangeCandidateStageCommand(id, vacancyId, stageId);
             return Ok(await Mediator.Send(command));
         }
 

@@ -63,7 +63,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
     private readonly modalService: MatDialog,
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     this.route.params.subscribe(({ id }) => {
@@ -110,11 +110,13 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
         this.vacancyCandidateService
           .changeCandidateStage(
             event.item.element.nativeElement.id, // Stores candidate id
+            this.vacancyId,
             event.container.id, // Stores new stage id
           )
           .subscribe(
-            _ => (this.MarkCandidateAsViewed(event.item.element.nativeElement.id)),
-            _ => {
+            (_) =>
+              this.MarkCandidateAsViewed(event.item.element.nativeElement.id),
+            (_) => {
               this.notificationService.showErrorMessage(
                 'Failed to save candidate\'s stage',
                 'Error',
@@ -275,7 +277,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
           this.openCandidateModal(
             this.data[prevPos!.stageIndex].candidates[prevPos!.index].id,
           );
-        } else if (state == 'next') {
+        } else if (state === 'next') {
           this.openCandidateModal(
             this.data[nextPos!.stageIndex].candidates[nextPos!.index].id,
           );
@@ -314,15 +316,14 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
       ({ reviews, vacancy }) => {
         this.loading = false;
 
-        if (vacancy.stages[0].candidates.length != 0) {
-          this.data = [...vacancy.stages];
-        }
-        else {
-          vacancy.stages.splice(0, 1);
-          this.data = [...vacancy.stages];
-        }
+        this.data = [...vacancy.stages];
+        vacancy.stages.forEach((stage,index) =>{
+          if(stage.index==0 && stage.candidates.length == 0){
+            vacancy.stages.splice(index, 1);
+            this.data = [...vacancy.stages];
+          }
+        });
 
-        console.log(this.data);
         this.reviews = [...reviews];
         this.title = vacancy.title;
 
@@ -380,10 +381,10 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
 
   public MarkCandidateAsViewed(id: string) {
     this.data.forEach((stage) => {
-      stage.candidates.forEach(candidate => {
+      stage.candidates.forEach((candidate) => {
         if (candidate.id == id) {
           if (candidate.isViewed != true) {
-            this.vacancyCandidateService.MarkAsViewed(id).subscribe(_ => {
+            this.vacancyCandidateService.MarkAsViewed(id).subscribe((_) => {
               candidate.isViewed = true;
             });
           }

@@ -19,6 +19,12 @@ namespace Infrastructure.EF.Configuration
                 .HasForeignKey(cts => cts.StageId)
                 .HasConstraintName("candidate_to_stage_stage_FK")
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(cts => cts.Mover)
+                .WithMany(u => u.MovedCandidateToStages)
+                .HasForeignKey(cts => cts.MoverId)
+                .HasConstraintName("candidate_to_stage_mover_FK")
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

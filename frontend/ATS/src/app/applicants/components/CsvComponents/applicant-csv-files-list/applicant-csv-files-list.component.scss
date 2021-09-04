@@ -1,0 +1,72 @@
+@import "../../../../../common.scss";
+
+a{
+    display: flex;
+    p{
+        display: flex;
+        align-items: center;
+
+        height: 26px;
+        margin-bottom: 0;
+        font-size: 20px;
+        font-weight: 600;
+
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+    &:hover{
+        text-decoration: none;
+    }
+}
+
+/* Header */
+.csv-list-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    height: 60px;
+    padding: 10px 30px 10px 20px;
+    background: $primary-color-white;
+    border-bottom: 1px solid $primary-color-lightgrey;
+}
+
+.mat-icon.arrow{
+    font-size: 26px;
+    height: 26px;
+    width: 26px;
+}
+
+.mat-icon.arrow:hover{
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.upload-button{
+    height: 40px;
+}
+
+/* Files List */
+.files-list{
+    box-sizing: border-box;
+    width: 100%;
+    height: calc(100vh - 220px);
+    background: white;
+    padding: 10px 35px 10px 35px;
+    overflow: scroll;
+    display: flex;
+    
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    column-gap: 10px;
+    row-gap: 25px;
+
+    app-one-csv-file{
+        width: 20%;
+        height: 85px;
+        min-width: 300px;
+    }
+}
+

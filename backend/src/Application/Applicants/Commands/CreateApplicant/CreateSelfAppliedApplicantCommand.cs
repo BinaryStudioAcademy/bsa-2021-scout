@@ -18,10 +18,10 @@ namespace Application.Applicants.Commands.CreateApplicant
     public class CreateSelfAppliedApplicantCommand : IRequest<ApplicantDto>
     {
         public CreateApplicantDto ApplicantDto { get; set; }
-        public FileDto? CvFileDto { get; set; }
+        public FileDto CvFileDto { get; set; }
         public string VacancyId { get; set; }
 
-        public CreateSelfAppliedApplicantCommand(CreateApplicantDto applicantDto, FileDto? cvFileDto, string vacancyId)
+        public CreateSelfAppliedApplicantCommand(CreateApplicantDto applicantDto, FileDto cvFileDto, string vacancyId)
         {
             ApplicantDto = applicantDto;
             CvFileDto = cvFileDto;
@@ -63,11 +63,12 @@ namespace Application.Applicants.Commands.CreateApplicant
                 BirthDate = command.ApplicantDto.BirthDate,
                 Email = command.ApplicantDto.Email,
                 Phone = command.ApplicantDto.Phone,
-                Skype = command.ApplicantDto.Skype,
                 Experience = command.ApplicantDto.Experience,
+                ExperienceDescription = command.ApplicantDto.ExperienceDescription,
                 LinkedInUrl = command.ApplicantDto.LinkedInUrl,
                 CompanyId = vacancy.CompanyId,
-                IsSelfApplied = true
+                IsSelfApplied = true,
+                CreationDate = DateTime.Now
             };
 
             await UploadCvFileIfExists(applicant, command);

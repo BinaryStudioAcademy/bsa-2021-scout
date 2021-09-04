@@ -1,0 +1,30 @@
+name: Backend Tests
+
+env:
+  NODE_VERSION: 14.17.1
+
+on:
+  pull_request:
+    branches:
+      - develop
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+
+      - name: Setup NodeJS v${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run API tests
+        run: |
+          bash ./tests/start.test.sh
+        env:
+          FORCE_COLOR: 1

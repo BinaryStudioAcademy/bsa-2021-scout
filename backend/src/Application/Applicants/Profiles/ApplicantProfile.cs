@@ -11,7 +11,8 @@ namespace Application.Applicants.Profiles
             CreateMap<ApplicantDto, Applicant>();
             CreateMap<Applicant, ApplicantDto>();
             CreateMap<Applicant, GetShortApplicantDto>();
-
+            CreateMap<Applicant, ApplicantCsvGetDto>();
+            
             CreateMap<Applicant, MarkedApplicantDto>()
                 .ForMember(dto => dto.IsApplied, opt => opt.Ignore());
 
@@ -23,7 +24,12 @@ namespace Application.Applicants.Profiles
             CreateMap<CreateApplicantDto, ApplicantDto>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
+            CreateMap<CreateApplicantDto, Applicant>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
             CreateMap<ApplicantCsvDto, Applicant>();
+            CreateMap<ApplicantCsvDto, GetApplicantCsvDto>()
+                .ForMember(dto => dto.IsValid, opt => opt.Ignore());
 
             CreateMap<UpdateApplicantDto, ApplicantDto>();
             CreateMap<UpdateApplicantDto, Applicant>();

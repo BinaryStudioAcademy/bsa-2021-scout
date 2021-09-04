@@ -2,10 +2,21 @@
 
 .topics {
   overflow-x: scroll;
-  padding: 5px;
+
+  &.styled {
+    padding: 5px;
+  }
 
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+::ng-deep {
+  .mat-select {
+    .mat-select-value {
+      max-width: unset !important;
+    }
   }
 }
 

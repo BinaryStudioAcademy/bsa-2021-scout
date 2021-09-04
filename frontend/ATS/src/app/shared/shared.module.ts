@@ -17,6 +17,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from './components/button/button.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -46,11 +47,14 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
 import { LogoBlockComponent } from '../users/components/logo-block/logo-block.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { UserRoleDirective } from './directives/user-role.directive';
-import {ClipboardModule} from '@angular/cdk/clipboard';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
 import { TimezonePipe } from './pipes/timezone-pipe';
+import { FilesEditComponent } from '../users/components/files-edit/files-edit.component';
+import { PlaceholdersEditComponent } from '../users/components/placeholders/placeholders.component';
 import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
-import { TabDirective } from './directives/tab-directive';
+import { TableFilterComponent } from './components/table-filter/table-filter.component';
+import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
 
 @NgModule({
   exports: [
@@ -76,12 +80,12 @@ import { TabDirective } from './directives/tab-directive';
     MultiselectComponent,
     MatDatepickerModule,
     MatDialogModule,
-    MatTooltipModule,
     MatNativeDateModule,
     MatAutocompleteModule,
     MatCheckboxModule,
     MatChipsModule,
     MatExpansionModule,
+    MatGridListModule,
     TopicComponent,
     FileInputComponent,
     MenuComponent,
@@ -93,13 +97,18 @@ import { TabDirective } from './directives/tab-directive';
     MatPaginatorModule,
     MatSortModule,
     MatMenuModule,
+    MatTooltipModule,
     TagsEditComponent,
     DeleteConfirmComponent,
     LogoBlockComponent,
     ClipboardModule,
     UserProfileComponent,
     TimezonePipe,
+    FilesEditComponent,
+    PlaceholdersEditComponent,
     AvatarModalComponent,
+    TableFilterComponent,
+    MarkBarComponent,
   ],
   imports: [
     MatButtonModule,
@@ -117,13 +126,13 @@ import { TabDirective } from './directives/tab-directive';
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
-    MatTooltipModule,
     MatProgressBarModule,
     MatListModule,
     MatAutocompleteModule,
     MatCheckboxModule,
     MatChipsModule,
     MatExpansionModule,
+    MatGridListModule,
     BrowserAnimationsModule,
     BrowserModule,
     MatSelectModule,
@@ -135,6 +144,7 @@ import { TabDirective } from './directives/tab-directive';
     MatAutocompleteModule,
     MatCheckboxModule,
     MatMenuModule,
+    MatTooltipModule,
     ClipboardModule,
   ],
   providers: [HttpClientService],
@@ -157,8 +167,11 @@ import { TabDirective } from './directives/tab-directive';
     UserRoleDirective,
     CopyClipboardDirective,
     TimezonePipe,
+    FilesEditComponent,
+    PlaceholdersEditComponent,
     AvatarModalComponent,
-    TabDirective,
+    TableFilterComponent,
+    MarkBarComponent,
   ],
 })
 export class SharedModule {}

@@ -1,3 +1,4 @@
+import { InterviewsModule } from './../interviews/interviews.module';
 /* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,9 +11,6 @@ import { VacanciesModule } from '../vacancies/vacancies.module';
 import { ApplicantsModule } from '../applicants/applicants.module';
 import { SharedModule } from '../shared/shared.module';
 import { UsersModule } from '../users/users.module';
-import { VacancyCardComponent } from '../vacancies/components/vacancy-card/vacancy-card.component';
-import { VacancyWidgetComponent } from '../vacancies/components/vacancy-widget/vacancy-widget.component';
-import { HomeComponent } from '../users/components/home/home.component';
 import { SidenavService } from '../shared/services/sidenav.service';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -23,16 +21,12 @@ import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 
 import { ProjectsModule } from '../projects/projects.module';
 import { PoolsModule } from '../pools/pools.module';
+import { MailTemplatesModule } from '../mail-templates/mail-templates.module';
 import { TaskManagementModule } from '../task-management/task-management.module';
 
 
 @NgModule({
-  declarations: [
-    AppComponent, 
-    VacancyCardComponent,
-    VacancyWidgetComponent,
-    HomeComponent,    
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     RoutingModule,
@@ -40,13 +34,15 @@ import { TaskManagementModule } from '../task-management/task-management.module'
     MatSortModule,
     MatTableModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),    
+    ToastrModule.forRoot(),
     SharedModule,
     ApplicantsModule,
     VacanciesModule,
+    InterviewsModule,
     UsersModule,
     ProjectsModule,
     PoolsModule,
+    MailTemplatesModule,
     TaskManagementModule,
   ],
   providers: [

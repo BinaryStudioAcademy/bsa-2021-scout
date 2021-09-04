@@ -53,8 +53,6 @@ namespace Infrastructure.Services
                     .Select(p => p.Text),
                 Email = emails
                     .Select(e => e.Text),
-                Skype = people
-                    .Select(p => p.Text),
                 Skills = skills
                     .Select(s => s.Text),
                 Company = organizations

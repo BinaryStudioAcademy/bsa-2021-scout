@@ -9,7 +9,6 @@ using Application.Common.Queries;
 using Application.ElasticEnities.CommandQuery.AddTagCommand;
 using Application.ElasticEnities.CommandQuery.DeleteTagCommand;
 using Application.ElasticEnities.Dtos;
-using Application.VacancyCandidates.Commands;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -71,21 +70,6 @@ namespace WebAPI.Controllers
             var query = new CreateApplicantCommand(createApplicantDto!, cvFileDto);
 
             return Ok(await Mediator.Send(query));
-        }
-        [HttpPost("self-apply/{vacancyId}")]
-        public async Task<IActionResult> PostSelfAppliedApplicantAsync(string vacancyId, [FromForm] string body, [FromForm] IFormFile cvFile = null)
-        {
-            var createApplicantDto = JsonConvert.DeserializeObject<CreateApplicantDto>(body);
-
-            var cvFileDto = cvFile != null ? new FileDto(cvFile.OpenReadStream(), cvFile.FileName) : null;
-
-            var commandApplicant = new CreateSelfAppliedApplicantCommand(createApplicantDto!, cvFileDto, vacancyId);
-
-            var applicant= await Mediator.Send(commandApplicant);
-
-            var commandCandidate = new CreateVacancyCandidateNoAuthCommand(applicant.Id, vacancyId);
-
-            return Ok(await Mediator.Send(commandCandidate));
         }
 
         [HttpPut]
@@ -154,19 +138,6 @@ namespace WebAPI.Controllers
             var query = new CreateElasticDocumentCommand<CreateElasticEntityDto>(createDto);
 
             return Ok(await Mediator.Send(query));
-        }
-
-        [HttpPost("csv/")]
-        public async Task<IActionResult> PostApplicantFromCsv()
-        {
-            var file = Request.Form.Files[0];
-
-            using (var fileReadStream = file.OpenReadStream())
-            {
-                var command = new CreateApplicantsFromCsvCommand(fileReadStream);
-
-                return Ok(await Mediator.Send(command));
-            }
         }
 
         [HttpPost("tags/{entityId}")]

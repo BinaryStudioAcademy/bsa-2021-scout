@@ -6,7 +6,6 @@ import { RegistrationComponent } from './components/registration/registration.co
 
 import { AppRoute } from '../routing/AppRoute';
 
-import { HomeComponent } from './components/home/home.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ResetPasswordGuard } from './guards/reset-password.guard';
 import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';

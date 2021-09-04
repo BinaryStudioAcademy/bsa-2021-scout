@@ -1,0 +1,7 @@
+<div class="container" #container>
+  <div class="marks">
+    <div class="current" style="left: calc({{ percent }}% - 4px);">{{ mark }}</div>
+    <div class="total" style="left: calc(100% - 4px);">{{ maxMark }}</div>
+  </div>
+  <mat-progress-bar color="accent" mode="determinate" [value]="percent"></mat-progress-bar>
+</div>

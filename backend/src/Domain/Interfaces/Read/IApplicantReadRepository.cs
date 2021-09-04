@@ -1,10 +1,11 @@
 using Domain.Entities;
+using Domain.Interfaces.Abstractions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Read
 {
-    public interface IApplicantReadRepository
+    public interface IApplicantReadRepository : IReadRepository<Applicant>
     {
         Task<FileInfo> GetCvFileInfoAsync(string applicantId);
         Task<IEnumerable<ApplicantVacancyInfo>> GetApplicantVacancyInfoListAsync(string applicantId);
@@ -12,6 +13,5 @@ namespace Domain.Interfaces.Read
         Task<Applicant> GetByIdAsync(string applicantId);
         Task<IEnumerable<(Applicant, bool)>> GetApplicantsWithAppliedMark(string vacancyId);
         Task<Applicant> GetByCompanyIdAsync(string id);
-        Task<Applicant> GetByPropertyAsync(string property, string propertyValue);
     }
 }

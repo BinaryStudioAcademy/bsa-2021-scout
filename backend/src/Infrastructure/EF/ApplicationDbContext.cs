@@ -25,6 +25,7 @@ namespace Infrastructure.EF
         public DbSet<Vacancy> Vacancies { get; set; }
         public DbSet<VacancyCandidate> VacancyCandidates { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<ApplyToken> ApplyTokens { get; set; }
         public DbSet<FileInfo> FileInfos { get; set; }
         public DbSet<CandidateToStage> CandidateToStages { get; set; }
         public DbSet<Review> Reviews { get; set; }
@@ -34,7 +35,9 @@ namespace Infrastructure.EF
         public DbSet<ReviewToStage> ReviewToStages { get; set; }
         public DbSet<CandidateComment> CandidateComments { get; set; }
         public DbSet<RegisterPermission> RegisterPermissions { get; set; }
-        public DbSet<UserFollowedEntity>  UserFollowedEntities { get; set; }
+        public DbSet<UserFollowedEntity> UserFollowedEntities { get; set; }
+        public DbSet<Interview> Interviews { get; set; }
+        public DbSet<UsersToInterview> UsersToInterviews { get; set; }
 
         public DbSet<ToDoTask> ToDoTask { get; set; }
         public DbSet<UserToTask> UserToTask { get; set; }

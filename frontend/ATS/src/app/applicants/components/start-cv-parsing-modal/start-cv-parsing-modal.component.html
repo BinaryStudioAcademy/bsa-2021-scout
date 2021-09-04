@@ -1,0 +1,13 @@
+<app-spinner [loading]="loading"></app-spinner>
+<div class="space-between" mat-dialog-title>
+  <h1>Create applicant from any PDF CV</h1>
+  <button mat-icon-button mat-dialog-close="none">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<app-file-input [accept]="accept" [single]="true" (upload)="upload($event)"></app-file-input>
+<div mat-dialog-actions>
+  <button mat-button color="primary" [disabled]="!file" (click)="startParsing()">
+    Parse CV
+  </button>
+</div>

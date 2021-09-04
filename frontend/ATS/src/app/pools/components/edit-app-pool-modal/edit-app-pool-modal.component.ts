@@ -113,7 +113,6 @@ export class EditAppPoolModalComponent implements OnInit {
   }
 
   private _filter(value: string): ApplicantIsSelected[] {    
-    console.log(value);
     const filterValue = value ? value.toLowerCase() : '';    
 
     return this.allapplicants.filter(

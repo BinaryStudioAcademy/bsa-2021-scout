@@ -1,13 +1,21 @@
-<button class="tub" [style.text-decoration]="!isFollowedPage ? 'underline' : 'none'" (click)="toggleFollowedOrAll(false)">All</button>
-<button class="tub" [style.text-decoration]="isFollowedPage ? 'underline' : 'none'" (click)="toggleFollowedOrAll(true)">Followed</button>
+<button class="tub" [style.text-decoration]="page === 'all' ? 'underline' : 'none'"
+    (click)="toggleFollowedOrAll('all')">All</button>
+<button class="tub" [style.text-decoration]="page === 'followed' ? 'underline' : 'none'"
+    (click)="toggleFollowedOrAll('followed')">Followed</button>
+<button class="tub" [style.text-decoration]="page === 'self-applied' ? 'underline' : 'none'"
+    (click)="toggleFollowedOrAll('self-applied')">Self Applied</button>
 <mat-form-field appearance="fill">
     <mat-icon>search</mat-icon>
-    <input #input [(ngModel)]="searchValue" matInput type="text" class="search-input" placeholder="Search..." (keyup)="applySearchValue()">
+    <input #input [(ngModel)]="searchValue" matInput type="text" class="search-input" placeholder="Search..."
+        (keyup)="applySearchValue()">
 </mat-form-field>
-<button mat-button color="accent" class="csv-button" (click)="showUploadCSVDialog()">
-    <mat-icon>attach_file</mat-icon>
-    <span>Upload from CSV</span>
+<button mat-button color="accent" class="csv-button" routerLink='/applicants/csvfiles'>
+    <span>CSV Files</span>
 </button>
-<app-button class="create-button" (click)="showApplicantsCreateDialog()">
+<button mat-button color="accent" class="cv-button" (click)="showUploadCvDialog()">
+    <mat-icon>attach_file</mat-icon>
+    <span>Upload any CV file</span>
+</button>
+<button mat-button class="create-button" (click)="showApplicantsCreateDialog()">
     + New applicant
-</app-button>
+</button>

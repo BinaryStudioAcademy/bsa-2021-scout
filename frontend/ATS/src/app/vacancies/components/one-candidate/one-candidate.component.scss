@@ -20,6 +20,11 @@
     font-weight: bold;
   }
 
+  .one-line {
+    word-break: keep-all;
+    white-space: nowrap;
+  }
+
   .icon-link {
     display: flex;
     align-items: center;
@@ -34,31 +39,31 @@
     transform: translateY(-8px);
   }
 
-  .avatar-col {
-    $dim: 120px;
-    padding-right: 20px;
-    width: $dim;
-
-    .avatar {
-      width: $dim;
-      height: $dim;
-      max-width: $dim;
-      max-height: $dim;
-      border-radius: 50%;
-      cursor: zoom-in;
-    }
-  }
-
   .content-col {
     flex-grow: 1;
-    padding-top: 20px;
 
     .block {
       padding: 20px 0 20px 10px;
       box-sizing: border-box;
 
       &.top {
-        padding: 0 0 40px 0;
+        display: flex;
+        padding: 0;
+
+        .avatar {
+          margin-right: 20px;
+          $dim: 120px;
+          width: $dim;
+          height: $dim;
+          max-width: $dim;
+          max-height: $dim;
+          border-radius: 50%;
+          cursor: zoom-in;
+        }
+
+        .text {
+          padding: 20px 0 20px 10px;
+        }
       }
 
       &.experience {
@@ -117,14 +122,13 @@
             position: absolute;
             left: -6px;
             top: calc(50% - 5px);
-            z-index: 3;
           }
         }
       }
 
       .reviews {
         & > * {
-          width: 50%;
+          min-width: 50%;
           max-width: 200px;
         }
       }

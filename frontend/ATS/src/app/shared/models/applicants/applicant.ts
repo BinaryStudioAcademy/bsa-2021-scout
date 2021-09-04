@@ -8,7 +8,6 @@ export interface Applicant {
   birthDate?: Date;
   email: string;
   phone?: string;
-  skype?: string;
   linkedInUrl?: string;
   experience?: number;
   experienceDescription?: string;
@@ -17,6 +16,7 @@ export interface Applicant {
   companyId?: string;
   isSelected?: boolean;
   hasCv: boolean;
+  creationDate: Date;
 
   tags: ElasticEntity;
   vacancies: ApplicantVacancyInfo[];

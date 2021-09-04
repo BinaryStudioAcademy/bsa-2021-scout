@@ -23,6 +23,9 @@
     -webkit-box-orient: vertical;
 }
 
+.create-button{
+    width: 170px;
+}
 
 button.tub {
     background: transparent;
@@ -33,6 +36,7 @@ button.tub {
     font-weight: 600;
     font-size: 16px;
     line-height: 22px;
+    text-underline-offset: 5px;
 }
 
 button.tub:hover {
@@ -53,6 +57,11 @@ button.tub:focus {
     width: 100%;
 }
 
+.pool-list {
+    overflow: scroll;
+    height: calc(100vh - 244px);
+}
+
 .mat-table .mat-icon {
     color : $primary-color-darkgrey;
     cursor: pointer;    
@@ -64,10 +73,6 @@ button.tub:focus {
 
 .mat-row:nth-child(even){
     background-color:$primary-color-white;
-}
-
-.mat-row:hover {
-    cursor: pointer;
 }
 
 .mat-paginator-sticky {
@@ -111,6 +116,25 @@ button.tub:focus {
     color: $primary-color;
 }
 
+::ng-deep {
+    .pool-options .info {
+      color: gray;
+    }
+  
+    .mat-select-panel-wrap .pool-options .mat-option {
+      height: 40px;
+      .mat-icon {
+        font-size: 20px;
+        margin-right: 5px;
+      }
+    }
+  
+    .pool-options .mat-option-text {
+      font-size: 15px;
+      line-height: 20px;
+    }
+  }
+  
 ::ng-deep {
     .pool-options .delete {
         color: $primary-color;
@@ -157,7 +181,9 @@ button.tub:focus {
         left: 5px;        
     }
     
-
+    .applyPrimaryColor{
+        color: $primary-color !important;
+    }
     .pool-page .mat-form-field-label-wrapper {
         left: 40px;        
         max-width: 200px;
