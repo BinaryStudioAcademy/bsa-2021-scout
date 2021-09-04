@@ -36,7 +36,9 @@ namespace Infrastructure.EF.Seeds
             string link = getLinkStart(source) + linksEndings[_random.Next(linksEndings.Count())];
             int randomIndex = _random.Next(titles.Count());
             DateTime created = Common.GetRandomDateTime(new DateTime(2021, 07, 01));
-            DateTime schedualed = created.AddDays(_random.Next(130));
+            DateTime schedualed = created.AddDays(_random.Next(130))
+            .AddHours(_random.Next(7, 19))
+            .AddMinutes(_random.Next(15, 45));
             
             return new Interview
             {
