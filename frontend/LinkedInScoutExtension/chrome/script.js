@@ -28,14 +28,19 @@ function processLinkedInPage() {
     const experienceElements = document.querySelectorAll("#experience-section .pv-entity__date-range.t-14.t-black--light.t-normal");
     const educationElements = document.querySelectorAll("#education-section .pv-entity__summary-info--background-section");
     const skillElements = document.querySelectorAll(".pv-skill-categories-section .pv-skill-category-entity__name-text");
+    const emailElement = document.querySelector(".artdeco-modal .t-14.t-black.t-normal");
+    const linkElements = document.querySelector(".artdeco-modal .pv-contact-info__contact-link");
+    const modalLinkElement = document.querySelector(".pv-text-details__separator .link-without-visited-state")
 
     const [firstName, lastName] = leftMainInfoPanel.children[0].children[0].innerText.split(" ");
     const currentJob = leftMainInfoPanel.children[1].innerText;
-    const region = leftMainInfoPanel.children[2].children[0].innerText;
+    const region = leftMainInfoPanel.children[leftMainInfoPanel.childElementCount - 1].children[0].innerText;
     const jobsAndEducationNames = [];
 
-    for (const child of rightMainInfoPanel.children) {
-        jobsAndEducationNames.push(child.children[0].children[1].children[0].innerText);
+    if (rightMainInfoPanel) {
+        for (const child of rightMainInfoPanel.children) {
+            jobsAndEducationNames.push(child.children[0].children[1].children[0].innerText);
+        }
     }
 
     const experienceNames = [];
@@ -103,9 +108,29 @@ function processLinkedInPage() {
         skills.push(child.innerText);
     }
 
+    modalLinkElement.click();
+
+    let email, phone;
+
+    const emailElements = document.querySelectorAll(".artdeco-modal .pv-contact-info__contact-link");
+    const phoneElement = document.querySelector(".artdeco-modal .t-14.t-black.t-normal");
+
+    for (const element of emailElements) {
+        if (element.href.startsWith("mailto:")) {
+            email = element.innerText;
+            break;
+        }
+    }
+
+    if (phoneElement) {
+        phone = phoneElement.innerText;
+    }
+
     const data = {
         firstName,
         lastName,
+        email,
+        phone,
         // currentJob,
         // region,
         // jobsAndEducationNames,
@@ -132,7 +157,7 @@ parseButton.addEventListener("click", async () => {
     const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
     if (!isLinkedInTab(activeTab)) {
-        showNotLinkedInError();
+        return showNotLinkedInError();
     }
 
     chrome.scripting.executeScript({
