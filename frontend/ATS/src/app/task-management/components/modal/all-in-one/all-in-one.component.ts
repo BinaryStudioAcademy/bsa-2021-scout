@@ -23,6 +23,7 @@ export class AllInOneComponent {
   public applicantsOptions!: Observable<any[]>;
   public applicants: ApplicantShort[]=[];  
   public formType:string = '';
+  public usersToched : boolean = false;
 
   public taskForm: FormGroup = new FormGroup({
     'name': new FormControl('', [
@@ -66,9 +67,10 @@ export class AllInOneComponent {
         startWith(''),
         map(value => this._filter(value)),
       );
-    
-    this.applicants = this.data.applicants;   
-    
+
+        
+    this.applicants = this.data.applicants;
+        
 
     if(this.data.task.id) {
       this.formType = 'Edit';
@@ -80,11 +82,16 @@ export class AllInOneComponent {
   }
 
   removeUser(user:UserInfo) {
+    this.usersToched = true;
     let index = this.task.teamMembers.findIndex(x=> x.id == user.id);
     if(index>-1) {      
       this.task.teamMembers = this.task.teamMembers.slice(0,index)
         .concat(this.task.teamMembers.slice(index+1));      
     }
+  }
+
+  onUserChange(event:any) {
+    this.usersToched = true;
   }
 
   

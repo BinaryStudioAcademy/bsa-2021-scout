@@ -56,7 +56,7 @@
           <mat-icon class='close' (click)=removeUser(user)>close</mat-icon>
         </div>
         <div class="add-user-select add">         
-          <mat-select [(value)]="task.teamMembers" multiple [compareWith]="compareById">
+          <mat-select [(value)]="task.teamMembers" multiple [compareWith]="compareById" (selectionChange)="onUserChange($event)">
             <mat-option *ngFor="let user of data.users" [value]="user">{{user.firstName}} {{user.lastName}}</mat-option>
           </mat-select>
         </div>
@@ -71,7 +71,7 @@
         cdkAutosizeMaxRows="12"></textarea>
     </mat-form-field>    
     <div class="login-button form-group">
-      <button mat-button color="primary" (click)="save()" [disabled]="!taskForm.valid || !this.taskForm.dirty ">Save</button>
+      <button mat-button color="primary" (click)="save()" [disabled]="!taskForm.valid || (!this.taskForm.dirty && !usersToched)">Save</button>
     </div>
   </form>
 </div>
