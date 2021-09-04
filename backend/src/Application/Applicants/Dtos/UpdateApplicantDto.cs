@@ -1,6 +1,7 @@
 using FluentValidation;
 using Application.Common.Models;
 using Application.ElasticEnities.Dtos;
+using System;
 
 namespace Application.Applicants.Dtos
 {
@@ -11,6 +12,7 @@ namespace Application.Applicants.Dtos
         public string ExperienceDescription { get; set; }
         public string Skills { get; set; }
         public ElasticEnitityDto Tags { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 
     public class UpdateApplicantDtoValidator : AbstractValidator<UpdateApplicantDto>

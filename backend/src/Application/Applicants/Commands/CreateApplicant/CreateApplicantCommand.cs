@@ -72,11 +72,15 @@ namespace Application.Applicants.Commands
                 CreationDate = DateTime.UtcNow,
             };
 
+            Console.WriteLine(applicant.CreationDate);
+
             await UploadCvFileIfExists(applicant, command);
 
             await _applicantWriteRepository.CreateAsync(applicant);
 
             var createdApplicant = _mapper.Map<Applicant, ApplicantDto>(applicant);
+
+            Console.WriteLine(createdApplicant.CreationDate);
 
             await CreateElasticEntityAndAddTagsIfExist(createdApplicant, command);
 
