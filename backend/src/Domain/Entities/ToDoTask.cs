@@ -20,6 +20,8 @@ namespace Domain.Entities
         public Applicant Applicant { get; set; }
         public Company Company { get; set; }
         public User CreatedBy { get; set; }
-        public ICollection<UserToTask> TeamMembers { get; set; } 
+        public ICollection<UserToTask> TeamMembers { get; set; }
+        
+
     }
 }

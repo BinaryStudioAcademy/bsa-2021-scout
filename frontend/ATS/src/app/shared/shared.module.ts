@@ -50,6 +50,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
 import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
 import { TimezonePipe } from './pipes/timezone-pipe';
 import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
+import { TabDirective } from './directives/tab-directive';
 
 @NgModule({
   exports: [
@@ -157,6 +158,7 @@ import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.com
     CopyClipboardDirective,
     TimezonePipe,
     AvatarModalComponent,
+    TabDirective,
   ],
 })
 export class SharedModule {}

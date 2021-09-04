@@ -9,9 +9,10 @@ namespace Application.Tasks.Dtos
     {
         public string Name { get; set; }
         public string Note { get; set; }
+        public bool IsDone { get; set; }
         public DateTime DueDate { get; set; }
         public string ApplicantId { get; set; }
-        public string TeamMembersIds { get; set; }
+        public List<string> UsersIds { get; set; }
     }
 
     public class UpdateTaskDtoValidator : AbstractValidator<UpdateTaskDto>

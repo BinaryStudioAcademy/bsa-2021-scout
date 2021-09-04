@@ -9,6 +9,6 @@ namespace Domain.Interfaces.Read
     {
         Task<ToDoTask> GetTaskWithTeamMembersByIdAsync(string id);
         Task<List<ToDoTask>> GetTasksWithTeamMembersAsync();
-        
+        Task<List<ToDoTask>> GetTasksWithTeamMembersByUserAsync(string userId);
     }
 }

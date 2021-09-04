@@ -16,17 +16,17 @@ export class TaskService {
     return this.http.getRequest<Task[]>(`${this.routePrefix}`);
   }
 
-  public getPool(id: string) {
+  public getTask(id: string) {
     return this.http.getRequest<Task>(
       `${this.routePrefix}/${id}`);
   }
 
-  public createPool(task : CreateTask) {
+  public createTask(task : CreateTask) {
     return this.http.postRequest<Task>(
       `${this.routePrefix}`, task);
   }
 
-  public updatePool(task: UpdateTask) {
+  public updateTask(task: UpdateTask) {
     return this.http.putFullRequest<Task>(
       `${this.routePrefix}`,
       task,

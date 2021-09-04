@@ -17,9 +17,10 @@ namespace Application.Tasks
             CreateMap<ToDoTask, TaskDto>()
                 .ForMember(dest => dest.TeamMembers, opt => opt.MapFrom(src => src.TeamMembers.Select(p => p.User)))
                 .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.Company.Name));
-        //        .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CreatedBy));               
+            //        .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CreatedBy));               
 
-            CreateMap<ToDoTask, CreateTaskDto>();
+            CreateMap<UpdateTaskDto, ToDoTask>();                
+            CreateMap<ToDoTask, UpdateTaskDto>();
 
 
 

@@ -1,15 +1,20 @@
-import { Model } from '../model';
-import { ApplicantShort } from './applicant-short';
-import { UserInfo } from './user-short';
+import { Task } from './task';
 
-export interface CreateTask extends Model {
+export class CreateTask {
   name: string;
-  applicant : ApplicantShort;
-  dueDate: Date;
-  doneDate?: Date;  
+  applicantId : string;
+  dueDate: Date;    
   isDone: boolean;
-  note?: string;
-  createdBy: UserInfo;
-  createdDate: Date;
-  teamMembers: UserInfo[];
+  note?: string;  
+  UsersIds: string[];
+
+  constructor(task: Task)
+  {    
+    this.name = task.name;
+    this.applicantId = task.applicant.id;
+    this.dueDate = task.dueDate;    
+    this.isDone = task.isDone;
+    this.note = task.note;  
+    this.UsersIds = task.teamMembers.map(x=>{return x.id;});
+  }
 }

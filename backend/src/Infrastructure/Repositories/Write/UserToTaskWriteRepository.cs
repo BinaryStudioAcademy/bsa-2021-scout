@@ -9,6 +9,7 @@ using Infrastructure.EF;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Repositories.Abstractions;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Infrastructure.Repositories.Write
 {
@@ -25,47 +26,34 @@ namespace Infrastructure.Repositories.Write
             _connectionFactory = connectionFactory;
             _context = context;
         }
-
-        //public async Task UpdatePoolApplicants(string[] newIds, string poolId, string name, string description)
-        //{
-        //    SqlConnection connection = _connectionFactory.GetSqlConnection();
-
-        //    string sql = $@"SELECT Id,PoolId,ApplicantId
-        //                    FROM PoolToApplicants
-        //                    WHERE poolId = @id";
-
-        //    var poolApplicantsfromDB = await connection.QueryAsync<PoolToApplicant>(sql, new {@id = poolId});
-
-        //    sql = $@"SELECT * FROM Pools WHERE id = @id";
-
-        //    var pool = await connection.QueryFirstAsync<Pool>(sql, new { @id = poolId });
-
-        //    await connection.CloseAsync();
-
-        //    pool.Name = name;
-        //    pool.Description = description;
-        //    pool.PoolApplicants = (System.Collections.Generic.ICollection<PoolToApplicant>)poolApplicantsfromDB;
-
-
-        //    foreach (var applicant in pool.PoolApplicants.Where(at => newIds.Contains(at.ApplicantId) == false).ToList())
-        //    {
-        //        _context.Remove(applicant);
-        //    }
-
-        //    foreach (var id in newIds.Except(pool.PoolApplicants.Select(x=>x.ApplicantId)))
-        //    {
-        //        _context.Add(new PoolToApplicant() { ApplicantId = id, PoolId = poolId });
-        //    }           
-
-        //    _context.Update(pool);
-
-        //    await _context.SaveChangesAsync();
-
-        //}
-
-        public Task UpdateUsersToTask(string[] newIds, string tasklId, string name, string description)
+        
+        public async Task<ToDoTask> UpdateUsersToTask(ToDoTask updatedTask, List<string> newIds)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
+
+            string sql = $@"SELECT ToDoTaskId,UserId
+                            FROM UserToTask
+                            WHERE ToDoTaskId = @id";
+
+            var teamMembersfromDB = await connection.QueryAsync<UserToTask>(sql, new { @id = updatedTask.Id });
+                                  
+            updatedTask.TeamMembers = (System.Collections.Generic.ICollection<UserToTask>)teamMembersfromDB;
+
+            foreach (var user in updatedTask.TeamMembers.Where(at => newIds.Contains(at.UserId) == false).ToList())
+            {
+                _context.Remove(user);
+            }
+
+            foreach (var id in newIds.Except(updatedTask.TeamMembers.Select(x => x.UserId)))
+            {
+                _context.Add(new UserToTask() { UserId = id, ToDoTaskId = updatedTask.Id });
+            }
+
+            _context.Update(updatedTask);
+
+            await _context.SaveChangesAsync();
+
+            return updatedTask;
         }
     }
 }

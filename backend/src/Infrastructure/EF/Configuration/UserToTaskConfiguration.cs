@@ -8,6 +8,7 @@ namespace Infrastructure.EF.Configuration
     {
         public void Configure(EntityTypeBuilder<UserToTask> builder)
         {
+
             builder
                 .HasKey(tu => new { tu.ToDoTaskId, tu.UserId });
 

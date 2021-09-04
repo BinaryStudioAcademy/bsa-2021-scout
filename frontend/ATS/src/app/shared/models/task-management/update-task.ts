@@ -1,15 +1,11 @@
-import { Model } from '../model';
-import { ApplicantShort } from './applicant-short';
-import { UserInfo } from './user-short';
+import { CreateTask } from './create-task';
+import { Task } from './task';
 
-export interface UpdateTask extends Model {
-  name: string;
-  applicant : ApplicantShort;
-  dueDate: Date;
-  doneDate?: Date;  
-  isDone: boolean;
-  note?: string;
-  createdBy: UserInfo;
-  createdDate: Date;
-  teamMembers: UserInfo[];
+export class UpdateTask extends CreateTask{
+  id: string;
+  
+  constructor(task: Task) {
+    super(task);
+    this.id=task.id;
+  }
 }

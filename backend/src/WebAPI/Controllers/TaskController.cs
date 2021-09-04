@@ -1,24 +1,28 @@
-using Application.Tasks.Commands;
-using Application.Common.Commands;
 using Application.Common.Queries;
+using Application.Tasks.Commands;
 using Application.Tasks.Dtos;
-using Application.Tasks.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Infrastructure.Services;
-using Application.Interfaces;
-using Application.Users.Dtos;
-using Application.Tasks.Dtos;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     public class TaskController : ApiController
     {
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTaskAsync(string id)
         {
             var query = new GetTaskWithTeamMembersByIdQuery(id);
+
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpGet("user")]
+        public async Task<IActionResult> GetTaskbyUserAsync(string userId)
+        {
+            var query = new GetTasksWithTeamMembersByUserQuery(userId);
 
             return Ok(await Mediator.Send(query));
         }
@@ -44,7 +48,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> PutTasktAsync([FromBody] UpdateTaskDto updateDto)
         {
             var query = new UpdateTaskCommand(updateDto);
-
+                        
             return Ok(await Mediator.Send(query));
         }
         

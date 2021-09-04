@@ -30,34 +30,50 @@ namespace Application.Tasks.Commands
     {
         protected readonly ISender _mediator;
         protected readonly IWriteRepository<ToDoTask> _TaskWriteRepository;
-        protected readonly IUserToTaskWriteRepository _UserToTaskWriteRepository;
-        protected readonly IReadRepository<Applicant> _applicantReadRepository;
+        protected readonly IUserToTaskWriteRepository _UserToTaskWriteRepository;        
         protected readonly ITaskReadRepository _TaskReadRepository;
+        protected readonly ICurrentUserContext _userContext;
 
 
         protected readonly ISecurityService _securityService;
         protected readonly IMapper _mapper;
 
-        public UpdateTaskCommandHandler(ISender mediator, IWriteRepository<ToDoTask> TaskWriteRepository, IUserToTaskWriteRepository UserToTaskWriteRepository, ITaskReadRepository TaskReadRepository, ISecurityService securityService, IMapper mapper)
+        public UpdateTaskCommandHandler(ISender mediator, IWriteRepository<ToDoTask> TaskWriteRepository, IUserToTaskWriteRepository UserToTaskWriteRepository, ITaskReadRepository TaskReadRepository, ICurrentUserContext userContext, ISecurityService securityService, IMapper mapper)
         {
             _mediator = mediator;
             _TaskWriteRepository = TaskWriteRepository;
             _UserToTaskWriteRepository = UserToTaskWriteRepository;
-            _TaskReadRepository = TaskReadRepository;
+            _TaskReadRepository = TaskReadRepository;            
             _securityService = securityService;
+            _userContext = userContext;
             _mapper = mapper;
         }
 
         public async Task<TaskDto> Handle(UpdateTaskCommand command, CancellationToken _)
-        {
+        {   
 
-            var ids = command.UpdateTask.TeamMembersIds.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            
-            await _UserToTaskWriteRepository.UpdateUsersToTask(ids, command.UpdateTask.Id, command.UpdateTask.Name, command.UpdateTask.Note);
+            var taskToUpdate = await _TaskReadRepository.GetTaskWithTeamMembersByIdAsync(command.UpdateTask.Id);
 
-            var resultTask = await _TaskReadRepository.GetTaskWithTeamMembersByIdAsync(command.UpdateTask.Id);
+            if (taskToUpdate != null)
+            {
+                taskToUpdate.Name = command.UpdateTask.Name;
+                taskToUpdate.Note = command.UpdateTask.Note;
+                taskToUpdate.ApplicantId = command.UpdateTask.ApplicantId;
+                taskToUpdate.DueDate = command.UpdateTask.DueDate;
 
-            return  _mapper.Map<TaskDto>(resultTask);
+                if (taskToUpdate.IsDone != command.UpdateTask.IsDone)
+                {
+                    taskToUpdate.DoneDate = command.UpdateTask.IsDone ? DateTime.Now : null;
+                    taskToUpdate.IsDone = command.UpdateTask.IsDone;
+                }
+
+                await _UserToTaskWriteRepository.UpdateUsersToTask(taskToUpdate, command.UpdateTask.UsersIds);
+                
+                taskToUpdate = await _TaskReadRepository.GetTaskWithTeamMembersByIdAsync(taskToUpdate.Id);
+               
+            }
+
+            return _mapper.Map<TaskDto>(taskToUpdate);
 
         }
 

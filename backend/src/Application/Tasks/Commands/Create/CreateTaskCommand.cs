@@ -4,8 +4,10 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
 using Domain.Interfaces.Read;
+using Domain.Interfaces.Write;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,17 +27,19 @@ namespace Application.Tasks.Commands
     {
         protected readonly ISender _mediator;
         protected readonly IWriteRepository<ToDoTask> _TaskWriteRepository;
-        protected readonly IReadRepository<Applicant> _applicantReadRepository; 
+        protected readonly IReadRepository<Applicant> _applicantReadRepository;
+        protected readonly IUserToTaskWriteRepository _UserToTaskWriteRepository;
         protected readonly ITaskReadRepository _TaskReadRepository;
         protected readonly ICurrentUserContext _userContext;
         protected readonly ISecurityService _securityService;
         protected readonly IMapper _mapper;
 
-        public CreateTaskCommandHandler(ISender mediator, IWriteRepository<ToDoTask> TaskWriteRepository, ITaskReadRepository TaskReadRepository, ICurrentUserContext userContext, ISecurityService securityService, IMapper mapper)
+        public CreateTaskCommandHandler(ISender mediator, IWriteRepository<ToDoTask> TaskWriteRepository, IUserToTaskWriteRepository UserToTaskWriteRepository, ITaskReadRepository TaskReadRepository, ICurrentUserContext userContext, ISecurityService securityService, IMapper mapper)
         {
             _mediator = mediator;
             _TaskWriteRepository = TaskWriteRepository; 
             _TaskReadRepository = TaskReadRepository;
+            _UserToTaskWriteRepository = UserToTaskWriteRepository;
             _userContext = userContext;
             _securityService = securityService;
             _mapper = mapper;
@@ -55,9 +59,11 @@ namespace Application.Tasks.Commands
 
             newTask.DateCreated = DateTime.Now;    
             
-            var Task = await _TaskWriteRepository.CreateAsync(newTask);
+            var Task = (ToDoTask) await _TaskWriteRepository.CreateAsync(newTask);
 
-            var createdTask = await _TaskReadRepository.GetTaskWithTeamMembersByIdAsync(Task.Id);
+            await _UserToTaskWriteRepository.UpdateUsersToTask(Task, command.NewTask.UsersIds);
+
+            var createdTask = await _TaskReadRepository.GetTaskWithTeamMembersByIdAsync(Task.Id);            
 
             return  _mapper.Map<TaskDto>(createdTask);
 

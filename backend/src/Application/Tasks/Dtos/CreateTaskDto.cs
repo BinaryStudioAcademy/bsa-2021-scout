@@ -11,7 +11,7 @@ namespace Application.Tasks.Dtos
         public string Note { get; set; }
         public DateTime DueDate { get; set; }
         public string ApplicantId { get; set; }
-        public List<string> UsersIds { get; set; }        
+        public List<string> UsersIds { get; set; }
     }
 
     public class CreateTaskDtoValidator : AbstractValidator<CreateTaskDto>
@@ -19,7 +19,8 @@ namespace Application.Tasks.Dtos
         public CreateTaskDtoValidator()
         {
             RuleFor(a => a.Name).NotNull().NotEmpty();
-            RuleFor(a => a.Note).NotNull().NotEmpty();            
+            RuleFor(a => a.DueDate).NotNull().NotEmpty();
+            RuleFor(a => a.ApplicantId).NotNull().NotEmpty();
         }
     }
 }
