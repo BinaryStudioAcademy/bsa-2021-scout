@@ -13,6 +13,29 @@
         height: 70px;
         text-align: right;
     }
+    .horizontaly{
+      display: grid;
+      grid-template-columns: auto 10px;
+    }
+    .scroll{
+      overflow-y: scroll;
+      overflow-x: hidden;
+      height: 616px;
+      margin: 10px;
+      border-radius: 1.5%;
+    }
+    .extra{
+      text-align: left;
+      background-color: #F0F2F8;
+      color: #A2A4A9;
+      width: min-content;
+      word-wrap: nowrap;
+      margin: 5px;
+      padding: 0 10px;
+      border-radius: 14%;
+      padding-bottom: 0px;
+      font-size: 12px;
+    }
     li.dates>span{
         line-height: 30px;
         padding: 10px;
@@ -38,6 +61,28 @@
     }
     .controls{
         text-align: center;
+        display: grid;
+        grid-template-columns: 220px 1fr;
+    }
+    .dates{
+      vertical-align: middle;
+      margin-top: 15px;
+      margin-left: -240px;
+    }
+    .today{
+      display: grid;
+      text-align: left;
+      grid-template-columns: auto 1fr;
+      border: 1px solid #4808AE;
+      color: $primary-color-icons;
+      border-radius: 10px;
+      padding: 5px;
+      margin: 5px;
+      margin-left: 10px;
+    }
+    .today>div{
+      padding-left: 10px;
+      padding-top: 2px;
     }
     .calendar-table {
         border-collapse: collapse;
@@ -45,16 +90,23 @@
         max-width: 100%;
         margin-bottom: 1rem;
         border: 1px solid #dee2e6;
+        border-top: none;
+        border-left: none;
+        border-right: none;
         background-color: #fff;
       }
-      
       .calendar-day-header{
         text-align: right;
         vertical-align: top;
       }
       .calendar-table thead th {
+        position: sticky; top: 0;
+        background-color: #fff;
         vertical-align: bottom;
-        border-bottom: 2px solid #dee2e6;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
         width: 14.2%;
       }
       
@@ -62,10 +114,22 @@
         border: 1px solid #dee2e6;
       }
       
-      .calendar-table td, .calendar-table th {
-        padding: .75rem;
+      .calendar-table td
+      {
+        padding-left: 0.75rem;
+        padding-bottom: 10px;
+        padding-top: 0.75rem;
+        padding-right: 0.75rem;
+        padding-bottom: 5px;
         vertical-align: top;
         border-top: 1px solid #dee2e6;
+      }
+      
+      .calendar-table th {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+        overflow-y: auto;
       }
       
       .calendar-day {

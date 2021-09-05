@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChunkPipe, InterviewsPageComponent } from './interviews-page/interviews-page.component';
+import { ChunkPipe, InterviewsPageComponent } 
+  from './components/interviews-page/interviews-page.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,6 +14,7 @@ import { SharedModule } from '../shared/shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
+import { InterviewCardComponent } from './components/interview-card/interview-card.component';
 
 
 
@@ -20,6 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     InterviewsPageComponent,
     ChunkPipe,
+    InterviewCardComponent,
   ],
   imports: [
     CommonModule,
