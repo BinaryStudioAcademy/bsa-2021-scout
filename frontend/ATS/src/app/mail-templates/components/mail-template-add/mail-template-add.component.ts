@@ -125,12 +125,10 @@ export class MailTemplateAddComponent implements OnDestroy {
   }
 
   public onSubmited() {
-    console.log(this.mailTemplate);
     this.mailTemplate = this.mailTemplateCreateForm.value;
     this.mailTemplate.visibilitySetting = this.mailTemplateCreateForm
       .controls['visibilitySetting'].value ? 1 : 0;
     this.loading = true;
-    console.log(this.mailTemplateCreateForm.value);
     this.mailTemplateService
       .createMailTempalte(this.mailTemplate, this.files)
       .pipe(takeUntil(this.unsubscribe$))
