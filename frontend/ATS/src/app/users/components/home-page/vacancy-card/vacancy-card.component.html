@@ -1,10 +1,10 @@
 <div [ngClass]="{blur: isBlur}" class="vacancy-card-wrapper">
-    <h3 class="bold-plus  vacancy-title" [routerLink]="['/candidates', hotVacancy.id]"> 
-        <span>{{ hotVacancy.title}}</span> 
+    <h3 class="bold-plus  vacancy-title" [routerLink]="['/candidates', hotVacancy.id]">
+        <span>{{ hotVacancy.title}}</span>
         <mat-icon class="hot">local_fire_department</mat-icon>
     </h3>
     <h4 class="bold">
-        for {{ hotVacancy.projectName }}
+        for <a routerLink="/projects" [queryParams]="{editId: hotVacancy.projectId}">{{ hotVacancy.projectName }}</a>
     </h4>
     <div class="vacancy-summary-info">
         <span>
