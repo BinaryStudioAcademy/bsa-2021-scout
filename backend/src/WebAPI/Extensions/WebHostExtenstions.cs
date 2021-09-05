@@ -46,6 +46,9 @@ namespace WebAPI.Extensions
             await ApplyReviewSeeding(host);
             await ApplyToDoTaskSeeding(host);
             await ApplyUserToTaskSeeding(host);
+            await ApplyInterviewSeeding(host);
+            await ApplyUsersToInterviews(host);
+
 
             return host;
         }
@@ -319,6 +322,7 @@ namespace WebAPI.Extensions
 
             return host;
         }
+
         public async static Task<IHost> ApplyToDoTaskSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
@@ -346,6 +350,46 @@ namespace WebAPI.Extensions
                     await context.UserToTask.AddAsync(userToTask);
                 await context.SaveChangesAsync();
             }
+
+
+
+        public static async Task<IHost> ApplyInterviewSeeding(this IHost host){
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            
+            foreach(var interview in InterviewSeeds.GetInterviews())
+            {
+                if(await context.Interviews.AnyAsync(i => i.Id == interview.Id))
+                {
+                    context.Interviews.Update(interview);
+                }
+                else
+                {
+                    await context.Interviews.AddAsync(interview);
+                }
+                await context.SaveChangesAsync();
+            }
+            
+            return host;
+        }
+        public static async Task<IHost> ApplyUsersToInterviews(this IHost host){
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            context.UsersToInterviews.RemoveRange(context.UsersToInterviews);
+            
+            foreach(var userToInterview in UsersToInterviewSeeds.GetUsersTosInterviews())
+            {
+                if(await context.UsersToInterviews.AnyAsync(i => i.Id == userToInterview.Id))
+                {
+                    context.UsersToInterviews.Update(userToInterview);
+                }
+                else
+                {
+                    await context.UsersToInterviews.AddAsync(userToInterview);
+                }
+                await context.SaveChangesAsync();
+            }
+            
 
             return host;
         }

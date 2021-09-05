@@ -1,0 +1,43 @@
+<app-header></app-header>
+<div class="tub">Calendar</div>
+<div class="controls">
+  <div class="today">
+    <mat-icon>today</mat-icon>
+    <div>{{currentDate | date: "EEEE, MMM, d, y"}}</div>
+  </div>
+  <div class="dates">
+    <span class="clickable" mat-button (click)="decreaseMonth()" value="-">&lt;</span>
+    <span class="tub">
+      {{displayMonth}}
+    </span>
+    <span class="clickable" mat-button  (click)="increaseMonth()" value="+">&gt;</span>
+  </div>
+</div>
+<div class="scroll">
+  <table class='calendar-table' *ngIf="calendar">
+    <thead>
+      <tr>
+        <th>Sunday</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="dateArrived | async">
+      <tr *ngFor="let row of calendar | chunk: 7; let i = index">
+        <td  class="calendar-day" [ngClass]="{'blue': isWeekend(c.date)}" *ngFor="let c of row; let j = index">
+          <div  class="calendar-day-header" [ngClass]="{'blue-date': c.isToday}">
+            <div class="horizontaly">
+              <app-interview-card (click)="debug(c.interviews[0].scheduled , c.interviews[0].duration)" [interview]="c.interviews[0]" *ngIf="c.interviews.length > 0"></app-interview-card>
+              <div [ngClass]="{'grey':!isSameMonth(c.date)}">{{c.date.getDate()}}</div>
+            </div>
+            <div class="extra" *ngIf="c.interviews.length>=2">{{c.interviews.length}} Events</div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
