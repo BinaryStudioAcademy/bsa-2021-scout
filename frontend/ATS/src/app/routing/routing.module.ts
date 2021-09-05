@@ -78,11 +78,6 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: AppRoute.Analytics,
-        component: VacanciesListComponent,
-        pathMatch: 'full',
-      },
-      {
         path: AppRoute.TaskManagement,
         component: VacanciesListComponent,
         pathMatch: 'full',
