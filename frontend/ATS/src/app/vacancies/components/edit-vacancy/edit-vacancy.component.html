@@ -152,6 +152,10 @@
                 *ngIf="(vacancyFormControl.link.touched || submitted) && vacancyFormControl.link.errors?.required">
                 This field shouldn't be empty
             </mat-error>
+            <mat-error
+                *ngIf="(vacancyFormControl.link.touched || submitted) && vacancyFormControl.link.errors?.pattern">
+                Link format is wrong
+            </mat-error>
             <mat-label>Tags</mat-label>
             <mat-form-field appearance="fill">
                 <mat-chip-list #chipList>

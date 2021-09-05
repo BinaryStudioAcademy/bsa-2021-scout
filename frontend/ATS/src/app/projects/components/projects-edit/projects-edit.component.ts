@@ -130,7 +130,7 @@ export class ProjectsEditComponent implements OnDestroy {
 
 function URLValidator(): ValidatorFn {
   let emailRe: RegExp = new RegExp(
-    '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?',
+    /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
   );
   return (control: AbstractControl): ValidationErrors | null => {
     const valid = emailRe.test(control.value);

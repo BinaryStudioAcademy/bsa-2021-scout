@@ -2,11 +2,9 @@ import {
   Component,
   EventEmitter,
   Inject,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -75,7 +73,8 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         salaryTo: ['', [Validators.required]],
         tierFrom: ['', [Validators.required]],
         tierTo: ['', [Validators.required]],
-        link: ['', [Validators.required]],
+        link: ['', [Validators.required, 
+          Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
         isHot: [''],
         isRemote: [''],
         tags: [''],
