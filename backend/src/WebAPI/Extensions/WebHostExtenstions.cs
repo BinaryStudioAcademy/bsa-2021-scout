@@ -80,9 +80,10 @@ namespace WebAPI.Extensions
             var writeRepository = scope.ServiceProvider.GetService<IWriteRepository<MailTemplate>>();
 
             var mailTemplates = await readRepository.GetEnumerableAsync();
-            if (mailTemplates != null && mailTemplates.Where(x => x.Id == "6130f7b9fd538a80c19ed51e" || x.Slug == "default").Count() != 0)
+            var defaultMailTemplates = mailTemplates.Where(x => x.Id == "6130f7b9fd538a80c19ed51e" || x.Slug == "default");
+            if (mailTemplates != null && defaultMailTemplates.Count() != 0)
             {
-                foreach (var mailTemplate in mailTemplates)
+                foreach (var mailTemplate in defaultMailTemplates)
                 {
                     await writeRepository.DeleteAsync(mailTemplate.Id);
                 }
