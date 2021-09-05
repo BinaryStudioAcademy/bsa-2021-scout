@@ -13,12 +13,14 @@ namespace Application.VacancyCandidates.Commands
 {
     public class ChangeCandidateStageCommand : IRequest<VacancyCandidateDto>
     {
+        public string UserId { get; set; }
         public string Id { get; set; }
         public string StageId { get; set; }
         public string VacancyId { get; set; }
 
-        public ChangeCandidateStageCommand(string id, string vacancyId, string stageId)
+        public ChangeCandidateStageCommand(string userId, string id, string vacancyId, string stageId)
         {
+            UserId = userId;
             Id = id;
             StageId = stageId;
             VacancyId = vacancyId;
@@ -55,7 +57,7 @@ namespace Application.VacancyCandidates.Commands
             candidate.DomainEvents.Add(changedEvent);
 
             await _candidateToStageWriteRepository
-                .ReplaceForCandidate(command.Id, command.VacancyId, command.StageId);
+                .ReplaceForCandidate(command.UserId, command.Id, command.VacancyId, command.StageId);
 
             return _mapper.Map<VacancyCandidate, VacancyCandidateDto>(candidate);
         }

@@ -25,7 +25,7 @@ namespace Infrastructure.Repositories.Write
             _connectionFactory = connectionFactory;
         }
 
-        public async Task ReplaceForCandidate(string candidateId, string vacancyId, string newStageId)
+        public async Task ReplaceForCandidate(string userId, string candidateId, string vacancyId, string newStageId)
         {
             SqlConnection connection = _connectionFactory.GetSqlConnection();
 
@@ -44,6 +44,7 @@ namespace Infrastructure.Repositories.Write
             {
                 CandidateId = candidateId,
                 StageId = newStageId,
+                MoverId = userId,
                 DateAdded = DateTime.UtcNow,
             };
 
