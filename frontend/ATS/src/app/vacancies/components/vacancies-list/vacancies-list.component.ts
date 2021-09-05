@@ -9,6 +9,7 @@ import { User } from 'src/app/users/models/user';
 export class VacanciesListComponent{
   constructor() { }
   user:User={
+    id: '1',
     firstName: "Emma",
   lastName: "Roberts",
   birthDate: new Date(1,1,2002),

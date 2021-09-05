@@ -1,3 +1,4 @@
+import { Role } from "./role";
 
 export interface UserTableData {
   id?: string;
@@ -7,6 +8,7 @@ export interface UserTableData {
   creationDate: Date;
   email: string;
   avatarUrl?:string;
+  roles?:Role[];
   phone:string;
   skype:string;
   isEmailConfirmed: boolean;

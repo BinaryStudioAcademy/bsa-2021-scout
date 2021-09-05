@@ -37,7 +37,7 @@ namespace Application.Users.Queries.GetUserById
 
         public async Task<UserDto> Handle(GetUserByIdQuery query, CancellationToken _)
         {
-            var user = await _repository.GetAsync(query.Id);
+            var user = await _repository.GetByIdAsync(query.Id);
             var userDto = _mapper.Map<UserDto>(user);
             return userDto;
         }

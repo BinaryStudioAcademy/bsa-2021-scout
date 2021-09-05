@@ -16,6 +16,60 @@ namespace Infrastructure.Repositories.Read
     {
         public UserReadRepository(IConnectionFactory connectionFactory) : base("Users", connectionFactory) { }
 
+        public async Task<User> GetByIdAsync(string id)
+        {
+            var connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
+            StringBuilder sql = new StringBuilder();
+            sql.Append("SELECT *");
+            sql.Append(" FROM Users");
+            sql.Append(" LEFT JOIN UserToRoles ON UserToRoles.UserId = Users.Id");
+            sql.Append(" LEFT JOIN Roles ON UserToRoles.RoleId = Roles.Id");
+            sql.Append(" LEFT JOIN FileInfos ON FileInfos.Id = Users.AvatarId");
+            sql.Append($" WHERE Users.Id = @id");
+
+            Dictionary<string, UserToRole> userToRoleDict = new Dictionary<string, UserToRole>();
+            User cachedUser = null;
+
+            IEnumerable<User> resultAsArray = await connection
+                .QueryAsync<User, UserToRole, Role, FileInfo, User>(
+                    sql.ToString(),
+                    (user, userToRole, role, fileinfo) =>
+                    {
+                        if (cachedUser == null)
+                        {
+                            cachedUser = user;
+                            cachedUser.UserRoles = new List<UserToRole>();
+                        }
+
+                        if (userToRole != null)
+                        {
+                            UserToRole userToRoleEntry;
+
+                            if (!userToRoleDict.TryGetValue(userToRole.Id, out userToRoleEntry))
+                            {
+                                userToRoleEntry = userToRole;
+                                userToRoleDict.Add(userToRoleEntry.Id, userToRoleEntry);
+                                cachedUser.UserRoles.Add(userToRoleEntry);
+                            }
+
+                            if (role != null)
+                            {
+                                userToRoleEntry.Role = role;
+                            }
+                        }
+                        cachedUser.Avatar = fileinfo;
+                        return cachedUser;
+                    }, new { id = @id },
+                    splitOn: "Id,Id,Id"
+                );
+
+            User user = resultAsArray.Distinct().FirstOrDefault();
+
+            await connection.CloseAsync();
+            return user;
+        }
+
         public async Task<User> GetByEmailAsync(string email)
         {
             var connection = _connectionFactory.GetSqlConnection();
@@ -109,7 +163,6 @@ namespace Infrastructure.Repositories.Read
                         cachedUser = user;
                         if(fileinfo != null)
                         {
-                            
                             cachedUser.Avatar = fileinfo;
                         }
                         return cachedUser;

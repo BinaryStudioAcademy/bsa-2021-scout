@@ -2,11 +2,11 @@
 <ng-content></ng-content>
 </div>
 <mat-menu #menu="matMenu" class="menu">
-    <img class="profile-image" alt="User profile photo" src="{{user.avatarUrl}}" onError="this.src='../../../../assets/images/defaultAvatar.png'" (click) = "$event.stopPropagation()">    
+    <img class="profile-image" alt="User profile photo" src="{{user.avatarUrl ?? ''}} " onError="this.src='../../../../assets/images/defaultAvatarSquare.png'" (click) = "$event.stopPropagation()">    
     <div class="profile-content" (click) = "$event.stopPropagation()">
         <h1>{{user.firstName}} {{user.lastName}}</h1>
         <div class="roles-grid">
-            <span class="user-role" *ngFor="let role of user.roles"  appUserRole value="{{role.name}}">{{role.name}}</span>
+            <span class="user-role" *ngFor="let role of getMainRoles()"  appUserRole value="{{role.name}}">{{role.name}}</span>
         </div>
             <div class="contacts">
                 <h2 *ngIf="user.phone || user.skype" >Contacts:</h2>
