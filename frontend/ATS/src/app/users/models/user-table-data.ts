@@ -9,8 +9,10 @@ export interface UserTableData {
   email: string;
   avatarUrl?:string;
   roles?:Role[];
-  phone:string;
-  skype:string;
+  phone?:string;
+  skype?:string;
+  slack?:string;
+
   isEmailConfirmed: boolean;
   isFollowed?: boolean;
 }

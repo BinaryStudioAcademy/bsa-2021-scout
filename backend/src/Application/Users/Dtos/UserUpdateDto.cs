@@ -15,6 +15,8 @@ namespace Application.Users.Dtos
         public DateTime BirthDate { get; set; }
         public string Phone { get; set; }
         public string Skype { get; set; }
+        public string Slack { get; set; }
+
     }
 
     public class UserUpdateDtoValidator : AbstractValidator<UserUpdateDto>

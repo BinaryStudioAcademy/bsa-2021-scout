@@ -9,7 +9,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Project } from 'src/app/shared/models/projects/project';
@@ -59,13 +59,16 @@ export class EditHrFormComponent implements OnInit {
         'firstName': new FormControl({value:''}, Validators.required),
         'lastName': new FormControl({value:''}, Validators.required),    
         'birthDay': new FormControl({value:'', disabled:true}),
-        'phone': new FormControl({value:''}),
+        'phone': new FormControl({value:''}, Validators.pattern('(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})')),
         'skype': new FormControl({value:''}),
+        'slack': new FormControl({value:''}),
         'email': new FormControl({value:'', disabled:true}),
         // 'image': new FormControl({value:''}),
       });
       this.loading = false;
     }
+
+    
   
     public ngOnDestroy(): void {
       this.unsubscribe$.next();
@@ -83,8 +86,8 @@ export class EditHrFormComponent implements OnInit {
               birthDay: response.birthDate,
               phone: response.phone || '',
               skype: response.skype || '',
+              slack: response.slack || '',
               email: response.email,
-              // image: response.avatar || ''
             });
             this.imageUrl = response.avatarUrl;
             console.log(this.imageUrl)
@@ -97,8 +100,8 @@ export class EditHrFormComponent implements OnInit {
               birthDay: response.birthDate,
               phone: response.phone || '',
               skype: response.skype || '',
+              slack: response.slack || '',
               email: response.email,
-              // image: response.avatar || ''
             });
             this.imageUrl = response.avatarUrl;
             console.log(this.imageUrl)
@@ -118,6 +121,7 @@ export class EditHrFormComponent implements OnInit {
         birthDate: this.profileForm.controls['birthDay'].value,
         avatar: this.imageFile,
         skype:this.profileForm.controls['skype'].value,
+        slack:this.profileForm.controls['slack'].value,
         phone: this.profileForm.controls['phone'].value,
         email:this.profileForm.controls['email'].value
       };
@@ -166,4 +170,5 @@ export class EditHrFormComponent implements OnInit {
     }
   
   }
+
   

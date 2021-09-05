@@ -15,6 +15,7 @@ namespace Domain.Entities
 
         public FileInfo Avatar { get; set; }
         public string Skype { get; set; }
+        public string Slack { get; set; }
         public string Password { get; set; }
         public string PasswordSalt { get; set; }
         public string ResetPasswordToken { get; set; }

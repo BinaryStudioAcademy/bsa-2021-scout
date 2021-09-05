@@ -12,5 +12,6 @@ export interface User {
 
   avatarUrl?: string,
   skype?: string,
+  slack?: string,
   phone?:string
 }

@@ -72,6 +72,8 @@ namespace Application.Users.Commands.Create
                 userToUpdate.LastName = entity.LastName;
                 userToUpdate.Phone = entity.Phone;
                 userToUpdate.Skype = entity.Skype;
+                userToUpdate.Slack = entity.Slack;
+
                 await UploadAvatarFileIfExists(userToUpdate, command);
 
                 var updated = await _writeRepository.UpdateAsync(userToUpdate);
@@ -89,8 +91,17 @@ namespace Application.Users.Commands.Create
                 return;
             }
 
-            var uploadedImage = await _imageWriteRepository.UploadAsync(user.Id, command.ImgFileDto!.Content);
-            user.Avatar = uploadedImage;
+            FileInfo uploadedImage;
+            if(user.Avatar != null)
+            {
+                await _imageWriteRepository.UpdateAsync(user.Id, command.ImgFileDto!.Content);
+            }
+            else
+            {
+                uploadedImage = await _imageWriteRepository.UploadAsync(user.Id, command.ImgFileDto!.Content);
+                user.Avatar = uploadedImage;
+            }
+            
         }
     }
 }

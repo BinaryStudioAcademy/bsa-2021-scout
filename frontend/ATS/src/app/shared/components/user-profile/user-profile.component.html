@@ -9,9 +9,10 @@
             <span class="user-role" *ngFor="let role of getMainRoles()"  appUserRole value="{{role.name}}">{{role.name}}</span>
         </div>
             <div class="contacts">
-                <h2 *ngIf="user.phone || user.skype" >Contacts:</h2>
+                <h2 *ngIf="user.phone || user.skype || user.slack" >Contacts:</h2>
                 <h3 role="button" [appCopyClipboard]="this.user.phone || ''" (copied)="notifyPhone($event)" *ngIf="user.phone"><mat-icon>phone</mat-icon>{{user.phone}}</h3>
                 <h3 role="button" [appCopyClipboard]="this.user.skype || ''" (copied)="notifySkype($event)" *ngIf="user.skype"><span class="iconify" data-icon="mdi:skype"></span>{{user.skype}}</h3>
+                <h3 role="button" [appCopyClipboard]="this.user.slack || ''" (copied)="notifySkype($event)" *ngIf="user.slack"><img src="https://img.icons8.com/ios-glyphs/30/000000/slack.png"/>{{user.slack}}</h3>
             </div>
     </div>
 </mat-menu>

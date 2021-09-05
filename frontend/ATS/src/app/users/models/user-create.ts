@@ -7,5 +7,6 @@ export interface UserCreate{
   email: string;
   avatar?: File,
   skype?: string,
-  phone?:string
+  phone?:string,
+  slack?:string
 }

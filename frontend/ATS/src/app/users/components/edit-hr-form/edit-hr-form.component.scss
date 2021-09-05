@@ -46,12 +46,21 @@
 }
 
 .avatar-container{
+    border-radius: 50%;
     position: relative;
     width:auto;
     grid-row:1/4;
     display:flex;
     justify-content: center;
     align-items: center;
+    .mat-icon-button{
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        .mat-icon{
+            font-size: 40px;
+        }
+    }
     &:hover{
         img{
             opacity: 0.3;
@@ -132,7 +141,7 @@
 
 .profile-flex-row{
     display:grid;
-    grid-template-columns:1fr 33% 33%;
+    grid-template-columns:250px 1fr 1fr;
     grid-template-rows: 75px 75px 75px;
     grid-gap: 15px;
 }
@@ -272,6 +281,9 @@ $primary-color: #291965;
 
 :host ::ng-deep {
 
+    .mat-form-field-appearance-fill.mat-form-field-disabled .mat-form-field-flex, .mat-input-element:disabled{
+        background-color: #dedede !important;
+    }
 .mat-form-field-wrapper.mat-form-field-wrapper {
     min-width: unset;
     max-width: none;
