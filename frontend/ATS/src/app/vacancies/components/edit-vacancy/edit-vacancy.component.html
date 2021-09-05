@@ -169,12 +169,12 @@
                 <mat-checkbox formControlName="isHot">Hot vacancy</mat-checkbox>
                 <mat-checkbox formControlName="isRemote">Is remote</mat-checkbox>
             </div>
-            <div class="workflow-container">
+            <div class="workflow-container" [ngClass]="isOpenCreateStage ? 'workflow-container-created' : ''">
                 <h2><b>Workflow</b></h2>
                 <div>
-                    <div #contenedor class="example-list" cdkDropListGroup>
+                    <div #contenedor class="example-list" [ngClass]="isOpenCreateStage ? 'stage-created' : ''" cdkDropListGroup>
                         <ng-container *ngFor="let _stage of sortStageList();let i=index">
-                            <div class="example-box" cdkDropList cdkDropListOrientation="horizontal"
+                            <div class="example-box"  cdkDropList cdkDropListOrientation="horizontal"
                                 [cdkDropListData]="{item:_stage,index:i}" (cdkDropListDropped)="dropStage($event)">
                                 <div cdkDrag>
                                     <div class="example-custom-placeholder" *cdkDragPlaceholder></div>

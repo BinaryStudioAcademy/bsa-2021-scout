@@ -1,15 +1,19 @@
 .stage-card{
     display: grid;
-    grid-template-columns: 1fr 80px;
+    grid-template-columns: 25px 1fr 80px;
     align-items: center;
     font-size: 16px;
     font-weight:600;
     background-color: #F0F3F9;
     padding: 0px 15px;
-    margin-right: 10px;
     border-radius:10px;
     box-sizing: border-box;
     .mat-icon{
         color: #4F00B5;
     }
 } 
+
+.stage-title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
