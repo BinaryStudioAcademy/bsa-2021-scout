@@ -18,7 +18,7 @@ import { VacancyFull } from 'src/app/shared/models/vacancy/vacancy-full';
 import { ProjectService } from 'src/app/shared/services/project.service';
 import { VacancyService } from 'src/app/shared/services/vacancy.service';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { VacancyData } from 'src/app/shared/models/vacancy/vacancy-data';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { ElasticEntity } from 'src/app/shared/models/elastic-entity/elastic-entity';
@@ -461,9 +461,6 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
 
   //moving stages
   dropStage(event: CdkDragDrop<any>) {
-    this.stageList[event.previousContainer.data.index] =
-      event.container.data.item;
-    this.stageList[event.container.data.index] =
-      event.previousContainer.data.item;
+    moveItemInArray(this.stageList, event.previousContainer.data.index, event.container.data.index);
   }
 }
