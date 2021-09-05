@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { map, takeUntil, mergeMap } from 'rxjs/operators';
-import { Sort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { ApplicantsService } from 'src/app/shared/services/applicants.service';
@@ -39,7 +39,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     'email',
     'jobs_list',
     'tags',
-    'creation_date',
+    'creationDate',
     'control_buttons',
   ];
 
@@ -51,13 +51,9 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public page:string = 'all';
   public loading: boolean = true;
 
-  @ViewChild(MatPaginator) public paginator: MatPaginator | undefined =
-  undefined;
-
-  @ViewChild(StylePaginatorDirective) public directive:
-  | StylePaginatorDirective
-  | undefined = undefined;
-
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) public paginator!: MatPaginator;
+  @ViewChild(StylePaginatorDirective) public directive!: StylePaginatorDirective;
   @ViewChild('filter') public filter!: TableFilterComponent;
 
   private followedSet: Set<string> = new Set();
@@ -206,8 +202,8 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator!;
-    this.dataSource.filter = this.searchValue.trim().toLowerCase();
   }
 
   public renewFilterDescription(): void {
@@ -324,7 +320,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
           this.cashedData.unshift(result);
           this.dataSource.data = this.cashedData;
 
-          if (this.page) {
+          if (this.page === 'followed') {
             this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
           }
 
@@ -349,12 +345,13 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
       applicant.isFollowed = this.cashedData[applicantIndex].isFollowed;
 
       const newCachedData = [...this.cashedData];
-      newCachedData[applicantIndex] = applicant;
+      newCachedData.splice(applicantIndex, 1);
+      newCachedData.unshift(applicant);
 
       this.cashedData = [...newCachedData];
       this.dataSource.data = this.cashedData;
 
-      if (this.page) {
+      if (this.page === 'followed') {
         this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
       }
 
@@ -379,7 +376,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cashedData = [...newCachedData];
     this.dataSource.data = this.cashedData;
 
-    if (this.page) {
+    if (this.page === 'followed') {
       this.dataSource.data = this.dataSource.data.filter(a => a.isFollowed);
     }
 
@@ -462,24 +459,12 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         const isAsc = sort.direction === 'asc';
 
         switch (sort.active) {
-          case 'position':
-            return this.compareRows(a.position, b.position, isAsc);
           case 'name':
             return this.compareRows(
               a.firstName + ' ' + a.lastName,
               b.firstName + ' ' + b.lastName,
               isAsc,
             );
-          case 'email':
-            return this.compareRows(a.email, b.email, isAsc);
-          case 'tags':
-            return this.compareRows(
-              a.tags.tagDtos.length,
-              b.tags.tagDtos.length,
-              isAsc,
-            );
-          case 'creation_date':
-            return this.compareDates(a.creationDate, b.creationDate, isAsc);
           default:
             return 0;
         }
@@ -493,9 +478,5 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
     isAsc: boolean,
   ): number {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-  }
-
-  private compareDates(a: Date, b: Date, isAsc: boolean): number {
-    return (a.getTime() < b.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
