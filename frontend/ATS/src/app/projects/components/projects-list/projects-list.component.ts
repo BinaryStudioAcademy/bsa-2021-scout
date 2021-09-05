@@ -12,7 +12,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { Tag } from 'src/app/shared/models/tags/tag';
 // eslint-disable-next-line
 import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm/delete-confirm.component';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
@@ -22,6 +22,7 @@ import {
   TableFilterComponent,
 } from 'src/app/shared/components/table-filter/table-filter.component';
 import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-projects-list',
@@ -61,6 +62,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     private dialog: MatDialog,
     private notificationService: NotificationService,
     private followService: FollowedService,
+    private readonly route: ActivatedRoute,
   ) {
     this.followService
       .getFollowed(EntityType.Project)
@@ -79,6 +81,17 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
             this.followedSet.has(item.id),
           );
         else this.dataSource.data = this.projects;
+
+        let subscription: Subscription | null = null;
+
+        subscription = this.route.queryParams.subscribe(params => {
+          if (params.editId) {
+            this.OnEdit(params.editId);
+          }
+
+          subscription?.unsubscribe();
+        });
+
         this.renewFilterDescription();
         this.directive.applyFilter$.emit();
       });
@@ -101,6 +114,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
         } else {
           this.dataSource.data = this.projects;
         }
+
         this.renewFilterDescription();
         this.directive.applyFilter$.emit();
       });
@@ -262,13 +276,20 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     }
     this.directive.applyFilter$.emit();
   }
+
   public OnCreate(): void {
     this.dialog.open(ProjectsAddComponent);
 
     this.dialog.afterAllClosed.subscribe((_) => this.getProjects());
   }
 
-  public OnEdit(projectToEdit: ProjectInfo): void {
+  public OnEdit(projectToEdit: string): void;
+  public OnEdit(projectToEdit: ProjectInfo): void;
+  public OnEdit(projectToEdit: ProjectInfo | string): void {
+    if (typeof projectToEdit === 'string') {
+      projectToEdit = this.projects.find(p => p.id === projectToEdit)!;
+    }
+
     this.dialog.open(ProjectsEditComponent, {
       data: {
         project: projectToEdit,
