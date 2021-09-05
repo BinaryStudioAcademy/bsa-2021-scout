@@ -12,7 +12,8 @@ namespace Application.Users
             CreateMap<Role, RoleDto>().ReverseMap();
 
             CreateMap<User, UserDto>()
-                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(p => p.Role)));
+                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(p => p.Role)))
+                .ForMember(dest=>dest.AvatarUrl, opt=>opt.MapFrom(src=>src.Avatar.PublicUrl));
 
             CreateMap<UserDto, User>()
                 .ForMember(dest => dest.DomainEvents, opt => opt.Ignore())

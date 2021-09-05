@@ -10,31 +10,39 @@ using Application.Interfaces;
 using Application.Users.Queries;
 using System.Collections.Generic;
 using System.Linq;
+using Application.Common.Files.Dtos;
+using Domain.Interfaces.Write;
 
 namespace Application.Users.Commands.Create
 {
     public class UpdateUserCommand : IRequest<UserDto>
     {
         public UserUpdateDto User { get; }
+        public FileDto? ImgFileDto { get; set; }
 
-        public UpdateUserCommand(UserUpdateDto user)
+        public UpdateUserCommand(UserUpdateDto user, FileDto? imgFileDto)
         {
+            ImgFileDto = imgFileDto;
             User = user;
         }
     }
 
-    public class UpdateProjectCommandHandler : IRequestHandler<UpdateUserCommand, UserDto>
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserDto>
     {
         protected readonly IWriteRepository<User> _writeRepository;
         protected readonly IReadRepository<User> _readRepository;
         protected readonly ICurrentUserContext _currentUser;
+        protected readonly IImageWriteRepository _imageWriteRepository;
+
 
         protected readonly IMapper _mapper;
         private readonly ISender _mediator;
 
-        public UpdateProjectCommandHandler(IWriteRepository<User> writeRepository,
+        public UpdateUserCommandHandler(IWriteRepository<User> writeRepository,
+            IImageWriteRepository imageWriteRepository,
             IReadRepository<User> readRepository, IMapper mapper, ISender mediator, ICurrentUserContext currentUser)
         {
+            _imageWriteRepository = imageWriteRepository;
             _writeRepository = writeRepository;
             _readRepository = readRepository;
             _mapper = mapper;
@@ -64,6 +72,7 @@ namespace Application.Users.Commands.Create
                 userToUpdate.LastName = entity.LastName;
                 userToUpdate.Phone = entity.Phone;
                 userToUpdate.Skype = entity.Skype;
+                await UploadAvatarFileIfExists(userToUpdate, command);
 
                 var updated = await _writeRepository.UpdateAsync(userToUpdate);
 
@@ -72,6 +81,16 @@ namespace Application.Users.Commands.Create
 
             throw new System.Exception("The user was not found for editing");
 
+        }
+        private async Task UploadAvatarFileIfExists(User user, UpdateUserCommand command)
+        {
+            if (command.ImgFileDto == null)
+            {
+                return;
+            }
+
+            var uploadedImage = await _imageWriteRepository.UploadAsync(user.Id, command.ImgFileDto!.Content);
+            user.Avatar = uploadedImage;
         }
     }
 }

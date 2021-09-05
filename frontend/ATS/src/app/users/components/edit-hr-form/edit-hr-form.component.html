@@ -13,9 +13,8 @@
         <form class="form-container" [formGroup]="profileForm">
             <div class="profile-flex-row">
                 <div class="avatar-container" (click)="file.click()">
-                <input hidden class="file-hide" #file accept="image/*" type="file" >
-                <!-- (change)="handleFileInput($event.target)" -->
-                <img class="avatar avatar-style" src="{{this.data.userToEdit.image}}" alt="Here should be an avatar" onError="this.src='../../../../assets/images/defaultAvatar.png'">
+                <input hidden class="file-hide" #file accept="image/*" type="file" (change)="handleFileInput($event.target)" >
+                <img class="avatar avatar-style" src="{{this.imageUrl}}" alt="Here should be an avatar" onError="this.src='../../../../assets/images/defaultAvatar.png'">
                 <div class="img-text">
                 Upload
                 </div>
@@ -45,7 +44,7 @@
             <div class="alone-field">
                     <mat-label>Email</mat-label>
                 <mat-form-field class="example-full-width" appearance="fill">
-                    <input matInput disabled value="{{this.data.userToEdit.email}}">
+                    <input matInput formControlName="email">
                 </mat-form-field>
             <!-- <mat-label class="required-field">Email</mat-label>
             <mat-form-field appearance="fill"
@@ -60,7 +59,7 @@
         <div class="alone-field">
                 <mat-label>Birth date</mat-label>
             <mat-form-field appearance="fill">
-                <input matInput [matDatepicker]="picker" [ngModel]="this.data.userToEdit.birthDate | date:'yyyy-MM-dd'">
+                <input matInput [matDatepicker]="picker" formControlName="birthDay">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
@@ -91,7 +90,7 @@
                 This field shouldn't be empty
             </mat-error>
             </div>
-            <div>
+            <!-- <div>
                 <mat-label class="required-field">Slack</mat-label>
                 <mat-form-field appearance="fill"
                     [ngClass]="(profileFormControl.slack.touched || submitted) && profileFormControl.slack.invalid ? 'invalid-input' : ''">
@@ -101,7 +100,7 @@
                     *ngIf="(profileFormControl.slack.touched || submitted) && profileFormControl.slack.errors?.required">
                     This field shouldn't be empty
                 </mat-error>
-                </div>
+                </div> -->
             </div>
             <button mat-button type="submit" *ngIf="!this.data.userToEdit" style="margin-bottom:50px"
                 [disabled]="profileForm.invalid" (click)="createUser()">Publish</button>

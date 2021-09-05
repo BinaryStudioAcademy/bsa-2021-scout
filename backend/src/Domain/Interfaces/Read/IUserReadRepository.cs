@@ -10,5 +10,6 @@ namespace Domain.Interfaces.Read
         Task<User> GetByEmailAsync(string email);
         Task<IEnumerable<User>> GetUsersByCompanyIdAsync(string companyId);
         Task LoadRolesAsync(User user);
+        Task<FileInfo> GetAvatarInfoAsync(string applicantId);
     }
 }

@@ -1,9 +1,11 @@
+
 export interface UserCreate{
+  id?:string;
   firstName: string;
   lastName: string;
   birthDate: Date;
   email: string;
-  image?: string,
+  avatar?: File,
   skype?: string,
   phone?:string
 }

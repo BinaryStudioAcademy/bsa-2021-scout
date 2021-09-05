@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import _ from 'lodash';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -8,32 +8,25 @@ import { EditVacancyComponent }
   from 'src/app/vacancies/components/edit-vacancy/edit-vacancy.component';
 import { NotificationService } from '../../services/notification.service';
 import { User } from 'src/app/users/models/user';
+import { UserDataService } from 'src/app/users/services/user-data.service';
+import { EditHrFormComponent } from 'src/app/users/components/edit-hr-form/edit-hr-form.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy {
   public value: string = '';
   public dropdownOpened: boolean = false;
   @Input() removeButton = false;
-
-  user:User={
-    firstName: "Emma",
-  lastName: "Roberts",
-  birthDate: new Date(1,1,2002),
-  creationDate: new Date(1,1,2002),
-  email: "emma.roberts@gmail.com",
-  isEmailConfirmed: true,
-  roles:[
-    {
-      name:'HR',
-      key:1
-    }
-  ],
-  image:"https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg"
-}
+  user:User = {} as User;
+  ngOnInit(){
+    this.userService.getByToken().subscribe(
+      response => {
+        this.user = response;
+      });
+  }
 
   public loading: boolean = false;
 
@@ -43,6 +36,8 @@ export class HeaderComponent implements OnDestroy {
     private readonly service: AuthenticationService,
     private readonly dialog: MatDialog,
     private readonly notifications: NotificationService,
+    private readonly userService: UserDataService,
+
   ) {}
 
   public ngOnDestroy(): void {
@@ -58,4 +53,40 @@ export class HeaderComponent implements OnDestroy {
       data: {},
     });
   };
+  
+
+  public logout(): void {
+    this.loading = true;
+
+    this.service
+      .logout()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        () => {
+          this.loading = false;
+          window.location.replace('/login');
+        },
+        () => {
+          this.loading = false;
+          window.location.replace('/login');
+        },
+      );
+  }
+
+
+  onOpenProfile(){
+    const dialogRef = this.dialog.open(EditHrFormComponent, {
+      width: '70%',
+      height: 'auto',
+      data: {userToEdit:this.user},
+    }).afterClosed().subscribe(() => this.refreshUser());
+  }
+
+  refreshUser(){
+    this.userService.getByToken().subscribe(
+      response => {
+        this.user = response;
+      });
+  }
+
 }

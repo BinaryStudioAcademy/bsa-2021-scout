@@ -4,6 +4,7 @@ using Domain.Entities;
 using Domain.Interfaces.Read;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Repositories.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,15 +25,16 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" FROM Users");
             sql.Append(" LEFT JOIN UserToRoles ON UserToRoles.UserId = Users.Id");
             sql.Append(" LEFT JOIN Roles ON UserToRoles.RoleId = Roles.Id");
+            sql.Append(" LEFT JOIN FileInfos ON FileInfos.Id = Users.AvatarId");
             sql.Append($" WHERE Users.Email = @email");
 
             Dictionary<string, UserToRole> userToRoleDict = new Dictionary<string, UserToRole>();
             User cachedUser = null;
 
             IEnumerable<User> resultAsArray = await connection
-                .QueryAsync<User, UserToRole, Role, User>(
+                .QueryAsync<User, UserToRole, Role, FileInfo, User>(
                     sql.ToString(),
-                    (user, userToRole, role) =>
+                    (user, userToRole, role, fileinfo) =>
                     {
                         if (cachedUser == null)
                         {
@@ -56,7 +58,7 @@ namespace Infrastructure.Repositories.Read
                                 userToRoleEntry.Role = role;
                             }
                         }
-
+                        cachedUser.Avatar = fileinfo;
                         return cachedUser;
                     }, new { email = @email },
                     splitOn: "Id,Id,Id"
@@ -67,6 +69,25 @@ namespace Infrastructure.Repositories.Read
             await connection.CloseAsync();
             return user;
         }
+        public async Task<FileInfo> GetAvatarInfoAsync(string applicantId)
+        {
+            var connection = _connectionFactory.GetSqlConnection();
+
+            var query = @"SELECT fi.* FROM Users a
+                          INNER JOIN FileInfos fi ON a.Avatar = fi.Id
+                          WHERE a.Id = @applicantId;";
+
+            var fileInfo = await connection.QueryFirstOrDefaultAsync<FileInfo>(query, new { userId = applicantId });
+
+            if (fileInfo == null)
+            {
+                throw new Exception("The user "+applicantId+" wasn't found.");
+            }
+
+            await connection.CloseAsync();
+
+            return fileInfo;
+        }
 
         public async Task<IEnumerable<User>> GetUsersByCompanyIdAsync(string companyId)
         {
@@ -75,10 +96,30 @@ namespace Infrastructure.Repositories.Read
             StringBuilder sql = new StringBuilder();
             sql.Append("SELECT *");
             sql.Append(" FROM Users");
+            sql.Append(" LEFT JOIN FileInfos ON FileInfos.Id = Users.AvatarId");
             sql.Append($" WHERE Users.CompanyId = @companyId");
 
+
+            User cachedUser = null;
             IEnumerable<User> users = await connection
-                .QueryAsync<User>(sql.ToString(), new { companyId = @companyId });
+                .QueryAsync<User,FileInfo, User>(
+                    sql.ToString(),
+                    (user, fileinfo) =>
+                    {
+                        cachedUser = user;
+                        if(fileinfo != null)
+                        {
+                            
+                            cachedUser.Avatar = fileinfo;
+                        }
+                        return cachedUser;
+                    }, new { companyId = @companyId },
+                    splitOn: "Id,Id,Id"
+                );
+
+
+            //IEnumerable<User> users = await connection
+            //    .QueryAsync<User>(sql.ToString(), new { companyId = @companyId });
 
             await connection.CloseAsync();
             return users;

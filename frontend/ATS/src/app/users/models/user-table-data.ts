@@ -6,6 +6,9 @@ export interface UserTableData {
   birthDate: Date;
   creationDate: Date;
   email: string;
+  avatarUrl?:string;
+  phone:string;
+  skype:string;
   isEmailConfirmed: boolean;
   isFollowed?: boolean;
 }

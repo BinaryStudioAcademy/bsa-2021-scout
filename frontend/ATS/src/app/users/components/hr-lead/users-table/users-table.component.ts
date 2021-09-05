@@ -24,6 +24,7 @@ import {
   FilterDescription,
   FilterType,
 } from 'src/app/shared/components/table-filter/table-filter.component';
+import { EditHrFormComponent } from '../../edit-hr-form/edit-hr-form.component';
 
 @Component({
   selector: 'app-users-table',
@@ -230,6 +231,14 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
       this.dataSource.data = this.dataSource.data.filter(user => user.isFollowed);
     }
     this.directive.applyFilter$.emit();
+  }
+
+  openEditDialog(data:UserTableData){
+    const dialogRef = this.dialog.open(EditHrFormComponent, {
+      width: '70%',
+      height: 'auto',
+      data: {userToEdit:data, isUserLeadProfile:true},
+    }).afterClosed().subscribe(() => this.getUsers());
   }
 }
 

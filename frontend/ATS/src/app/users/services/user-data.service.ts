@@ -20,6 +20,10 @@ export class UserDataService {
     return this.httpClientService.getRequest<User>('/users/'+id);
   }
 
+  public getByToken():Observable<User>{
+    return this.httpClientService.getRequest<User>('/users/from-token');
+  }
+
   public postUser(user:UserCreate): Observable<UserCreate> {
     return this.httpClientService.postRequest<UserCreate>(
       '/users',
@@ -27,10 +31,16 @@ export class UserDataService {
     );
   }
 
-  public putUser(user:UserCreate, id:string): Observable<UserCreate> {
+  public putUser(user:UserCreate): Observable<UserCreate> {
+    const formData = new FormData();
+    formData.append('body', JSON.stringify(user));
+    if (user.avatar) {
+      formData.append('cvFile', user.avatar, user.avatar.name);
+    }
+
     return this.httpClientService.putRequest<UserCreate>(
-      '/users/'+id,
-      user,
+      '/users',
+      formData,
     );
   }
 }

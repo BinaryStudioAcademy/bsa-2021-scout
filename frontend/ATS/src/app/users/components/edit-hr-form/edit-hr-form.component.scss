@@ -10,8 +10,8 @@
 
 .avatar-style{
     object-fit: cover;
-    width: 16vw;
-    height: 16vw;
+    width: 230px;
+    height: 230px;
     border-radius: 50%;
     opacity: 1;
     display: block;
@@ -132,7 +132,7 @@
 
 .profile-flex-row{
     display:grid;
-    grid-template-columns:40% 30% 30%;
+    grid-template-columns:1fr 33% 33%;
     grid-template-rows: 75px 75px 75px;
     grid-gap: 15px;
 }

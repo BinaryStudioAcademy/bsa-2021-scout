@@ -1,12 +1,8 @@
-<div [matMenuTriggerFor]="menu" #menuTrigger>
+<!-- <div [matMenuTriggerFor]="menu" #menuTrigger>
     <ng-content></ng-content>
     </div>
-    <!-- <img class="small-image" src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg"
-    [matMenuTriggerFor]="menu" #menuTrigger> -->
     <mat-menu #menu="matMenu" class="menu">
-        <!-- <div class="profile-content" (click) = "$event.stopPropagation()"> -->
             <div mat-menu-item class="grid-user-info" (click)="onOpenProfile()">
-                <!-- <img class="small-image" src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-733872.jpg&fm=jpg"> -->
                 <div class="user-name">
                     {{user.firstName}} {{user.lastName}} <mat-icon class="todo-action" mat-icon-button>edit</mat-icon>
                 </div>
@@ -15,12 +11,7 @@
                 </div>
             </div>
             <mat-divider></mat-divider>
-            <button mat-menu-item (click)="editHr()">
-                Edit HRs
-              </button>
-            <mat-divider></mat-divider>
             <button mat-menu-item (click)="logout()">
                 Log out
               </button>
-        <!-- </div> -->
-    </mat-menu>
+    </mat-menu> -->

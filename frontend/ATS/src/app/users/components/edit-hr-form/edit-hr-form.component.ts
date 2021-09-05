@@ -9,7 +9,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Project } from 'src/app/shared/models/projects/project';
@@ -44,27 +44,26 @@ export class EditHrFormComponent implements OnInit {
     // @Input()currUser!:User;
     public loading: boolean = true;
     private readonly unsubscribe$: Subject<void> = new Subject<void>();
+    public imageFile: File | undefined;
+    public imageUrl:string | undefined;
   
     constructor(
       public dialogRef: MatDialogRef<EditHrFormComponent>,
       // @Inject(MAT_DIALOG_DATA) public data: { userToEdit: UserTableData },
-      @Inject(MAT_DIALOG_DATA) public data: { userToEdit: User},
+      @Inject(MAT_DIALOG_DATA) public data: { userToEdit: UserTableData, isUserLeadProfile:Boolean},
       private fb: FormBuilder,
       public userService: UserDataService,
       public notificationService: NotificationService,
     ) {
-      this.profileForm = this.fb.group(
-        {
-          firstName: ['', [Validators.required]],
-          lastName: ['', [Validators.required]],
-          birthDay: ['', [Validators.required]],
-          phone: [''],
-          skype: [''],
-          slack:[''],
-          email: ['', [Validators.required]],
-          image: ['', [Validators.required]]
-        }
-      );
+      this.profileForm = new FormGroup({
+        'firstName': new FormControl({value:''}, Validators.required),
+        'lastName': new FormControl({value:''}, Validators.required),    
+        'birthDay': new FormControl({value:'', disabled:true}),
+        'phone': new FormControl({value:''}),
+        'skype': new FormControl({value:''}),
+        'email': new FormControl({value:'', disabled:true}),
+        // 'image': new FormControl({value:''}),
+      });
       this.loading = false;
     }
   
@@ -75,22 +74,35 @@ export class EditHrFormComponent implements OnInit {
   
     ngOnInit() {
       console.log(this.data.userToEdit)
-      if (this.data.userToEdit) {
-        // this.userService.getById(this.data.userToEdit.id!).subscribe(
-        //   response => {
-          let response=this.data.userToEdit;
-          console.log(response)
+      if (!this.data.isUserLeadProfile) {
+        this.userService.getByToken().subscribe(
+          response => {
             this.profileForm.setValue({
-              firstName: this.data.userToEdit.firstName,
+              firstName: response.firstName,
               lastName: response.lastName,
               birthDay: response.birthDate,
               phone: response.phone || '',
               skype: response.skype || '',
               email: response.email,
-              image: response.image || ''
+              // image: response.avatar || ''
             });
+            this.imageUrl = response.avatarUrl;
+            console.log(this.imageUrl)
+          });
+      }else{
+        let response = this.data.userToEdit;
+            this.profileForm.setValue({
+              firstName: response.firstName,
+              lastName: response.lastName,
+              birthDay: response.birthDate,
+              phone: response.phone || '',
+              skype: response.skype || '',
+              email: response.email,
+              // image: response.avatar || ''
+            });
+            this.imageUrl = response.avatarUrl;
+            console.log(this.imageUrl)
             console.log(this.profileForm)
-          // });
       }
     }
   
@@ -100,45 +112,54 @@ export class EditHrFormComponent implements OnInit {
       this.loading = true;
   
       let createUser:UserCreate = {
+        id: this.data.userToEdit.id,
         firstName: this.profileForm.controls['firstName'].value,
         lastName: this.profileForm.controls['lastName'].value,
-        birthDate: this.profileForm.controls['birthDate'].value,
-        image: this.profileForm.controls['image'].value,
+        birthDate: this.profileForm.controls['birthDay'].value,
+        avatar: this.imageFile,
         skype:this.profileForm.controls['skype'].value,
         phone: this.profileForm.controls['phone'].value,
         email:this.profileForm.controls['email'].value
       };
-      if (!this.data.userToEdit) {
+
+      console.log(createUser)
+      
         this.userService
-          .postUser(createUser)
+          .putUser(createUser)
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe(
             (response) => {
               this.loading = false;
-            },
-            () => {
-              this.loading = false;
-              this.notificationService.showErrorMessage('Failed to create user.');
-            },
-          );
-      } else {
-        this.userService
-          .putUser(createUser, this.data.userToEdit.id!)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe(
-            (response) => {
-              this.loading = false;
+              this.notificationService.showSuccessMessage(`The user ${createUser.firstName} ${createUser.lastName} was successfully updated.`);
             },
             () => {
               this.loading = false;
               this.notificationService.showErrorMessage('Failed to update user.');
             },
           );
-      }
   
   
       this.dialogRef.close();
     }
+
+    public handleFileInput(target: any) {
+      this.imageFile = target.files[0];
+
+      if (!this.imageFile) {
+          target.value = '';
+          return;
+      }
+
+      if (this.imageFile.size / 1000000 > 5) {
+          this.notificationService.showErrorMessage(`Image can't be heavier than ~5MB`);
+          target.value = '';
+          return;
+      }
+
+      const reader = new FileReader();
+      reader.addEventListener('load', () => (this.imageUrl = reader.result as string));
+      reader.readAsDataURL(this.imageFile);
+  }
   
     get profileFormControl() {
       return this.profileForm.controls;
