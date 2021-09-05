@@ -29,15 +29,22 @@
     font-size: 16px;
    
 
-    .header {
-        display: flex;
-        justify-content: space-between;
+    .header {        
 
         height:43px;        
         margin: 17px 17px 0;
         padding-bottom: 17px;
         
         border-bottom: 2px solid #F2F2F2;
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .creator {
+            padding: 10px 10px 0 25px;
+        }
         
         ::ng-deep {
             .mat-checkbox-frame {
@@ -83,11 +90,7 @@
         height: 35px;
         padding: 0 10px 5px 45px;
 
-        .creator {
-            font-size: 12px;
-            font-weight: 400;
-            color:#4F00B5;
-        }
+        
 
         .users {
             padding-right: 15px;
@@ -109,6 +112,12 @@
         }
         
 
+    }
+
+    .creator {
+        font-size: 12px;
+        font-weight: 400;
+        color:#4F00B5;
     }
 
 
