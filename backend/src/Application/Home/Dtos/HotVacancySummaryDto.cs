@@ -5,6 +5,7 @@ namespace Application.Home.Dtos
     {
         public string Id { get; set; }
         public string Title { get; set; }
+        public string ProjectId { get; set; }
         public string ProjectName { get; set; }
         public int CandidateCount { get; set; }
         public int ProcessedCount { get; set; }
