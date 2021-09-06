@@ -25,7 +25,9 @@ namespace WebAPI.Controllers
             [FromRoute] string stageId
         )
         {
-            var command = new ChangeCandidateStageCommand(id, vacancyId, stageId);
+            string userId = GetUserIdFromToken();
+            var command = new ChangeCandidateStageCommand(userId, id, vacancyId, stageId);
+
             return Ok(await Mediator.Send(command));
         }
 

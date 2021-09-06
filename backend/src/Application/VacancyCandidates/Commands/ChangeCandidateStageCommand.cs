@@ -16,12 +16,14 @@ namespace Application.VacancyCandidates.Commands
 {
     public class ChangeCandidateStageCommand : IRequest<VacancyCandidateDto>
     {
+        public string UserId { get; set; }
         public string Id { get; set; }
         public string StageId { get; set; }
         public string VacancyId { get; set; }
 
-        public ChangeCandidateStageCommand(string id, string vacancyId, string stageId)
+        public ChangeCandidateStageCommand(string userId, string id, string vacancyId, string stageId)
         {
+            UserId = userId;
             Id = id;
             StageId = stageId;
             VacancyId = vacancyId;
@@ -33,14 +35,14 @@ namespace Application.VacancyCandidates.Commands
         private readonly IReadRepository<VacancyCandidate> _readRepository;
         private readonly IWriteRepository<VacancyCandidate> _writeRepository;
         private readonly ICandidateToStageReadRepository _candidateToStageReadRepository;
-        private readonly ICandidateToStageWriteRepository _candidateToStageWriteRepository;
+        private readonly IWriteRepository<CandidateToStage> _candidateToStageWriteRepository;
         private readonly IMapper _mapper;
 
         public ChangeCandidateStageCommandHandler(
             IReadRepository<VacancyCandidate> readRepository,
             IWriteRepository<VacancyCandidate> writeRepository,
             ICandidateToStageReadRepository candidateToStageReadRepository,
-        ICandidateToStageWriteRepository candidateToStageWriteRepository,
+            IWriteRepository<CandidateToStage> candidateToStageWriteRepository,
             IMapper mapper
         )
         {
@@ -60,7 +62,8 @@ namespace Application.VacancyCandidates.Commands
                 throw new NotFoundException(typeof(VacancyCandidate), command.Id);
             }
 
-            var oldStage = await _candidateToStageReadRepository.GetCurrentForCandidateByVacancyAsync(command.Id, command.VacancyId);
+            CandidateToStage oldStage = await _candidateToStageReadRepository
+                .GetCurrentForCandidateByVacancyAsync(command.Id, command.VacancyId);
 
             oldStage.DateRemoved = DateTime.UtcNow;
             await _candidateToStageWriteRepository.UpdateAsync(oldStage);
@@ -74,8 +77,20 @@ namespace Application.VacancyCandidates.Commands
 
             await _candidateToStageWriteRepository.CreateAsync(newStage);
 
-            var stageLeaveEvent = new CandidateStageChangedEvent(command.Id, command.VacancyId, oldStage.StageId, StageChangeEventType.Leave);
-            var stageJoinEvent = new CandidateStageChangedEvent(command.Id, command.VacancyId, command.StageId, StageChangeEventType.Join);
+            CandidateStageChangedEvent stageLeaveEvent = new CandidateStageChangedEvent(
+                command.Id,
+                command.VacancyId,
+                oldStage.StageId,
+                StageChangeEventType.Leave
+            );
+
+            CandidateStageChangedEvent stageJoinEvent = new CandidateStageChangedEvent(
+                command.Id,
+                command.VacancyId,
+                command.StageId,
+                StageChangeEventType.Join
+            );
+
             candidate.DomainEvents.Add(stageLeaveEvent);
             candidate.DomainEvents.Add(stageJoinEvent);
 

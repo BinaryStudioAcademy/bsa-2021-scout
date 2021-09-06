@@ -53,12 +53,11 @@
       </div>
       <mat-divider></mat-divider>
       <div class="block" *ngIf="data.stagesHistory.length">
-        <h3>Timeline</h3>
+        <h3>Activity</h3>
         <div class="timeline">
           <div class="timeline-item" *ngFor="let item of data.stagesHistory">
             <h4>Moved to stage <span class="bold">{{ item.stageName }}</span></h4>
-            <div class="meta" *ngIf="item.dateRemoved">{{ item.dateAdded | timezone }}</div>
-            <div class="meta" *ngIf="!item.dateRemoved">Current</div>
+            <div class="meta">{{ item.dateAdded | timezone }}</div>
             <div class="circle"></div>
           </div>
         </div>

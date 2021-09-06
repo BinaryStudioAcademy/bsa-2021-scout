@@ -179,8 +179,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<FileInfo>, WriteRepository<FileInfo>>();
             services.AddScoped<IElasticWriteRepository<ElasticEntity>, ElasticWriteRepository<ElasticEntity>>();
             services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
-            services.AddScoped<IWriteRepository<CandidateToStage>, CandidateToStageWriteRepository>();
-            services.AddScoped<ICandidateToStageWriteRepository, CandidateToStageWriteRepository>();
+            services.AddScoped<IWriteRepository<CandidateToStage>, WriteRepository<CandidateToStage>>();
             services.AddScoped<IWriteRepository<CandidateReview>, CandidateReviewWriteRepository>();
             services.AddScoped<ICandidateReviewWriteRepository, CandidateReviewWriteRepository>();
             services.AddScoped<IVacancyCandidateWriteRepository, VacancyCandidateWriteRepository>();
