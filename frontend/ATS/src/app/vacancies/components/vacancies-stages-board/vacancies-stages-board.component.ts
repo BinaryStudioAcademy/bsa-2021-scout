@@ -164,7 +164,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
   public openCandidateAddModal(): void {
     this.modalService
       .open(AddCandidateModalComponent, {
-        width: '400px',
+        width: '500px',
         autoFocus: false,
         panelClass: 'candidate-dialog',
         data: {

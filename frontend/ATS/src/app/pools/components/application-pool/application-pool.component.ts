@@ -290,7 +290,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       });
 
       this.dialogService.open(AddCandidateModalComponent, {
-        width: '400px',
+        width: '500px',
         autoFocus: false,
         panelClass: 'applicants-options',
         data: {

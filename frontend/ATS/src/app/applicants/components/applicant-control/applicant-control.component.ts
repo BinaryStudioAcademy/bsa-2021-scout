@@ -59,7 +59,7 @@ export class ApplicantControlComponent implements OnDestroy {
 
   public showApplicantUpdateDialog(): void {
     const dialogRef = this.dialog.open(UpdateApplicantComponent, {
-      width: '480px',
+      width: '600px',
       height: '95vh',
       autoFocus: false,
       data: this.applicant,
@@ -138,7 +138,7 @@ export class ApplicantControlComponent implements OnDestroy {
 
   public openVacancyAddModal(): void {
     this.dialog.open(AddCandidateModalComponent, {
-      width: '400px',
+      width: '500px',
       autoFocus: false,
       panelClass: 'applicants-options',
       data: {

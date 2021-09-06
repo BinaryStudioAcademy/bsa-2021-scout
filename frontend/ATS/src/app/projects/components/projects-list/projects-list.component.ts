@@ -257,7 +257,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   }
 
   public OnCreate(): void {
-    this.dialog.open(ProjectsAddComponent);
+    this.dialog.open(ProjectsAddComponent, {width: '600px'});
 
     this.dialog.afterAllClosed.subscribe((_) => this.getProjects());
   }
@@ -270,6 +270,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     }
 
     this.dialog.open(ProjectsEditComponent, {
+      width: '600px',
       data: {
         project: projectToEdit,
       },
