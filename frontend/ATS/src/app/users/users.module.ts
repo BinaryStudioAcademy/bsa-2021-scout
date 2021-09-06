@@ -45,6 +45,7 @@ import { RecentActivityComponent } from './components/recent-activity/recent-act
 import { PendingRegistrationsComponent }
   from './components/hr-lead/pending-registrations/pending-registrations.component';
 import { RegistrationPermissionsService } from './services/registration-permissions.service';
+import { MyTasksComponent } from '../task-management/components/my-tasks/my-tasks.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { RegistrationPermissionsService } from './services/registration-permissi
     VacancyCardComponent,
     RecentActivityComponent,
     PendingRegistrationsComponent,
+    MyTasksComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
