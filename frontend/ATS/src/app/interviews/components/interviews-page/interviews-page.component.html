@@ -31,6 +31,7 @@
         <td  class="calendar-day" [ngClass]="{'blue': isWeekend(c.date)}" *ngFor="let c of row; let j = index">
           <div  class="calendar-day-header" [ngClass]="{'blue-date': c.isToday}">
             <div class="horizontaly">
+              <div *ngIf="c.interviews.length === 0"></div>
               <app-interview-card (click)="debug(c.interviews[0].scheduled , c.interviews[0].duration)" [interview]="c.interviews[0]" *ngIf="c.interviews.length > 0"></app-interview-card>
               <div [ngClass]="{'grey':!isSameMonth(c.date)}">{{c.date.getDate()}}</div>
             </div>
