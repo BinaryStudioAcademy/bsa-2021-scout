@@ -42,7 +42,7 @@ export class ApplicantsHeadComponent implements OnInit{
           const variants: ApplicantCreationVariants = JSON.parse(json);
 
           this.dialog.open(CreateApplicantFromVariantsComponent, {
-            width: '732px',
+            width: '600px',
             height: '95vh',
             data: variants,
           });
@@ -65,7 +65,7 @@ export class ApplicantsHeadComponent implements OnInit{
 
   public showApplicantsCreateDialog(): void {
     const dialogRef = this.dialog.open(CreateApplicantComponent, {
-      width: '532px',
+      width: '600px',
       height: '95vh',
       autoFocus: false,
       data: this.creationData,

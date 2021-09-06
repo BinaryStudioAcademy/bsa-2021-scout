@@ -15,7 +15,9 @@
     
 }
 
-
+.mat-button.mat-button { 
+    width: 170px;
+}
 
 .users {
     padding-right: 15px;
@@ -73,14 +75,6 @@
         border:none;
         margin-left:10px;
     }
-
-    .mat-icon:hover .close:hover{
-        //transform: unset;
-        //font-size: 35px;
-    } 
-
-
-
 }
 
 .add-user-select {    
@@ -93,12 +87,7 @@
             font-size: 30px;                    
             color: #fff;
             border-radius: 50%;
-            vertical-align: middle;
-            //margin-left: 20px;     
-        }
-    
-        .mat-select-arrow:hover::after{
-            //color: $primary-color;
+            vertical-align: middle;  
         }
     
         .mat-select-arrow-wrapper {

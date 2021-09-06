@@ -198,7 +198,7 @@
                 </div>
             </div>
             <button mat-button type="submit" *ngIf="!data.vacancyToEdit" style="margin-bottom:50px"
-                [disabled]="vacancyForm.invalid" (click)="createVacancy()">Publish</button>
+                [disabled]="vacancyForm.invalid" (click)="createVacancy()">Save</button>
             <button mat-button type="submit" *ngIf="data.vacancyToEdit" style="margin-bottom:50px"
                 [disabled]="vacancyForm.invalid" (click)="createVacancy()">Save changes</button>
         </form>

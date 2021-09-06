@@ -266,7 +266,7 @@ implements AfterViewInit, OnInit, OnDestroy
 
   public openDialog(): void {
     const dialogRef = this.dialog.open(EditVacancyComponent, {
-      width: '914px',
+      width: '800px',
       height: 'auto',
       data: {},
     });
@@ -302,6 +302,7 @@ implements AfterViewInit, OnInit, OnDestroy
 
   public onEdit(vacancyEdit: VacancyCreate): void {
     this.dialog.open(EditVacancyComponent, {
+      width: '800px',
       data: {
         vacancyToEdit: vacancyEdit,
       },
