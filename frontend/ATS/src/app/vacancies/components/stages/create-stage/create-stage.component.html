@@ -20,15 +20,24 @@
       <mat-error *ngIf="(stageFormControl.type.touched || submitted) && stageFormControl.type.errors?.required">
         This field shouldn't be empty
       </mat-error>
-      <mat-label>Action</mat-label>
-      <div class="multiselect-wrp">
-        <app-multiselect [data]="actionOptions" placeholder="Select actions"
-          [selected]="actionsToOptions(stageForm.get('actions')!.value)"
-          (selectedChange)="stageForm.get('actions')!.setValue(optionsToActions($event))"></app-multiselect>
-      </div>
-      <mat-error *ngIf="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.errors?.required">
-        This field shouldn't be empty
-      </mat-error>
+      <mat-label>Action On Join</mat-label>
+    <div class="multiselect-wrp">
+      <app-multiselect [data]="actionJoinOptions" placeholder="Select actions"
+        [selected]="actionsToOptions(stageForm.get('actionsOnJoin')!.value)"
+        (selectedChange)="stageForm.get('actionsOnJoin')!.setValue(optionsToActions($event, 1))"></app-multiselect>
+    </div>
+    <mat-error *ngIf="(stageFormControl.actionsOnJoin.touched || submitted) && stageFormControl.actionsOnJoin.errors?.required">
+      This field shouldn't be empty
+    </mat-error>
+    <mat-label>Action On Leave</mat-label>
+    <div class="multiselect-wrp">
+      <app-multiselect [data]="actionLeaveOptions" placeholder="Select actions"
+        [selected]="actionsToOptions(stageForm.get('actionsOnLeave')!.value)"
+        (selectedChange)="stageForm.get('actionsOnLeave')!.setValue(optionsToActions($event, 0))"></app-multiselect>
+    </div>
+    <mat-error *ngIf="(stageFormControl.actionsOnLeave.touched || submitted) && stageFormControl.actionsOnLeave.errors?.required">
+      This field shouldn't be empty
+    </mat-error>
       <ng-container *ngIf="reviewOptions.length > 0">
         <mat-checkbox formControlName="isReviewable">Review required</mat-checkbox>
         <ng-container *ngIf="stageForm.get('isReviewable')!.value">

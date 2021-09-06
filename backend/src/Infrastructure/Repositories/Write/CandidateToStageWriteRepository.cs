@@ -24,40 +24,5 @@ namespace Infrastructure.Repositories.Write
         {
             _connectionFactory = connectionFactory;
         }
-
-        public async Task ReplaceForCandidate(string candidateId, string vacancyId, string newStageId)
-        {
-            SqlConnection connection = _connectionFactory.GetSqlConnection();
-
-            string sql = @"
-                SELECT CandidateToStages.*
-                FROM CandidateToStages
-                LEFT JOIN Stages ON Stages.Id = CandidateToStages.StageId
-                WHERE (
-                    Stages.VacancyId = @vacancyId AND
-                    CandidateToStages.DateRemoved IS NULL AND
-                    CandidateToStages.CandidateId = @id
-                )
-            ";
-
-            CandidateToStage newEntity = new CandidateToStage
-            {
-                CandidateId = candidateId,
-                StageId = newStageId,
-                DateAdded = DateTime.UtcNow,
-            };
-
-            await connection.OpenAsync();
-
-            CandidateToStage oldEntity = await connection
-                .QueryFirstAsync<CandidateToStage>(sql.ToString(), new { id = candidateId, vacancyId = vacancyId });
-
-            await connection.CloseAsync();
-
-            oldEntity.DateRemoved = DateTime.UtcNow;
-            await UpdateAsync(oldEntity);
-
-            await CreateAsync(newEntity);
-        }
     }
 }

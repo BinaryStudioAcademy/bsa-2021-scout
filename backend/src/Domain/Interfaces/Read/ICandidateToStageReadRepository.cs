@@ -9,5 +9,6 @@ namespace Domain.Interfaces.Read
     {
         Task<(IEnumerable<CandidateToStage>, bool)> GetRecentAsync(string userId, int page = 1);
         Task<IEnumerable<CandidateToStage>> GetRecentForApplicantAsync(string applicantId);
+        Task<CandidateToStage> GetCurrentForCandidateByVacancyAsync(string candidateId, string vacancyId);
     }
 }

@@ -11,6 +11,7 @@ namespace Domain.Entities
         public int Index { get; set; }
         public bool IsReviewable { get; set; }
         public string VacancyId { get; set; }
+        public string? DataJson { get; set; }
 
         public Vacancy Vacancy { get; set; }
         public ICollection<Action> Actions { get; set; }

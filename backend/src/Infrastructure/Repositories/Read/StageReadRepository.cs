@@ -149,7 +149,11 @@ namespace Infrastructure.Repositories.Read
                             WHERE Stages.VacancyId = @vacancyId 
                             AND Stages.[Index]=1";
 
-            return await connection.QueryFirstOrDefaultAsync<Stage>(sql, new { vacancyId = @vacancyId });
+            var result = await connection.QueryFirstOrDefaultAsync<Stage>(sql, new { vacancyId = @vacancyId });
+
+            await connection.CloseAsync();
+
+            return result;
         }
 
 
@@ -238,6 +242,53 @@ namespace Infrastructure.Repositories.Read
 
             await connection.CloseAsync();
             return stages.First();
+        }
+
+        public async Task<Stage> GetWithActions(string id)
+        {
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
+
+            string sql = @"SELECT *
+                FROM Stages 
+                LEFT JOIN Actions ON Actions.StageId = Stages.Id
+                WHERE Stages.Id = @id
+            ";
+
+            var stagesDictionary = new Dictionary<string, Stage>();
+
+            await connection.QueryAsync<Stage, Action, Stage>(sql, (s, a) =>
+            {
+                Stage stage;
+                if (!stagesDictionary.TryGetValue(s.Id, out stage))
+                {
+                    stagesDictionary.Add(s.Id, stage = s);
+                }
+
+                if (stage.Actions == null)
+                {
+                    stage.Actions = new List<Action>();
+                }
+
+                if (a != null)
+                {
+                    stage.Actions.Add(a);
+                }
+
+                return stage;
+            },
+            new { id = @id });
+
+            Stage stage = stagesDictionary.Values.FirstOrDefault();
+
+            if (stage == null)
+            {
+                throw new NotFoundException(typeof(Stage), id);
+            }
+
+            await connection.CloseAsync();
+
+            return stage;
         }
     }
 }
