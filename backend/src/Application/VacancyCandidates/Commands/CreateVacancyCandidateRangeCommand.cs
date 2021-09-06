@@ -22,11 +22,13 @@ namespace Application.VacancyCandidates.Commands
     {
         public string[] ApplicantIds { get; set; }
         public string VacancyId { get; set; }
+        public string UserId { get; set; }
 
-        public CreateVacancyCandidateRangeCommand(string[] applicantIds, string vacancyId)
+        public CreateVacancyCandidateRangeCommand(string[] applicantIds, string vacancyId, string userId)
         {
             ApplicantIds = applicantIds;
             VacancyId = vacancyId;
+            UserId = userId;
         }
     }
 
@@ -85,6 +87,7 @@ namespace Application.VacancyCandidates.Commands
                 {
                     CandidateId = candidate.Id,
                     StageId = stageId,
+                    MoverId = command.UserId,
                     DateAdded = DateTime.UtcNow
                 });
             }
