@@ -25,6 +25,31 @@ namespace Infrastructure.Repositories.Read
             _userRepository = userRepository;
         }
 
+        public async Task<CandidateToStage> GetCurrentForCandidateByVacancyAsync(string candidateId, string vacancyId)
+        {
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
+
+            string sql = @"
+                SELECT CandidateToStages.*
+                FROM CandidateToStages
+                LEFT JOIN Stages ON Stages.Id = CandidateToStages.StageId
+                WHERE (
+                    Stages.VacancyId = @vacancyId AND
+                    CandidateToStages.DateRemoved IS NULL AND
+                    CandidateToStages.CandidateId = @id
+                )
+            ";
+
+            await connection.OpenAsync();
+
+            var result = await connection
+                .QueryFirstAsync<CandidateToStage>(sql.ToString(), new { id = candidateId, vacancyId = vacancyId });
+
+            await connection.CloseAsync();
+
+            return result;
+        }
+
         public async Task<(IEnumerable<CandidateToStage>, bool)> GetRecentAsync(string userId, int page = 1)
         {
             User user = await _userRepository.GetAsync(userId);

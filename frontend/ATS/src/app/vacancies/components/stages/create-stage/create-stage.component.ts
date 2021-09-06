@@ -38,29 +38,57 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
   public stageId: string = '';
   public editing: boolean = false;
   public reviewOptions: IOption[] = [];
-  public actionOptions: IOption[] = [];
+  public actionJoinOptions: IOption[] = [];
+  public actionLeaveOptions: IOption[] = [];
 
   private static reviews: Review[] = [];
   private static reviewsLoaded: boolean = false;
 
-  private actions: Action[] = [
+  private actionsOnJoin: Action[] = [
     {
       id: '1',
       name: 'Send mail',
       actionType: ActionType.SendMail,
       stageId: this.stageId,
+      stageChangeEventType: 1,
     },
     {
       id: '2',
       name: 'Add task',
       actionType: ActionType.AddTask,
       stageId: this.stageId,
+      stageChangeEventType: 1,
     },
     {
       id: '3',
       name: 'Schedule interview action',
       actionType: ActionType.ScheduleInterviewAction,
       stageId: this.stageId,
+      stageChangeEventType: 1,
+    },
+  ];
+
+  private actionsOnLeave: Action[] = [
+    {
+      id: '1',
+      name: 'Send mail',
+      actionType: ActionType.SendMail,
+      stageId: this.stageId,
+      stageChangeEventType: 0,
+    },
+    {
+      id: '2',
+      name: 'Add task',
+      actionType: ActionType.AddTask,
+      stageId: this.stageId,
+      stageChangeEventType: 0,
+    },
+    {
+      id: '3',
+      name: 'Schedule interview action',
+      actionType: ActionType.ScheduleInterviewAction,
+      stageId: this.stageId,
+      stageChangeEventType: 0,
     },
   ];
 
@@ -74,7 +102,8 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
     this.stageForm = this.fb.group({
       name: ['', [Validators.required]],
       type: ['', [Validators.required]],
-      actions: [[]],
+      actionsOnJoin: [[]],
+      actionsOnLeave: [[]],
       isReviewable: [false],
       reviews: [[]],
     });
@@ -84,14 +113,38 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
     if (changes.stage && this.stageForm) {
       if (changes.stage.currentValue.actions) {
         changes.stage.currentValue.actions.forEach((element: Action) => {
-          var index = this.actions.findIndex(
-            (x) => x.actionType == element.actionType,
-          );
-          this.actions[index] = element;
+          if(element.stageChangeEventType == 1){
+            var index = this.actionsOnJoin.findIndex(
+              (x) => x.actionType == element.actionType,
+            );
+            this.actionsOnJoin[index] = element;
+          }
+          else{
+            var index = this.actionsOnLeave.findIndex(
+              (x) => x.actionType == element.actionType,
+            );
+            this.actionsOnLeave[index] = element;
+          }
+        });
+        let actions: Action[] = changes.stage.currentValue.actions;
+        let actionsOnJoin: Action[] = [];
+        let actionsOnLeave: Action[] = [];
+        actions.forEach(action => {
+          if(action.stageChangeEventType == 0)
+          {
+            actionsOnLeave.push(action);
+          }
+          else
+          {
+            actionsOnJoin.push(action);
+          }
         });
         this.stageForm
-          .get('actions')
-          ?.setValue([...changes.stage.currentValue.actions]);
+          .get('actionsOnJoin')
+          ?.setValue([...actionsOnJoin]);
+        this.stageForm
+          .get('actionsOnLeave')
+          ?.setValue([...actionsOnLeave]);
       }
       this.stageId = changes.stage.currentValue.id;
       this.stageForm.get('name')?.setValue(changes.stage.currentValue.name);
@@ -113,7 +166,8 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
       this.loadReviews();
     }
 
-    this.actionOptions = this.actionsToOptions(this.actions);
+    this.actionJoinOptions = this.actionsToOptions(this.actionsOnJoin);
+    this.actionLeaveOptions = this.actionsToOptions(this.actionsOnLeave);
 
     if (this.stage) {
       this.editing = true;
@@ -168,15 +222,43 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
     }));
   }
 
-  public optionsToActions(options?: IOption[]): Action[] {
-    return (options ?? []).map(
-      ({ id }) => this.actions.find((a) => a.id === id)!,
-    );
+  public optionsToActions(options?: IOption[], stageChangeEventType: number = 0): Action[] {
+    if(stageChangeEventType == 1){
+      return (options ?? []).map(
+        ({ id }) => this.actionsOnJoin.find((a) => a.id === id)!,
+      );
+    }
+    else{
+      return (options ?? []).map(
+        ({ id }) => this.actionsOnLeave.find((a) => a.id === id)!,
+      );
+    }
+  }
+
+  formToStage() {
+    let actionsOnJoin: Action[] = this.stageForm.get('actionsOnJoin')?.value;
+    actionsOnJoin.forEach(action => action.stageChangeEventType = 1);
+    let actionsOnLeave: Action[] = this.stageForm.get('actionsOnLeave')?.value;
+    actionsOnLeave.forEach(action => action.stageChangeEventType = 0);
+    let actions: Action[] = [...actionsOnJoin, ...actionsOnLeave];
+
+    let stage: Stage = {
+      id: this.stage?.id ? this.stage!.id : '',
+      name: this.stageForm.get('name')?.value,
+      type: this.stageForm.get('type')?.value,
+      IsReviewable: this.stageForm.get('isReviewable')?.value,
+      reviews: this.stageForm.get('reviews')?.value,
+      index: 0,
+      vacancyId: '',
+      actions: actions,
+    };
+    
+    this.stage = stage;
   }
 
   save() {
     this.submitted = true;
-    this.stage = { ...this.stageForm.value };
+    this.formToStage();
     this.stage!.index = this.editModeItemIndex;
     this.stageForm.reset();
   }
@@ -191,7 +273,7 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
 
   onStageSave() {
     this.submitted = true;
-    this.stage = { ...this.stageForm.value };
+    this.formToStage();
     if(this.stage!.reviews == null){
       this.stage!.reviews = [];
     }
@@ -203,7 +285,7 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
 
   onSaveAndAdd() {
     this.submitted = true;
-    this.stage = this.stageForm.value;
+    this.formToStage();
     this.stage!.index = this.editModeItemIndex;
     this.stageForm.reset();
     this.stageCreateAndAddChange.emit(this.stage);
