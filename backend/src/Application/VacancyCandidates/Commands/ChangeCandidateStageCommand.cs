@@ -72,6 +72,7 @@ namespace Application.VacancyCandidates.Commands
             {
                 CandidateId = command.Id,
                 StageId = command.StageId,
+                MoverId = command.UserId,
                 DateAdded = DateTime.UtcNow,
             };
 
