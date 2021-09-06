@@ -38,6 +38,8 @@ import { UserProfileComponent } from '../shared/components/user-profile/user-pro
 import { InterviewsPageComponent } from '../interviews/components/interviews-page/interviews-page.component';
 /* eslint-disable max-len */
 import { ApplicantCsvFilesListComponent } from '../applicants/components/CsvComponents/applicant-csv-files-list/applicant-csv-files-list.component';
+import { TaskManagementModule } from '../task-management/task-management.module';
+import { MainPageComponent } from '../task-management/components/main-page/main-page.component';
 
 const routes: Routes = [
   {
@@ -78,13 +80,8 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: AppRoute.Analytics,
-        component: VacanciesListComponent,
-        pathMatch: 'full',
-      },
-      {
         path: AppRoute.TaskManagement,
-        component: VacanciesListComponent,
+        component: MainPageComponent,
         pathMatch: 'full',
       },
       {
@@ -131,6 +128,7 @@ const routes: Routes = [
     ProjectRoutingModule,
     PoolsRoutingModule,
     ApplicantsRoutingModule,
+    TaskManagementModule,
   ],
   exports: [RouterModule],
 })

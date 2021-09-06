@@ -1,0 +1,27 @@
+<app-header></app-header>
+<div class='task-page'>
+    <div class='header'>
+        <h2>Task management</h2>
+        <div class='filters'>
+            <div class='done-switch'>
+                <mat-selection-list #done [multiple]="false">
+                    <mat-list-option selected class='item' (click)="toggleDone(false)">To-Do</mat-list-option>
+                    <mat-list-option class='item' (click)="toggleDone(true)" >Done</mat-list-option>
+                </mat-selection-list>     
+            </div>
+            <button mat-button (click)="createTask()">+ Add task</button>
+            <div class='actions'>
+                <mat-select mySelector [(ngModel)]="filterUser" (selectionChange)="toggleUser($event.value)">
+                    <mat-option value="Me">Created by me</mat-option>
+                    <mat-option value="All">All</mat-option>
+                </mat-select>                
+                <mat-icon>settings</mat-icon>
+            </div>            
+        </div>
+    </div>
+    <div class='content'>
+        <div class='grid'>            
+            <app-task-card [task]= task  *ngFor="let task of tasks" (click)="editTask(task)"></app-task-card>            
+        </div>
+    </div>
+</div>

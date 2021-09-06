@@ -31,6 +31,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("StageChangeEventType")
+                        .HasColumnType("int");
+
                     b.Property<string>("StageId")
                         .HasColumnType("nvarchar(450)");
 
@@ -562,6 +565,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("DataJson")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Index")
                         .HasColumnType("int");
 
@@ -582,6 +588,50 @@ namespace Infrastructure.Migrations
                     b.HasIndex("VacancyId");
 
                     b.ToTable("Stages");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ToDoTask", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicantId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DoneDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("ToDoTask");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -697,6 +747,21 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UsersToInterviews");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserToTask", b =>
+                {
+                    b.Property<string>("ToDoTaskId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ToDoTaskId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserToTask");
                 });
 
             modelBuilder.Entity("Domain.Entities.Vacancy", b =>
@@ -1083,6 +1148,31 @@ namespace Infrastructure.Migrations
                     b.Navigation("Vacancy");
                 });
 
+            modelBuilder.Entity("Domain.Entities.ToDoTask", b =>
+                {
+                    b.HasOne("Domain.Entities.Applicant", "Applicant")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ApplicantId")
+                        .HasConstraintName("todotask_applicant_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Entities.Company", "Company")
+                        .WithMany("Tasks")
+                        .HasForeignKey("CompanyId")
+                        .HasConstraintName("todotask_company_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.Navigation("Applicant");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("CreatedBy");
+                });
+
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.HasOne("Domain.Entities.Company", "Company")
@@ -1133,6 +1223,27 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("Interview");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserToTask", b =>
+                {
+                    b.HasOne("Domain.Entities.ToDoTask", "Task")
+                        .WithMany("TeamMembers")
+                        .HasForeignKey("ToDoTaskId")
+                        .HasConstraintName("todotask_user__task_FK")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("UserTask")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("todotask_user__user_FK")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Task");
 
                     b.Navigation("User");
                 });
@@ -1188,6 +1299,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("ApplicantPools");
 
                     b.Navigation("Candidates");
+
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("Domain.Entities.Company", b =>
@@ -1199,6 +1312,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("Projects");
 
                     b.Navigation("Recruiters");
+
+                    b.Navigation("Tasks");
 
                     b.Navigation("Vacancies");
                 });
@@ -1243,6 +1358,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("ReviewToStages");
                 });
 
+            modelBuilder.Entity("Domain.Entities.ToDoTask", b =>
+                {
+                    b.Navigation("TeamMembers");
+                });
+
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("AddedCandidates");
@@ -1260,6 +1380,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("UserRoles");
 
                     b.Navigation("UsersToInterviews");
+
+                    b.Navigation("UserTask");
 
                     b.Navigation("Vacancies");
                 });

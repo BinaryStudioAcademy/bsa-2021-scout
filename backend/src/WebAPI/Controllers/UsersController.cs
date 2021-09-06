@@ -24,6 +24,13 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            var query = new GetUsersForHrLeadQuery();
+            return Ok(await Mediator.Send(query));
+        }
+
         [HttpGet("from-token")]
         public async Task<ActionResult<UserDto>> GetUserFromToken([FromServices] ICurrentUserContext currentUserContext)
         {

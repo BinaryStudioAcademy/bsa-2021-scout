@@ -32,6 +32,7 @@ namespace Domain.Entities
         public ICollection<SkillsParsingJob> SkillsParsingJobs { get; set; }
         public ICollection<CandidateToStage> MovedCandidateToStages { get; set; }
 
+        public ICollection<UserToTask> UserTask { get; set; }
         public IList<DomainEvent> DomainEvents { get; set; }
 
     }

@@ -193,10 +193,16 @@ export class AddCandidateModalComponent implements OnDestroy {
 
     this.vacancyCandidateService.postRangeOfCandidates(this.vacancyId,
       markedApplicants.map(applicant => applicant.id))
-      .subscribe(_ => this.notificationService.showSuccessMessage('Successfully added')
-        , (error) => (this.OnError(error)));
+      .subscribe(_ => {
+        this.notificationService.showSuccessMessage('Successfully added');
+        this.modal.close();
+      }
+      , (error) => {
+        this.OnError(error);
+        this.modal.close();
+      });
 
-    this.modal.close();
+    
   }
 
   private _filter(title: string): ShortVacancyWithDepartment[] {

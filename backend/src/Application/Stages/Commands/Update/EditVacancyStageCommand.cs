@@ -81,7 +81,8 @@ namespace Application.Stages.Commands
                     {
                         ActionType = action.ActionType,
                         Name = action.Name,
-                        StageId = command.StageId
+                        StageId = command.StageId,
+                        StageChangeEventType = action.StageChangeEventType
                     };
                     await _writeActionRepository.CreateAsync(addedAction);
                     existedStage.Actions.Add(addedAction);

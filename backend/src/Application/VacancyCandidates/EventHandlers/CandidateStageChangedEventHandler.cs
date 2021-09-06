@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using MediatR;
 using Domain.Events;
 using Application.Common.Models;
+using Domain.Interfaces.Read;
+using ActionType = Domain.Enums.ActionType;
 
 namespace Application.VacancyCandidates.EventHandlers
 {
@@ -11,22 +13,37 @@ namespace Application.VacancyCandidates.EventHandlers
         : INotificationHandler<DomainEventNotification<CandidateStageChangedEvent>>
     {
         private readonly ILogger<CandidateStageChangedEventHandler> _logger;
+        private readonly IStageReadRepository _stageReadRepository;
 
-        public CandidateStageChangedEventHandler(ILogger<CandidateStageChangedEventHandler> logger)
+        public CandidateStageChangedEventHandler(ILogger<CandidateStageChangedEventHandler> logger,
+            IStageReadRepository stageReadRepository)
         {
             _logger = logger;
+            _stageReadRepository = stageReadRepository;
         }
 
-        public Task Handle(DomainEventNotification<CandidateStageChangedEvent> notification, CancellationToken _)
+        public async Task Handle(DomainEventNotification<CandidateStageChangedEvent> notification, CancellationToken _)
         {
-            _logger.LogInformation(
-                "Candidate with id {id} is now on stage with id {stageId} (vacancy with id {vacancyId})",
-                notification.Event.Id,
-                notification.Event.StageId,
-                notification.Event.VacancyId
-            );
+            var stage = await _stageReadRepository.GetWithActions(notification.Event.StageId);
 
-            return Task.CompletedTask;
+            foreach(var action in stage.Actions)
+            {
+                if(action.StageChangeEventType == notification.Event.EventType)
+                {
+                    switch (action.ActionType)
+                    {
+                        case ActionType.AddTask:
+                            _logger.LogInformation("Add task");
+                            break;
+                        case ActionType.ScheduleInterviewAction:
+                            _logger.LogInformation("Schedule Interview Action");
+                            break;
+                        case ActionType.SendMail:
+                            _logger.LogInformation("Send email");
+                            break;
+                    }
+                }
+            }
         }
     }
 }

@@ -22,6 +22,8 @@ import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 import { ProjectsModule } from '../projects/projects.module';
 import { PoolsModule } from '../pools/pools.module';
 import { MailTemplatesModule } from '../mail-templates/mail-templates.module';
+import { TaskManagementModule } from '../task-management/task-management.module';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -41,6 +43,7 @@ import { MailTemplatesModule } from '../mail-templates/mail-templates.module';
     ProjectsModule,
     PoolsModule,
     MailTemplatesModule,
+    TaskManagementModule,
   ],
   providers: [
     SidenavService,

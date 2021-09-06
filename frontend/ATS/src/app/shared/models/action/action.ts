@@ -3,4 +3,5 @@ export interface Action {
   name: string;
   actionType: number;
   stageId: string;
+  stageChangeEventType: number;
 }
