@@ -203,6 +203,9 @@ namespace Infrastructure
 
             services.AddScoped<IWriteRepository<UserFollowedEntity>, WriteRepository<UserFollowedEntity>>();
 
+            services.AddScoped<IWriteRepository<ToDoTask>, WriteRepository<ToDoTask>>();
+            services.AddScoped<IUserToTaskWriteRepository, UserToTaskWriteRepository>();
+
             return services;
         }
 
@@ -260,6 +263,10 @@ namespace Infrastructure
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
 
             services.AddScoped<IReadRepository<ReviewToStage>, ReviewToStageReadRepository>();
+
+            services.AddScoped<IReadRepository<ToDoTask>, TaskReadRepository>();
+            services.AddScoped<ITaskReadRepository, TaskReadRepository>();
+
 
             return services;
         }

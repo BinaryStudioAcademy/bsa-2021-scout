@@ -1,0 +1,89 @@
+@import '/src/common.scss';
+
+.dialog-title {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0 5px;
+    margin: unset;
+}
+
+.dialog-title  button:hover {
+    color: $primary-color;    
+}
+
+
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form-control h5 {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.dialog-title h1 {
+    font-weight: 700;
+}
+
+.form-control .mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;    
+}
+
+.invalid-input {
+    border-color: $primary-color;
+}
+
+
+:host ::ng-deep {
+    .mat-input-element,
+    .mat-form-field-wrapper.mat-form-field-wrapper,
+    .mat-form-field.mat-focused .mat-form-field-label
+    {        
+        color : #000;
+        caret-color: $primary-color-darkgrey;
+    }
+
+    .mat-button-focus-overlay { background-color: transparent!important; }       
+
+    .mat-form-field-wrapper.mat-form-field-wrapper {
+        height: auto;
+        min-height: 45px;
+        box-sizing: border-box;
+        max-width: none;
+    }
+
+    .textarea .mat-form-field-wrapper.mat-form-field-wrapper {
+        padding-top: 10px;
+    }
+
+    .mat-form-field span {
+        padding-top: 10px;
+    }
+    
+
+}
+
+
+.mat-form-field .textarea {
+    padding-top: 10px;
+    font-size: 14px;
+}
+
+.mat-form-field-flex .textarea {
+    padding-top: 10px;
+}
+
+div .custom-error {
+    color: red;
+    margin-top: -18px;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+form .mat-button-disabled {
+    opacity: 0.5;
+}

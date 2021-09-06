@@ -44,8 +44,11 @@ namespace WebAPI.Extensions
             await ApplyVacancyCandidateSeeding(host);
             await ApplyCandidateToStagesSeeding(host);
             await ApplyReviewSeeding(host);
+            await ApplyToDoTaskSeeding(host);
+            await ApplyUserToTaskSeeding(host);
             await ApplyInterviewSeeding(host);
             await ApplyUsersToInterviews(host);
+
 
             return host;
         }
@@ -328,6 +331,41 @@ namespace WebAPI.Extensions
             return host;
         }
 
+        public async static Task<IHost> ApplyToDoTaskSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            foreach (var task in ToDoTasksSeeds.Tasks)
+            {
+                if (await context.ToDoTask.AnyAsync(c => c.Id == task.Id))
+                    context.ToDoTask.Update(task);
+                else
+                    await context.ToDoTask.AddAsync(task);
+                await context.SaveChangesAsync();
+            }
+
+            return host;
+        }
+
+        public async static Task<IHost> ApplyUserToTaskSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            foreach (var userToTask in UserToTaskSeeds.UserToTasks)
+            {
+                if (await context.UserToTask.AnyAsync(c => c.UserId == userToTask.UserId && c.ToDoTaskId == userToTask.ToDoTaskId))
+                    context.UserToTask.Update(userToTask);
+                else
+                    await context.UserToTask.AddAsync(userToTask);
+                await context.SaveChangesAsync();
+            }
+            return host;
+
+        }
+
+
+
+
         public static async Task<IHost> ApplyInterviewSeeding(this IHost host){
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
@@ -365,6 +403,7 @@ namespace WebAPI.Extensions
                 await context.SaveChangesAsync();
             }
             
+
             return host;
         }
     }

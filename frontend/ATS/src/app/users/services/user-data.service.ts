@@ -13,4 +13,10 @@ export class UserDataService {
       '/Users/for-hr-lead',
     );
   }
+
+  public getUsers(): Observable<UserTableData[]> {
+    return this.httpClientService.getRequest<UserTableData[]>(
+      '/Users/',
+    );
+  }
 }
