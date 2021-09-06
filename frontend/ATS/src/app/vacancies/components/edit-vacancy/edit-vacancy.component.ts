@@ -2,11 +2,9 @@ import {
   Component,
   EventEmitter,
   Inject,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -18,7 +16,7 @@ import { VacancyFull } from 'src/app/shared/models/vacancy/vacancy-full';
 import { ProjectService } from 'src/app/shared/services/project.service';
 import { VacancyService } from 'src/app/shared/services/vacancy.service';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { VacancyData } from 'src/app/shared/models/vacancy/vacancy-data';
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { ElasticEntity } from 'src/app/shared/models/elastic-entity/elastic-entity';
@@ -75,7 +73,8 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
         salaryTo: ['', [Validators.required]],
         tierFrom: ['', [Validators.required]],
         tierTo: ['', [Validators.required]],
-        link: ['', [Validators.required]],
+        link: ['', [Validators.required, 
+          Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
         isHot: [''],
         isRemote: [''],
         tags: [''],
@@ -461,9 +460,6 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
 
   //moving stages
   dropStage(event: CdkDragDrop<any>) {
-    this.stageList[event.previousContainer.data.index] =
-      event.container.data.item;
-    this.stageList[event.container.data.index] =
-      event.previousContainer.data.item;
+    moveItemInArray(this.stageList, event.previousContainer.data.index, event.container.data.index);
   }
 }

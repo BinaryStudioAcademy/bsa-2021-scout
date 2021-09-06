@@ -1,6 +1,6 @@
 .stage-card{
     display: grid;
-    grid-template-columns: 1fr 80px;
+    grid-template-columns: 25px 1fr 80px;
     align-items: center;
     font-size: 16px;
     font-weight:600;
@@ -12,3 +12,8 @@
         color: #4F00B5;
     }
 } 
+
+.stage-title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

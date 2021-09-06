@@ -189,7 +189,6 @@ export class MailTemplateEditComponent implements OnDestroy {
       this.files.push(file);
     });
     this.isFileInputChanged = true;
-    console.log(this.isFileInputChanged);
   }
 
   public deleteExistedAttachment(files: string[]): void {
@@ -201,6 +200,5 @@ export class MailTemplateEditComponent implements OnDestroy {
     });
     this.mailTemplate.mailAttachments = leftoverFiles;
     this.isFileInputChanged = true;
-    console.log(this.isFileInputChanged);
   }
 }

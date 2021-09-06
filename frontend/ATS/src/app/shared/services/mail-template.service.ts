@@ -33,7 +33,6 @@ export class MailTemplateService {
   }
 
   public updateMailTempalte(mailTemplate: MailTemplate, files : File[]) {
-    console.log(mailTemplate.id);
     const formData = new FormData();
     formData.append('body', JSON.stringify(mailTemplate));
     files.forEach((f) => formData.append('files', f));
