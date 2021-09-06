@@ -166,13 +166,14 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
       this.loadReviews();
     }
 
-    this.actionJoinOptions = this.actionsToOptions(this.actionsOnJoin);
-    this.actionLeaveOptions = this.actionsToOptions(this.actionsOnLeave);
-
     if (this.stage) {
-      this.editing = true;
-    } else {
-      this.stage = {} as Stage;
+      this.actionJoinOptions = this.actionsToOptions(this.actionsOnJoin);
+      this.actionLeaveOptions = this.actionsToOptions(this.actionsOnLeave);
+      if (this.stage?.id != null) {
+        this.editing = true;
+      } else {
+        this.stage = {} as Stage;
+      }
     }
   }
 
