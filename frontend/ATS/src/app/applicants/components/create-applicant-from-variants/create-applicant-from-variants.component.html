@@ -135,9 +135,14 @@
       <app-tags-edit [tags]="createdApplicant.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
     </div>
     <div class="variants">
-      <div class="variant" (click)="addTag(available)" *ngFor="let available of data.skills">
-        <mat-icon color="accent">add</mat-icon>
-        <span>{{ available }}</span>
+      <ng-container *ngFor="let available of data.skills; index as i">
+        <div class="variant" (click)="toggleTag(available)" *ngIf="i < 5 || showAllTags">
+          <mat-icon color="accent">{{ includesTag(available) ? "remove" : "add" }}</mat-icon>
+          <span>{{ available }}</span>
+        </div>
+      </ng-container>
+      <div class="more-button" (click)="showAllTags = !showAllTags">
+        Show {{ showAllTags ? "less" : "more" }}
       </div>
     </div>
   </div>

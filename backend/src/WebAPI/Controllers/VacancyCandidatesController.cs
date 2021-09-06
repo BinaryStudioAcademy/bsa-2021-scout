@@ -34,7 +34,8 @@ namespace WebAPI.Controllers
         [HttpPost("CandidatesRange/{vacancyId}")]
         public async Task<IActionResult> PostRangeOfCandidatesAsync(string[] applicantsIds, string vacancyId)
         {
-            var command = new CreateVacancyCandidateRangeCommand(applicantsIds, vacancyId);
+            string userId = GetUserIdFromToken();
+            var command = new CreateVacancyCandidateRangeCommand(applicantsIds, vacancyId, userId);
 
             return Ok(await Mediator.Send(command));
         }
