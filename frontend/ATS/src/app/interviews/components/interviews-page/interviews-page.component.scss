@@ -17,32 +17,49 @@
       display: grid;
       grid-template-columns: auto 10px;
     }
+    .vertical{
+      display: grid;
+      grid-template-rows: 90px auto;
+      text-align: left;
+      justify-self: start;
+    }
+    .icon{
+      padding: 0;
+      margin: 0;
+    }
     .scroll{
       overflow-y: scroll;
       overflow-x: hidden;
-      height: 616px;
+      height: 73vh;
       margin: 10px;
       border-radius: 1.5%;
     }
+    .space-out{
+      height: 100%;
+      padding-bottom: 20px;
+    }
+    .interviewColors{
+      background-color: #EC4F9326;
+      border: 1px solid #DA5A92;
+     }
+    .meetingColors{
+        border: 1px solid #2658E8;
+        background-color: #D9E6FD;
+    }
     .extra{
       text-align: left;
-      background-color: #F0F2F8;
-      color: #A2A4A9;
       width: min-content;
       word-wrap: nowrap;
       margin: 5px;
       padding: 0 10px;
-      border-radius: 14%;
+      border-radius: 10%;
       padding-bottom: 0px;
       font-size: 12px;
+      cursor: pointer;
     }
-    li.dates>span{
-        line-height: 30px;
-        padding: 10px;
-    }
-    li.days {
-        margin:  1px;
-        text-align: center;
+    .btn{
+      height: 100%;
+      cursor: pointer;
     }
     .grey {color: #B8B8B8}
     .selected 
@@ -133,9 +150,8 @@
       }
       
       .calendar-day {
-        height: 7vh;
-        max-height: 7vh;
-        cursor: pointer;
+        height: 10vh;
+        max-height: 10vh;
       }
       
       .calendar-items-wrapper {

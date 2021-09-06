@@ -5,6 +5,7 @@ import { Interview } from '../../models/interview.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataErrorOccurredEvent } from 'devextreme/ui/tree_list';
+import { S } from '@angular/cdk/keycodes';
 
 @Pipe({
   name: 'chunk',
@@ -51,19 +52,14 @@ export class InterviewsPageComponent{
       .subscribe((resp) => 
       {
         this.interviews = resp.body!;
-        this.interviews.forEach(
-          i => {
-            this.interviewsDateSet.push(new Date(i.scheduled));
-          }
-
-          ,
-        );
+        this.interviews = this.interviews.sort((a, b) =>new Date(a.scheduled).getTime() 
+          - new Date(b.scheduled).getTime());
         this.dateArrived = Promise.resolve(true);
         this.generateCalendarDays();
       },
       );
   }
-
+  
   private date: Date = new Date();
   private generateCalendarDays(): void {
     // we reset our calendar
@@ -121,7 +117,9 @@ export class InterviewsPageComponent{
     this.date = new Date(year, month, 1);
     this.generateCalendarDays();
   }
-
+  public collapse(calendar: CalendarDay){
+    calendar.isCollapsed = !calendar.isCollapsed;
+  }
   public isWeekend(date:Date):boolean{
     return (date.getDay()%6==0);
   }
