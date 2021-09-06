@@ -338,6 +338,7 @@ namespace WebAPI.Extensions
 
             return host;
         }
+
         public async static Task<IHost> ApplyUserToTaskSeeding(this IHost host)
         {
             using var scope = host.Services.CreateScope();
@@ -350,6 +351,10 @@ namespace WebAPI.Extensions
                     await context.UserToTask.AddAsync(userToTask);
                 await context.SaveChangesAsync();
             }
+            return host;
+
+        }
+
 
 
 
