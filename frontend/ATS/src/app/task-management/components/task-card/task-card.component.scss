@@ -37,6 +37,11 @@
         
         border-bottom: 2px solid #F2F2F2;
 
+        .hot {
+            vertical-align: middle;
+            color: $primary-color;
+        }
+
         .top {
             display: flex;
             justify-content: space-between;

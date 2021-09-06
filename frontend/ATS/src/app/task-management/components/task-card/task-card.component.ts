@@ -49,4 +49,10 @@ export class TaskCardComponent implements OnInit{
     return this.task.isDone ? 'is-done':'';
   }
 
+  isHot() {
+    const end = this.task.dueDate.valueOf();
+    const now = new Date().valueOf();
+    return (end - now < 2*1000*86400) || ((end < now) && !this.task.isDone);
+  }
+
 }
