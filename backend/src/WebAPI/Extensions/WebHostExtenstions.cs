@@ -29,7 +29,7 @@ namespace WebAPI.Extensions
 
         public static async Task<IHost> ApplyAllSeeding(this IHost host)
         {
-            //await ApplyMongoSeeding(host);
+            await ApplyMongoSeeding(host);
             await ApplyCompanySeeding(host);
             await ApplyElasticSeeding(host);
             await ApplyRoleSeeding(host);
