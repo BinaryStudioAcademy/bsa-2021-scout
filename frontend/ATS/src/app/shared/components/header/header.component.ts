@@ -88,6 +88,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userService.getByToken().subscribe(
       response => {
         this.user = response;
+        if(this.user.avatarUrl) this.user.avatarUrl = this.user.avatarUrl + '?'+performance.now();
+
       });
   }
 

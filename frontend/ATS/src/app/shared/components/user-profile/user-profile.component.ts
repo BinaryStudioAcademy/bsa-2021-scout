@@ -27,8 +27,9 @@ export class UserProfileComponent implements OnInit{
     this.userService.getById(this.user.id!).subscribe(
       response => {
         this.user = response;
+        this.avatarUrl = (this.user.avatarUrl ?? '') +'?'+ performance.now();
       });
-    this.avatarUrl = (this.user.avatarUrl ?? '') +'?'+ performance.now();
+    
   }
 
   getMainRoles(){

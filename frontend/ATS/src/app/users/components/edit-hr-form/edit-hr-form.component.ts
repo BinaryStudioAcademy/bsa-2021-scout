@@ -91,7 +91,7 @@ export class EditHrFormComponent implements OnInit, OnDestroy {
             slack: response.slack || '',
             email: response.email,
           });
-          this.imageUrl = response.avatarUrl +'?'+performance.now();
+          this.imageUrl = response.avatarUrl ? response.avatarUrl +'?'+performance.now() : '';
 
         });
     }else{
@@ -106,7 +106,8 @@ export class EditHrFormComponent implements OnInit, OnDestroy {
             slack: response.slack || '',
             email: response.email,
           });
-          this.imageUrl = response.avatarUrl +'?'+performance.now();
+          this.imageUrl = response.avatarUrl ? response.avatarUrl +'?'+performance.now() : '';
+
         });
     }
 
