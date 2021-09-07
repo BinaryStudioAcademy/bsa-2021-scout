@@ -58,7 +58,7 @@ namespace Infrastructure.EF
         {
             if (!optionsBuilder.IsConfigured)
             {
-                string connectionString = "Server=localhost\\SQLEXPRESS;Database=ATSDev;Trusted_Connection=True;";
+                string connectionString = sys::Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
                 optionsBuilder.UseSqlServer(connectionString);
             }
         }

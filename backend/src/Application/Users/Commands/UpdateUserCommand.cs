@@ -90,11 +90,11 @@ namespace Application.Users.Commands.Create
         {
             if (command.User.IsImageToDelete == true)
             {
-                var cachedAvatar = user.Avatar;
-                user.Avatar.Id = null;
-                user.Avatar = null;
+                //var cachedAvatar = user.Avatar;
+                //user.Avatar.Id = null;
+                user.AvatarId = null;
                 var updated = await _writeRepository.UpdateAsync(user);
-                await _imageWriteRepository.DeleteAsync(cachedAvatar);
+                await _imageWriteRepository.DeleteAsync(user.Avatar);
             }
 
             if (command.ImgFileDto == null)

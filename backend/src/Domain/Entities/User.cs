@@ -13,6 +13,7 @@ namespace Domain.Entities
             DomainEvents = new List<DomainEvent>();
         }
 
+        public string AvatarId { get; set; }
         public FileInfo Avatar { get; set; }
         public string Skype { get; set; }
         public string Slack { get; set; }
