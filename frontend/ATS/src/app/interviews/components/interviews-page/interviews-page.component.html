@@ -29,8 +29,8 @@
       </thead>
       <tbody *ngIf="dateArrived | async">
         <tr *ngFor="let row of calendar | chunk: 7; let i = index">
-          <td  class="calendar-day" [ngClass]="{'blue': isWeekend(c.date)}" *ngFor="let c of row; let j = index">
-            <div  class="calendar-day-header" [ngClass]="{'blue-date': c.isToday}">
+          <td class="calendar-day" [ngClass]="{'blue': isWeekend(c.date), 'blue-date': c.isToday}" *ngFor="let c of row; let j = index">
+            <div  class="calendar-day-header">
               <div class="horizontaly">
                 <div *ngIf="c.interviews.length === 0"></div>
                 <div *ngIf="c.interviews.length > 0">
