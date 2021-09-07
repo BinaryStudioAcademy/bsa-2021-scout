@@ -78,7 +78,6 @@ export class EditHrFormComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit() {
-    console.log(this.data.userToEdit);
     if (!this.data.isUserLeadProfile) {
       this.userService.getByToken().subscribe(
         response => {
@@ -140,8 +139,6 @@ export class EditHrFormComponent implements OnInit, OnDestroy {
       email:this.profileForm.controls['email'].value,
       isImageToDelete: this.isAvatarToDelete,
     };
-
-    console.log(createUser);
       
     this.userService
       .putUser(createUser)
