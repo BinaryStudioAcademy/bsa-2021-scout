@@ -25,6 +25,7 @@ export enum FilterType {
 export interface MultipleSettings {
   options: IOption[];
   canBeExtraModified?: boolean;
+  sort?: boolean;
   valueSelector?: (data: any) => any;
 }
 
@@ -129,8 +130,8 @@ export class TableFilterComponent implements OnChanges, OnInit {
       return;
     }
 
-    const start = moment(startInput.value, 'l').toDate();
-    const end = moment(endInput.value, 'l').toDate();
+    const start = moment(startInput.value, 'DD[.]MM[.]YYYY').toDate();
+    const end = moment(endInput.value, 'DD[.]MM[.]YYYY').toDate();
 
     this.filterValues[filter.id] = [start, end];
     this.applyFilters();
@@ -398,7 +399,16 @@ export class TableFilterComponent implements OnChanges, OnInit {
 
     this.descriptionMap = Object.assign(
       {},
-      ...desc.map((f) => ({ [f.id]: f })),
+      ...desc.map((f) => {
+        const newFilter = { ...f };
+
+        if (newFilter.multipleSettings?.sort) {
+          newFilter.multipleSettings.options = newFilter.multipleSettings.options
+            .sort((a, b) => a.label < b.label ? -1 : 1);
+        }
+
+        return { [f.id]: newFilter };
+      }),
     );
   }
 }
