@@ -10,7 +10,6 @@ using Application.UserFollowed.Commands;
 using Application.UserFollowed.Dtos;
 using Application.UserFollowed.Queries;
 using Application.Vacancies.Commands.Create;
-using Application.Vacancies.Commands.Delete;
 using Application.Vacancies.Commands.Edit;
 using Application.Vacancies.Dtos;
 using Application.Vacancies.Queries;
