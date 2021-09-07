@@ -27,12 +27,12 @@ export class AuthGuard implements CanActivateChild, CanActivate {
       return true;
     }
 
-    this.dialog.closeAll();
-
     this.router.navigate([AppRoute.Login], { 
       queryParams: { link: btoa(state.url) },
-      queryParamsHandling: 'preserve',
+      queryParamsHandling: 'merge',
     });
+
+    setTimeout(this.dialog.closeAll, 200);
 
     return false;
   }

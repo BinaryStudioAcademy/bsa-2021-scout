@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { NativeDateAdapter } from '@angular/material/core';
 import { TimezonePipe } from '../pipes/timezone-pipe';
 
@@ -7,6 +8,9 @@ interface DisplayFormat {
   day?: string;  
 }
 
+@Injectable({
+  providedIn: 'root',
+})
 export class TimezoneDateAdapter extends NativeDateAdapter {
   public override format(
     date: Date,
