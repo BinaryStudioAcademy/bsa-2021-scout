@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(new GetArchivedProjectsQuery()));
         }
 
-
+        [Authorize(Roles = "HrLead")]
         [HttpDelete("vacancies/{id}")]
         public async Task<IActionResult> DeleteVacancy(string id)
         {
@@ -68,6 +68,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "HrLead")]
         [HttpDelete("projects/{id}")]
         public async Task<IActionResult> DeleteProject(string id)
         {
