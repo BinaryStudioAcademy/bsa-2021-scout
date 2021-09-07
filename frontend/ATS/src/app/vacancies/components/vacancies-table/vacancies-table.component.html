@@ -80,8 +80,8 @@
                                 (click)="onBookmark(row)">bookmark</mat-icon>
                             <mat-icon (click)="onEdit(row)">edit</mat-icon>
                             <mat-select panelClass="vacancy-options">
-                                <mat-option class="delete" (click)="showDeleteConfirmDialog(row)">
-                                    <mat-icon>delete</mat-icon>Delete
+                                <mat-option (click)="showArchiveConfirmDialog(row)">
+                                    <mat-icon>archive</mat-icon>Archive
                                 </mat-option>
                                 <mat-option [cdkCopyToClipboard]="generateLink(row.id)" (click)="successMessage('Copied!')">
                                     <mat-icon>link</mat-icon>Copy Applying Link
