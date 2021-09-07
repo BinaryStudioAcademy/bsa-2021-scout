@@ -181,7 +181,7 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
       .subscribe((_) => this.loadData());
   }
 
-  public openClosingVacancyConfirmDialog(): void {
+  public openCompletingVacancyConfirmDialog(): void {
     this.modalService.open(ConfirmationDialogComponent, {
       width: '450px',
       height: 'min-content',
