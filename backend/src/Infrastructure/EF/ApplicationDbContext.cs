@@ -38,6 +38,7 @@ namespace Infrastructure.EF
         public DbSet<UserFollowedEntity> UserFollowedEntities { get; set; }
         public DbSet<Interview> Interviews { get; set; }
         public DbSet<UsersToInterview> UsersToInterviews { get; set; }
+        public DbSet<ArchivedEntity> ArchivedEntities { get; set; }
 
         private readonly IDomainEventService _domainEventService;
 
