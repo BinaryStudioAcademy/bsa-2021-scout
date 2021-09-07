@@ -66,6 +66,10 @@
         <input required formControlName="email" type="email" matInput placeholder="Enter email"
           [(ngModel)]="createdApplicant.email">
       </mat-form-field>
+      <div class="validation-error"
+        *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.required; else emailPatternError">
+        It&apos;s required field
+      </div>
     </div>
     <div class="variants">
       <div class="variant" (click)="set('email', available)" *ngFor="let available of data.email">
