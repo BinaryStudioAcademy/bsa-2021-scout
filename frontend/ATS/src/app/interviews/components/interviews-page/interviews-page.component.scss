@@ -20,9 +20,14 @@
     .scroll{
       overflow-y: scroll;
       overflow-x: hidden;
-      height: 616px;
+      height: calc(100vh - 210px);
       margin: 10px;
+      margin-bottom: 0;
       border-radius: 1.5%;
+
+      .calendar-table {
+        margin-bottom: 0;
+      }
     }
     .extra{
       text-align: left;
@@ -60,14 +65,21 @@
         line-height: 22px;
     }
     .controls{
-        text-align: center;
-        display: grid;
-        grid-template-columns: 220px 1fr;
+      position: relative;
+      padding-top: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+      text-align: center;
+      display: grid;
+      grid-template-columns: 210px 1fr;
     }
     .dates{
-      vertical-align: middle;
-      margin-top: 15px;
-      margin-left: -240px;
+      position: absolute;
+      margin-left: auto;
+      margin-right: auto;
+      left: 0;
+      right: 4px;
+      bottom: 10px;
     }
     .today{
       display: grid;

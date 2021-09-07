@@ -16,7 +16,9 @@
    
 
 .header {
-    
+    padding-left: 10px;
+    padding-top: 5px;
+
     h2 {
         margin-bottom: 0px;
     }
@@ -122,11 +124,12 @@
 
 .content {
     background-color: #fff;
-    margin: 35px 0;
+    margin: 15px 0;
     border-radius: 10px;
     padding: 35px;
-    min-height: calc(100vh - 350px);
-    
+    height: calc(100vh - 320px);
+    overflow: scroll;
+
         .grid {            
             display: grid;
             grid-template-columns: repeat(auto-fill, 473px);
