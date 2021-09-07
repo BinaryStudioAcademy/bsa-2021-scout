@@ -7,6 +7,7 @@ using Domain.Entities.HomeData;
 using System.Linq;
 using System.Collections.Generic;
 using Domain.Interfaces.Read;
+using Domain.Enums;
 
 namespace Infrastructure.Repositories.Read
 {
@@ -31,7 +32,7 @@ namespace Infrastructure.Repositories.Read
                           SELECT V.Id, V.Title, V.IsHot
                           FROM Vacancies AS V
                           WHERE V.CompanyId = @companyId
-		                        AND V.CompletionDate IS NULL
+                                AND NOT EXISTS (SELECT * FROM ArchivedEntities AS AV WHERE AV.EntityType = @entityVacancyType AND AV.EntityId = V.Id)
                           ORDER BY V.CreationDate DESC;
 
                           SELECT Count(*)
@@ -39,14 +40,14 @@ namespace Infrastructure.Repositories.Read
                           INNER JOIN Stages AS S ON V.Id = S.VacancyId
                           INNER JOIN CandidateToStages AS CS ON S.Id = CS.StageId
                           WHERE V.CompanyId = @companyId 
-		                        AND V.CompletionDate IS NULL
+                                AND NOT EXISTS (SELECT * FROM ArchivedEntities AS AV WHERE AV.EntityType = @entityVacancyType AND AV.EntityId = V.Id)
 		                        AND CS.DateRemoved IS NULL
 		                        AND S.[Index] = (SELECT MAX(S2.[Index]) FROM Stages AS S2 WHERE S2.VacancyId = V.Id);
 
                           SELECT Count(*)
                           FROM Users AS U
                           WHERE U.CompanyId = @companyId;";
-            var results = await connection.QueryMultipleAsync(sql, new { companyId = @companyId });
+            var results = await connection.QueryMultipleAsync(sql, new { companyId = @companyId, entityVacancyType = EntityType.Vacancy });
 
             WidgetsData widgetsData = new WidgetsData();
             widgetsData.ApplicantCount = await results.ReadSingleAsync<int>();
@@ -75,11 +76,11 @@ namespace Infrastructure.Repositories.Read
                             LEFT JOIN VacancyCandidates AS VC ON CS.CandidateId = VC.Id
                             WHERE V.CompanyId = @companyId 
 		                      AND V.IsHot = 1
-		                      AND V.CompletionDate IS NULL
+                              AND NOT EXISTS (SELECT * FROM ArchivedEntities AS AV WHERE AV.EntityType = @entityVacancyType AND AV.EntityId = V.Id)
 		                      AND CS.DateRemoved IS NULL
                             ORDER BY V.CreationDate DESC;";
 
-            var hotVacancySummary = await connection.QueryAsync<HotVacancySummary>(sql, new { companyId = @companyId });
+            var hotVacancySummary = await connection.QueryAsync<HotVacancySummary>(sql, new { companyId = @companyId, entityVacancyType = EntityType.Vacancy });
 
             await connection.CloseAsync();
 

@@ -59,5 +59,17 @@ namespace Infrastructure.Repositories.Abstractions
 
             return await cursor.FirstAsync();
         }
+
+        public async Task<IEnumerable<T>> GetEnumerableByPropertyAsync(string property, string propertyValue)
+        {
+            BsonDocument filter = new BsonDocument(new BsonElement(property, propertyValue));
+
+            IAsyncCursor<T> cursor = await _connectionFactory
+                .GetMongoConnection()
+                .GetCollection<T>(typeof(T).Name)
+                .FindAsync<T>(filter);
+
+            return await cursor.ToListAsync();
+        }
     }
 }

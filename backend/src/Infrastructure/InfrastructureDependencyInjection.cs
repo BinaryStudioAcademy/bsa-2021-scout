@@ -19,7 +19,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Nest;
-using Domain.Interfaces;
 using Infrastructure.Files.Abstraction;
 using Infrastructure.Files.Read;
 using Action = Domain.Entities.Action;
@@ -202,6 +201,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<MailAttachment>, MongoWriteRepository<MailAttachment>>();
 
             services.AddScoped<IWriteRepository<UserFollowedEntity>, WriteRepository<UserFollowedEntity>>();
+            services.AddScoped<IWriteRepository<ArchivedEntity>, WriteRepository<ArchivedEntity>>();
 
             return services;
         }
@@ -224,6 +224,7 @@ namespace Infrastructure
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
             services.AddScoped<IHomeDataReadRepository, HomeDataReadRepository>();
+            services.AddScoped<IArchivedEntityReadRepository, ArchivedEntityReadRepository>();
 
             services.AddScoped<IReadRepository<RegisterPermission>, RegisterPermissionReadRepository>();
 
@@ -260,6 +261,8 @@ namespace Infrastructure
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
 
             services.AddScoped<IReadRepository<ReviewToStage>, ReviewToStageReadRepository>();
+            services.AddScoped<IReadRepository<CandidateComment>, CandidateCommentReadRepository>();
+            
 
             return services;
         }

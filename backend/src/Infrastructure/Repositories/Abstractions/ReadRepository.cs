@@ -60,5 +60,15 @@ namespace Infrastructure.Repositories.Abstractions
             await connection.CloseAsync();
             return entities;
         }
+
+        public virtual async Task<IEnumerable<T>> GetEnumerableByPropertyAsync(string property, string propertyValue)
+        {
+            var connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
+            string sql = $"SELECT * FROM {_tableName} WHERE [{property}] = @propertyValue";
+            var entities = await connection.QueryAsync<T>(sql, new { propertyValue });
+            await connection.CloseAsync();
+            return entities;
+        }
     }
 }
