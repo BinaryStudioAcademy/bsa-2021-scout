@@ -29,7 +29,7 @@ export class AllInOneComponent {
     'name': new FormControl('', [
       Validators.required,
       Validators.minLength(3),
-      Validators.maxLength(20)]),
+      Validators.maxLength(100)]),
     'isDone': new FormControl(''),
     'applicant': new FormControl('', [
       Validators.required,

@@ -86,15 +86,19 @@
                 font-size: 14px;
                 text-align: center;      
         
+                &:last-of-type {
+                    width: 120px;
+                }
+
                 ::ng-deep .mat-list-text {
                     padding-right: 0;
                 }
             }
-        
+            
             .mat-selection-list {
                 display: flex;
                 flex-direction: row;
-                width: 200px;
+                width: 400px;
             }
         
             ::ng-deep .mat-option {
