@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from 'src/app/shared/services/http-client.service';
+import { CreateInterviewDto } from '../models/create-interview-dto.model';
 import { Interview } from '../models/interview.model';
 
 @Injectable({
@@ -18,8 +19,8 @@ export class InterviewsService {
     return this.httpService.getFullRequest<Interview>(`${this.routePrefix}/${id}`);
   }
 
-  public createInterview(post: Interview) {
-    return this.httpService.postFullRequest<Interview>(`${this.routePrefix}`, post);
+  public createInterview(post: CreateInterviewDto) {
+    return this.httpService.postFullRequest<CreateInterviewDto>(`${this.routePrefix}`, post);
   }
 
   public deleteInterview(interview: Interview) {

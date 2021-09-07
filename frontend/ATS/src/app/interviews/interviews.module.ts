@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InterviewCardComponent } from './components/interview-card/interview-card.component';
+import { CreateInterviewComponent } from './components/create-interview/create-interview.component';
 
 
 
@@ -23,6 +24,7 @@ import { InterviewCardComponent } from './components/interview-card/interview-ca
     InterviewsPageComponent,
     ChunkPipe,
     InterviewCardComponent,
+    CreateInterviewComponent,
   ],
   imports: [
     CommonModule,

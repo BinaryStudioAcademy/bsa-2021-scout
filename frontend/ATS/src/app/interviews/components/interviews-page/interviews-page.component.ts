@@ -5,6 +5,9 @@ import { Interview } from '../../models/interview.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataErrorOccurredEvent } from 'devextreme/ui/tree_list';
+import { CreateInterviewComponent } from '../create-interview/create-interview.component';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateInterviewDto } from '../../models/create-interview-dto.model';
 
 @Pipe({
   name: 'chunk',
@@ -43,7 +46,8 @@ export class InterviewsPageComponent{
   private interviewsDateSet: Date[] = [];
   private interviews: Interview[] = [];
   public dateArrived!: Promise<boolean>;
-  constructor(public service: InterviewsService) {
+  constructor(public service: InterviewsService,
+    private dialog: MatDialog) {
     service.getInterviews()
       .pipe(
         takeUntil(this.unsubscribe$),
@@ -135,5 +139,56 @@ export class InterviewsPageComponent{
     && date.getFullYear() == sched.getFullYear()&&
     date.getDate() == sched.getDate(),
     );
+  }
+
+  public OnEdit(interview : Interview){
+    var interviewToEdit: CreateInterviewDto = new CreateInterviewDto(interview);
+    const dialogRef = this.dialog.open(CreateInterviewComponent, {
+      data: {
+        interview: interviewToEdit,
+      },
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.service.getInterviews()
+        .pipe(
+          takeUntil(this.unsubscribe$),
+        )
+        .subscribe((resp) => 
+        {
+          this.interviews = resp.body!;
+          this.interviewsDateSet = [];
+          this.date = new Date(Date.now());
+          this.interviews.forEach(
+            i => {
+              this.interviewsDateSet.push(new Date(i.scheduled));
+            });
+          this.dateArrived = Promise.resolve(true);
+          this.generateCalendarDays();
+        },
+        );
+    });
+  }
+
+  public OnCreate(): void {
+    const dialogRef = this.dialog.open(CreateInterviewComponent);
+    dialogRef.afterClosed().subscribe(() => {
+      this.service.getInterviews()
+        .pipe(
+          takeUntil(this.unsubscribe$),
+        )
+        .subscribe((resp) => 
+        {
+          this.interviews = resp.body!;
+          this.interviewsDateSet = [];
+          this.date = new Date(Date.now());
+          this.interviews.forEach(
+            i => {
+              this.interviewsDateSet.push(new Date(i.scheduled));
+            });
+          this.dateArrived = Promise.resolve(true);
+          this.generateCalendarDays();
+        },
+        );
+    });
   }
 }

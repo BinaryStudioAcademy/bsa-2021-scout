@@ -3,5 +3,5 @@
     <div> with <span>{{interview.userParticipants[0].firstName + " " + 
         interview.userParticipants[0].lastName}}</span></div>
         
-    <div>{{getDate(interview.scheduled) | date: "HH:MM"}} - {{getDateAfter(interview.scheduled, interview.duration) | date: "HH:MM"}}</div>
+    <div>{{getDate(interview.scheduled) | date: "HH:mm"}} - {{getDateAfter(interview.scheduled, interview.duration) | date: "HH:mm"}}</div>
 </div>

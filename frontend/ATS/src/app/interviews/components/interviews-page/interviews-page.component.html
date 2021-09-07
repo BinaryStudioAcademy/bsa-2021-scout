@@ -12,6 +12,7 @@
     </span>
     <span class="clickable" mat-button  (click)="increaseMonth()" value="+">&gt;</span>
   </div>
+  <button class="create-button" mat-button (click)="OnCreate()">+ New Interview</button>
 </div>
 <div class="scroll">
   <table class='calendar-table' *ngIf="calendar">
@@ -32,7 +33,7 @@
           <div  class="calendar-day-header" [ngClass]="{'blue-date': c.isToday}">
             <div class="horizontaly">
               <div *ngIf="c.interviews.length === 0"></div>
-              <app-interview-card (click)="debug(c.interviews[0].scheduled , c.interviews[0].duration)" [interview]="c.interviews[0]" *ngIf="c.interviews.length > 0"></app-interview-card>
+              <app-interview-card (click)="OnEdit(c.interviews[0])" [interview]="c.interviews[0]" *ngIf="c.interviews.length > 0"></app-interview-card>
               <div [ngClass]="{'grey':!isSameMonth(c.date)}">{{c.date.getDate()}}</div>
             </div>
             <div class="extra" *ngIf="c.interviews.length>=2">{{c.interviews.length}} Events</div>
