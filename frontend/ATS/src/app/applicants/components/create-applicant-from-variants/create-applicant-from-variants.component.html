@@ -60,16 +60,12 @@
   </ng-template>
   <div class="variants-input">
     <div>
-      <p class="required-field">Email</p>
+      <p>Email</p>
       <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors? 'invalid-input' : ''">
         <input required formControlName="email" type="email" matInput placeholder="Enter email"
           [(ngModel)]="createdApplicant.email">
       </mat-form-field>
-      <div class="validation-error"
-        *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.required; else emailPatternError">
-        It&apos;s required field
-      </div>
     </div>
     <div class="variants">
       <div class="variant" (click)="set('email', available)" *ngFor="let available of data.email">
@@ -86,16 +82,12 @@
   </ng-template>
   <div class="variants-input">
     <div>
-      <p class="required-field">Experience description</p>
+      <p>Experience description</p>
       <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors? 'invalid-input' : ''">
         <input required formControlName="experienceDescription" type="text" matInput
           placeholder="Enter experience description" [(ngModel)]="createdApplicant.experienceDescription">
       </mat-form-field>
-      <div class="validation-error"
-        *ngIf="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors?.required">
-        It&apos;s required field
-      </div>
     </div>
     <div class="variants">
       <div class="variant" (click)="set('experienceDescription', available)" *ngFor="let available of data.experience">
@@ -104,7 +96,7 @@
       </div>
     </div>
   </div>
-  <p class="required-field">Experience years</p>
+  <p>Experience years</p>
   <mat-form-field appearance="fill"
     [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors? 'invalid-input' : ''">
     <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60"
@@ -116,16 +108,12 @@
   </div>
   <div class="variants-input">
     <div>
-      <p class="required-field">Phone</p>
+      <p>Phone</p>
       <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors? 'invalid-input' : ''">
         <input required formControlName="phone" type="tel" matInput placeholder="Enter phone number"
           [(ngModel)]="createdApplicant.phone">
       </mat-form-field>
-      <div class="validation-error"
-        *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.required; else phonePatternError">
-        It&apos;s required field
-      </div>
     </div>
     <div class="variants">
       <div class="variant" (click)="set('phone', available)" *ngFor="let available of data.phone">
@@ -147,43 +135,22 @@
       <app-tags-edit [tags]="createdApplicant.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
     </div>
     <div class="variants">
-      <div class="variant" (click)="addTag(available)" *ngFor="let available of data.skills">
-        <mat-icon color="accent">add</mat-icon>
-        <span>{{ available }}</span>
+      <ng-container *ngFor="let available of data.skills; index as i">
+        <div class="variant" (click)="toggleTag(available)" *ngIf="i < 5 || showAllTags">
+          <mat-icon color="accent">{{ includesTag(available) ? "remove" : "add" }}</mat-icon>
+          <span>{{ available }}</span>
+        </div>
+      </ng-container>
+      <div class="more-button" (click)="showAllTags = !showAllTags">
+        Show {{ showAllTags ? "less" : "more" }}
       </div>
     </div>
   </div>
-  <p class="required-field">Skills additional information</p>
+  <p>Skills additional information</p>
   <mat-form-field class="wide" appearance="fill">
     <textarea formControlName="skills" matInput placeholder="Enter skills additional information"
       [(ngModel)]="createdApplicant.skills"></textarea>
   </mat-form-field>
-  <div class="validation-error"
-    *ngIf="validationGroup!.controls['skills'].dirty && validationGroup!.controls['skills'].errors?.required">
-    It&apos;s required field
-  </div>
-  <div class="variants-input">
-    <div>
-      <p>Skype</p>
-      <mat-form-field appearance="fill"
-        [ngClass]="validationGroup!.controls['skype'].dirty && validationGroup!.controls['skype'].errors? 'invalid-input' : ''">
-        <input formControlName="skype" type="text" matInput placeholder="Enter skype"
-          [(ngModel)]="createdApplicant.skype">
-      </mat-form-field>
-      <div class="validation-error"
-        *ngIf="validationGroup!.controls['skype'].dirty && validationGroup!.controls['skype'].errors?.pattern">
-        A skype url must match the pattern https://skype.com/&lt;skype&gt;.
-        A skype has to has a length from 6 to 32 not space characters
-      </div>
-    </div>
-    <div class="variants">
-      <div class="variant" (click)="set('skype', 'https://skype.com/' + available)"
-        *ngFor="let available of data.skype">
-        <mat-icon color="accent">add</mat-icon>
-        <span>{{ available }}</span>
-      </div>
-    </div>
-  </div>
   <p>LinkedIn url</p>
   <mat-form-field appearance="fill"
     [ngClass]="validationGroup!.controls['linkedInUrl'].dirty && validationGroup!.controls['linkedInUrl'].errors? 'invalid-input' : ''">
@@ -199,7 +166,7 @@
   </app-file-input>
   <mat-dialog-actions class="publish-action">
     <button [disabled]="validationGroup!.invalid" (click)="createApplicant()" mat-button>
-      Publish
+      Save
     </button>
   </mat-dialog-actions>
 </form>

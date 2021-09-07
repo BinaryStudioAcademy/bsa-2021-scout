@@ -27,22 +27,26 @@ namespace Application.Vacancies.Commands.Delete
         private readonly IWriteRepository<Vacancy> _writeRepository;
         private readonly IWriteRepository<Stage> _writeStageRepository;
         private readonly IReadRepository<Stage> _readStageRepository;
-        private readonly ICandidateToStageWriteRepository _writeCandidateToStageRepository;
+        private readonly IWriteRepository<CandidateToStage> _writeCandidateToStageRepository;
         private readonly IReadRepository<CandidateToStage> _readCandidateToStageRepository;
         private readonly IWriteRepository<Action> _writeActionRepository;
         private readonly IReadRepository<Action> _readActionRepository;
         private readonly IWriteRepository<CandidateReview> _writeCandidateReviewRepository;
         private readonly IReadRepository<CandidateReview> _readCandidateReviewRepository;
+        private readonly IWriteRepository<ReviewToStage> _writeReviewToStageRepository;
+        private readonly IReadRepository<ReviewToStage> _readReviewToStageRepository;
 
         public DeleteVacancyCommandHandler(IWriteRepository<Vacancy> writeRepository,
             IWriteRepository<Stage> writeStageRepository,
             IReadRepository<Stage> readStageRepository,
-            ICandidateToStageWriteRepository writeCandidateToStageRepository,
+            IWriteRepository<CandidateToStage> writeCandidateToStageRepository,
             IReadRepository<CandidateToStage> readCandidateToStageRepository,
             IWriteRepository<Action> writeActionRepository,
             IReadRepository<Action> readActionRepository,
             IWriteRepository<CandidateReview> writeCandidateReviewRepository,
-            IReadRepository<CandidateReview> readCandidateReviewRepository)
+            IReadRepository<CandidateReview> readCandidateReviewRepository,
+            IWriteRepository<ReviewToStage> writeReviewToStageRepository,
+            IReadRepository<ReviewToStage> readReviewToStageRepository)
         {
             _writeRepository = writeRepository;
             _writeStageRepository = writeStageRepository;
@@ -53,29 +57,24 @@ namespace Application.Vacancies.Commands.Delete
             _readActionRepository = readActionRepository;
             _writeCandidateReviewRepository = writeCandidateReviewRepository;
             _readCandidateReviewRepository = readCandidateReviewRepository;
+            _writeReviewToStageRepository = writeReviewToStageRepository;
+            _readReviewToStageRepository = readReviewToStageRepository;
         }
 
         public async Task<Unit> Handle(DeleteVacancyCommand command, CancellationToken _)
         {
-            try
-            {
-                var stageIds = (await _readStageRepository.GetEnumerableAsync())
-                .Where(stage => stage.VacancyId == command.Id)
-                .Select(stage => stage.Id);
 
-                foreach (var stageId in stageIds)
-                {
-                    await DeleteDependenciesAsync(stageId);
-                    await _writeStageRepository.DeleteAsync(stageId);
-                }
+            var stageIds = (await _readStageRepository.GetEnumerableAsync())
+            .Where(stage => stage.VacancyId == command.Id)
+            .Select(stage => stage.Id);
 
-                await _writeRepository.DeleteAsync(command.Id);
-            }
-            catch(Exception ex)
+            foreach (var stageId in stageIds)
             {
-                ex.ToString();
+                await DeleteDependenciesAsync(stageId);
+                await _writeStageRepository.DeleteAsync(stageId);
             }
-            
+
+            await _writeRepository.DeleteAsync(command.Id);
 
             return await Task.FromResult<Unit>(Unit.Value);
         }
@@ -83,30 +82,35 @@ namespace Application.Vacancies.Commands.Delete
         private async Task DeleteDependenciesAsync(string stageId)
         {
             var candidateToStagesIds = (await _readCandidateToStageRepository.GetEnumerableAsync())
-                .Where(candidateToStage => candidateToStage.StageId == stageId)
-                .Select(candidateToStage => candidateToStage.Id);
+                .Where(candidateToStage => candidateToStage.StageId == stageId);
 
             var actionsIds = (await _readActionRepository.GetEnumerableAsync())
-                .Where(actions => actions.StageId == stageId)
-                .Select(actions => actions.Id);
+                .Where(actions => actions.StageId == stageId);
 
             var candidateReviewsIds = (await _readCandidateReviewRepository.GetEnumerableAsync())
-                .Where(candidateReview => candidateReview.StageId == stageId)
-                .Select(candidateReview => candidateReview.Id);
+                .Where(candidateReview => candidateReview.StageId == stageId);
+
+            var stageReviewsIds = (await _readReviewToStageRepository.GetEnumerableAsync())
+                .Where(reviewToStage => reviewToStage.StageId == stageId);
 
             foreach (var candidateToStagesId in candidateToStagesIds)
             {
-                await _writeCandidateToStageRepository.DeleteAsync(candidateToStagesId);
+                await _writeCandidateToStageRepository.DeleteAsync(candidateToStagesId.Id);
             }
 
             foreach (var actionsId in actionsIds)
             {
-                await _writeActionRepository.DeleteAsync(actionsId);
+                await _writeActionRepository.DeleteAsync(actionsId.Id);
             }
 
             foreach (var candidateReviewsId in candidateReviewsIds)
             {
-                await _writeCandidateReviewRepository.DeleteAsync(candidateReviewsId);
+                await _writeCandidateReviewRepository.DeleteAsync(candidateReviewsId.Id);
+            }
+
+            foreach (var stageReviewsId in stageReviewsIds)
+            {
+                await _writeReviewToStageRepository.DeleteAsync(stageReviewsId.Id);
             }
         }
     }

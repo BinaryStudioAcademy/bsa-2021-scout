@@ -29,10 +29,12 @@ import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 import {
   FilterDescription,
   FilterType,
+  PageDescription,
+  TableFilterComponent,
 } from 'src/app/shared/components/table-filter/table-filter.component';
 
 import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
-import { D } from '@angular/cdk/keycodes';
+import { environment } from '../../../../environments/environment';
 
 const STATUES: VacancyStatus[] = [
   VacancyStatus.Active,
@@ -64,23 +66,31 @@ implements AfterViewInit, OnInit, OnDestroy
     'actions',
   ];
 
+  public pageDescription: PageDescription = [
+    {
+      id: 'followed',
+      selector: (vacancy: VacancyData) => vacancy.isFollowed,
+    },
+  ];
+
   dataSource: MatTableDataSource<VacancyData> =
   new MatTableDataSource<VacancyData>();
 
   mainData!: VacancyData[];
   filteredData!: VacancyData[];
-  isFollowedPage: string = 'false';
+  pageToken: string = 'followedVacancyPage';
+  page?: string = localStorage.getItem(this.pageToken) ?? undefined;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild('input') serachField!: ElementRef;
+  @ViewChild('filter') public filter!: TableFilterComponent;
 
   public filterDescription: FilterDescription = [];
   public loading: boolean = true;
 
   private followedSet: Set<string> = new Set();
-  private readonly followedPageToken: string = 'followedVacancyPage';
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -107,13 +117,7 @@ implements AfterViewInit, OnInit, OnDestroy
             d.isFollowed = this.followedSet.has(d.id);
           });
           this.mainData = data;
-          if (localStorage.getItem(this.followedPageToken) == 'true') {
-            this.dataSource.data = data.filter((item) =>
-              this.followedSet.has(item.id),
-            );
-          } else {
-            this.dataSource.data = data;
-          }
+          this.dataSource.data = data;
 
           this.renewFilterDescription();
           this.directive.applyFilter$.emit();
@@ -123,9 +127,6 @@ implements AfterViewInit, OnInit, OnDestroy
           this.notificationService.showErrorMessage('Failed to get vacancies.');
         },
       );
-
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
-      localStorage.getItem(this.followedPageToken)! : 'false';
   }
 
   public ngAfterViewInit(): void {
@@ -166,15 +167,7 @@ implements AfterViewInit, OnInit, OnDestroy
 
           this.mainData = data;
           this.filteredData = data;
-
-          if (localStorage.getItem(this.followedPageToken) == 'true') {
-            this.dataSource.data = data.filter((item) =>
-              this.followedSet.has(item.id),
-            );
-          } else {
-            this.dataSource.data = data;
-          }
-
+          this.dataSource.data = data;
           this.renewFilterDescription();
           this.directive.applyFilter$.emit();
         },
@@ -183,6 +176,11 @@ implements AfterViewInit, OnInit, OnDestroy
           this.notificationService.showErrorMessage('Failed to get vacancies.');
         },
       );
+  }
+
+  public setPage(page?: string): void {
+    this.filter.setPage(page);
+    this.page = page;
   }
 
   public renewFilterDescription(): void {
@@ -224,7 +222,7 @@ implements AfterViewInit, OnInit, OnDestroy
         name: 'Project',
         type: FilterType.Multiple,
         multipleSettings: {
-          options: projects,
+          options: projects.sort((a, b) => a.label < b.label ? -1 : 1),
           valueSelector: (vac: VacancyData) => vac.project.id,
         },
       },
@@ -261,22 +259,14 @@ implements AfterViewInit, OnInit, OnDestroy
 
   public setFiltered(data: VacancyData[]): void {
     this.filteredData = data;
-
-    if (localStorage.getItem(this.followedPageToken) == 'true') {
-      this.dataSource.data = this.filteredData.filter((item) =>
-        this.followedSet.has(item.id),
-      );
-    } else {
-      this.dataSource.data = this.filteredData;
-    }
-
+    this.dataSource.data = this.filteredData;
     this.directive.applyFilter$.emit();
     this.dataSource.paginator?.firstPage();
   }
 
   public openDialog(): void {
     const dialogRef = this.dialog.open(EditVacancyComponent, {
-      width: '914px',
+      width: '800px',
       height: 'auto',
       data: {},
     });
@@ -284,18 +274,6 @@ implements AfterViewInit, OnInit, OnDestroy
     dialogRef.afterClosed().subscribe(() => this.getVacancies());
   }
 
-  public switchToFollowed(){
-    this.isFollowedPage = 'true';
-    this.dataSource.data = this.dataSource.data.filter(vacancy=>vacancy.isFollowed);
-    this.followService.switchRefreshFollowedPageToken('true', this.followedPageToken);
-    this.directive.applyFilter$.emit();
-  }
-  public switchAwayToAll(){
-    this.isFollowedPage = 'false';
-    this.dataSource.data = this.mainData;
-    this.followService.switchRefreshFollowedPageToken('false', this.followedPageToken);
-    this.directive.applyFilter$.emit();
-  }
   public onBookmark(data: VacancyData, perfomToFollowCleanUp: string = 'false'){
     let vacancyIndex: number = this.dataSource.data.findIndex(
       (vacancy) => vacancy.id === data.id,
@@ -324,6 +302,7 @@ implements AfterViewInit, OnInit, OnDestroy
 
   public onEdit(vacancyEdit: VacancyCreate): void {
     this.dialog.open(EditVacancyComponent, {
+      width: '800px',
       data: {
         vacancyToEdit: vacancyEdit,
       },
@@ -382,6 +361,14 @@ implements AfterViewInit, OnInit, OnDestroy
           );
       }
     });
+  }
+
+  generateLink(id: string){
+    return environment.clientUrl + `/vacancy/apply/${id}`;
+  }
+
+  successMessage(message: string){
+    this.notificationService.showSuccessMessage(message);
   }
 
   applyFilter(event: Event) {

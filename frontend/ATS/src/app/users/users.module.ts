@@ -43,6 +43,9 @@ import {
 
 import { RecentActivityComponent } from './components/recent-activity/recent-activity.component';
 import { EditHrFormComponent } from './components/edit-hr-form/edit-hr-form.component';
+import { PendingRegistrationsComponent }
+  from './components/hr-lead/pending-registrations/pending-registrations.component';
+import { RegistrationPermissionsService } from './services/registration-permissions.service';
 
 @NgModule({
   declarations: [
@@ -65,6 +68,7 @@ import { EditHrFormComponent } from './components/edit-hr-form/edit-hr-form.comp
     VacancyCardComponent,
     RecentActivityComponent,
     EditHrFormComponent,
+    PendingRegistrationsComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
   providers: [
@@ -73,6 +77,7 @@ import { EditHrFormComponent } from './components/edit-hr-form/edit-hr-form.comp
     UserDataService,
     LoggedInUserGuard,
     HomeDataService,
+    RegistrationPermissionsService,
   ],
 })
 export class UsersModule {}

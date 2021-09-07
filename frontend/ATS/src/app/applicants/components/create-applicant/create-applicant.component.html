@@ -40,16 +40,12 @@
         </div>
     </ng-template>
 
-    <p class="required-field">Email</p>
+    <p>Email</p>
     <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors? 'invalid-input' : ''">
         <input required formControlName="email" type="email" matInput placeholder="Enter email"
             [(ngModel)]="createdApplicant.email">
     </mat-form-field>
-    <div class="validation-error"
-        *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.required; else emailPatternError">
-        It&apos;s required field
-    </div>
     <ng-template #emailPatternError>
         <div class="validation-error"
             *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.pattern">
@@ -59,30 +55,27 @@
 
     <p>Experience years</p>
     <mat-form-field appearance="fill"
-        [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors? 'invalid-input' : ''">
+        [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors ? 'invalid-input' : ''">
         <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60"
             [(ngModel)]="createdApplicant.experience">
     </mat-form-field>
     <div class="validation-error"
-        *ngIf="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors?.required">
+        *ngIf="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors">
         Please enter a valid experience number in range from 0 to 60
     </div>
 
     <p>Experience description</p>
     <mat-form-field class="wide" appearance="fill">
-        <textarea formControlName="experienceDescription" matInput placeholder="Enter experience description" [(ngModel)]="createdApplicant.experienceDescription"></textarea>
+        <textarea formControlName="experienceDescription" matInput placeholder="Enter experience description"
+            [(ngModel)]="createdApplicant.experienceDescription"></textarea>
     </mat-form-field>
 
-    <p class="required-field">Phone</p>
+    <p>Phone</p>
     <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors? 'invalid-input' : ''">
         <input required formControlName="phone" type="tel" matInput placeholder="Enter phone number"
             [(ngModel)]="createdApplicant.phone">
     </mat-form-field>
-    <div class="validation-error"
-        *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.required; else phonePatternError">
-        It&apos;s required field
-    </div>
     <ng-template #phonePatternError>
         <div class="validation-error"
             *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.pattern">
@@ -116,7 +109,7 @@
 
     <mat-dialog-actions class="publish-action">
         <button [disabled]="validationGroup!.invalid" (click)="createApplicant()" mat-button>
-            Publish
+            Save
         </button>
     </mat-dialog-actions>
 

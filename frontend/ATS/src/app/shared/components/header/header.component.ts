@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(EditVacancyComponent, {
-      width: '914px',
+      width: '600px',
       height: 'auto',
       data: {},
     });

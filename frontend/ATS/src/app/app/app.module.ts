@@ -1,3 +1,4 @@
+import { InterviewsModule } from './../interviews/interviews.module';
 /* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -20,6 +21,9 @@ import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 
 import { ProjectsModule } from '../projects/projects.module';
 import { PoolsModule } from '../pools/pools.module';
+import { MailTemplatesModule } from '../mail-templates/mail-templates.module';
+import { TaskManagementModule } from '../task-management/task-management.module';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,9 +38,12 @@ import { PoolsModule } from '../pools/pools.module';
     SharedModule,
     ApplicantsModule,
     VacanciesModule,
+    InterviewsModule,
     UsersModule,
     ProjectsModule,
     PoolsModule,
+    MailTemplatesModule,
+    TaskManagementModule,
   ],
   providers: [
     SidenavService,

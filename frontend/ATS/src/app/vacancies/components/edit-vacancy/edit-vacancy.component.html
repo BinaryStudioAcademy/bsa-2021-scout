@@ -152,6 +152,10 @@
                 *ngIf="(vacancyFormControl.link.touched || submitted) && vacancyFormControl.link.errors?.required">
                 This field shouldn't be empty
             </mat-error>
+            <mat-error
+                *ngIf="(vacancyFormControl.link.touched || submitted) && vacancyFormControl.link.errors?.pattern">
+                Link format is wrong
+            </mat-error>
             <mat-label>Tags</mat-label>
             <mat-form-field appearance="fill">
                 <mat-chip-list #chipList>
@@ -169,22 +173,23 @@
                 <mat-checkbox formControlName="isHot">Hot vacancy</mat-checkbox>
                 <mat-checkbox formControlName="isRemote">Is remote</mat-checkbox>
             </div>
-            <div class="workflow-container">
+            <div class="workflow-container" [ngClass]="isOpenCreateStage ? 'workflow-container-created' : ''">
                 <h2><b>Workflow</b></h2>
-                <div #contenedor class="example-list" cdkDropListGroup>
-                    <ng-container *ngFor="let _stage of sortStageList();let i=index">
-                        <div class="example-box" cdkDropList cdkDropListOrientation="horizontal"
-                            [cdkDropListData]="{item:_stage,index:i}" (cdkDropListDropped)="dropStage($event)">
-                            <div cdkDrag>
-                                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                                <app-stage [stage]=_stage (isDeletedStage)="onDeleteStage($event)"
-                                    (isEditStage)="onEditStage($event)"></app-stage>
+                <div>
+                    <div #contenedor class="example-list" [ngClass]="isOpenCreateStage ? 'stage-created' : ''" cdkDropListGroup>
+                        <ng-container *ngFor="let _stage of sortStageList();let i=index">
+                            <div class="example-box"  cdkDropList cdkDropListOrientation="horizontal"
+                                [cdkDropListData]="{item:_stage,index:i}" (cdkDropListDropped)="dropStage($event)">
+                                <div cdkDrag>
+                                    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                                    <app-stage [stage]=_stage (isDeletedStage)="onDeleteStage($event)"
+                                        (isEditStage)="onEditStage($event)"></app-stage>
+                                </div>
                             </div>
-                        </div>
-                    </ng-container>
-                    <button mat-stroked-button class="add-stage-button" *ngIf="!isOpenCreateStage"
-                        (click)="displayCreateStage()">+ Add new stage</button>
-
+                        </ng-container>
+                        <button mat-stroked-button class="add-stage-button" *ngIf="!isOpenCreateStage"
+                            (click)="displayCreateStage()">+ Add new stage</button>
+                    </div>
                 </div>
                 <div *ngIf="isOpenCreateStage">
                     <app-create-stage [stage]="stageToEdit" (stageChange)="saveStage($event)"
@@ -193,7 +198,7 @@
                 </div>
             </div>
             <button mat-button type="submit" *ngIf="!data.vacancyToEdit" style="margin-bottom:50px"
-                [disabled]="vacancyForm.invalid" (click)="createVacancy()">Publish</button>
+                [disabled]="vacancyForm.invalid" (click)="createVacancy()">Save</button>
             <button mat-button type="submit" *ngIf="data.vacancyToEdit" style="margin-bottom:50px"
                 [disabled]="vacancyForm.invalid" (click)="createVacancy()">Save changes</button>
         </form>

@@ -27,7 +27,7 @@ namespace Infrastructure.EF.Seeds
                         continue;
                     string stageId = vacancyId.Substring(0, vacancyId.Length - 3) + "00" + (_random.Next(StageSeeds.types.Count() - 1) + 1);
 
-                    var date = Common.GetRandomDateTime(new DateTime(2021, 04, 03), new DateTime(2021, 08, 29));
+                    var date = Common.GetRandomDateTime(new DateTime(2021, 04, 03), new DateTime(2021, 06, 29));
                     var dateRemoved = date.AddDays(_random.Next(20));
                     candidateToStages.Add(
                     new CandidateToStage

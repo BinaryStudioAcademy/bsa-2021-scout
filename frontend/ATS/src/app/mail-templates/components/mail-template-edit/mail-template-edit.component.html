@@ -1,0 +1,102 @@
+<div class="template-add-container">
+    <app-spinner [loading]="loading"></app-spinner>
+    <h1>Template edit form</h1>
+    <div mat-dialog-actions>
+        <mat-icon class="close-dialog" (click)="onFormClose()">close</mat-icon>
+    </div>
+    
+    <div class="form-container">
+        <form [formGroup]="mailTemplateCreateForm" (ngSubmit)="onSubmited()">
+            <h5 class="required-field">Title</h5>
+            <mat-form-field floatLabel="never" [ngClass]="this.mailTemplateCreateForm.controls['slug'].dirty && this.mailTemplateCreateForm.controls['slug'].errors? 'invalid-input': ''">
+                <input matInput type="text" formControlName="slug" placeholder="Enter title">
+            </mat-form-field>
+            <div class="validation-error" *ngIf="this.mailTemplateCreateForm.controls['slug'].dirty && this.mailTemplateCreateForm.controls['slug'].errors?.required">
+                Is required.
+            </div>
+            <div class="validation-error" *ngIf="this.mailTemplateCreateForm.controls['slug'].dirty && this.mailTemplateCreateForm.controls['slug'].errors?.minlength">
+                Title must be at least 3 characters long.
+            </div>
+            <div class="validation-error" *ngIf="this.mailTemplateCreateForm.controls['slug'].dirty && this.mailTemplateCreateForm.controls['slug'].errors?.maxlength">
+                Title must be not greater than 200 characters long.
+            </div>
+    
+            <h5 class="required-field">Subject</h5>
+            <mat-form-field floatLabel="never" [ngClass]="this.mailTemplateCreateForm.controls['subject'].dirty && this.mailTemplateCreateForm.controls['subject'].errors? 'invalid-input': ''">
+                <input matInput type="text" formControlName="subject" placeholder="Enter subject">
+            </mat-form-field>
+            <div class="validation-error" *ngIf="this.mailTemplateCreateForm.controls['subject'].dirty && this.mailTemplateCreateForm.controls['subject'].errors?.required">
+                Is required.
+            </div>
+            <div class="validation-error" *ngIf="this.mailTemplateCreateForm.controls['subject'].dirty && this.mailTemplateCreateForm.controls['subject'].errors?.minlength">
+                Subject must be at least 3 characters long.
+            </div>
+            <div class="validation-error" *ngIf="this.mailTemplateCreateForm.controls['subject'].dirty && this.mailTemplateCreateForm.controls['subject'].errors?.maxlength">
+                Subject must be not greater than 200 characters long.
+            </div>
+    
+            <h5 class="required-field">Mail text</h5>
+            <dx-html-editor [(value)]="editorValue" formControlName="html" [ngClass]="this.mailTemplateCreateForm.controls['html'].dirty && this.mailTemplateCreateForm.controls['html'].errors? 'invalid-input-dx-htmleditor': ''">
+                <dxo-toolbar>
+                    <dxi-item name="undo"></dxi-item>
+                    <dxi-item name="redo"></dxi-item>
+                    <dxi-item name="separator"></dxi-item>
+                    <dxi-item name="bold"></dxi-item>
+                    <dxi-item name="italic"></dxi-item>
+                    <dxi-item name="strike"></dxi-item>
+                    <dxi-item name="underline"></dxi-item>
+                    <dxi-item name="separator"></dxi-item>
+                    <dxi-item name="color"></dxi-item>
+                    <dxi-item name="background"></dxi-item>
+                    <dxi-item name="separator" *ngIf="!isShow" ></dxi-item>
+                    <dxi-item widget="dxButton" *ngIf="!isShow" [options]="hideButtonOptions"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="separator"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="alignLeft"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="alignCenter"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="alignRight"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="alignJustify"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="separator"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="size" [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="font" [acceptedValues]="['Arial', 'Georgia', 'Tahoma', 'Times New Roman', 'Verdana']"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="separator"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="orderedList"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="bulletList"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="separator"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="header" [acceptedValues]="[false, 1, 2, 3, 4, 5]"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="separator"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="link"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="image"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="separator"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="clear"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="codeBlock"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="blockquote"></dxi-item>
+                    <dxi-item *ngIf="isShow" name="separator"></dxi-item>
+                </dxo-toolbar>
+                <dxo-media-resizing
+                    [enabled]=true>
+                </dxo-media-resizing>
+            </dx-html-editor>
+        
+            <div class="validation-error" *ngIf="this.mailTemplateCreateForm.controls['html'].dirty && this.mailTemplateCreateForm.controls['html'].errors?.required">
+                Is required.
+            </div>
+            <div class="validation-error" *ngIf="this.mailTemplateCreateForm.controls['html'].dirty && this.mailTemplateCreateForm.controls['html'].errors?.minlength">
+                Mail text must be at least 10 characters long.
+            </div>
+            
+            <h5>Placeholders</h5>
+            <app-placeholders></app-placeholders>
+
+            <h5>Attachments</h5>
+            <div class="file-input-wrapper">
+                <app-file-input class="attachment-input" *ngIf="isFormFinishLoad" [default]="mailAttachmentsNames" (removeDefault)="deleteExistedAttachment($event)" (upload)="uploadAttachments($event)" ></app-file-input>
+            </div>
+
+            <div class="visibility-setting">
+                <mat-checkbox formControlName="visibilitySetting"  (click)="this.isFileInputChanged=true">Visible only for the creator</mat-checkbox>
+            </div>
+
+            <button mat-button mat-dialog-close type="submit" [disabled]="!this.mailTemplateCreateForm.valid && !this.isFileInputChanged">Save changes</button>
+        </form>
+    </div>
+</div>

@@ -11,7 +11,8 @@ namespace Application.Applicants.Profiles
             CreateMap<ApplicantDto, Applicant>();
             CreateMap<Applicant, ApplicantDto>();
             CreateMap<Applicant, GetShortApplicantDto>();
-
+            CreateMap<Applicant, ApplicantCsvGetDto>();
+            
             CreateMap<Applicant, MarkedApplicantDto>()
                 .ForMember(dto => dto.IsApplied, opt => opt.Ignore());
 

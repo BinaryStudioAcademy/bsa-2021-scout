@@ -25,14 +25,17 @@ namespace WebAPI.Controllers
             [FromRoute] string stageId
         )
         {
-            var command = new ChangeCandidateStageCommand(id, vacancyId, stageId);
+            string userId = GetUserIdFromToken();
+            var command = new ChangeCandidateStageCommand(userId, id, vacancyId, stageId);
+
             return Ok(await Mediator.Send(command));
         }
 
         [HttpPost("CandidatesRange/{vacancyId}")]
         public async Task<IActionResult> PostRangeOfCandidatesAsync(string[] applicantsIds, string vacancyId)
         {
-            var command = new CreateVacancyCandidateRangeCommand(applicantsIds, vacancyId);
+            string userId = GetUserIdFromToken();
+            var command = new CreateVacancyCandidateRangeCommand(applicantsIds, vacancyId, userId);
 
             return Ok(await Mediator.Send(command));
         }

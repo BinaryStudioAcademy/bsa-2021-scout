@@ -10,7 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -50,8 +50,12 @@ import { UserRoleDirective } from './directives/user-role.directive';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
 import { TimezonePipe } from './pipes/timezone-pipe';
+import { FilesEditComponent } from '../users/components/files-edit/files-edit.component';
+import { PlaceholdersEditComponent } from '../users/components/placeholders/placeholders.component';
 import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
 import { TableFilterComponent } from './components/table-filter/table-filter.component';
+import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
+import { TimezoneDateAdapter } from './date-adapters/timezone.date-adapter';
 
 @NgModule({
   exports: [
@@ -101,8 +105,11 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
     ClipboardModule,
     UserProfileComponent,
     TimezonePipe,
+    FilesEditComponent,
+    PlaceholdersEditComponent,
     AvatarModalComponent,
     TableFilterComponent,
+    MarkBarComponent,
   ],
   imports: [
     MatButtonModule,
@@ -141,7 +148,10 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
     MatTooltipModule,
     ClipboardModule,
   ],
-  providers: [HttpClientService],
+  providers: [
+    HttpClientService,
+    { provide: DateAdapter, useClass: TimezoneDateAdapter },
+  ],
   declarations: [
     MultiselectComponent,
     ButtonComponent,
@@ -161,8 +171,11 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
     UserRoleDirective,
     CopyClipboardDirective,
     TimezonePipe,
+    FilesEditComponent,
+    PlaceholdersEditComponent,
     AvatarModalComponent,
     TableFilterComponent,
+    MarkBarComponent,
   ],
 })
 export class SharedModule {}

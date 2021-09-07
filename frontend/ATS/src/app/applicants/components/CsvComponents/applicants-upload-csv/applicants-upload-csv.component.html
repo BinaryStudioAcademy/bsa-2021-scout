@@ -1,0 +1,5 @@
+<div class="center">
+    <h1>Upload applicants via csv</h1>
+    <app-file-input (upload)="uploadApplicantsCsv($event)" [accept]="allowedFileType" [single]="true"></app-file-input>
+    <button mat-button (click)="OnUpload()" [disabled]="!selectedFile">Upload</button>
+</div>

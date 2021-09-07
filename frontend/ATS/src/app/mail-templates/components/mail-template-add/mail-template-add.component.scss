@@ -1,0 +1,130 @@
+$primary-color: #ee2a64;
+$primary-color-white: #f6f7f9;
+$primary-font: Nunito;
+
+.template-add-container {
+  position: relative;
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  h1 {
+    font-family: $primary-font;
+    font-size: 24px;
+    font-weight: 700;
+    font-style: normal;
+  }
+  h5 {
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-family: $primary-font;
+    font-size: 12px;
+    font-weight: 400;
+    font-style: normal;
+  }
+  button[type="submit"] {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 170px;
+  }
+  .file-input-wrapper{
+    border-radius: 10px;
+    padding: 15px;
+    background-color: $primary-color-white;
+  }
+  .file-input-wrapper.file-input{
+    border-color: #C6C8CD;
+  }
+  .visibility-setting{
+    margin: 20px 0 10px 0;
+  }
+  .dx-htmleditor.dx-htmleditor-outlined.invalid-input-dx-htmleditor{
+    border-radius: 10px;
+    border: 1px solid #ef5350;
+  }
+  .dx-htmleditor.dx-htmleditor-outlined{
+    border: none;
+    max-width: 733px;
+    min-height: 300px;
+    border-radius: 10px;
+    background-color: $primary-color-white;
+  }
+}
+:host::ng-deep{
+  .mat-form-field-appearance-fill .mat-select-arrow-wrapper{
+    transform: none;
+  }
+  .attachment-input>.file-input{
+    border-color: #C6C8CD;
+    min-height:95px;
+  }
+  .attachment-input>.file-input>.text>*{
+    margin-top: 5px;
+  }
+}
+
+::ng-deep {
+  .cdk-overlay-pane .mat-dialog-container .template-add-container {
+    height: 90vh;
+  }
+  .mat-dialog-container .template-add-container {
+    position: relative;
+  }
+  .mat-checkbox-checked.mat-accent 
+  .mat-checkbox-background{
+    background-color: $primary-color;
+  }
+}
+
+
+
+::ng-deep .mat-dialog-container .template-add-container {
+    .mat-form-field-appearance-fill .mat-form-field-flex{
+        background: $primary-color-white;
+    }
+    .mat-form-field {
+        margin-bottom: 5px;
+    }
+    .mat-form-field-wrapper.mat-form-field-wrapper {
+        background: $primary-color-white;
+        border-radius: 10px;
+        margin: 0;
+        width: 733px;
+        max-width: 100%;
+        padding-left: 15px;
+        padding-bottom: 0px;
+    }
+    /* Text Area */
+    .wide .mat-form-field-wrapper.mat-form-field-wrapper {
+        height: 185px;
+    }
+    .wide .mat-form-field-flex {
+        height: 90%;
+        margin-top: 20px;
+        padding: 0;
+        background-color: transparent;
+    }
+    textarea.mat-input-element {
+        resize: none;
+        height: 90%;
+    }
+    .mat-form-field-flex .mat-form-field-infix {
+        background: $primary-color-white;
+        height: 90%;
+    }
+    /* Close Button */
+    .close-dialog {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+    .close-dialog:hover {
+        cursor: pointer;
+        color: $primary-color;
+    }
+    .mat-dialog-actions {
+        min-height: 0;
+    }
+}

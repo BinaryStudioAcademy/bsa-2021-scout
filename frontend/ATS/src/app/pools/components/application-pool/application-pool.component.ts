@@ -21,10 +21,15 @@ import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm
 import {
   FilterDescription,
   FilterType,
+  PageDescription,
+  TableFilterComponent,
 } from 'src/app/shared/components/table-filter/table-filter.component';
 import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
+import { ApplicantIsSelected } from 'src/app/shared/models/applicants/applicant-select';
+import { AddCandidateModalComponent } 
+  from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
 
 @Component({
   selector: 'app-application-pool',
@@ -37,10 +42,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
     private poolService: PoolService,
     private notificationService: NotificationService,
     private followService: FollowedService,
-  ) { 
-    this.isFollowedPage = localStorage.getItem(this.followedPageToken) ? 
-      localStorage.getItem(this.followedPageToken)! : 'false';
-  }
+  ) {}
 
   displayedColumns: string[] = [
     'position',
@@ -54,18 +56,26 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
 
   public filterDescription: FilterDescription = [];
 
+  public pageDescription: PageDescription = [
+    {
+      id: 'followed',
+      selector: (pool: ApplicantsPool) => pool.isFollowed,
+    },
+  ];
+
   mainData: ApplicantsPool[] = [];
   filteredData: ApplicantsPool[] = [];
   loading: boolean = false;
   dataSource = new MatTableDataSource(this.mainData);
+  pageToken: string = 'followedPoolPage';
   private unsubscribe$ = new Subject<void>();
-  isFollowedPage: string = 'false';
+  page?: string = localStorage.getItem(this.pageToken) ?? undefined;
   private followedSet: Set<string> = new Set();
-  private readonly followedPageToken: string = 'followedPoolPage';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild(MatTable) table!: MatTable<ApplicantsPool>;
+  @ViewChild('filter') public filter!: TableFilterComponent;
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -116,13 +126,8 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
           dataWithTotal.forEach((d) => {
             d.isFollowed = this.followedSet.has(d.id);
           });
-          if(localStorage.getItem(this.followedPageToken) == 'true'){
-            this.dataSource.data = dataWithTotal.filter(item=>this.followedSet.has(item.id));
-          }
-          else
-          {
-            this.dataSource.data = dataWithTotal;
-          }
+
+          this.dataSource.data = dataWithTotal;
           this.mainData = dataWithTotal;
           this.renewFilterDescription();
           this.updatePaginator();
@@ -132,6 +137,11 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
           this.notificationService.showErrorMessage(error);
         },
       );
+  }
+
+  public setPage(page?: string): void {
+    this.filter.setPage(page);
+    this.page = page;
   }
 
   public renewFilterDescription(): void {
@@ -189,30 +199,9 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
   public setFiltered(data: ApplicantsPool[]): void {
     this.filteredData = data;
     this.dataSource.data = data;
-
-    if (localStorage.getItem(this.followedPageToken) == 'true') {
-      this.dataSource.data = this.filteredData.filter((item) =>
-        this.followedSet.has(item.id),
-      );
-    } else {
-      this.dataSource.data = this.filteredData;
-    }
-
     this.updatePaginator();
   }
 
-  public switchToFollowed(){
-    this.isFollowedPage = 'true';
-    this.dataSource.data = this.dataSource.data.filter(pool=>pool.isFollowed);
-    this.followService.switchRefreshFollowedPageToken('true', this.followedPageToken);
-    this.directive.applyFilter$.emit();
-  }
-  public switchAwayToAll(){
-    this.isFollowedPage = 'false';
-    this.dataSource.data = this.mainData;
-    this.followService.switchRefreshFollowedPageToken('false', this.followedPageToken);
-    this.directive.applyFilter$.emit();
-  }
   public onBookmark(data: ApplicantsPool, perfomToFollowCleanUp: string = 'false'){
     let poolIndex: number = this.dataSource.data.findIndex(
       (pool) => pool.id === data.id,
@@ -290,6 +279,29 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
         this.createPool(result);
         dialogSubmitSubscription.unsubscribe();
       });
+  }
+
+  onAddApplicantsFromPoolToVacancy(applicants: ApplicantIsSelected[]){
+    if(applicants != null && applicants.length != 0){
+      let ids: string[] = [];
+
+      applicants.forEach(applicant => {
+        ids.push(applicant.id);
+      });
+
+      this.dialogService.open(AddCandidateModalComponent, {
+        width: '500px',
+        autoFocus: false,
+        panelClass: 'applicants-options',
+        data: {
+          applicantsIds: ids,
+        },
+      });
+    }
+    else
+    {
+      this.notificationService.showInfoMessage('There is no applicants in pool');
+    }
   }
 
   onDetails(id: string) {

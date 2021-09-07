@@ -1,0 +1,263 @@
+@import "../../../../../common.scss";
+$primary-color: #ee2a64;
+$primary-color-white: #f6f7f9;
+
+* {
+    box-sizing: border-box;
+}
+
+a.no-underline:hover {
+    text-decoration: none;
+}
+
+/* File Info */
+
+.file-info {
+    display: flex;
+    align-items: center;
+    position: relative;
+    
+    background: white;
+    padding: 10px;
+    margin: 10px;
+    margin-bottom: 0px;
+    border-radius: 10px;
+    
+    div {
+        margin-right: 10px;
+    }
+
+    .mat-icon {
+        display: flex;
+        height: 30px;
+        font-size: 30px;
+        margin-right: 15px;
+        line-height: 30px;
+        color: #501cb19a;
+    }
+    
+    .mat-icon.arrow:hover {
+        cursor: pointer;
+        color: #501cb1;
+    }
+}
+
+.vertical-line {
+    width: 1px;
+    height: 28px;
+    background-color: #501cb19a;
+}
+
+/* Table */
+
+.tables-container {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 190px);
+    width: 100%;
+    padding: 10px;
+}
+
+.applicants-table-csv {
+    height: 100%;
+    width: 50%;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+    h3 {
+        margin-top: 10px;
+    }
+}
+
+.mat-form-field {
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    .mat-icon {
+        margin-left: 5px;
+    }
+}
+
+.mat-button {
+    margin-top: 15px;
+    height: 40px;
+}
+
+.table-container {
+    overflow: scroll;
+    max-height: 85%;
+}
+
+table {
+    width: 100%;
+    box-shadow: none;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 50px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    .mat-icon {
+        color: gray;
+    }
+}
+
+.max-width {
+    max-width: 80px;
+}
+
+.max-width-wide {
+    max-width: 180px;
+}
+
+.max-width,
+.max-width-wide {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.max-width:hover,
+.max-width-wide:hover {
+    cursor: pointer;
+}
+
+.max-width:hover::after,
+.max-width-wide:hover::after {
+    content: attr(data-title);
+}
+
+
+/* Icons */
+
+.valid,
+.tooltip .tooltiptext .valid {
+    color: green;
+}
+
+.invalid,
+.tooltip .tooltiptext .invalid {
+    color: red;
+}
+
+.warning,
+.tooltip .tooltiptext .warning {
+    color: #ffcc00;
+}
+
+.exist,
+.tooltip .tooltiptext .exist {
+    color: rgb(41, 25, 101, 0.5);
+}
+
+.icons {
+    color: gray;
+}
+
+.icons .mat-icon:hover {
+    color: $primary-color;
+}
+
+
+/* ToolTop */
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 240px;
+    background-color: white;
+    color: black;
+    padding: 5px 12px;
+    border-radius: 6px;
+    position: absolute;
+    top: 25px;
+    left: 10px;
+    z-index: 1000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    p {
+        display: flex;
+        font-size: 15px;
+        line-height: 24px;
+        margin: 0;
+    }
+    .mat-icon {
+        padding: 1px;
+        font-size: 23px;
+        height: 23px;
+        width: 23px;
+        margin-right: 5px;
+    }
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+
+/* Angular Materials */
+
+::ng-deep .tables-container {
+    thead tr.mat-header-row {
+        height: 30px;
+    }
+    .mat-icon:hover {
+        cursor: pointer;
+    }
+    .mat-form-field-wrapper.mat-form-field-wrapper {
+        display: flex;
+        align-items: center;
+        font-family: $primary-font;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        background-color: $primary-color-white;
+        min-width: 250px;
+        width: 90%;
+        border-radius: 10px;
+        padding: 0px 20px 0px 20px;
+        height: 35px;
+        color: black;
+        z-index: 10;
+    }
+    .mat-form-field-appearance-fill .mat-form-field-infix {
+        display: flex;
+        align-items: center;
+        padding: 0;
+    }
+    .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+        padding: 0;
+    }
+    .mat-form-field-underline {
+        display: none;
+    }
+    .mat-form-field-infix {
+        border: none;
+    }
+    .mat-form-field-flex .mat-form-field-infix {
+        background-color: $primary-color-white;
+    }
+    .mat-form-field-flex .mat-form-field-infix .mat-icon {
+        line-height: 25px;
+        font-size: 16px;
+        color: gray;
+    }
+    .mat-form-field {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}

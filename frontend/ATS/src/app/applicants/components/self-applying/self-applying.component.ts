@@ -148,7 +148,8 @@ export class SelfApplyingComponent {
     };
 
     this.selfApplyService.sendApplyConfirmEmail(applyTokenInfo)
-      .subscribe(_ => this.emailSend = true);
+      .subscribe(_ => this.emailSend = true,
+        _ => this.errorToken = true);
   }
 
   public updateTags(tags: Tag[]): void {

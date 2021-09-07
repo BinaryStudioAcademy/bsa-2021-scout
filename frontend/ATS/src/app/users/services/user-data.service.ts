@@ -40,7 +40,12 @@ export class UserDataService {
 
     return this.httpClientService.putRequest<UserCreate>(
       '/users',
-      formData,
+      formData);
+  }
+    
+  public getUsers(): Observable<UserTableData[]> {
+    return this.httpClientService.getRequest<UserTableData[]>(
+      '/Users/',
     );
   }
 }

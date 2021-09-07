@@ -21,7 +21,7 @@
 
         <!-- Wrong Token -->
         <div class="centered" *ngIf="errorToken && vacancyExist">
-            <h1>Invalid applying link.</h1>
+            <h1>Something went wrong.</h1>
             <h2>Try apply again.</h2>
         </div>
 
@@ -114,14 +114,17 @@
                             </div>
                         </ng-template>
 
-                        <p>Experience description</p> 
-                        <mat-form-field appearance="fill" [ngClass]="validationGroup.controls['experienceDescription'].dirty && validationGroup.controls['experienceDescription'].errors? 'invalid-input' : ''">
-                            <input formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description" [(ngModel)]="applicant.experienceDescription">
-                        </mat-form-field>
-
-                        <p>Experience</p>
-                        <mat-form-field appearance="fill" [ngClass]="validationGroup.controls['experience'].dirty && validationGroup.controls['experience'].errors? 'invalid-input' : ''">
+                        <p>Experience years</p>
+                        <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors ? 'invalid-input' : ''">
                             <input formControlName="experience" type="number" matInput step=".1" min="0" max="60" [(ngModel)]="applicant.experience">
+                        </mat-form-field>
+                        <div class="validation-error" *ngIf="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors">
+                            Please enter a valid experience number in range from 0 to 60
+                        </div>
+
+                        <p>Experience description</p>
+                        <mat-form-field class="wide" appearance="fill">
+                            <textarea formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description" [(ngModel)]="applicant.experienceDescription"></textarea>
                         </mat-form-field>
 
                         <p class="required-field">Phone</p>

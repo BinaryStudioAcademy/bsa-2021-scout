@@ -3,6 +3,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChange,
   SimpleChanges,
@@ -42,7 +43,14 @@ export interface FilterDescriptionItem {
   multipleSettings?: MultipleSettings;
 }
 
+export interface PageDescriptionItem {
+  id: string;
+  selector: (data: any) => boolean;
+}
+
 export type FilterDescription = FilterDescriptionItem[];
+
+export type PageDescription = PageDescriptionItem[];
 
 export type FilterValue = string | [Date, Date] | number | boolean | IOption[];
 
@@ -51,8 +59,10 @@ export type FilterValue = string | [Date, Date] | number | boolean | IOption[];
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.scss'],
 })
-export class TableFilterComponent implements OnChanges {
+export class TableFilterComponent implements OnChanges, OnInit {
   @Input() public description!: FilterDescription;
+  @Input() public pageDescription: PageDescription = [];
+  @Input() public pageToken?: string;
   @Input() public data: Record<string, any>[] = [];
 
   @Output() public filteredDataChange: EventEmitter<any[]> = new EventEmitter<
@@ -65,6 +75,7 @@ export class TableFilterComponent implements OnChanges {
   public menuOpen: boolean = false;
   public all: boolean = false;
   public descriptionMap: Record<string, FilterDescriptionItem> = {};
+  public page?: string;
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
@@ -73,6 +84,13 @@ export class TableFilterComponent implements OnChanges {
 
     if (changes.description) {
       this.renewDescription(changes.description);
+    }
+  }
+
+  public ngOnInit(): void {
+    if (this.pageToken) {
+      this.page = localStorage.getItem(this.pageToken) ?? undefined;
+      this.applyFilters();
     }
   }
 
@@ -121,6 +139,11 @@ export class TableFilterComponent implements OnChanges {
   public setNumber(filter: FilterDescriptionItem, event: Event): void {
     const input = this.getInput(event);
     const value = Number(input.value);
+
+    if (isNaN(value)) {
+      return;
+    }
+
     const settings = filter.numberSettings;
 
     let newValue = value;
@@ -198,6 +221,19 @@ export class TableFilterComponent implements OnChanges {
       ...(value ?? []),
       ...(Array.isArray(options) ? options : [options]),
     ];
+
+    this.applyFilters();
+  }
+
+  /**
+   * For external usage
+   */
+  public setPage(page?: string): void {
+    this.page = page;
+
+    if (this.pageToken) {
+      localStorage.setItem(this.pageToken, page ?? '');
+    }
 
     this.applyFilters();
   }
@@ -295,6 +331,14 @@ export class TableFilterComponent implements OnChanges {
       filteredData = this.applyFilter(filter, filteredData);
     });
 
+    if (this.page) {
+      const pageDesc = this.pageDescription.find(item => item.id === this.page);
+
+      if (pageDesc) {
+        filteredData = filteredData.filter(pageDesc.selector);
+      }
+    }
+
     this.filteredDataChange.emit(filteredData);
   }
 
@@ -342,8 +386,8 @@ export class TableFilterComponent implements OnChanges {
       }
       case FilterType.Text:
       default: {
-        const regex = new RegExp(value as string, 'gim');
-        return data.filter((el) => regex.test(_.get(el, propName)));
+        const regex = new RegExp(value as string, 'i');
+        return data.filter((el) => String(_.get(el, propName)).match(regex) !== null);
       }
     }
   }

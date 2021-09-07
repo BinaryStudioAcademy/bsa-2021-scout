@@ -1,0 +1,184 @@
+<app-header></app-header>
+
+<!-- File Info -->
+<div class="file-info">
+    <a routerLink='/applicants/csvfiles' class="no-underline">
+        <mat-icon class="arrow">arrow_back</mat-icon>
+    </a>
+    <mat-icon>description</mat-icon>
+    <div>{{csvFile.name}}</div><div class="vertical-line"></div>
+    <div>{{csvFile.dateAdded | date:'dd.MM.yyyy'}}</div><div class="vertical-line"></div>
+    <div>Imported by  <a routerLink="/profile/{{ csvFile.user!.id }}">{{csvFile.user!.firstName}} {{csvFile.user!.lastName}}</a></div> 
+</div>
+
+<div class="tables-container">
+    <!-- New Applicants Table -->
+    <div class="applicants-table-csv">
+
+        <!-- New Applicants Header -->
+        <div class="table-header">
+            <h2>New applicants
+                <div class="tooltip">
+                    <div class="tooltiptext">
+                        <p><mat-icon class="valid">check</mat-icon> - Valid</p>
+                        <p><mat-icon class="invalid">close</mat-icon> - Invalid</p>
+                        <p><mat-icon class="warning">warning_amber</mat-icon> - Repeating email</p>
+                        <p><mat-icon class="exist">account_box</mat-icon> - This email already in use</p>
+                    </div>
+                    <mat-icon>
+                        help_outline
+                    </mat-icon>
+                </div>
+            </h2>
+            <button mat-button (click)="onCreateRange()">Add all valid</button>
+        </div>
+
+        <mat-form-field appearance="fill" floatLabel="never">
+            <mat-icon class="search">search</mat-icon>
+            <input matInput type="text" (keyup)="applyFilter($event,dataSource)" placeholder="Search..." #input>
+        </mat-form-field>
+
+        <div class="table-container">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef> # </th>
+                    <td mat-cell *matCellDef="let i = index"> {{i+1}} </td>
+                </ng-container>
+
+                <!-- First Name Column -->
+                <ng-container matColumnDef="firstName">
+                    <th mat-header-cell *matHeaderCellDef> First Name </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="max-width" data-title="{{element.firstName}}">{{element.firstName}}</div>
+                    </td>
+                </ng-container>
+
+                <!-- Last Name Column -->
+                <ng-container matColumnDef="lastName">
+                    <th mat-header-cell *matHeaderCellDef> Last Name </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="max-width" data-title="{{element.lastName}}">{{element.lastName}}</div>
+                    </td>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef> Email </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="max-width-wide" data-title="{{element.lastName}}">{{element.email}}</div>
+                    </td>
+                </ng-container>
+
+                <!-- Is Valid Column -->
+                <ng-container matColumnDef="isValid">
+                    <th mat-header-cell *matHeaderCellDef> Valid </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.isExist; then thenBlock else elseBlock"></div>
+                        <ng-template #thenBlock>
+                            <mat-icon class="exist" matTooltip="This email already in use">account_box</mat-icon>
+                        </ng-template>
+                        <ng-template #elseBlock>
+                            <mat-icon *ngIf="element.isValid" class="valid" matTooltip="Valid">check</mat-icon>
+                            <mat-icon *ngIf="!element.isValid" class="invalid" matTooltip="Invalid">close</mat-icon>
+                            <mat-icon *ngIf="element.isRepeat" class="warning" matTooltip="Repeating email">warning_amber</mat-icon>
+                        </ng-template>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let element; let i = index">
+                        <div class="icons">
+                            <mat-icon (click)="onEdit(element,i);">edit</mat-icon>
+                            <mat-icon *ngIf="element.isValid && !element.isRepeat && !element.isExist" (click)="onCreate(element);">add</mat-icon>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No data</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!-- Added Applicants Table -->
+    <div class="applicants-table-csv">
+
+        <!-- Added Applicants Header -->
+        <div class="table-header">
+            <h2>Added applicants</h2>
+        </div>
+
+        <mat-form-field appearance="fill" floatLabel="never">
+            <mat-icon class="search">search</mat-icon>
+            <input matInput type="text" (keyup)="applyFilter($event, addedDataSource)" placeholder="Search..." #existInput>
+        </mat-form-field>
+
+        <div class="table-container">
+            <table mat-table [dataSource]="addedDataSource" class="mat-elevation-z8">
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef> # </th>
+                    <td mat-cell *matCellDef="let i = index"> {{i+1}} </td>
+                </ng-container>
+
+                <!-- First Name Column -->
+                <ng-container matColumnDef="firstName">
+                    <th mat-header-cell *matHeaderCellDef> First Name </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="max-width" data-title="{{element.firstName}}">{{element.firstName}}</div>
+                    </td>
+                </ng-container>
+
+                <!-- Last Name Column -->
+                <ng-container matColumnDef="lastName">
+                    <th mat-header-cell *matHeaderCellDef> Last Name </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="max-width" data-title="{{element.lastName}}">{{element.lastName}}</div>
+                    </td>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef> Email </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="max-width-wide" data-title="{{element.lastName}}">{{element.email}}</div>
+                    </td>
+                </ng-container>
+
+                <!-- Date Added -->
+                <ng-container matColumnDef="dateAdded">
+                    <th mat-header-cell *matHeaderCellDef> Date Added </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="max-width-wide" data-title="{{element.creationDate}}">{{element.creationDate | date:'dd.MM.yyyy'}}</div>
+                    </td>
+                </ng-container>
+
+                 <!-- User -->
+                 <ng-container matColumnDef="user">
+                    <th mat-header-cell *matHeaderCellDef> Added by </th>
+                    <td mat-cell *matCellDef="let element">
+                        <a routerLink="/profile/{{ element.user!.id }}" data-title="{{element.user!.firstName}} {{element.user!.lastName}}">
+                            {{element.user!.firstName}} {{element.user!.lastName}}
+                        </a>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="addedDisplayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: addedDisplayedColumns;"></tr>
+
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No data</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

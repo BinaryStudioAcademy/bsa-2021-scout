@@ -1,4 +1,5 @@
 @import '/src/common.scss';
+@import '/src/app/shared/styles/common-modal-form.scss';
 
 .mat-chip {
     background-color: $primary-color;
@@ -32,6 +33,11 @@
 
 .mat-option .mat-icon {    
     display:none;
+}
+
+.mat-button.mat-button{
+    width: 170px;
+    height: 40px;
 }
 
 

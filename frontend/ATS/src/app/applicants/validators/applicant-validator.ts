@@ -10,14 +10,12 @@ export const applicantGroup = new FormGroup({
     Validators.pattern('^[A-Z]{1}[a-z]+([\\s-]{1}[A-Z]{1}[a-z]+)?'),
   ]),
   email: new FormControl('', [
-    Validators.required,
     Validators.email,
     Validators.pattern('^\\S{1,}@\\S{3,}\\.[a-z]+'),
   ]),
   experienceDescription: new FormControl(''),
-  experience: new FormControl('', [Validators.required]),
+  experience: new FormControl(''),
   phone: new FormControl('', [
-    Validators.required,
     Validators.pattern('^\\+?[0-9]{8,16}'),
   ]),
   skills: new FormControl(''),

@@ -29,6 +29,13 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            var query = new GetUsersForHrLeadQuery();
+            return Ok(await Mediator.Send(query));
+        }
+
         [HttpGet("from-token")]
         public async Task<ActionResult<UserDto>> GetUserFromToken([FromServices] ICurrentUserContext currentUserContext)
         {
@@ -79,7 +86,13 @@ namespace WebAPI.Controllers
             var cvFileDto = cvFile != null ? new FileDto(cvFile.OpenReadStream(), cvFile.FileName) : null;
 
             var query = new UpdateUserCommand(updateDto!, cvFileDto);
+            return Ok(await Mediator.Send(query));
+        }
 
+        [HttpGet("pending-registrations")]
+        public async Task<IActionResult> GetPendingRegistrations()
+        {
+            var query = new GetPendingRegistrationsQuery();
             return Ok(await Mediator.Send(query));
         }
     }

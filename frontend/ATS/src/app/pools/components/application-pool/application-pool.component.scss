@@ -23,6 +23,9 @@
     -webkit-box-orient: vertical;
 }
 
+.pool-page .create-button{
+    width: 190px;
+}
 
 button.tub {
     background: transparent;
@@ -72,10 +75,6 @@ button.tub:focus {
     background-color:$primary-color-white;
 }
 
-.mat-row:hover {
-    cursor: pointer;
-}
-
 .mat-paginator-sticky {
     bottom: 0px;
     position: sticky;
@@ -118,6 +117,25 @@ button.tub:focus {
 }
 
 ::ng-deep {
+    .pool-options .info {
+      color: gray;
+    }
+  
+    .mat-select-panel-wrap .pool-options .mat-option {
+      height: 40px;
+      .mat-icon {
+        font-size: 20px;
+        margin-right: 5px;
+      }
+    }
+  
+    .pool-options .mat-option-text {
+      font-size: 15px;
+      line-height: 20px;
+    }
+  }
+  
+::ng-deep {
     .pool-options .delete {
         color: $primary-color;
     }
@@ -125,7 +143,6 @@ button.tub:focus {
 
 
 :host ::ng-deep {
-//  .mat-input-element,
     .pool-page .mat-form-field-wrapper.mat-form-field-wrapper,
     .mat-form-field.mat-focused .mat-form-field-label
     {
@@ -145,7 +162,7 @@ button.tub:focus {
         align-items: center;
     }
 
-     .pool-page .mat-form-field-label-wrapper {
+    .pool-page .mat-form-field-label-wrapper {
         position: absolute;
         left: 0;
         box-sizing: content-box;
@@ -153,9 +170,18 @@ button.tub:focus {
         height: 100%;
         overflow: hidden;
         pointer-events: none;
-     }
+    }
 
-     .pool-page .mat-form-field-label:focus {
+    .pool-page .mat-cell {
+        width: 10%;
+    }
+
+    .pool-page .mat-cell:last-of-type {
+        padding-left: 100px;
+        padding-right: 15px;
+    }
+
+    .pool-page .mat-form-field-label:focus {
         left: 0px;
     }
 
@@ -187,8 +213,6 @@ button.tub:focus {
         }
     }
 
-    
-    
     .mat-select-panel-wrap .pool-options .mat-option {
         height: 40px;
         .mat-icon{
@@ -197,15 +221,10 @@ button.tub:focus {
         }
     }
 
-    
-    
     .pool-options .mat-option-text{
         font-size: 15px;
         line-height: 20px;        
     }
-
-    
-
 
     .icons > .mat-icon,
     .header .mat-icon {
@@ -217,8 +236,6 @@ button.tub:focus {
         line-height: 25px;
         font-size: 16px;
     }
-
-   
 
     .actions {
 
