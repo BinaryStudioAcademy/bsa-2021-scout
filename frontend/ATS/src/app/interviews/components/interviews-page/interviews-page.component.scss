@@ -29,6 +29,7 @@
     }
     .scroll{
       overflow-y: scroll;
+      overflow-x: auto;
       height: calc(100vh - 210px);
       margin: 10px;
       margin-bottom: 0;
@@ -181,10 +182,16 @@
       }
       
       .blue-date {
-        color: #4808AE;   
-        border-collapse: separate;
+        color: #4808AE; 
+        position: relative;  
+      }
+      .blue-date::after{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         border: 1px solid #4808AE !important;
-        border-left: 1.5px solid #4808AE !important;
-        border-top: 1.5px solid #4808AE !important;
       }
       
