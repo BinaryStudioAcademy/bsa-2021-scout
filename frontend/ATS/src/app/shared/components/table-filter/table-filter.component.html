@@ -1,4 +1,4 @@
-<div class="container {{ additionalClass }}">
+<div class="container">
   <div class="name">
     <div class="menu" *ngIf="menuOpen">
       <mat-checkbox [checked]="all" (change)="toggleAllFilters()" class="padding">
@@ -20,7 +20,7 @@
     <ng-container *ngIf="entry.value">
       <ng-container *ngIf="descriptionMap[entry.key] as filter">
         <span>{{ filter.name }}: </span>
-        <input [value]="filterValues[filter.id] ?? ''" (change)="setText(filter, $event)" *ngIf="isText(filter.type)" />
+        <input [value]="filterValues[filter.id] ?? ''" (keyup)="setText(filter, $event)" *ngIf="isText(filter.type)" />
         <ng-container *ngIf="isDate(filter.type)">
           <mat-date-range-input [rangePicker]="picker">
             <input matStartDate placeholder="Start" (focus)="picker.open()" #start />
@@ -30,7 +30,7 @@
           <mat-date-range-picker #picker></mat-date-range-picker>
         </ng-container>
         <input type="number" [min]="filter.numberSettings?.min" [max]="filter.numberSettings?.max"
-          [value]="filterValues[filter.id]" (change)="setNumber(filter, $event)" *ngIf="isNumber(filter.type)" />
+          [value]="filterValues[filter.id]" (keyup)="setNumber(filter, $event)" *ngIf="isNumber(filter.type)" />
         <mat-checkbox [checked]="!!filterValues[filter.id]" (change)="setBoolean(filter, $event)"
           *ngIf="isBoolean(filter.type)"></mat-checkbox>
         <app-multiselect [noTopics]="true" [unstyled]="true" [data]="filter.multipleSettings!.options"

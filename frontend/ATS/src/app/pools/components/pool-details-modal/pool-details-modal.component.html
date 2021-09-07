@@ -19,7 +19,7 @@
                         </mat-form-field>
                     </div>
                     <div *ngIf="pool">
-                        <h5>Created date</h5>
+                        <h5>Created</h5>
                         <mat-form-field floatLabel='never' class="al-subscribe-form-field" >
                             <input matInput [matDatepicker]="picker" name="date" formControlName="dateCreated"
                             placeholder="mm/dd/yyyy" [(ngModel)]="pool.dateCreated">

@@ -27,7 +27,7 @@ namespace Application.Vacancies.Commands.Delete
         private readonly IWriteRepository<Vacancy> _writeRepository;
         private readonly IWriteRepository<Stage> _writeStageRepository;
         private readonly IReadRepository<Stage> _readStageRepository;
-        private readonly ICandidateToStageWriteRepository _writeCandidateToStageRepository;
+        private readonly IWriteRepository<CandidateToStage> _writeCandidateToStageRepository;
         private readonly IReadRepository<CandidateToStage> _readCandidateToStageRepository;
         private readonly IWriteRepository<Action> _writeActionRepository;
         private readonly IReadRepository<Action> _readActionRepository;
@@ -39,7 +39,7 @@ namespace Application.Vacancies.Commands.Delete
         public DeleteVacancyCommandHandler(IWriteRepository<Vacancy> writeRepository,
             IWriteRepository<Stage> writeStageRepository,
             IReadRepository<Stage> readStageRepository,
-            ICandidateToStageWriteRepository writeCandidateToStageRepository,
+            IWriteRepository<CandidateToStage> writeCandidateToStageRepository,
             IReadRepository<CandidateToStage> readCandidateToStageRepository,
             IWriteRepository<Action> writeActionRepository,
             IReadRepository<Action> readActionRepository,

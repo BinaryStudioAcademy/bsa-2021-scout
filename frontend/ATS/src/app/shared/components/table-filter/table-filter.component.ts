@@ -43,7 +43,14 @@ export interface FilterDescriptionItem {
   multipleSettings?: MultipleSettings;
 }
 
+export interface PageDescriptionItem {
+  id: string;
+  selector: (data: any) => boolean;
+}
+
 export type FilterDescription = FilterDescriptionItem[];
+
+export type PageDescription = PageDescriptionItem[];
 
 export type FilterValue = string | [Date, Date] | number | boolean | IOption[];
 
@@ -54,8 +61,9 @@ export type FilterValue = string | [Date, Date] | number | boolean | IOption[];
 })
 export class TableFilterComponent implements OnChanges, OnInit {
   @Input() public description!: FilterDescription;
+  @Input() public pageDescription: PageDescription = [];
+  @Input() public pageToken?: string;
   @Input() public data: Record<string, any>[] = [];
-  @Input() public panelClass?: string;
 
   @Output() public filteredDataChange: EventEmitter<any[]> = new EventEmitter<
   any[]
@@ -67,7 +75,7 @@ export class TableFilterComponent implements OnChanges, OnInit {
   public menuOpen: boolean = false;
   public all: boolean = false;
   public descriptionMap: Record<string, FilterDescriptionItem> = {};
-  public additionalClass: string = '';
+  public page?: string;
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
@@ -80,8 +88,9 @@ export class TableFilterComponent implements OnChanges, OnInit {
   }
 
   public ngOnInit(): void {
-    if (this.panelClass) {
-      this.additionalClass = this.panelClass;
+    if (this.pageToken) {
+      this.page = localStorage.getItem(this.pageToken) ?? undefined;
+      this.applyFilters();
     }
   }
 
@@ -130,6 +139,11 @@ export class TableFilterComponent implements OnChanges, OnInit {
   public setNumber(filter: FilterDescriptionItem, event: Event): void {
     const input = this.getInput(event);
     const value = Number(input.value);
+
+    if (isNaN(value)) {
+      return;
+    }
+
     const settings = filter.numberSettings;
 
     let newValue = value;
@@ -207,6 +221,19 @@ export class TableFilterComponent implements OnChanges, OnInit {
       ...(value ?? []),
       ...(Array.isArray(options) ? options : [options]),
     ];
+
+    this.applyFilters();
+  }
+
+  /**
+   * For external usage
+   */
+  public setPage(page?: string): void {
+    this.page = page;
+
+    if (this.pageToken) {
+      localStorage.setItem(this.pageToken, page ?? '');
+    }
 
     this.applyFilters();
   }
@@ -303,6 +330,14 @@ export class TableFilterComponent implements OnChanges, OnInit {
 
       filteredData = this.applyFilter(filter, filteredData);
     });
+
+    if (this.page) {
+      const pageDesc = this.pageDescription.find(item => item.id === this.page);
+
+      if (pageDesc) {
+        filteredData = filteredData.filter(pageDesc.selector);
+      }
+    }
 
     this.filteredDataChange.emit(filteredData);
   }

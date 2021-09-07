@@ -30,7 +30,8 @@ function processLinkedInPage() {
     const skillElements = document.querySelectorAll(".pv-skill-categories-section .pv-skill-category-entity__name-text");
     const emailElement = document.querySelector(".artdeco-modal .t-14.t-black.t-normal");
     const linkElements = document.querySelector(".artdeco-modal .pv-contact-info__contact-link");
-    const modalLinkElement = document.querySelector(".pv-text-details__separator .link-without-visited-state")
+    const modalLinkElement = document.querySelector(".pv-text-details__separator .link-without-visited-state");
+    const linkedInUrl = window.location.href;
 
     const [firstName, lastName] = leftMainInfoPanel.children[0].children[0].innerText.split(" ");
     const currentJob = leftMainInfoPanel.children[1].innerText;
@@ -117,13 +118,13 @@ function processLinkedInPage() {
 
     for (const element of emailElements) {
         if (element.href.startsWith("mailto:")) {
-            email = element.innerText;
+            email = element.innerText.trim();
             break;
         }
     }
 
     if (phoneElement) {
-        phone = phoneElement.innerText;
+        phone = phoneElement.innerText.trim();
     }
 
     const data = {
@@ -138,7 +139,7 @@ function processLinkedInPage() {
         experienceDescription,
         // education,
         // skills,
-        linkedInUrl: window.location.href,
+        linkedInUrl,
     };
 
     const string = JSON.stringify(data);

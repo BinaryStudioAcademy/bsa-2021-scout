@@ -65,7 +65,7 @@
             <p>Tags</p>
             <app-tags-edit [tags]="project.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
     
-            <button mat-button mat-dialog-close type="submit" [disabled]="!projectCreateForm.valid || !this.projectCreateForm.dirty">Publish</button>
+            <button mat-button mat-dialog-close type="submit" [disabled]="!projectCreateForm.valid || !this.projectCreateForm.dirty">Save</button>
         </form>
     </div>
 </div>
