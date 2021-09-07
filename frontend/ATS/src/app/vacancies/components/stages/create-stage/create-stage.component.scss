@@ -8,13 +8,16 @@
   margin-right: 10px;
 }
 
+.form-wrapper{
+  margin: 25px;
+}
+
 .form-container {
   background-color: #f0f3f9;
   border-radius: 20px;
-  padding: 25px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-left: 10px;
   margin-top: 10px;
   form {
     display: flex;
@@ -50,4 +53,15 @@
 
 .multiselect-wrp {
   padding: 10px 0;
+}
+
+:host::ng-deep{
+  .mat-select-arrow-wrapper{
+    display: flex;
+    align-items: center;
+  }
+  .mat-select-trigger{
+    display: grid;
+    grid-template-columns: 1fr 18px;
+  }
 }

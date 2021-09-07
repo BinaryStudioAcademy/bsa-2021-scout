@@ -12,5 +12,6 @@ namespace Domain.Interfaces.Read
         Task<Stage> GetByVacancyIdWithFirstIndex(string vacancyId);
         Task<IEnumerable<Stage>> GetByVacancyId(string vacancyId);
         Task<Stage> GetWithReviews(string id);
+        Task<Stage> GetWithActions(string id);
     }
 }

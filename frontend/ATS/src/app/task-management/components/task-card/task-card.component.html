@@ -1,0 +1,26 @@
+<div class='card' [ngClass]="getClass()">
+    <div class='header'>
+        <div class='top'>
+            <mat-checkbox disabled [checked]= "task.isDone" [ngClass]="getClass()"></mat-checkbox>
+            <div class='name'><mat-icon *ngIf="isHot()" class='hot'>local_fire_department</mat-icon>{{task.name}}</div>
+            <mat-icon>more_vertical</mat-icon>
+        </div>        
+        <div class='creator'>with {{task.applicant.firstName}} {{task.applicant.lastName}}</div>        
+    </div>
+    <div class='info'>
+        <div class='all'>
+            <app-task-info-widget [info]="createdWidget"></app-task-info-widget>
+            <app-task-info-widget [info]="deadlineWidget"></app-task-info-widget>
+        </div>
+        <div class='done' *ngIf="task.isDone">
+            <app-task-info-widget [info]="doneWidget"></app-task-info-widget>
+            <app-task-info-widget [info]="doneDateWidget"></app-task-info-widget>
+        </div>
+    </div>
+    <div class='footer'>
+        <div class='creator'>by {{task.createdBy.firstName}} {{task.createdBy.lastName}}</div>
+        <div class='users'>
+            <mat-icon *ngFor="let user of task.teamMembers" [matTooltip]="user.firstName+' '+user.lastName">account_circle</mat-icon>
+        </div>
+    </div>
+</div>

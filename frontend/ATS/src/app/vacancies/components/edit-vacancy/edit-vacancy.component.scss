@@ -10,9 +10,16 @@
 
 .workflow-container{
     margin: 30px 0px;
+    
+}
+
+.workflow-container-created{
     display: grid;
     grid-template-columns: 50% minmax(100px, 50%);
-    grid-gap: 0 20px;
+}
+
+.stage-created{
+    margin-right: 10px;
 }
 
 .workflow-container h2{
@@ -22,12 +29,10 @@
 }
 
 .form-container{
-    margin: 20px;
     display: flex;
     flex-direction: column;
     width: 100%;
     box-sizing: border-box;
-    margin-top: 10px;
 }
 
 .edit-vacancy-container{
@@ -72,12 +77,6 @@
     justify-self: center;
 }
 
-.stage-list{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap:20px;
-}
-
 .mat-label{
     margin-top: 15px;
 }
@@ -93,10 +92,6 @@
     font-weight:700;
     border-radius:10px;
 }
-
-.example-list {
-    width: 100%;
-  }
 
   .example-box {
     box-sizing: border-box;
@@ -183,8 +178,8 @@ $primary-color: #291965;
     }
 
     .mat-button {
-        width : 327px;
-        height: 45px;
+        width : 170px;
+        height: 40px;
     }
 
     .mat-icon-button {
@@ -205,6 +200,7 @@ $primary-color: #291965;
 :host ::ng-deep {
 
 .mat-form-field-wrapper.mat-form-field-wrapper {
+    color: #000;
     min-width: unset;
     max-width: none;
     width: 100%;
@@ -240,10 +236,6 @@ $primary-color: #291965;
         font-size: 90%;
         padding: 0;
     }
-    .mat-select-arrow-wrapper{
-        display: flex;
-        align-items: center;
-    }
     .mat-form-field-appearance-fill .mat-select-arrow-wrapper{
         padding-top:15px
     }
@@ -276,8 +268,7 @@ $primary-color: #291965;
     }
 
     .mat-select-trigger{
-        display: grid;
-        grid-template-columns: 1fr 18px;
+        display: block;
     }
 
     .mat-select-value-text{

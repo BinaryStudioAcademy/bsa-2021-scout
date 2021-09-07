@@ -82,6 +82,10 @@ namespace Application.Vacancies.Commands.Edit
             {
                 foreach (var stage in updateVacancy.Stages)
                 {
+                    foreach(var action in stage.Actions)
+                    {
+                        action.StageId = stage.Id;
+                    }
                     if (stage != null && (stage.Id == null || stage.Id == ""))
                     {
                         await _mediator.Send(new CreateVacancyStageCommand(_mapper.Map<StageCreateDto>(stage), command.Id));

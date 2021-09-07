@@ -1,22 +1,11 @@
+import { InterviewsService } from './../../services/interviews.service';
 import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
-
-export class CalendarDay {
-  public date: Date;
-  public title: string = '';
-  public isPastDate: boolean;
-  public isToday: boolean;
-
-  public getDateString() {
-    return this.date.toISOString().split('T')[0];
-  }
-
-  constructor(d: Date) {
-    this.date = d;
-    this.isPastDate = d.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0);
-    this.isToday = d.setHours(0, 0, 0, 0) == new Date().setHours(0, 0, 0, 0);
-  }
-
-}
+import { CalendarDay } from '../../models/calendar-date.model';
+import { Interview } from '../../models/interview.model';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { DataErrorOccurredEvent } from 'devextreme/ui/tree_list';
+import { S } from '@angular/cdk/keycodes';
 
 @Pipe({
   name: 'chunk',
@@ -44,17 +33,33 @@ export class ChunkPipe implements PipeTransform {
   styleUrls: ['./interviews-page.component.scss'],
 })
 
-export class InterviewsPageComponent implements OnInit{
+export class InterviewsPageComponent{
   public calendar: CalendarDay[] = [];
   public monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December',
   ];
   public displayMonth: string = '';
-  private monthIndex: number = 0;
-
-  ngOnInit(): void {
-    this.generateCalendarDays();
+  public currentDate: Date = new Date(Date.now());
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
+  private interviewsDateSet: Date[] = [];
+  private interviews: Interview[] = [];
+  public dateArrived!: Promise<boolean>;
+  constructor(public service: InterviewsService) {
+    service.getInterviews()
+      .pipe(
+        takeUntil(this.unsubscribe$),
+      )
+      .subscribe((resp) => 
+      {
+        this.interviews = resp.body!;
+        this.interviews = this.interviews.sort((a, b) =>new Date(a.scheduled).getTime() 
+          - new Date(b.scheduled).getTime());
+        this.dateArrived = Promise.resolve(true);
+        this.generateCalendarDays();
+      },
+      );
   }
+  
   private date: Date = new Date();
   private generateCalendarDays(): void {
     // we reset our calendar
@@ -69,7 +74,15 @@ export class InterviewsPageComponent implements OnInit{
     let dateToAdd = startingDateOfCalendar;
 
     for (var i = 0; i < 42; i++) {
-      this.calendar.push(new CalendarDay(new Date(dateToAdd)));
+      const calendarDay = new CalendarDay(new Date(dateToAdd));
+     
+      // eslint-disable-next-line max-len
+      calendarDay.interviews = this.interviews.filter(i=>
+        new Date(i.scheduled).getMonth() == dateToAdd.getMonth() && 
+        new Date(i.scheduled).getDate() == dateToAdd.getDate() &&
+        new Date(i.scheduled).getFullYear() == dateToAdd.getFullYear(),
+      );
+      this.calendar.push(calendarDay);
       dateToAdd = new Date(dateToAdd.setDate(dateToAdd.getDate() + 1));
     }
   }
@@ -104,15 +117,21 @@ export class InterviewsPageComponent implements OnInit{
     this.date = new Date(year, month, 1);
     this.generateCalendarDays();
   }
-
+  public collapse(calendar: CalendarDay){
+    calendar.isCollapsed = !calendar.isCollapsed;
+  }
   public isWeekend(date:Date):boolean{
     return (date.getDay()%6==0);
   }
   isSameMonth(date: Date) {
     return date.getMonth() === this.date.getMonth() + 1;
   }
-  debug(date:Date){
-    console.log(date.getMonth());
-    console.log(this.date);
+  debug(date:Date, sched: Date){
+    console.log(date);
+    console.log(sched);
+    console.log(date.getMonth() == sched.getMonth()
+    && date.getFullYear() == sched.getFullYear()&&
+    date.getDate() == sched.getDate(),
+    );
   }
 }

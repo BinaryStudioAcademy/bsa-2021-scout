@@ -121,7 +121,7 @@ namespace Infrastructure.EF.Seeds
             "snew3b4-cdf6-4f67-99de-795780c70b8f",
         };
 
-        private static List<string> responsibleHrIds = new List<string> {
+        public static List<string> responsibleHrIds = new List<string> {
             "057c23ff-58b1-4531-8012-0b5c1f949ee1",
             "fb055f22-c5d1-4611-8e49-32a46edf58b2",
             "ac78dabf-929c-4fa5-9197-7d14e18b40ab",

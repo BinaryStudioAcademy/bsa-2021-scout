@@ -1,48 +1,59 @@
 <div class="form-container white-class">
-  <h1 mat-title>{{ editing ? "Update" : "Create" }} stage</h1>
-  <form [formGroup]="stageForm">
-    <mat-label>Stage name</mat-label>
-    <mat-form-field appearance="fill"
-      [ngClass]="(stageFormControl.name.touched || submitted) && stageFormControl.name.invalid ? 'my-invalid-input' : ''">
-      <input matInput type="text" autocomplete="off" formControlName="name" placeholder="Enter stage name">
-    </mat-form-field>
-    <mat-error *ngIf="(stageFormControl.name.touched || submitted) && stageFormControl.name.errors?.required">
-      This field shouldn't be empty
-    </mat-error>
-    <mat-label>Type</mat-label>
-    <mat-form-field appearance="fill"
-      [ngClass]="(stageFormControl.type.touched || submitted) && stageFormControl.type.invalid ? 'invalid-input' : ''">
-      <mat-select #fontSize placeholder="Select type" formControlName="type">
-        <mat-option *ngFor="let type of types" [value]="type.type">{{type.name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-error *ngIf="(stageFormControl.type.touched || submitted) && stageFormControl.type.errors?.required">
-      This field shouldn't be empty
-    </mat-error>
-    <mat-label>Action</mat-label>
+  <div class="form-wrapper">
+    <h1 mat-title>{{ editing ? "Update" : "Create" }} stage</h1>
+    <form [formGroup]="stageForm">
+      <mat-label>Stage name</mat-label>
+      <mat-form-field appearance="fill"
+        [ngClass]="(stageFormControl.name.touched || submitted) && stageFormControl.name.invalid ? 'my-invalid-input' : ''">
+        <input matInput type="text" autocomplete="off" formControlName="name" placeholder="Enter stage name">
+      </mat-form-field>
+      <mat-error *ngIf="(stageFormControl.name.touched || submitted) && stageFormControl.name.errors?.required">
+        This field shouldn't be empty
+      </mat-error>
+      <mat-label>Type</mat-label>
+      <mat-form-field appearance="fill"
+        [ngClass]="(stageFormControl.type.touched || submitted) && stageFormControl.type.invalid ? 'invalid-input' : ''">
+        <mat-select #fontSize placeholder="Select type" formControlName="type">
+          <mat-option *ngFor="let type of types" [value]="type.type">{{type.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="(stageFormControl.type.touched || submitted) && stageFormControl.type.errors?.required">
+        This field shouldn't be empty
+      </mat-error>
+      <mat-label>Action On Join</mat-label>
     <div class="multiselect-wrp">
-      <app-multiselect [data]="actionOptions" placeholder="Select actions"
-        [selected]="actionsToOptions(stageForm.get('actions')!.value)"
-        (selectedChange)="stageForm.get('actions')!.setValue(optionsToActions($event))"></app-multiselect>
+      <app-multiselect [data]="actionJoinOptions" placeholder="Select actions"
+        [selected]="actionsToOptions(stageForm.get('actionsOnJoin')!.value)"
+        (selectedChange)="stageForm.get('actionsOnJoin')!.setValue(optionsToActions($event, 1))"></app-multiselect>
     </div>
-    <mat-error *ngIf="(stageFormControl.actions.touched || submitted) && stageFormControl.actions.errors?.required">
+    <mat-error *ngIf="(stageFormControl.actionsOnJoin.touched || submitted) && stageFormControl.actionsOnJoin.errors?.required">
       This field shouldn't be empty
     </mat-error>
-    <ng-container *ngIf="reviewOptions.length > 0">
-      <mat-checkbox formControlName="isReviewable">Review required</mat-checkbox>
-      <ng-container *ngIf="stageForm.get('isReviewable')!.value">
-        <mat-label class="required-field">Rates</mat-label>
-        <div class="multiselect-wrp">
-          <app-multiselect [data]="reviewOptions" placeholder="Select reviews"
-            [selected]="reviewsToOptions(stageForm.get('reviews')!.value)"
-            (selectedChange)="stageForm.get('reviews')!.setValue(optionsToReviews($event))"></app-multiselect>
-        </div>
+    <mat-label>Action On Leave</mat-label>
+    <div class="multiselect-wrp">
+      <app-multiselect [data]="actionLeaveOptions" placeholder="Select actions"
+        [selected]="actionsToOptions(stageForm.get('actionsOnLeave')!.value)"
+        (selectedChange)="stageForm.get('actionsOnLeave')!.setValue(optionsToActions($event, 0))"></app-multiselect>
+    </div>
+    <mat-error *ngIf="(stageFormControl.actionsOnLeave.touched || submitted) && stageFormControl.actionsOnLeave.errors?.required">
+      This field shouldn't be empty
+    </mat-error>
+      <ng-container *ngIf="reviewOptions.length > 0">
+        <mat-checkbox formControlName="isReviewable">Review required</mat-checkbox>
+        <ng-container *ngIf="stageForm.get('isReviewable')!.value">
+          <mat-label class="required-field">Rates</mat-label>
+          <div class="multiselect-wrp">
+            <app-multiselect [data]="reviewOptions" placeholder="Select reviews"
+              [selected]="reviewsToOptions(stageForm.get('reviews')!.value)"
+              (selectedChange)="stageForm.get('reviews')!.setValue(optionsToReviews($event))"></app-multiselect>
+          </div>
+        </ng-container>
       </ng-container>
-    </ng-container>
-  </form>
-  <div class="buttons">
-    <button mat-button mat-raised-button (click)="onStageSave()" [disabled]="stageForm.invalid">Save</button>
-    <!--<button mat-button mat-raised-button  (click)="onSaveAndAdd()" [disabled]="stageForm.invalid">Save and add another</button>-->
-    <button mat-button class="mat-accent" (click)="onStageClose()">Cancel</button>
+    </form>
+    <div class="buttons">
+      <button mat-button mat-raised-button (click)="onStageSave()" [disabled]="stageForm.invalid">Save</button>
+      <!--<button mat-button mat-raised-button  (click)="onSaveAndAdd()" [disabled]="stageForm.invalid">Save and add another</button>-->
+      <button mat-button class="mat-accent" (click)="onStageClose()">Cancel</button>
+    </div>
   </div>
 </div>

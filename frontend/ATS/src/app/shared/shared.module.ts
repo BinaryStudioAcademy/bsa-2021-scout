@@ -10,7 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -57,6 +57,7 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
 import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
 import { ConfirmationDialogComponent } 
   from './components/confirmation-dialog/confirmation-dialog.component';
+import { TimezoneDateAdapter } from './date-adapters/timezone.date-adapter';
 
 @NgModule({
   exports: [
@@ -151,7 +152,10 @@ import { ConfirmationDialogComponent }
     MatTooltipModule,
     ClipboardModule,
   ],
-  providers: [HttpClientService],
+  providers: [
+    HttpClientService,
+    { provide: DateAdapter, useClass: TimezoneDateAdapter },
+  ],
   declarations: [
     MultiselectComponent,
     ButtonComponent,

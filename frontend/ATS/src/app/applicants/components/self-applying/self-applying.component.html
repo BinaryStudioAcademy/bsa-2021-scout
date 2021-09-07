@@ -114,18 +114,18 @@
                             </div>
                         </ng-template>
 
-                        <p>Experience description</p>
-                        <mat-form-field class="wide" appearance="fill">
-                            <textarea formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description" [(ngModel)]="applicant.experienceDescription"></textarea>
-                        </mat-form-field>
-
-                        <p>Experience</p>
+                        <p>Experience years</p>
                         <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors ? 'invalid-input' : ''">
                             <input formControlName="experience" type="number" matInput step=".1" min="0" max="60" [(ngModel)]="applicant.experience">
                         </mat-form-field>
                         <div class="validation-error" *ngIf="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors">
                             Please enter a valid experience number in range from 0 to 60
                         </div>
+
+                        <p>Experience description</p>
+                        <mat-form-field class="wide" appearance="fill">
+                            <textarea formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description" [(ngModel)]="applicant.experienceDescription"></textarea>
+                        </mat-form-field>
 
                         <p class="required-field">Phone</p>
                         <mat-form-field appearance="fill" [ngClass]="validationGroup.controls['phone'].dirty && validationGroup.controls['phone'].errors? 'invalid-input' : ''">

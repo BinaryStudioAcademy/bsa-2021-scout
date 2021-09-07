@@ -6,10 +6,14 @@ $primary-font: Nunito;
   position: relative;
 
   .form-container {
-    width: 480px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    form {
+      width: 100%;
+    }
   }
 
   h1 {
@@ -31,6 +35,7 @@ $primary-font: Nunito;
   button[type="submit"] {
     margin-top: 20px;
     margin-bottom: 20px;
+    width: 170px;
   }
 }
 
@@ -49,12 +54,13 @@ $primary-font: Nunito;
     }
     .mat-form-field {
         margin-bottom: 5px;
+        width: 100%;
     }
     .mat-form-field-wrapper.mat-form-field-wrapper {
         background: $primary-color-white;
         border-radius: 10px;
         margin: 0;
-        width: 450px;
+        width: 100%;
         max-width: 100%;
         padding-left: 15px;
         padding-bottom: 0px;

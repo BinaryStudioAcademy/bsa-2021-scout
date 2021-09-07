@@ -178,8 +178,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<FileInfo>, WriteRepository<FileInfo>>();
             services.AddScoped<IElasticWriteRepository<ElasticEntity>, ElasticWriteRepository<ElasticEntity>>();
             services.AddScoped<IWriteRepository<VacancyCandidate>, WriteRepository<VacancyCandidate>>();
-            services.AddScoped<IWriteRepository<CandidateToStage>, CandidateToStageWriteRepository>();
-            services.AddScoped<ICandidateToStageWriteRepository, CandidateToStageWriteRepository>();
+            services.AddScoped<IWriteRepository<CandidateToStage>, WriteRepository<CandidateToStage>>();
             services.AddScoped<IWriteRepository<CandidateReview>, CandidateReviewWriteRepository>();
             services.AddScoped<ICandidateReviewWriteRepository, CandidateReviewWriteRepository>();
             services.AddScoped<IVacancyCandidateWriteRepository, VacancyCandidateWriteRepository>();
@@ -202,6 +201,9 @@ namespace Infrastructure
 
             services.AddScoped<IWriteRepository<UserFollowedEntity>, WriteRepository<UserFollowedEntity>>();
             services.AddScoped<IWriteRepository<ArchivedEntity>, WriteRepository<ArchivedEntity>>();
+
+            services.AddScoped<IWriteRepository<ToDoTask>, WriteRepository<ToDoTask>>();
+            services.AddScoped<IUserToTaskWriteRepository, UserToTaskWriteRepository>();
 
             return services;
         }
@@ -263,6 +265,10 @@ namespace Infrastructure
             services.AddScoped<IReadRepository<ReviewToStage>, ReviewToStageReadRepository>();
             services.AddScoped<IReadRepository<CandidateComment>, CandidateCommentReadRepository>();
             
+
+            services.AddScoped<IReadRepository<ToDoTask>, TaskReadRepository>();
+            services.AddScoped<ITaskReadRepository, TaskReadRepository>();
+
 
             return services;
         }

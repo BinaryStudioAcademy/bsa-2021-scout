@@ -40,6 +40,9 @@ namespace Infrastructure.EF
         public DbSet<UsersToInterview> UsersToInterviews { get; set; }
         public DbSet<ArchivedEntity> ArchivedEntities { get; set; }
 
+        public DbSet<ToDoTask> ToDoTask { get; set; }
+        public DbSet<UserToTask> UserToTask { get; set; }
+
         private readonly IDomainEventService _domainEventService;
 
         public ApplicationDbContext() : base() { }

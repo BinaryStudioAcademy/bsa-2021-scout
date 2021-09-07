@@ -18,7 +18,7 @@
                 Title must be at least 3 characters long.
             </div>
             <div class="validation-error" *ngIf="this.mailTemplateCreateForm.controls['slug'].dirty && this.mailTemplateCreateForm.controls['slug'].errors?.maxlength">
-                Title must be not greater than 15 characters long.
+                Title must be not greater than 200 characters long.
             </div>
     
             <h5 class="required-field">Subject</h5>
@@ -32,7 +32,7 @@
                 Subject must be at least 3 characters long.
             </div>
             <div class="validation-error" *ngIf="this.mailTemplateCreateForm.controls['subject'].dirty && this.mailTemplateCreateForm.controls['subject'].errors?.maxlength">
-                Subject must be not greater than 15 characters long.
+                Subject must be not greater than 200 characters long.
             </div>
     
             <h5 class="required-field">Mail text</h5>
@@ -95,7 +95,7 @@
                 <mat-checkbox formControlName="visibilitySetting">Visible only for the creator</mat-checkbox>
             </div>
 
-            <button mat-button mat-dialog-close type="submit" [disabled]="!mailTemplateCreateForm.valid || !this.mailTemplateCreateForm.dirty">Publish</button>
+            <button mat-button mat-dialog-close type="submit" [disabled]="!mailTemplateCreateForm.valid || !this.mailTemplateCreateForm.dirty">Save</button>
         </form>
     </div>
 </div>

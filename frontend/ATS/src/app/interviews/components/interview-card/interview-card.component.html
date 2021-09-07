@@ -1,0 +1,7 @@
+<div class="card" [ngClass]="{'meetingColors': interview.interviewType%2 === 0}">
+    <div class="type">{{getStatus(interview.interviewType)}}</div>
+    <div>{{interview.candidate.firstName + " " + 
+        interview.candidate.lastName}}</div>
+        
+    <div>{{getDate(interview.scheduled) | date: "HH:MM"}} - {{getDateAfter(interview.scheduled, interview.duration) | date: "HH:MM"}}</div>
+</div>

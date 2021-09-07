@@ -9,6 +9,7 @@ export interface UpdateApplicant {
   linkedInUrl: string;
   experience: number;
   experienceDescription?: string;
+  creationDate: Date;
   skills?: string;
   hasCv: boolean;
   cv: File | null;

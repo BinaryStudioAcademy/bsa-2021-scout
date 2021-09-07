@@ -130,11 +130,11 @@ export class MailTemplateEditComponent implements OnDestroy {
     'slug': new FormControl(this.mailTemplate.slug,
       [Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(15)]),
+        Validators.maxLength(200)]),
     'subject': new FormControl(this.mailTemplate.subject,
       [Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(15)]),
+        Validators.maxLength(200)]),
     'html': new FormControl(this.mailTemplate.html,
       [Validators.required,
         Validators.minLength(10)]),
@@ -189,7 +189,6 @@ export class MailTemplateEditComponent implements OnDestroy {
       this.files.push(file);
     });
     this.isFileInputChanged = true;
-    console.log(this.isFileInputChanged);
   }
 
   public deleteExistedAttachment(files: string[]): void {
@@ -201,6 +200,5 @@ export class MailTemplateEditComponent implements OnDestroy {
     });
     this.mailTemplate.mailAttachments = leftoverFiles;
     this.isFileInputChanged = true;
-    console.log(this.isFileInputChanged);
   }
 }

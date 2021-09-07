@@ -13,6 +13,7 @@ namespace Domain.Entities
         public ICollection<Applicant> Applicants { get; set; }
         public ICollection<Vacancy> Vacancies { get; set; }
         public ICollection<Project> Projects { get; set; }
+        public ICollection<ToDoTask> Tasks { get; set; }
         public ICollection<User> Recruiters { get; set; }
     }
 }

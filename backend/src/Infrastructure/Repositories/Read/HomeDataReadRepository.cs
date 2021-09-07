@@ -64,7 +64,7 @@ namespace Infrastructure.Repositories.Read
             SqlConnection connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
 
-            string sql = @$"SELECT V.Id, V.Title, P.Name AS ProjectName,
+            string sql = @$"SELECT V.Id, V.Title, P.Id AS ProjectId, P.Name AS ProjectName,
                               S.[Index] AS CurrentStageIndex, 
 	                          (SELECT MAX(S2.[Index]) FROM Stages AS S2 WHERE S2.VacancyId = V.Id) AS LastStageIndex,
 	                          CS.CandidateId AS Candidate,
