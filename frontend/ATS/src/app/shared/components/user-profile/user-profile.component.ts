@@ -15,6 +15,7 @@ export class UserProfileComponent implements OnInit{
 
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
   @Input() user!:User;
+  avatarUrl:String | undefined;
 
 
   constructor(public dialog: MatDialog,
@@ -27,6 +28,7 @@ export class UserProfileComponent implements OnInit{
       response => {
         this.user = response;
       });
+    this.avatarUrl = (this.user.avatarUrl ?? '') +'?'+ performance.now();
   }
 
   getMainRoles(){

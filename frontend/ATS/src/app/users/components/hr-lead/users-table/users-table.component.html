@@ -31,7 +31,7 @@
                         
                         <div class="name-logo">
                             <app-user-profile [user]=row>
-                            <img [src]="row.avatarUrl"
+                            <img src="{{row.avatarUrl}}"
                                 onError="this.src='../../../../assets/images/defaultAvatar.png'">
                             </app-user-profile>
                             {{ row.firstName + " " + row.lastName }}

@@ -91,8 +91,8 @@ export class EditHrFormComponent implements OnInit, OnDestroy {
             slack: response.slack || '',
             email: response.email,
           });
-          this.imageUrl = response.avatarUrl;
-          console.log(this.imageUrl);
+          this.imageUrl = response.avatarUrl +'?'+performance.now();
+
         });
     }else{
       this.userService.getById(this.data.userToEdit.id!).subscribe(
@@ -106,11 +106,12 @@ export class EditHrFormComponent implements OnInit, OnDestroy {
             slack: response.slack || '',
             email: response.email,
           });
-          this.imageUrl = response.avatarUrl;
-          console.log(this.imageUrl);
-          console.log(this.profileForm);
+          this.imageUrl = response.avatarUrl +'?'+performance.now();
         });
     }
+
+
+
   }
 
   setAvatarToDelete(){

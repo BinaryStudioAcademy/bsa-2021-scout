@@ -117,12 +117,15 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
           resp.forEach((user) => user.isFollowed = this.followedSet.has(user.id ?? ''));
           this.users = resp;
           this.dataSource.data = this.users;
+          this.dataSource.data.forEach(x=>x.avatarUrl = x.avatarUrl ?
+            x.avatarUrl+'?'+performance.now():'');
           this.directive.applyFilter$.emit();
         },
         () => {
           this.notificationService.showErrorMessage('Something went wrong');
         },
       );
+      
   }
 
   public getUsers() {
@@ -137,6 +140,9 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
           resp.forEach((user) => user.isFollowed = this.followedSet.has(user.id ?? ''));
           this.users = resp;
           this.dataSource.data = this.users;
+          this.dataSource.data.forEach(x=>x.avatarUrl = x.avatarUrl ?
+            x.avatarUrl+'?'+performance.now():'');
+          
           this.directive.applyFilter$.emit();
         },
         () => {
@@ -173,6 +179,7 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
       }
     };
   }
+
 
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
