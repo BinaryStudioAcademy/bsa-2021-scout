@@ -36,16 +36,6 @@ export class ApplicantsService {
     return this.httpClient.postRequest<Applicant>('/applicants', formData);
   }
 
-  public addSelfAppliedApplicant(createApplicant: CreateApplicant, 
-    vacancyId: string): Observable<Applicant> {
-    const formData = new FormData();
-    formData.append('body', JSON.stringify(createApplicant));
-    if (createApplicant.cv) {
-      formData.append('cvFile', createApplicant.cv, createApplicant.cv.name);
-    }
-    return this.httpClient.postRequest<Applicant>(`/applicants/self-apply/${vacancyId}`, formData);
-  }
-
   public updateApplicant(updateApplicant: UpdateApplicant): Observable<Applicant> {
     const formData = new FormData();
     formData.append('body', JSON.stringify(updateApplicant));

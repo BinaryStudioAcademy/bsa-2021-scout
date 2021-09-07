@@ -4,9 +4,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { CreateApplicant } from 'src/app/shared/models/applicants/create-applicant';
+import { ApplicantCreationVariants } from 'src/app/shared/models/applicants/creation-variants';
 import { ApplicantsUploadCsvComponent } 
   from '../applicants-upload-csv/applicants-upload-csv.component';
+import { CreateApplicantFromVariantsComponent }
+  from '../create-applicant-from-variants/create-applicant-from-variants.component';
 import { CreateApplicantComponent } from '../create-applicant/create-applicant.component';
+import { StartCvParsingModalComponent }
+  from '../start-cv-parsing-modal/start-cv-parsing-modal.component';
 
 @Component({
   selector: 'app-applicants-head',
@@ -35,10 +40,21 @@ export class ApplicantsHeadComponent implements OnInit{
       if (query['data']) {
         const latin1 = atob(query['data']);
         const json = decodeURIComponent(escape(latin1));
-        const creationData: CreateApplicant = JSON.parse(json);
 
-        this.creationData = creationData;
-        this.showApplicantsCreateDialog();
+        if (query['variants']) {
+          const variants: ApplicantCreationVariants = JSON.parse(json);
+
+          this.dialog.open(CreateApplicantFromVariantsComponent, {
+            width: '732px',
+            height: '95vh',
+            data: variants,
+          });
+        } else {
+          const creationData: CreateApplicant = JSON.parse(json);
+
+          this.creationData = creationData;
+          this.showApplicantsCreateDialog();
+        }
       }
     });
 
@@ -58,17 +74,25 @@ export class ApplicantsHeadComponent implements OnInit{
       data: this.creationData,
     });
 
+    this.creationData = undefined;
     this.applicantCreated.emit(dialogRef.afterClosed());
   }
 
-  public showUploadCSVDialog(): void{
-    const dialogRef = this.dialog.open(ApplicantsUploadCsvComponent, {
-      width: '600px',
-      panelClass: 'applicants-csv-modal',
-      autoFocus: false,
-    })
+  public showUploadCSVDialog(): void {
+    this.dialog
+      .open(ApplicantsUploadCsvComponent, {
+        width: '600px',
+        panelClass: 'applicants-csv-modal',
+        autoFocus: false,
+      })
       .afterClosed()
       .subscribe(_=>this.applicantsFileUploaded.emit());
+  }
+
+  public showUploadCvDialog(): void {
+    this.dialog.open(StartCvParsingModalComponent, {
+      width: '600px',
+    });
   }
 
   public toggleFollowedOrAll(page: string): void {

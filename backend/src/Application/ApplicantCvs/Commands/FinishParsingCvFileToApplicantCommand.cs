@@ -32,6 +32,7 @@ namespace Application.ApplicantCvs.Commands
         private readonly IReadRepository<User> _userRepository;
         private readonly ICvParser _parser;
         private readonly IS3Uploader _s3;
+        private readonly IAwsS3ReadRepository _s3ReadRepository;
         private readonly IComprehendParser _comprehend;
         private readonly ISmtpFactory _smtp;
         private readonly string _frontendUrl;
@@ -41,6 +42,7 @@ namespace Application.ApplicantCvs.Commands
             IReadRepository<User> userRepository,
             ICvParser parser,
             IS3Uploader s3,
+            IAwsS3ReadRepository s3ReadRepository,
             IComprehendParser comprehend,
             ISmtpFactory smtp
         )
@@ -50,6 +52,7 @@ namespace Application.ApplicantCvs.Commands
             _userRepository = userRepository;
             _parser = parser;
             _s3 = s3;
+            _s3ReadRepository = s3ReadRepository;
             _comprehend = comprehend;
             _smtp = smtp;
         }
@@ -68,10 +71,13 @@ namespace Application.ApplicantCvs.Commands
             ParsedEntitiesDto parsed = JsonConvert.DeserializeObject<ParsedEntitiesDto>(output);
             ApplicantCreationVariantsDto dto = await _parser.FinishParsingAsync(text, parsed.Entities);
 
+            IEnumerable<string> pathItems = job.OriginalFilePath.Split("/");
+            dto.Cv = await _s3ReadRepository.GetPublicUrlAsync(pathItems.First(), pathItems.Last());
+
             string stringDto = JsonConvert.SerializeObject(dto);
             byte[] bytesDto = Encoding.UTF8.GetBytes(stringDto);
             string base64 = Convert.ToBase64String(bytesDto);
-            string url = $"{_frontendUrl}/create-applicant-variants?data={base64}";
+            string url = $"{_frontendUrl}/applicants?variants=1&data={base64}";
             string body = string.Format(MailBodyFactory.CV_PARSED, url);
 
             using (ISmtp connection = _smtp.Connect())
