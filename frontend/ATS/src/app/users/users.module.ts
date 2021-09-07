@@ -42,7 +42,6 @@ import {
 } from './components/hr-lead/send-registration-link-dialog/sending-register-link-dialog.component';
 
 import { RecentActivityComponent } from './components/recent-activity/recent-activity.component';
-import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
 import { EditHrFormComponent } from './components/edit-hr-form/edit-hr-form.component';
 
 @NgModule({
@@ -65,7 +64,6 @@ import { EditHrFormComponent } from './components/edit-hr-form/edit-hr-form.comp
     HomeComponent,
     VacancyCardComponent,
     RecentActivityComponent,
-    ProfileEditComponent,
     EditHrFormComponent,
   ],
   imports: [UserRoutingModule, SharedModule],

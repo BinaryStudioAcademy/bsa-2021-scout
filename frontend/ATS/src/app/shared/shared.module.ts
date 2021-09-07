@@ -45,7 +45,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { TagsEditComponent } from '../users/components/tags-edit/tags-edit.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 import { LogoBlockComponent } from '../users/components/logo-block/logo-block.component';
-// import { ProfileDropdownMenuComponent } from './components/profile-dropdown-menu/profile-dropdown-menu.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { UserRoleDirective } from './directives/user-role.directive';
 import { ClipboardModule } from '@angular/cdk/clipboard';
@@ -99,7 +98,6 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
     TagsEditComponent,
     DeleteConfirmComponent,
     LogoBlockComponent,
-    // ProfileDropdownMenuComponent,
     ClipboardModule,
     UserProfileComponent,
     TimezonePipe,
@@ -159,7 +157,6 @@ import { TableFilterComponent } from './components/table-filter/table-filter.com
     TagsEditComponent,
     DeleteConfirmComponent,
     LogoBlockComponent,
-    // ProfileDropdownMenuComponent,
     UserProfileComponent,
     UserRoleDirective,
     CopyClipboardDirective,

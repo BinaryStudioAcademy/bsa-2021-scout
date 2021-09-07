@@ -238,7 +238,8 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
       width: '70%',
       height: 'auto',
       data: {userToEdit:data, isUserLeadProfile:true},
-    }).afterClosed().subscribe(() => this.getUsers());
+    }).afterClosed()
+      .subscribe(() => this.getUsers());
   }
 }
 

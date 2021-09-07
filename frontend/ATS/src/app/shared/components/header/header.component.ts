@@ -79,7 +79,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       width: '70%',
       height: 'auto',
       data: {userToEdit:this.user},
-    }).afterClosed().subscribe(() => this.refreshUser());
+    }).afterClosed()
+      .subscribe(() => this.refreshUser());
   }
 
   refreshUser(){

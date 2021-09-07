@@ -8,9 +8,9 @@ describe('EditHrFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditHrFormComponent ]
+      declarations: [ EditHrFormComponent ],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

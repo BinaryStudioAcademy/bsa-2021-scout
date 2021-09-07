@@ -9,7 +9,8 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup,
+  ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Project } from 'src/app/shared/models/projects/project';
@@ -36,148 +37,152 @@ import { UserCreate } from '../../models/user-create';
 @Component({
   selector: 'app-edit-hr-form',
   templateUrl: './edit-hr-form.component.html',
-  styleUrls: ['./edit-hr-form.component.scss']
+  styleUrls: ['./edit-hr-form.component.scss'],
 })
-export class EditHrFormComponent implements OnInit {
-    profileForm!: FormGroup;
-    submitted: Boolean = false;
-    public loading: boolean = true;
-    private readonly unsubscribe$: Subject<void> = new Subject<void>();
-    public imageFile: File | undefined;
-    public imageUrl:string | undefined;
-    public isAvatarToDelete: boolean = false;
+export class EditHrFormComponent implements OnInit, OnDestroy {
+  profileForm!: FormGroup;
+  submitted: Boolean = false;
+  public loading: boolean = true;
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
+  public imageFile: File | undefined;
+  public imageUrl:string | undefined;
+  public isAvatarToDelete: boolean = false;
   
-    constructor(
-      public dialogRef: MatDialogRef<EditHrFormComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: { userToEdit: UserTableData, isUserLeadProfile:Boolean},
-      private fb: FormBuilder,
-      public userService: UserDataService,
-      public notificationService: NotificationService,
-    ) {
-      this.profileForm = new FormGroup({
-        'firstName': new FormControl({value:''}, Validators.required),
-        'lastName': new FormControl({value:''}, Validators.required),    
-        'birthDay': new FormControl({value:'', disabled:true}),
-        'phone': new FormControl({value:''}, Validators.pattern('(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})')),
-        'skype': new FormControl({value:''}),
-        'slack': new FormControl({value:''}),
-        'email': new FormControl({value:'', disabled:true}),
-      });
-      this.loading = false;
-    }
+  constructor(
+    public dialogRef: MatDialogRef<EditHrFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { userToEdit: UserTableData, isUserLeadProfile:Boolean},
+    private fb: FormBuilder,
+    public userService: UserDataService,
+    public notificationService: NotificationService,
+  ) {
+    this.profileForm = new FormGroup({
+      'firstName': new FormControl({value:''}, Validators.required),
+      'lastName': new FormControl({value:''}, Validators.required),    
+      'birthDay': new FormControl({value:'', disabled:true}),
+      'phone': new FormControl({value:''},
+        Validators.pattern(
+          '(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?'+
+        '[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})')),
+      'skype': new FormControl({value:''}),
+      'slack': new FormControl({value:''}),
+      'email': new FormControl({value:'', disabled:true}),
+    });
+    this.loading = false;
+  }
 
     
   
-    public ngOnDestroy(): void {
-      this.unsubscribe$.next();
-      this.unsubscribe$.complete();
-    }
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
   
-    ngOnInit() {
-      console.log(this.data.userToEdit)
-      if (!this.data.isUserLeadProfile) {
-        this.userService.getByToken().subscribe(
-          response => {
-            this.profileForm.setValue({
-              firstName: response.firstName,
-              lastName: response.lastName,
-              birthDay: response.birthDate,
-              phone: response.phone || '',
-              skype: response.skype || '',
-              slack: response.slack || '',
-              email: response.email,
-            });
-            this.imageUrl = response.avatarUrl;
-            console.log(this.imageUrl)
-          });
-      }else{
-        this.userService.getById(this.data.userToEdit.id!).subscribe(
+  ngOnInit() {
+    console.log(this.data.userToEdit);
+    if (!this.data.isUserLeadProfile) {
+      this.userService.getByToken().subscribe(
         response => {
-            this.profileForm.setValue({
-              firstName: response.firstName,
-              lastName: response.lastName,
-              birthDay: response.birthDate,
-              phone: response.phone || '',
-              skype: response.skype || '',
-              slack: response.slack || '',
-              email: response.email,
-            });
-            this.imageUrl = response.avatarUrl;
-            console.log(this.imageUrl)
-            console.log(this.profileForm)
+          this.profileForm.setValue({
+            firstName: response.firstName,
+            lastName: response.lastName,
+            birthDay: response.birthDate,
+            phone: response.phone || '',
+            skype: response.skype || '',
+            slack: response.slack || '',
+            email: response.email,
           });
-      }
+          this.imageUrl = response.avatarUrl;
+          console.log(this.imageUrl);
+        });
+    }else{
+      this.userService.getById(this.data.userToEdit.id!).subscribe(
+        response => {
+          this.profileForm.setValue({
+            firstName: response.firstName,
+            lastName: response.lastName,
+            birthDay: response.birthDate,
+            phone: response.phone || '',
+            skype: response.skype || '',
+            slack: response.slack || '',
+            email: response.email,
+          });
+          this.imageUrl = response.avatarUrl;
+          console.log(this.imageUrl);
+          console.log(this.profileForm);
+        });
     }
+  }
 
-    setAvatarToDelete(){
-      let areYouSure = confirm("Are you sure you want to delete this photo?");
-      if(areYouSure == true){
-        this.isAvatarToDelete = true;
-        this.imageUrl = "";
-      }
+  setAvatarToDelete(){
+    let areYouSure = confirm('Are you sure you want to delete this photo?');
+    if(areYouSure == true){
+      this.isAvatarToDelete = true;
+      this.imageUrl = '';
     }
+  }
   
    
-    createUser() {
-      this.submitted = true;
-      this.loading = true;
+  createUser() {
+    this.submitted = true;
+    this.loading = true;
   
-      let createUser:UserCreate = {
-        id: this.data.userToEdit.id,
-        firstName: this.profileForm.controls['firstName'].value,
-        lastName: this.profileForm.controls['lastName'].value,
-        birthDate: this.profileForm.controls['birthDay'].value,
-        avatar: this.imageFile,
-        skype:this.profileForm.controls['skype'].value,
-        slack:this.profileForm.controls['slack'].value,
-        phone: this.profileForm.controls['phone'].value,
-        email:this.profileForm.controls['email'].value,
-        isImageToDelete: this.isAvatarToDelete
-      };
+    let createUser:UserCreate = {
+      id: this.data.userToEdit.id,
+      firstName: this.profileForm.controls['firstName'].value,
+      lastName: this.profileForm.controls['lastName'].value,
+      birthDate: this.profileForm.controls['birthDay'].value,
+      avatar: this.imageFile,
+      skype:this.profileForm.controls['skype'].value,
+      slack:this.profileForm.controls['slack'].value,
+      phone: this.profileForm.controls['phone'].value,
+      email:this.profileForm.controls['email'].value,
+      isImageToDelete: this.isAvatarToDelete,
+    };
 
-      console.log(createUser)
+    console.log(createUser);
       
-        this.userService
-          .putUser(createUser)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe(
-            (response) => {
-              this.loading = false;
-              this.notificationService.showSuccessMessage(`The user ${createUser.firstName} ${createUser.lastName} was successfully updated.`);
-            },
-            () => {
-              this.loading = false;
-              this.notificationService.showErrorMessage('Failed to update user.');
-            },
-          );
+    this.userService
+      .putUser(createUser)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (response) => {
+          this.loading = false;
+          this.notificationService.showSuccessMessage(`The user ${createUser.firstName} 
+          ${createUser.lastName} was successfully updated.`);
+        },
+        () => {
+          this.loading = false;
+          this.notificationService.showErrorMessage('Failed to update user.');
+        },
+      );
   
   
-      this.dialogRef.close();
+    this.dialogRef.close();
+  }
+
+  public handleFileInput(target: any) {
+    this.imageFile = target.files[0];
+
+    if (!this.imageFile) {
+      target.value = '';
+      return;
     }
 
-    public handleFileInput(target: any) {
-      this.imageFile = target.files[0];
-
-      if (!this.imageFile) {
-          target.value = '';
-          return;
-      }
-
-      if (this.imageFile.size / 1000000 > 5) {
-          this.notificationService.showErrorMessage(`Image can't be heavier than ~5MB`);
-          target.value = '';
-          return;
-      }
-
-      const reader = new FileReader();
-      reader.addEventListener('load', () => (this.imageUrl = reader.result as string));
-      reader.readAsDataURL(this.imageFile);
-  }
-  
-    get profileFormControl() {
-      return this.profileForm.controls;
+    if (this.imageFile.size / 1000000 > 5) {
+      this.notificationService.showErrorMessage('Image can\'t be heavier than ~5MB');
+      target.value = '';
+      return;
     }
-  
+
+    const reader = new FileReader();
+    reader.addEventListener('load', () => (this.imageUrl = reader.result as string));
+    reader.readAsDataURL(this.imageFile);
   }
+  
+  get profileFormControl() {
+    return this.profileForm.controls;
+  }
+  
+}
 
   

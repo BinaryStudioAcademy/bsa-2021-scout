@@ -17,7 +17,9 @@ export class UserProfileComponent implements OnInit{
   @Input() user!:User;
 
 
-  constructor(public dialog: MatDialog, public notificService: NotificationService, public userService: UserDataService) {
+  constructor(public dialog: MatDialog,
+    public notificService: NotificationService,
+    public userService: UserDataService) {
   }
 
   ngOnInit(){
@@ -28,8 +30,8 @@ export class UserProfileComponent implements OnInit{
   }
 
   getMainRoles(){
-    if(this.user.roles?.filter(x=>x.name=="HrLead").length != 0){
-      return this.user.roles?.filter(x=>x.name!="HrUser");
+    if(this.user.roles?.filter(x=>x.name=='HrLead').length != 0){
+      return this.user.roles?.filter(x=>x.name!='HrUser');
     }
     return this.user.roles;
   }
