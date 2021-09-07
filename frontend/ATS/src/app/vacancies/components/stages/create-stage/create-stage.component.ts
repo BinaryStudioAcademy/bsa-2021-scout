@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
 import { Action } from 'src/app/shared/models/action/action';
@@ -20,6 +20,13 @@ import { Stage } from 'src/app/shared/models/stages/stage';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ReviewService } from 'src/app/shared/services/review.service';
 import { StageType } from 'src/app/shared/models/stages/type';
+import { MatDialog } from '@angular/material/dialog';
+import { SelectTemplateComponent } from '../../select-template/select-template.component';
+
+interface SendEmailDataJson{
+  joinTemplateId: string;
+  leaveTemplateId: string;
+}
 
 @Component({
   selector: 'app-create-stage',
@@ -40,6 +47,10 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
   public reviewOptions: IOption[] = [];
   public actionJoinOptions: IOption[] = [];
   public actionLeaveOptions: IOption[] = [];
+  public dataJson : SendEmailDataJson = {
+    joinTemplateId: '',
+    leaveTemplateId: '',
+  };
 
   private static reviews: Review[] = [];
   private static reviewsLoaded: boolean = false;
@@ -98,6 +109,7 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
     private readonly fb: FormBuilder,
     private readonly reviewService: ReviewService,
     private readonly notifications: NotificationService,
+    private readonly dialog: MatDialog,
   ) {
     this.stageForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -160,6 +172,11 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    if(this.stage?.dataJson != '' && this.stage?.dataJson != null 
+    && this.stage?.dataJson != undefined){
+      this.dataJson = JSON.parse(this.stage?.dataJson ? this.stage!.dataJson : '');
+    }
+    
     if (CreateStageComponent.reviewsLoaded) {
       this.reviewOptions = this.reviewsToOptions(CreateStageComponent.reviews);
     } else {
@@ -215,6 +232,65 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
     );
   }
 
+  selectedChange(options?: IOption[], stageChangeEventType: number = 0){
+    let newActions: Action[] = this.optionsToActions(options, stageChangeEventType);
+    let actions: Action[] = [];
+    if(stageChangeEventType == 1){
+      actions = this.stageForm.get('actionsOnJoin')!.value;
+    }
+    else{
+      actions = this.stageForm.get('actionsOnLeave')!.value;
+    }
+    let isExist : boolean = false;
+    let isNewExist : boolean = false;
+    actions.forEach(action => {
+      if(action.name == 'Send mail')
+      {
+        isExist = true;
+      }
+    });
+
+    newActions.forEach(action => {
+      if(action.name == 'Send mail')
+      {
+        isNewExist = true;
+      }
+    });
+
+    if (!isExist && isNewExist)
+    {
+      this.dialog.open(SelectTemplateComponent, { width: '600px', disableClose: true })
+        .afterClosed()
+        .subscribe(result => {
+          let sendMail: SendEmailDataJson = {
+            joinTemplateId: '',
+            leaveTemplateId: '',
+          };
+          if(stageChangeEventType == 1){
+            sendMail = {
+              joinTemplateId: result,
+              leaveTemplateId: this.dataJson.leaveTemplateId,
+            };
+          }
+          else{
+            sendMail = {
+              joinTemplateId: this.dataJson.joinTemplateId,
+              leaveTemplateId: result,
+            };
+          }
+
+          this.dataJson = sendMail;
+        });
+    }
+
+    if(stageChangeEventType == 1){
+      this.stageForm.get('actionsOnJoin')!.setValue(newActions);
+    }
+    else{
+      this.stageForm.get('actionsOnLeave')!.setValue(newActions);
+    }
+  }
+  
   public actionsToOptions(actions?: Action[]): IOption[] {
     return (actions ?? []).map((a) => ({
       id: a.id,
@@ -252,6 +328,7 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
       index: 0,
       vacancyId: '',
       actions: actions,
+      dataJson: JSON.stringify(this.dataJson),
     };
     
     this.stage = stage;

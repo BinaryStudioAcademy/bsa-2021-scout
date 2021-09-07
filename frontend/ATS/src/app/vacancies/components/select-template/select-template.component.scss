@@ -1,0 +1,30 @@
+@import "../../../../common.scss";
+
+.select-template {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    .mat-button.mat-button{
+        margin-top: 10px;
+    }
+
+    .html-show {
+        margin: 10px;
+        margin-bottom: 0;
+        padding: 10px;
+        width: 100%;
+        background: red;
+        border-radius: 10px;
+        background: $primary-color-white;
+    }
+
+    ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex{
+        background-color: transparent;
+    }
+
+    ::ng-deep .mat-form-field{
+        width: 80%;
+    }
+}

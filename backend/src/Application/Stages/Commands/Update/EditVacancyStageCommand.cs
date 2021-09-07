@@ -70,6 +70,7 @@ namespace Application.Stages.Commands
             existedStage.Type = updateStage.Type;
             existedStage.IsReviewable = updateStage.IsReviewable;
             existedStage.Actions = updateStage.Actions;
+            existedStage.DataJson = updateStage.DataJson;
             existedStage.ReviewToStages = null;
 
             existedStage.Actions = new List<Action>();

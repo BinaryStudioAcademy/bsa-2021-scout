@@ -39,23 +39,23 @@ namespace Infrastructure.Mail
             _client.Dispose();
         }
 
-        public async Task<string> SendAsync(string to, string subject, string body, string templateSlug = "default")
+        public async Task<string> SendAsync(string to, string subject, string body, string templateSlug = "default", ICollection<Attachment> attachments = null)
         {
-            return await SendAsync(new string[] { to }, subject, body, templateSlug);
+            return await SendAsync(new string[] { to }, subject, body, templateSlug, attachments);
         }
 
-        public async Task<string> SendAsync(IEnumerable<string> to, string subject, string body, string templateSlug = "default")
+        public async Task<string> SendAsync(IEnumerable<string> to, string subject, string body, string templateSlug = "default", ICollection<Attachment> attachments = null)
         {
             string html = await _mailBuilder.Build(body, templateSlug);
             string id = GenerateMessageId();
 
-            MailMessage message = GenerateMessage(to, subject, html, id);
+            MailMessage message = GenerateMessage(to, subject, html, id, attachments);
 
             _client.Send(message);
             return id;
         }
 
-        private MailMessage GenerateMessage(IEnumerable<string> to, string subject, string html, string id)
+        private MailMessage GenerateMessage(IEnumerable<string> to, string subject, string html, string id, ICollection<Attachment> attachments = null)
         {
             MailMessage message = new MailMessage
             {
@@ -64,6 +64,14 @@ namespace Infrastructure.Mail
                 Body = html,
                 IsBodyHtml = true,
             };
+
+            if (attachments != null && attachments.Count != 0)
+            {
+                foreach (var item in attachments)
+                {
+                    message.Attachments.Add(item);
+                }
+            }
 
             foreach (string address in to)
             {

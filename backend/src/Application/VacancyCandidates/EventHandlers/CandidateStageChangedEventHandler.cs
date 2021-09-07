@@ -13,6 +13,11 @@ using System.Collections.Generic;
 using Application.Interfaces;
 using AutoMapper;
 using System;
+using Domain.Interfaces.Abstractions;
+using Newtonsoft.Json;
+using Application.MailTemplates.Queries;
+using Application.Mail;
+using Application.VacancyCandidates.Dtos;
 
 namespace Application.VacancyCandidates.EventHandlers
 {
@@ -24,6 +29,7 @@ namespace Application.VacancyCandidates.EventHandlers
         private readonly IVacancyReadRepository _vacancyReadRepository;
         private readonly IApplicantReadRepository _applicantReadRepository;
         private readonly IVacancyCandidateReadRepository _vacancyCandidateReadRepository;
+        private readonly IReadRepository<Project> _projectReadRepository;
         protected readonly ICurrentUserContext _currentUserContext;
         private readonly ISender _mediator;
         private readonly IMapper _mapper;
@@ -32,7 +38,8 @@ namespace Application.VacancyCandidates.EventHandlers
             IVacancyReadRepository vacancyReadRepository,
             IApplicantReadRepository applicantReadRepository,
             IVacancyCandidateReadRepository vacancyCandidateReadRepository,
-            ICurrentUserContext currentUserContext,
+            IReadRepository<Project> projectReadRepository,
+        ICurrentUserContext currentUserContext,
             IMapper mapper,
         ISender mediator)
         {
@@ -41,6 +48,7 @@ namespace Application.VacancyCandidates.EventHandlers
             _vacancyReadRepository = vacancyReadRepository;
             _applicantReadRepository = applicantReadRepository;
             _vacancyCandidateReadRepository = vacancyCandidateReadRepository;
+            _projectReadRepository = projectReadRepository;
             _currentUserContext = currentUserContext;
             _mapper = mapper;
             _mediator = mediator;
@@ -52,11 +60,14 @@ namespace Application.VacancyCandidates.EventHandlers
             var vacancy = await _vacancyReadRepository.GetAsync(notification.Event.VacancyId);
             var vacancyCandidate = await _vacancyCandidateReadRepository.GetAsync(notification.Event.Id);
             var applicant = await _applicantReadRepository.GetAsync(vacancyCandidate.ApplicantId);
+            var project = await _projectReadRepository.GetAsync(vacancy.ProjectId);
+            vacancy.Project = project;
+
             var user = _mapper.Map<User>(await _currentUserContext.GetCurrentUser());
 
             foreach (var action in stage.Actions)
             {
-                if(action.StageChangeEventType == notification.Event.EventType)
+                if (action.StageChangeEventType == notification.Event.EventType)
                 {
                     switch (action.ActionType)
                     {
@@ -67,28 +78,43 @@ namespace Application.VacancyCandidates.EventHandlers
                             _logger.LogInformation("Schedule Interview Action");
                             break;
                         case ActionType.SendMail:
-                            _logger.LogInformation("Send email");
+                            await SendMailTask(notification, stage, vacancy, applicant, user);
                             break;
                     }
                 }
             }
         }
 
-
-        private async Task CreateTask(DomainEventNotification<CandidateStageChangedEvent> notification, 
+        private async Task CreateTask(DomainEventNotification<CandidateStageChangedEvent> notification,
             Stage stage, Vacancy vacancy, Applicant applicant, User user)
         {
             var createTaskCommand = new CreateTaskCommand(
-                new CreateTaskDto { 
-                Name = $"Candidate {applicant.FirstName} {applicant.LastName} moved to stage {stage.Name} on vacancy {vacancy.Title}",
-                Note = "",
-                ApplicantId = applicant.Id,
-                DueDate = DateTime.Now,
-                UsersIds = new List<string>(),
-                IsReviewed = false
-              });
+                new CreateTaskDto
+                {
+                    Name = $"Candidate {applicant.FirstName} {applicant.LastName} moved to stage {stage.Name} on vacancy {vacancy.Title}",
+                    Note = "",
+                    ApplicantId = applicant.Id,
+                    DueDate = DateTime.Now,
+                    UsersIds = new List<string>(),
+                    IsReviewed = false
+                });
 
             await _mediator.Send(createTaskCommand);
+        }
+
+        private async Task SendMailTask(DomainEventNotification<CandidateStageChangedEvent> notification,
+            Stage stage, Vacancy vacancy, Applicant applicant, User user)
+        {
+            var templatesIds = JsonConvert.DeserializeObject<TemplatesIdsDto>(stage.DataJson);
+            var templateQuery = new GetMailTemplateWithReplacedPlaceholdersQuery(
+                notification.Event.EventType == Domain.Enums.StageChangeEventType.Join ? 
+                templatesIds.JoinTemplateId : templatesIds.LeaveTemplateId, 
+                vacancy, applicant);
+            var template = await _mediator.Send(templateQuery);
+
+            var body = template.Html;
+            var sendMailCommand = new SendMailCommand(applicant.Id, template.Subject, body, attachments: template.Attachments);
+            await _mediator.Send(sendMailCommand);
         }
     }
 }

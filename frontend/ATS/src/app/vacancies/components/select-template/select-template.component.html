@@ -1,0 +1,15 @@
+<div class="select-template">
+    <mat-form-field class="full-width" appearance="fill">
+        <input floatLabel="never" type="text" placeholder="Pick one" matInput [matAutocomplete]="auto" [formControl]="myFormControl">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let template of filteredOptions | async" [value]="template">{{template.title}}</mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <div class="html-show" *ngIf="selectedTemplate.html != ''">
+        <h3>Body</h3>
+        {{selectedTemplate.html}}
+    </div>
+    
+    <button mat-button (click)="onSave()" [disabled]="saveButtonDisable" >Save</button>
+</div>
