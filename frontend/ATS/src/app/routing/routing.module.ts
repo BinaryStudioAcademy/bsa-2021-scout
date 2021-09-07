@@ -38,6 +38,8 @@ import { UserProfileComponent } from '../shared/components/user-profile/user-pro
 import { InterviewsPageComponent } from '../interviews/interviews-page/interviews-page.component';
 /* eslint-disable max-len */
 import { ApplicantCsvFilesListComponent } from '../applicants/components/CsvComponents/applicant-csv-files-list/applicant-csv-files-list.component';
+import { ProjectArchiveComponent } from '../archive/components/project-archive/project-archive.component';
+import { VacancyArchiveComponent } from '../archive/components/vacancy-archive/vacancy-archive.component';
 
 const routes: Routes = [
   {
@@ -78,8 +80,18 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: AppRoute.Analytics,
-        component: VacanciesListComponent,
+        path: AppRoute.Archive,
+        redirectTo: `${AppRoute.Archive}/${AppRoute.Projects}`,
+        pathMatch: 'full',
+      },
+      {
+        path: `${AppRoute.Archive}/${AppRoute.Vacancies}`,
+        component: VacancyArchiveComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: `${AppRoute.Archive}/${AppRoute.Projects}`,
+        component: ProjectArchiveComponent,
         pathMatch: 'full',
       },
       {

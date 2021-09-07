@@ -55,6 +55,8 @@ import { PlaceholdersEditComponent } from '../users/components/placeholders/plac
 import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
 import { TableFilterComponent } from './components/table-filter/table-filter.component';
 import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
+import { ConfirmationDialogComponent } 
+  from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   exports: [
@@ -100,6 +102,7 @@ import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
     MatTooltipModule,
     TagsEditComponent,
     DeleteConfirmComponent,
+    ConfirmationDialogComponent,
     LogoBlockComponent,
     ClipboardModule,
     UserProfileComponent,
@@ -109,6 +112,7 @@ import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
     AvatarModalComponent,
     TableFilterComponent,
     MarkBarComponent,
+    RouterModule,
   ],
   imports: [
     MatButtonModule,
@@ -162,6 +166,7 @@ import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
     AddCandidateModalComponent,
     TagsEditComponent,
     DeleteConfirmComponent,
+    ConfirmationDialogComponent,
     LogoBlockComponent,
     UserProfileComponent,
     UserRoleDirective,

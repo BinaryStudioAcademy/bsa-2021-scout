@@ -21,6 +21,7 @@ import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 
 import { ProjectsModule } from '../projects/projects.module';
 import { PoolsModule } from '../pools/pools.module';
+import { ArchiveModule } from '../archive/archive.module';
 import { MailTemplatesModule } from '../mail-templates/mail-templates.module';
 
 @NgModule({
@@ -40,6 +41,7 @@ import { MailTemplatesModule } from '../mail-templates/mail-templates.module';
     UsersModule,
     ProjectsModule,
     PoolsModule,
+    ArchiveModule,
     MailTemplatesModule,
   ],
   providers: [
