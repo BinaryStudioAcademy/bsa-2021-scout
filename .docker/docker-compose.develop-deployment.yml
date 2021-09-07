@@ -73,7 +73,7 @@ services:
 
   ats_api:
     container_name: 'ats_api'
-    image: docker.pkg.github.com/binarystudioacademy/bsa-2021-ats/ats-api-prod-deployment:latest
+    image: docker.pkg.github.com/binarystudioacademy/bsa-2021-ats/ats-api-develop-deployment:latest
     restart: on-failure
     depends_on:
       - ats_elastic_server
@@ -89,7 +89,7 @@ services:
 
   ats_frontend:
     container_name: 'ats_frontend'
-    image: docker.pkg.github.com/binarystudioacademy/bsa-2021-ats/ats-frontend-prod-deployment:latest
+    image: docker.pkg.github.com/binarystudioacademy/bsa-2021-ats/ats-frontend-develop-deployment:latest
     restart: on-failure
     ports:
       - 80:80
