@@ -222,7 +222,8 @@ implements AfterViewInit, OnInit, OnDestroy
         name: 'Project',
         type: FilterType.Multiple,
         multipleSettings: {
-          options: projects.sort((a, b) => a.label < b.label ? -1 : 1),
+          options: projects,
+          sort: true,
           valueSelector: (vac: VacancyData) => vac.project.id,
         },
       },
@@ -237,6 +238,7 @@ implements AfterViewInit, OnInit, OnDestroy
         type: FilterType.Multiple,
         multipleSettings: {
           options: hrs,
+          sort: true,
           valueSelector: (vac: VacancyData) => vac.responsibleHr.id!,
         },
       },
