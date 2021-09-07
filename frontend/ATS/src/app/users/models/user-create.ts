@@ -8,5 +8,7 @@ export interface UserCreate{
   avatar?: File,
   skype?: string,
   phone?:string,
-  slack?:string
+  slack?:string,
+  isImageToDelete:boolean
+
 }

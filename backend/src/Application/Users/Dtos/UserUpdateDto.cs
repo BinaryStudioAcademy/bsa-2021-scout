@@ -16,6 +16,8 @@ namespace Application.Users.Dtos
         public string Phone { get; set; }
         public string Skype { get; set; }
         public string Slack { get; set; }
+        public bool? IsImageToDelete { get; set; }
+
 
     }
 

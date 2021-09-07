@@ -12,13 +12,13 @@
         
         <form class="form-container" [formGroup]="profileForm">
             <div class="profile-flex-row">
-                <div class="avatar-container" (click)="file.click()">
+                <div class="avatar-container" >
                     <input hidden class="file-hide" #file accept="image/*" type="file" (change)="handleFileInput($event.target)" >
-                    <img class="avatar avatar-style" src="{{this.imageUrl}}" alt="Here should be an avatar" onError="this.src='../../../../assets/images/defaultAvatar.png'">
-                    <div class="img-text">
+                    <img (click)="file.click()" class="avatar avatar-style" src="{{this.imageUrl}}" alt="Here should be an avatar" onError="this.src='../../../../assets/images/defaultAvatar.png'">
+                    <div (click)="file.click()" class="img-text">
                     Upload
                     </div>
-                    <button mat-icon-button aria-label="Delete">
+                    <button mat-icon-button aria-label="Delete" (click)="setAvatarToDelete()">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Application.Common.Files.Dtos;
 using Domain.Interfaces.Write;
+using Domain.Interfaces.Read;
 
 namespace Application.Users.Commands.Create
 {
@@ -19,6 +20,7 @@ namespace Application.Users.Commands.Create
     {
         public UserUpdateDto User { get; }
         public FileDto? ImgFileDto { get; set; }
+
 
         public UpdateUserCommand(UserUpdateDto user, FileDto? imgFileDto)
         {
@@ -30,7 +32,7 @@ namespace Application.Users.Commands.Create
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserDto>
     {
         protected readonly IWriteRepository<User> _writeRepository;
-        protected readonly IReadRepository<User> _readRepository;
+        protected readonly IUserReadRepository _readRepository;
         protected readonly ICurrentUserContext _currentUser;
         protected readonly IImageWriteRepository _imageWriteRepository;
 
@@ -40,7 +42,7 @@ namespace Application.Users.Commands.Create
 
         public UpdateUserCommandHandler(IWriteRepository<User> writeRepository,
             IImageWriteRepository imageWriteRepository,
-            IReadRepository<User> readRepository, IMapper mapper, ISender mediator, ICurrentUserContext currentUser)
+            IUserReadRepository readRepository, IMapper mapper, ISender mediator, ICurrentUserContext currentUser)
         {
             _imageWriteRepository = imageWriteRepository;
             _writeRepository = writeRepository;
@@ -64,7 +66,7 @@ namespace Application.Users.Commands.Create
             
             if (currentUser.Id == command.User.Id || selectedUsers.Where(x=>x.Id == command.User.Id).ToList().Count != 0)
             {
-                User userToUpdate = await _readRepository.GetAsync(command.User.Id);
+                User userToUpdate = await _readRepository.GetByIdAsync(command.User.Id);
                 User entity = _mapper.Map<User>(command.User);
 
                 userToUpdate.BirthDate = entity.BirthDate;
@@ -86,6 +88,15 @@ namespace Application.Users.Commands.Create
         }
         private async Task UploadAvatarFileIfExists(User user, UpdateUserCommand command)
         {
+            if (command.User.IsImageToDelete == true)
+            {
+                var cachedAvatar = user.Avatar;
+                user.Avatar.Id = null;
+                user.Avatar = null;
+                var updated = await _writeRepository.UpdateAsync(user);
+                await _imageWriteRepository.DeleteAsync(cachedAvatar);
+            }
+
             if (command.ImgFileDto == null)
             {
                 return;

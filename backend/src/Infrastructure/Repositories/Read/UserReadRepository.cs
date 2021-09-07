@@ -123,19 +123,19 @@ namespace Infrastructure.Repositories.Read
             await connection.CloseAsync();
             return user;
         }
-        public async Task<FileInfo> GetAvatarInfoAsync(string applicantId)
+        public async Task<FileInfo> GetAvatarInfoAsync(string Id)
         {
             var connection = _connectionFactory.GetSqlConnection();
 
             var query = @"SELECT fi.* FROM Users a
-                          INNER JOIN FileInfos fi ON a.Avatar = fi.Id
-                          WHERE a.Id = @applicantId;";
+                          INNER JOIN FileInfos fi ON a.AvatarId = fi.Id
+                          WHERE a.Id = @Id";
 
-            var fileInfo = await connection.QueryFirstOrDefaultAsync<FileInfo>(query, new { userId = applicantId });
+            var fileInfo = await connection.QueryFirstOrDefaultAsync<FileInfo>(query, new { Id = @Id });
 
             if (fileInfo == null)
             {
-                throw new Exception("The user "+applicantId+" wasn't found.");
+                throw new Exception("The user "+Id+" wasn't found.");
             }
 
             await connection.CloseAsync();

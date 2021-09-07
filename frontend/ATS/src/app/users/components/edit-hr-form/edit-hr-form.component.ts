@@ -41,15 +41,14 @@ import { UserCreate } from '../../models/user-create';
 export class EditHrFormComponent implements OnInit {
     profileForm!: FormGroup;
     submitted: Boolean = false;
-    // @Input()currUser!:User;
     public loading: boolean = true;
     private readonly unsubscribe$: Subject<void> = new Subject<void>();
     public imageFile: File | undefined;
     public imageUrl:string | undefined;
+    public isAvatarToDelete: boolean = false;
   
     constructor(
       public dialogRef: MatDialogRef<EditHrFormComponent>,
-      // @Inject(MAT_DIALOG_DATA) public data: { userToEdit: UserTableData },
       @Inject(MAT_DIALOG_DATA) public data: { userToEdit: UserTableData, isUserLeadProfile:Boolean},
       private fb: FormBuilder,
       public userService: UserDataService,
@@ -63,7 +62,6 @@ export class EditHrFormComponent implements OnInit {
         'skype': new FormControl({value:''}),
         'slack': new FormControl({value:''}),
         'email': new FormControl({value:'', disabled:true}),
-        // 'image': new FormControl({value:''}),
       });
       this.loading = false;
     }
@@ -93,7 +91,8 @@ export class EditHrFormComponent implements OnInit {
             console.log(this.imageUrl)
           });
       }else{
-        let response = this.data.userToEdit;
+        this.userService.getById(this.data.userToEdit.id!).subscribe(
+        response => {
             this.profileForm.setValue({
               firstName: response.firstName,
               lastName: response.lastName,
@@ -106,10 +105,19 @@ export class EditHrFormComponent implements OnInit {
             this.imageUrl = response.avatarUrl;
             console.log(this.imageUrl)
             console.log(this.profileForm)
+          });
+      }
+    }
+
+    setAvatarToDelete(){
+      let areYouSure = confirm("Are you sure you want to delete this photo?");
+      if(areYouSure == true){
+        this.isAvatarToDelete = true;
+        this.imageUrl = "";
       }
     }
   
-    //------------------VACANCY------------------
+   
     createUser() {
       this.submitted = true;
       this.loading = true;
@@ -123,7 +131,8 @@ export class EditHrFormComponent implements OnInit {
         skype:this.profileForm.controls['skype'].value,
         slack:this.profileForm.controls['slack'].value,
         phone: this.profileForm.controls['phone'].value,
-        email:this.profileForm.controls['email'].value
+        email:this.profileForm.controls['email'].value,
+        isImageToDelete: this.isAvatarToDelete
       };
 
       console.log(createUser)
