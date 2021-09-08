@@ -108,6 +108,10 @@ export class PoolDetailsModalComponent implements OnInit, AfterViewInit {
     applicant.isShowAllTags = applicant.isShowAllTags ? false : true;
   }
 
+  addApplicants() {
+    
+  }
+
 
 }
 

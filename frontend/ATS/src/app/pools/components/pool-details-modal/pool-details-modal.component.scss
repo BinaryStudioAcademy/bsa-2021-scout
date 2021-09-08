@@ -4,7 +4,11 @@
     width: 100%;
 }
 
-
+.applicants-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
 .applicants-table .mat-list-base{
     padding: unset;
