@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { CreateApplicant } from 'src/app/shared/models/applicants/create-applicant';
@@ -30,6 +30,7 @@ export class ApplicantsHeadComponent implements OnInit{
   constructor(
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
   ) {}
 
   public ngOnInit(): void {
@@ -42,7 +43,7 @@ export class ApplicantsHeadComponent implements OnInit{
           const variants: ApplicantCreationVariants = JSON.parse(json);
 
           this.dialog.open(CreateApplicantFromVariantsComponent, {
-            width: '732px',
+            width: '600px',
             height: '95vh',
             data: variants,
           });
@@ -52,6 +53,14 @@ export class ApplicantsHeadComponent implements OnInit{
           this.creationData = creationData;
           this.showApplicantsCreateDialog();
         }
+
+        this.router.navigate(['/applicants'], {
+          queryParams: {
+            variants: null,
+            data: null,
+          },
+          queryParamsHandling: 'merge',
+        });
       }
     });
 
@@ -65,7 +74,7 @@ export class ApplicantsHeadComponent implements OnInit{
 
   public showApplicantsCreateDialog(): void {
     const dialogRef = this.dialog.open(CreateApplicantComponent, {
-      width: '532px',
+      width: '600px',
       height: '95vh',
       autoFocus: false,
       data: this.creationData,

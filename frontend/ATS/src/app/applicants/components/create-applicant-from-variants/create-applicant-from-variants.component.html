@@ -60,12 +60,16 @@
   </ng-template>
   <div class="variants-input">
     <div>
-      <p>Email</p>
+      <p class="required-field">Email</p>
       <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors? 'invalid-input' : ''">
         <input required formControlName="email" type="email" matInput placeholder="Enter email"
           [(ngModel)]="createdApplicant.email">
       </mat-form-field>
+      <div class="validation-error"
+        *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.required; else emailPatternError">
+        It&apos;s required field
+      </div>
     </div>
     <div class="variants">
       <div class="variant" (click)="set('email', available)" *ngFor="let available of data.email">
@@ -162,11 +166,11 @@
     LinkedIn url must match the pattern https://www.linkedin.com/in/&lt;username&gt;/
   </div>
   <p>CV</p>
-  <app-file-input (upload)="uploadApplicantCv($event)" [default]="[data.cv]" [accept]="allowedCvFileType">
+  <app-file-input [accept]="allowedCvFileType" (upload)="uploadApplicantCv($event)">
   </app-file-input>
   <mat-dialog-actions class="publish-action">
     <button [disabled]="validationGroup!.invalid" (click)="createApplicant()" mat-button>
-      Publish
+      Save
     </button>
   </mat-dialog-actions>
 </form>

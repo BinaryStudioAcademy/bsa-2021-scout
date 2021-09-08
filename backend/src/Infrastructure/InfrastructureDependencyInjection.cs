@@ -27,6 +27,7 @@ using Infrastructure.AWS.S3;
 using Infrastructure.AWS.S3.Abstraction;
 using Infrastructure.AWS.S3.Services;
 using Infrastructure.AWS.Connection;
+using System.Threading.Tasks;
 
 namespace Infrastructure
 {
@@ -34,14 +35,16 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
+            services.AddWriteRepositories();
+            services.AddReadRepositories();
+           
             services.AddDatabaseContext();
-
             services.AddDapper();
             services.AddMongoDb();
             services.AddElasticEngine();
 
-            services.AddWriteRepositories();
-            services.AddReadRepositories();
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<ISecurityService, SecurityService>();
 
             services.AddEvents();
             services.AddMail();
@@ -51,6 +54,7 @@ namespace Infrastructure
 
             return services;
         }
+
         private static IServiceCollection AddElasticEngine(this IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("ELASTIC_CONNECTION_STRING");
@@ -73,6 +77,8 @@ namespace Infrastructure
         }
         private static IServiceCollection AddDatabaseContext(this IServiceCollection services)
         {
+            var vaultReadRepository = services.BuildServiceProvider().GetRequiredService<IVaultReadRepository>();
+
             var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
 
             if (connectionString is null)
@@ -225,9 +231,11 @@ namespace Infrastructure
             services.AddScoped<ICandidateToStageReadRepository, CandidateToStageReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
+
             services.AddScoped<IHomeDataReadRepository, HomeDataReadRepository>();
 
             services.AddScoped<IReadRepository<RegisterPermission>, RegisterPermissionReadRepository>();
+            services.AddScoped<IVaultReadRepository, VaultReadRepository>();
 
             services.AddScoped<IElasticReadRepository<ElasticEntity>, ElasticReadRepository<ElasticEntity>>();
 

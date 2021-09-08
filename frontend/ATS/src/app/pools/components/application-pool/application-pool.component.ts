@@ -171,6 +171,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
         type: FilterType.Multiple,
         multipleSettings: {
           options: users,
+          sort: true,
           valueSelector: (pool) => pool.createdBy,
         },
       },
@@ -290,7 +291,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
       });
 
       this.dialogService.open(AddCandidateModalComponent, {
-        width: '400px',
+        width: '500px',
         autoFocus: false,
         panelClass: 'applicants-options',
         data: {

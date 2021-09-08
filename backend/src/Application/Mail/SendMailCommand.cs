@@ -42,7 +42,7 @@ namespace Application.Mail
 
         public async Task<Unit> Handle(SendMailCommand command, CancellationToken _)
         {
-            using (ISmtp connection = _smtp.Connect())
+            using (ISmtp connection = await _smtp.Connect())
             {
                 await connection.SendAsync(command.To, command.Subject, command.Body, command.TemplateSlug);
             }
