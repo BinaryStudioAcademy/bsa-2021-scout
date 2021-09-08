@@ -22,10 +22,6 @@ export class ProjectService {
     return this.httpService.postFullRequest<ProjectInfo>(`${this.routePrefix}`, post);
   }
 
-  public deleteProject(project: ProjectInfo) {
-    return this.httpService.deleteFullRequest<ProjectInfo>(`${this.routePrefix}/${project.id}`);
-  }
-
   public updateProject(project: ProjectInfo) {
     return this.httpService.putFullRequest<ProjectInfo>(`${this.routePrefix}`, project);
   }

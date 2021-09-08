@@ -24,7 +24,7 @@
     <div class="multiselect-wrp">
       <app-multiselect [data]="actionJoinOptions" placeholder="Select actions"
         [selected]="actionsToOptions(stageForm.get('actionsOnJoin')!.value)"
-        (selectedChange)="stageForm.get('actionsOnJoin')!.setValue(optionsToActions($event, 1))"></app-multiselect>
+        (selectedChange)="selectedChange($event, 1)"></app-multiselect>
     </div>
     <mat-error *ngIf="(stageFormControl.actionsOnJoin.touched || submitted) && stageFormControl.actionsOnJoin.errors?.required">
       This field shouldn't be empty
@@ -33,7 +33,7 @@
     <div class="multiselect-wrp">
       <app-multiselect [data]="actionLeaveOptions" placeholder="Select actions"
         [selected]="actionsToOptions(stageForm.get('actionsOnLeave')!.value)"
-        (selectedChange)="stageForm.get('actionsOnLeave')!.setValue(optionsToActions($event, 0))"></app-multiselect>
+        (selectedChange)="selectedChange($event, 0)"></app-multiselect>
     </div>
     <mat-error *ngIf="(stageFormControl.actionsOnLeave.touched || submitted) && stageFormControl.actionsOnLeave.errors?.required">
       This field shouldn't be empty

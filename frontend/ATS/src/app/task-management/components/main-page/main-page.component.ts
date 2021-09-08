@@ -29,6 +29,7 @@ export class MainPageComponent implements OnInit{
   public isDone : boolean = false;
   public tasks : Task[] = [];
   public filter : filterObject = {userFilter:false, isDoneFilter:false} as filterObject;
+  public isReviewPage : boolean = false;
   public filterUser : string = 'All';
   public currentUserId : string = '';
   public loading : boolean = false;
@@ -49,7 +50,6 @@ export class MainPageComponent implements OnInit{
 
 
   ngOnInit() : void {
-    console.log('tasks loaded');
     this.loadData();     
   }
 
@@ -118,17 +118,32 @@ export class MainPageComponent implements OnInit{
   }
 
   toggleDone(isDone: boolean) {
+    this.isReviewPage = false;
     this.filter.isDoneFilter = isDone;
+    this.filterData();
+  }
+
+  toggleReview() {
+    this.isReviewPage = true;
     this.filterData();
   }
 
   filterData()
   {
-    this.tasks = this.allTasks.filter(x=> 
-      x.isDone == this.filter.isDoneFilter && 
-      (this.currentUserId == '' || this.filter.userFilter == false ||
-        (this.filter.userFilter && x.createdBy.id == this.currentUserId)
-      ));    
+    if(this.isReviewPage)
+    {
+      this.tasks = this.allTasks.filter(x=> !x.isReviewed && 
+        (this.currentUserId == '' || this.filter.userFilter == false ||
+          (this.filter.userFilter && x.createdBy.id == this.currentUserId)
+        ));
+    }
+    else {
+      this.tasks = this.allTasks.filter(x=> x.isReviewed &&
+        x.isDone == this.filter.isDoneFilter && 
+        (this.currentUserId == '' || this.filter.userFilter == false ||
+          (this.filter.userFilter && x.createdBy.id == this.currentUserId)
+        )); 
+    }
   }
 
   toggleUser(value:string) {
@@ -208,7 +223,13 @@ export class MainPageComponent implements OnInit{
       
     });
 
-    editDialog.afterClosed().subscribe((result) => {this.filterData();});
+    editDialog.afterClosed().subscribe((result) => {
+      if(result)
+      {
+        task.isReviewed = true;
+      }
+      this.filterData();
+    });
 
     const dialogSubmitSubscription =
       editDialog.componentInstance.submitClicked.subscribe((result) => {

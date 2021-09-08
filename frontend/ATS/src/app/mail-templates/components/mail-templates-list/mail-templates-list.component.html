@@ -77,6 +77,7 @@
                              <mat-icon (click)="OnEdit(row)">edit</mat-icon>
                             <mat-select panelClass="template-options">
                                 <mat-option class="delete" (click)="showDeleteConfirmDialog(row)"><mat-icon>delete</mat-icon>Delete</mat-option>
+                                <mat-option (click)="sendEmail(row)"><mat-icon>forward_to_inbox</mat-icon>Send Email</mat-option>
                             </mat-select>
                         </div>
                     </td>

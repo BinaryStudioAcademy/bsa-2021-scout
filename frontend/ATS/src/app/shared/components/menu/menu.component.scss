@@ -1,16 +1,17 @@
 .logo {
-  width: 107px;
-  height: 54px;
+  width: 130px;
+}
+.mini-logo {
+  width: 40px;
+  padding-top: 10px;
 }
 
 .logo-container {
-  padding-top: 32px;
-  height: 15%;
-  max-width: 170px;
+  height: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: -7px;
+  justify-content: center;
 }
 
 .mat-icon {

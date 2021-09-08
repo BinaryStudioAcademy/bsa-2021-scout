@@ -52,5 +52,13 @@ namespace WebAPI.Controllers
             var query = new DeleteMailTemplateCommand(id);
             return Ok(await Mediator.Send(query));
         }
+
+        [HttpPost("sendEmail/{id}/{email}")]
+        public async Task<ActionResult<MailTemplateDto>> SendEmail(string id, string email, [FromForm] string body)
+        {
+            var command = new SendEmailWithTemplateCommand(id, email, body);
+            
+            return Ok(await Mediator.Send(command));
+        }
     }
 }

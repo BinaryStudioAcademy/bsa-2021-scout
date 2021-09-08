@@ -19,7 +19,6 @@ namespace Infrastructure.EF.Seeds
             DateTime creationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), new DateTime(2021, 7, 30));
             DateTime dateOfOpening = creationDate.AddDays(20);
             DateTime modificationDate = dateOfOpening.AddDays(2);
-            DateTime? completionDate = _random.Next() % 2 == 0 ? creationDate.AddMonths(_random.Next(2, 4)) : null;
             DateTime plannedCompletionDate = creationDate.AddMonths(3);
             int randomIndex = _random.Next(titles.Count());
             return new Vacancy
@@ -36,7 +35,7 @@ namespace Infrastructure.EF.Seeds
                 IsHot = _random.Next() % 2 == 0,
                 SalaryFrom = _random.Next(1200, 1300),
                 SalaryTo = _random.Next(1300, 56000),
-                CompletionDate = completionDate,
+                CompletionDate = null,
                 PlannedCompletionDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 21),
                 TierFrom = tierFrom,
                 TierTo = tierTo,

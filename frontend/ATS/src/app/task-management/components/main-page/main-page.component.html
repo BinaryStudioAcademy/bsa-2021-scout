@@ -7,6 +7,7 @@
                 <mat-selection-list #done [multiple]="false">
                     <mat-list-option selected class='item' (click)="toggleDone(false)">To-Do</mat-list-option>
                     <mat-list-option class='item' (click)="toggleDone(true)" >Done</mat-list-option>
+                    <mat-list-option class='item' (click)="toggleReview()" >Need Review</mat-list-option>
                 </mat-selection-list>     
             </div>
             <button mat-button color="accent" (click)="createTask()">+ New task</button>

@@ -1,5 +1,4 @@
-﻿using Application.Projects.CommandQuery.Delete;
-using Application.Projects.CommandQuery.Update;
+﻿using Application.Projects.CommandQuery.Update;
 using Application.Projects.Commands.Create;
 using Application.Projects.Dtos;
 using Application.Projects.Queries;
@@ -38,13 +37,6 @@ namespace WebAPI.Controllers
         {
             var command = new UpdateProjectCommand(project);
             return StatusCode(201, await Mediator.Send(command));
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProject(string id)
-        {
-            var command = new DeleteProjectCommand(id);
-            return StatusCode(204, await Mediator.Send(command));
         }
     }
 }
