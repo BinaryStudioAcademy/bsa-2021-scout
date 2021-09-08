@@ -8,6 +8,7 @@ export interface Task extends Model {
   dueDate: Date;
   doneDate?: Date;  
   isDone: boolean;
+  isReviewed: boolean;
   note?: string;
   createdBy: UserInfo;
   dateCreated: Date;

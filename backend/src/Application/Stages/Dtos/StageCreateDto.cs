@@ -16,6 +16,7 @@ namespace Application.Stages.Dtos
         public StageType Type { get; set; }
         public int Index { get; set; }
         public bool IsReviewable { get; set; }
+        public string? DataJson { get; set; }
         public ICollection<ActionCreateDto> Actions { get; set; }
         public ICollection<ReviewDto> Reviews { get; set; }
     }
