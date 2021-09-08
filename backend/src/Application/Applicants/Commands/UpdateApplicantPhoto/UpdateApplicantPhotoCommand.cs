@@ -11,64 +11,65 @@ using Domain.Entities;
 #nullable enable
 namespace Application.Applicants.Commands
 {
-    public class UpdateApplicantCvCommand : IRequest<Unit>
+    public class UpdateApplicantPhotoCommand : IRequest<Unit>
     {
         public string ApplicantId { get; set; }
         public Applicant? Applicant { get; set; }
-        public FileDto NewCvFileDto { get; set; }
+        public FileDto NewPhotoFileDto { get; set; }
 
-        public UpdateApplicantCvCommand(string applicantId, FileDto cvFileDto, Applicant? applicant = null)
+        public UpdateApplicantPhotoCommand(string applicantId, FileDto photoFileDto, Applicant? applicant = null)
         {
             ApplicantId = applicantId;
             Applicant = applicant;
-            NewCvFileDto = cvFileDto;
+            NewPhotoFileDto = photoFileDto;
         }
     }
 
-    public class UpdateApplicantCvCommandHandler : IRequestHandler<UpdateApplicantCvCommand, Unit>
+    public class UpdateApplicantPhotoCommandHandler : IRequestHandler<UpdateApplicantPhotoCommand, Unit>
     {
-        private readonly IApplicantCvFileWriteRepository _applicantCvFileWriteRepository;
+        private readonly IApplicantPhotoFileWriteRepository _applicantPhotoFileWriteRepository;
         private readonly IApplicantReadRepository _applicantReadRepository;
         private readonly IWriteRepository<Applicant> _applicantWriteRepository;
         private readonly IWriteRepository<FileInfo> _fileInfoWriteRepository;
 
-        public UpdateApplicantCvCommandHandler(
-            IApplicantCvFileWriteRepository applicantCvFileWriteRepository,
+        public UpdateApplicantPhotoCommandHandler(
+            IApplicantPhotoFileWriteRepository applicantPhotoFileWriteRepository,
             IApplicantReadRepository applicantReadRepository,
             IWriteRepository<Applicant> applicantWriteRepository,
             IWriteRepository<FileInfo> fileInfoWriteRepository
         )
         {
-            _applicantCvFileWriteRepository = applicantCvFileWriteRepository;
+            _applicantPhotoFileWriteRepository = applicantPhotoFileWriteRepository;
             _applicantReadRepository = applicantReadRepository;
             _applicantWriteRepository = applicantWriteRepository;
             _fileInfoWriteRepository = fileInfoWriteRepository;
         }
 
-        public async Task<Unit> Handle(UpdateApplicantCvCommand command, CancellationToken _)
+        public async Task<Unit> Handle(UpdateApplicantPhotoCommand command, CancellationToken _)
         {
             var applicant = command.Applicant ?? await _applicantReadRepository.GetByIdAsync(command.ApplicantId);
 
-            if (applicant.HasCv)
+            if (applicant.HasPhoto)
             {
-                await _applicantCvFileWriteRepository.UpdateAsync(command.ApplicantId, command.NewCvFileDto.Content);
+                await _applicantPhotoFileWriteRepository
+                    .UpdateAsync(command.ApplicantId, command.NewPhotoFileDto.Content);
             }
             else
             {
-                FileInfo uploadedCvFileInfo;
+                FileInfo uploadedPhotoFileInfo;
 
-                if (command.NewCvFileDto.Link == null)
+                if (command.NewPhotoFileDto.Link == null)
                 {
-                    uploadedCvFileInfo = await _applicantCvFileWriteRepository
-                        .UploadAsync(applicant.Id, command.NewCvFileDto!.Content);
+                    uploadedPhotoFileInfo = await _applicantPhotoFileWriteRepository
+                        .UploadAsync(applicant.Id, command.NewPhotoFileDto!.Content);
                 }
                 else
                 {
-                    uploadedCvFileInfo = await _fileInfoWriteRepository
-                        .CreateAsync(command.NewCvFileDto.ToFileInfo());
+                    uploadedPhotoFileInfo = await _fileInfoWriteRepository
+                        .CreateAsync(command.NewPhotoFileDto.ToFileInfo());
                 }
 
-                applicant.CvFileInfo = uploadedCvFileInfo;
+                applicant.CvFileInfo = uploadedPhotoFileInfo;
 
                 await _applicantWriteRepository.UpdateAsync(applicant);
             }

@@ -59,7 +59,6 @@ export class CreateApplicantFromVariantsComponent implements OnDestroy {
 
   public createApplicant(): void {
     this.loading = true;
-    console.log(this.createdApplicant);
 
     this.applicantsService
       .addApplicant(this.createdApplicant)

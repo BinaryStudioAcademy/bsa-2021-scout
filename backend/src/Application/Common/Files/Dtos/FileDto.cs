@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using entities = Domain.Entities;
 
 namespace Application.Common.Files.Dtos
 {
@@ -19,6 +20,18 @@ namespace Application.Common.Files.Dtos
         {
             Link = link;
             FileName = link.Split("/").LastOrDefault();
+        }
+
+        public entities::FileInfo ToFileInfo()
+        {
+            string[] linkFragments = Link.Substring(0, 8).Split("/");
+
+            return new entities::FileInfo
+            {
+                Name = FileName,
+                Path = string.Join("/", linkFragments.Skip(3).Take(linkFragments.Length - 4)),
+                PublicUrl = Link,
+            };
         }
     }
 }

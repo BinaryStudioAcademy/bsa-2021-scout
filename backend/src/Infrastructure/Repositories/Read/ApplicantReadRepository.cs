@@ -28,6 +28,7 @@ namespace Infrastructure.Repositories.Read
         public async Task<FileInfo> GetCvFileInfoAsync(string applicantId)
         {
             SqlConnection connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
 
             var query = @"SELECT fi.* FROM Applicants a
                           INNER JOIN FileInfos fi ON a.CvFileInfoId = fi.Id
@@ -38,6 +39,27 @@ namespace Infrastructure.Repositories.Read
             if (fileInfo == null)
             {
                 throw new ApplicantCvNotFoundException(applicantId);
+            }
+
+            await connection.CloseAsync();
+
+            return fileInfo;
+        }
+
+        public async Task<FileInfo> GetPhotoFileInfoAsync(string applicantId)
+        {
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
+
+            var query = @"SELECT fi.* FROM Applicants a
+                          INNER JOIN FileInfos fi ON a.PhotoFileInfoId = fi.Id
+                          WHERE a.Id = @applicantId;";
+
+            var fileInfo = await connection.QueryFirstOrDefaultAsync<FileInfo>(query, new { applicantId = applicantId });
+
+            if (fileInfo == null)
+            {
+                throw new ApplicantPhotoNotFoundException(applicantId);
             }
 
             await connection.CloseAsync();

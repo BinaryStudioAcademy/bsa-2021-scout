@@ -15,6 +15,7 @@ namespace Infrastructure.EF.Configuration
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Ignore(a => a.HasCv);
+            builder.Ignore(a => a.HasPhoto);
         }
     }
 }

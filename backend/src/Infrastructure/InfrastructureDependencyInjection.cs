@@ -36,7 +36,7 @@ namespace Infrastructure
         {
             services.AddWriteRepositories();
             services.AddReadRepositories();
-           
+
             services.AddDatabaseContext();
             services.AddDapper();
             services.AddMongoDb();
@@ -152,6 +152,8 @@ namespace Infrastructure
 
             services.AddScoped<IApplicantCvFileReadRepository, ApplicantCvFileReadRepository>();
             services.AddScoped<IApplicantCvFileWriteRepository, ApplicantCvFileWriteRepository>();
+
+            services.AddScoped<IApplicantPhotoFileWriteRepository, ApplicantPhotoFileWriteRepository>();
 
             services.AddScoped<IMailAttachmentFileWriteRepository, MailAttachmentFileWriteRepository>();
 
@@ -272,7 +274,7 @@ namespace Infrastructure
 
             services.AddScoped<IReadRepository<ReviewToStage>, ReviewToStageReadRepository>();
             services.AddScoped<IReadRepository<CandidateComment>, CandidateCommentReadRepository>();
-            
+
 
             services.AddScoped<IReadRepository<ToDoTask>, TaskReadRepository>();
             services.AddScoped<ITaskReadRepository, TaskReadRepository>();

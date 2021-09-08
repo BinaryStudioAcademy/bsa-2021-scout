@@ -16,17 +16,19 @@ using System.Linq;
 using System;
 
 #nullable enable
-namespace Application.Applicants.Commands
+namespace Application.Applicants.Commands.CreateApplicant
 {
     public class CreateApplicantCommand : IRequest<ApplicantDto>
     {
         public CreateApplicantDto ApplicantDto { get; set; }
         public FileDto? CvFileDto { get; set; }
+        public FileDto? PhotoFileDto { get; set; }
 
-        public CreateApplicantCommand(CreateApplicantDto applicantDto, FileDto? cvFileDto)
+        public CreateApplicantCommand(CreateApplicantDto applicantDto, FileDto? cvFileDto, FileDto? photoFileDto)
         {
             ApplicantDto = applicantDto;
             CvFileDto = cvFileDto;
+            PhotoFileDto = photoFileDto;
         }
     }
 
@@ -76,6 +78,7 @@ namespace Application.Applicants.Commands
             };
 
             await UploadCvFileIfExists(applicant, command);
+            await UploadPhotoFileIfExists(applicant, command);
 
             await _applicantWriteRepository.CreateAsync(applicant);
 
@@ -96,8 +99,6 @@ namespace Application.Applicants.Commands
             }
 
             FileInfo uploadedCvFileInfo;
-            Console.WriteLine(command.CvFileDto.Link);
-            Console.WriteLine(command.CvFileDto.FileName);
 
             if (command.CvFileDto.Link == null)
             {
@@ -106,17 +107,34 @@ namespace Application.Applicants.Commands
             }
             else
             {
-                string[] linkFragments = command.CvFileDto.Link.Substring(0, 8).Split("/");
-
-                uploadedCvFileInfo = await _fileInfoWriteRepository.CreateAsync(new FileInfo
-                {
-                    Name = command.CvFileDto.FileName,
-                    Path = string.Join("/", linkFragments.Skip(3).Take(linkFragments.Length - 4)),
-                    PublicUrl = command.CvFileDto.Link,
-                });
+                uploadedCvFileInfo = await _fileInfoWriteRepository
+                    .CreateAsync(command.CvFileDto.ToFileInfo());
             }
 
             applicant.CvFileInfo = uploadedCvFileInfo;
+        }
+
+        private async Task UploadPhotoFileIfExists(Applicant applicant, CreateApplicantCommand command)
+        {
+            if (command.PhotoFileDto == null)
+            {
+                return;
+            }
+
+            FileInfo uploadedPhotoFileInfo;
+
+            if (command.PhotoFileDto.Link == null)
+            {
+                uploadedPhotoFileInfo = await _applicantCvFileWriteRepository
+                    .UploadAsync(applicant.Id, command.PhotoFileDto!.Content);
+            }
+            else
+            {
+                uploadedPhotoFileInfo = await _fileInfoWriteRepository
+                    .CreateAsync(command.PhotoFileDto.ToFileInfo());
+            }
+
+            applicant.PhotoFileInfo = uploadedPhotoFileInfo;
         }
 
         private async Task CreateElasticEntityAndAddTagsIfExist(ApplicantDto createdApplicant, CreateApplicantCommand command)
