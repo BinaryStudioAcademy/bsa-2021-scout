@@ -58,13 +58,13 @@ namespace Application.Users.Commands.Create
 
             List<UserDto> selectedUsers = new List<UserDto>();
 
-            if (currentUser.Roles.Where(x => x.Name == "HrLead").ToList().Count !=0)
+            if (currentUser.Roles.Any(x => x.Name == "HrLead"))
             {
                 var query = new GetUsersForHrLeadQuery();
                 selectedUsers = (await _mediator.Send(query)).ToList();
             }
             
-            if (currentUser.Id == command.User.Id || selectedUsers.Where(x=>x.Id == command.User.Id).ToList().Count != 0)
+            if (currentUser.Id == command.User.Id || selectedUsers.Any(x=>x.Id == command.User.Id))
             {
                 User userToUpdate = await _readRepository.GetByIdAsync(command.User.Id);
                 User entity = _mapper.Map<User>(command.User);
@@ -83,17 +83,15 @@ namespace Application.Users.Commands.Create
                 return _mapper.Map<UserDto>(updated);
             }
 
-            throw new System.Exception("The user was not found for editing");
+            throw new System.Exception("The user was not found or the current user has no rights to edit this user.");
 
         }
         private async Task UploadAvatarFileIfExists(User user, UpdateUserCommand command)
         {
             if (command.User.IsImageToDelete == true)
             {
-                //var cachedAvatar = user.Avatar;
-                //user.Avatar.Id = null;
                 user.AvatarId = null;
-                var updated = await _writeRepository.UpdateAsync(user);
+                await _writeRepository.UpdateAsync(user);
                 await _imageWriteRepository.DeleteAsync(user.Avatar);
             }
 

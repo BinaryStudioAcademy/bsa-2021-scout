@@ -66,8 +66,8 @@ namespace Infrastructure
             );
             var elastic = new ElasticClient(settings);
             var exception = elastic.Ping().OriginalException;
-            //if (exception != null)
-            //    throw exception;
+            if (exception != null)
+                throw exception;
             services.AddSingleton<IElasticClient>(elastic);
 
             return services;
