@@ -225,7 +225,10 @@ export class MainPageComponent implements OnInit{
     });
 
     editDialog.afterClosed().subscribe((result) => {
-      task.isReviewed = true;
+      if(result)
+      {
+        task.isReviewed = true;
+      }
       this.filterData();
     });
 

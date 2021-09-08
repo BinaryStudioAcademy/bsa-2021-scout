@@ -100,7 +100,7 @@ export class AllInOneComponent {
     data.teamMembers = this.task.teamMembers;
     data.id = this.task.id ? this.task.id:'';
     this.submitClicked.emit(data);
-    this.dialogRef.close();
+    this.dialogRef.close(data);
   }
 
   closeDialog() {
