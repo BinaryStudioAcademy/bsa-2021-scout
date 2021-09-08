@@ -1,0 +1,25 @@
+<div class="container">
+  <h3>Recent activity</h3>
+  <div class="timeline">
+    <app-spinner [loading]="loading"></app-spinner>
+    <div class="center-item" *ngIf="data.length === 0">
+      <h4>Nothing to show</h4>
+    </div>
+    <ng-container *ngIf="data.length > 0">
+      <div class="timeline-item" *ngFor="let item of data">
+        <h4>
+          <a routerLink="/profile/{{ item.moverId }}">{{ item.moverName }}</a>
+          <span> moved </span>
+          <a (click)="showOneCandidate(item)">{{ item.candidateName }}</a>
+          <span> to stage </span>
+          <span class="bold">{{ item.stageName }}</span>
+        </h4>
+        <div class="meta">{{ item.dateAdded | timezone }}</div>
+        <div class="circle"></div>
+      </div>
+      <div class="center-item" *ngIf="!isEnd && !loading">
+        <div class="button" (click)="loadMoreData()">Show more</div>
+      </div>
+    </ng-container>
+  </div>
+</div>

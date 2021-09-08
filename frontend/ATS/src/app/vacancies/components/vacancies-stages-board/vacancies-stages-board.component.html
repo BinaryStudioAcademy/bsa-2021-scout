@@ -14,19 +14,22 @@
             +{{ extraAvatarsCount }}
           </div>
         </div>
-        <div class="plus-avatar">
+        <div class="plus-avatar" (click)="openCandidateAddModal()">
           <button mat-icon-button color="accent">
             <mat-icon>add</mat-icon>
           </button>
         </div>
       </div>
       <div class="buttons">
-        <button mat-stroked-button class="button" color="primary" (click)="openCandidateAddModal()">
-          <mat-icon>add</mat-icon>
-          <span>Add candidates</span>
+        <button mat-button color="accent" (click)="openCandidateAddModal()">
+          <span>+ Add candidates</span>
+        </button>
+        <button mat-button color="accent" (click)="openCompletingVacancyConfirmDialog()">
+          <mat-icon class="complete-icon">gavel</mat-icon>
+          <span>Complete vacancy</span>
         </button>
         <button mat-icon-button color="accent">
-          <mat-icon>filter_list</mat-icon>
+          <mat-icon>filter_alt</mat-icon>
         </button>
         <button mat-icon-button color="accent">
           <mat-icon>settings</mat-icon>
@@ -34,21 +37,11 @@
       </div>
     </div>
     <div class="board">
-      <div
-        class="column-wrp"
-        [id]="stage.id"
-        cdkDropList
-        [cdkDropListData]="stage.candidates"
-        [cdkDropListConnectedTo]="getLinkedWith(stage.id)"
-        (cdkDropListDropped)="onMove($event)"
-        *ngFor="let stage of data"
-      >
-        <app-candidate-column
-          [title]="stage.name"
-          [data]="stage.candidates"
-          [isDraggable]="true"
-          (clickAction)="openCandidateModal($event)"
-        ></app-candidate-column>
+      <div class="column-wrp" [id]="stage.id" cdkDropList [cdkDropListData]="stage.candidates"
+        [cdkDropListConnectedTo]="getLinkedWith(stage.id)" (cdkDropListDropped)="onMove($event)"
+        *ngFor="let stage of data">
+        <app-candidate-column [title]="stage.name" [data]="stage.candidates" [index]="stage.index" [isDraggable]="true"
+          (clickAction)="openCandidateModal($event)"></app-candidate-column>
       </div>
     </div>
   </ng-container>

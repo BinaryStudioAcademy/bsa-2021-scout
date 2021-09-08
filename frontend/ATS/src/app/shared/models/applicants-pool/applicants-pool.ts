@@ -6,6 +6,7 @@ export interface ApplicantsPool extends Model{
   position: number;
   description: string;
   createdBy: string;
+  isFollowed: boolean;
   dateCreated: Date;
   applicants: ApplicantIsSelected [];
   count: number;

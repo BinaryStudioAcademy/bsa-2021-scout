@@ -12,7 +12,7 @@ namespace Infrastructure.EF.Configuration
                 .WithMany(s => s.Actions)
                 .HasForeignKey(a => a.StageId)
                 .HasConstraintName("action_stage_FK")
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

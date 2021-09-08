@@ -9,6 +9,7 @@
 
   h3 {
     margin: 0;
+    display: flex;
   }
 }
 
@@ -18,11 +19,26 @@
   padding: 15px 30px;
   box-sizing: border-box;
   width: 100%;
+  max-height: 90%;
+  overflow-y: auto;
 
   .cards {
-    overflow-y: scroll;
-    max-height: 100%;
     padding-top: 15px;
     box-sizing: border-box;
+  }
+}
+
+.self-applied-info {
+  display: flex;
+  align-items: center;
+
+  .mat-icon {
+    color: gray;
+    font-size: 20px;
+    height: 20px;
+  }
+
+  .mat-icon:hover {
+    cursor: pointer;
   }
 }

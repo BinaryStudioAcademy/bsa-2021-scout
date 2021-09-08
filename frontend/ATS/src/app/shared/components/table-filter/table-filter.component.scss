@@ -1,0 +1,106 @@
+@import "../../../../common.scss";
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 10px 5px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: $primary-color-darkgrey;
+  background-color: $primary-color-white;
+
+  * {
+    word-break: keep-all !important;
+    white-space: nowrap !important;
+  }
+
+  .name {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    margin-right: 5px;
+
+    b {
+      transform: translateY(3px);
+    }
+
+    .menu {
+      position: absolute;
+      top: 30px;
+      border: 1px solid $primary-color-extradarkgrey;
+      background-color: $primary-color-white;
+      padding: 15px;
+      border-radius: 3px;
+      z-index: 200;
+      color: black;
+
+      .padding {
+        padding-bottom: 10px;
+      }
+    }
+
+    .texts {
+      display: flex;
+
+      mat-icon {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    padding: 1px 10px;
+    font-size: 12px;
+    border-radius: 15px;
+    margin-right: 5px;
+    color: $primary-color-lightgrey;
+    background-color: $primary-color-darkgrey;
+
+    span {
+      margin-right: 5px;
+    }
+
+    input {
+      padding: 0;
+      width: 80px;
+      border: none;
+      outline: none;
+      color: $primary-color-lightgrey;
+      background-color: transparent;
+    }
+
+    ::ng-deep {
+      .mat-date-range-input-start-wrapper,
+      .mat-date-range-input-end-wrapper {
+        input {
+          width: 65px;
+
+          &::placeholder {
+            color: $primary-color-lightgrey;
+          }
+        }
+      }
+
+      .mat-checkbox-inner-container {
+        width: 10px;
+        height: 10px;
+      }
+
+      .mat-checkbox-ripple {
+        display: none;
+      }
+
+      .mat-date-range-input-separator {
+        opacity: 1 !important;
+      }
+
+      .mat-select * {
+        color: $primary-color-lightgrey !important;
+      }
+    }
+  }
+}

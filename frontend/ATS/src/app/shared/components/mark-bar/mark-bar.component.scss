@@ -1,0 +1,25 @@
+@import "../../../../common.scss";
+
+.container {
+  width: 100%;
+
+  .marks {
+    width: 100%;
+    position: relative;
+    font-size: 10px;
+    height: 16px;
+
+    & > * {
+      position: absolute;
+    }
+
+    .current {
+      color: $accent-color;
+      z-index: 2;
+    }
+
+    .total {
+      color: $primary-color-darkgrey;
+    }
+  }
+}

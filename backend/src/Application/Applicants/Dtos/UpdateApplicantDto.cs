@@ -1,15 +1,18 @@
 using FluentValidation;
 using Application.Common.Models;
 using Application.ElasticEnities.Dtos;
+using System;
 
 namespace Application.Applicants.Dtos
 {
     public class UpdateApplicantDto : HumanDto
     {
         public string Phone { get; set; }
-        public string Skype { get; set; }
         public double Experience { get; set; }
+        public string ExperienceDescription { get; set; }
+        public string Skills { get; set; }
         public ElasticEnitityDto Tags { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 
     public class UpdateApplicantDtoValidator : AbstractValidator<UpdateApplicantDto>
@@ -17,7 +20,6 @@ namespace Application.Applicants.Dtos
         public UpdateApplicantDtoValidator()
         {
             RuleFor(a => a.Phone).NotNull().NotEmpty();
-            RuleFor(a => a.Skype).NotNull().NotEmpty();
             RuleFor(a => a.Experience).GreaterThanOrEqualTo(0);
         }
     }

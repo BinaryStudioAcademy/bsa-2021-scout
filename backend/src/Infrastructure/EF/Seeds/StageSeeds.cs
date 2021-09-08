@@ -31,10 +31,10 @@ namespace Infrastructure.EF.Seeds
         }
 
         private static List<string> names = new List<string> {
+            "Self-Applied",
             "Applied",
             "Phone screen",
             "Interview",
-            "Test",
             "Offer",
             "Hired",
         };
@@ -43,7 +43,6 @@ namespace Infrastructure.EF.Seeds
             StageType.Applied,
             StageType.PhoneScreen,
             StageType.Interview,
-            StageType.Test,
             StageType.Offer,
             StageType.Hired,
         };

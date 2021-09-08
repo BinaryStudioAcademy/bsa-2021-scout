@@ -7,6 +7,9 @@ import { HttpClientService } from './http-client.service';
 import { MarkedApplicant } from 'src/app/shared/models/applicants/marked-applicant';
 import { GetShortApplicant } from '../models/applicants/get-short-applicant';
 import { FileUrl } from '../models/file/file';
+import { CsvApplicant } from 'src/app/applicants/models/CsvApplicant';
+import { VacancyWithRecentActivity }
+  from '../models/candidate-to-stages/vacancy-with-recent-activity';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantsService {
@@ -52,10 +55,13 @@ export class ApplicantsService {
     return this.httpClient.getRequest<FileUrl>(`/applicants/${applicantId}/cv`);
   }
 
-  public createApplicantsFromCSV(file: File) {
-    const fd = new FormData();
-    fd.append('file', file, file.name);
-    return this.httpClient.postFullRequest<any>('/applicants/csv', fd);
+  public getApplicantByEmail(email: string): Observable<Applicant>{
+    return this.httpClient.getRequest<Applicant>(`/applicants/property/email/${email}`);
   }
 
+  public getRecentActivity(id: string): Observable<VacancyWithRecentActivity[]> {
+    return this.httpClient.getRequest<VacancyWithRecentActivity[]>(
+      `/recentActivity/for-applicant/${id}`,
+    );
+  }
 }

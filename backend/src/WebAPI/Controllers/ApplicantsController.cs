@@ -1,4 +1,5 @@
 using Application.Applicants.Commands;
+using Application.Applicants.Commands.CreateApplicant;
 using Application.Applicants.Commands.DeleteApplicant;
 using Application.Applicants.Dtos;
 using Application.Applicants.Queries;
@@ -123,25 +124,20 @@ namespace WebAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
+        [HttpGet("property/{propertyName}/{property}")]
+        public async Task<IActionResult> GetByPropertyAsync(string propertyName, string property)
+        {
+            var query = new GetApplicantByPropertyQuery(property, propertyName);
+
+            return Ok(await Mediator.Send(query));
+        }
+
         [HttpPost("to_tags/")]
         public async Task<IActionResult> PostElasticAsync([FromBody] CreateElasticEntityDto createDto)
         {
             var query = new CreateElasticDocumentCommand<CreateElasticEntityDto>(createDto);
 
             return Ok(await Mediator.Send(query));
-        }
-
-        [HttpPost("csv/")]
-        public async Task<IActionResult> PostApplicantFromCsv()
-        {
-            var file = Request.Form.Files[0];
-
-            using (var fileReadStream = file.OpenReadStream())
-            {
-                var command = new CreateApplicantsFromCsvCommand(fileReadStream);
-
-                return Ok(await Mediator.Send(command));
-            }
         }
 
         [HttpPost("tags/{entityId}")]

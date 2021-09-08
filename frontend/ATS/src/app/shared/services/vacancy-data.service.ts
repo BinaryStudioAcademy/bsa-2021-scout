@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { VacancyStatus } from '../models/vacancy/vacancy-status';
 import { ShortVacancyWithDepartment }
   from 'src/app/shared/models/vacancy/short-vacancy-with-department';
+import { VacancyFull } from '../models/vacancy/vacancy-full';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class VacancyDataService {
 
   public getVacancies(): Observable<ShortVacancyWithDepartment[]> {
     return this.http.getRequest<ShortVacancyWithDepartment[]>(
-      this.routePrefix,
+      this.routePrefix + '/short',
     );
   }
 
@@ -40,7 +41,9 @@ export class VacancyDataService {
     );
   }
 
-  public deleteVacancy(vacancyId: string) {
-    return this.http.deleteFullRequest<void>(`${this.routePrefix}/${vacancyId}`);
+  public getVacancyNoAuth(vacancyId: string): Observable<VacancyFull> {
+    return this.http.getRequest<VacancyFull>(
+      this.routePrefix + `/noauth/${vacancyId}`,
+    );
   }
 }

@@ -20,50 +20,115 @@
     font-weight: bold;
   }
 
-  .avatar-col {
-    $dim: 175px;
-    padding-right: 20px;
-    width: $dim;
+  .one-line {
+    word-break: keep-all;
+    white-space: nowrap;
+  }
 
-    .avatar {
-      width: $dim;
-      height: $dim;
-      max-width: $dim;
-      max-height: $dim;
-    }
+  .icon-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .text-icon {
+    font-size: 28px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    transform: translateY(-8px);
   }
 
   .content-col {
     flex-grow: 1;
-    padding-top: 40px;
 
     .block {
       padding: 20px 0 20px 10px;
       box-sizing: border-box;
 
       &.top {
-        padding: 0 0 40px 0;
+        display: flex;
+        padding: 0;
+
+        .avatar {
+          margin-right: 20px;
+          $dim: 120px;
+          width: $dim;
+          height: $dim;
+          max-width: $dim;
+          max-height: $dim;
+          border-radius: 50%;
+          cursor: zoom-in;
+        }
+
+        .text {
+          padding: 20px 0 20px 10px;
+        }
       }
 
-      .activity,
+      &.experience {
+        div:not(div:last-child) {
+          margin-bottom: 10px;
+        }
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+
+        .tag {
+          background-color: $primary-color-lightgrey;
+          padding: 2px 15px;
+          font-size: 12px;
+          border-radius: 16px;
+        }
+      }
+
       .reviews {
         display: flex;
         flex-wrap: wrap;
         gap: 15px;
       }
 
-      .activity {
-        & > * {
-          background-color: $primary-color-lightgrey;
-          padding: 15px;
-          border-radius: 10px;
+      .timeline {
+        max-height: 300px;
+        overflow-y: auto;
+
+        .timeline-item {
+          padding: 5px 15px;
           box-sizing: border-box;
+          border-left: 2px solid $accent-color;
+          position: relative;
+          margin-left: 4px;
+
+          &:hover {
+            background-color: $primary-color-lightgrey;
+          }
+
+          .bold {
+            font-weight: 600;
+          }
+
+          h4 {
+            font-weight: 400;
+          }
+
+          .circle {
+            width: 10px;
+            height: 10px;
+            background-color: $accent-color;
+            border-radius: 50%;
+            position: absolute;
+            left: -6px;
+            top: calc(50% - 5px);
+          }
         }
       }
 
       .reviews {
         & > * {
-          width: 50%;
+          min-width: 50%;
           max-width: 200px;
         }
       }

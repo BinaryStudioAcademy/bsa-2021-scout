@@ -1,0 +1,30 @@
+:host ::ng-deep .tags-input {
+    .mat-form-field-wrapper {
+        min-height: 100px;
+        align-content: flex-start;
+        align-items: flex-start;
+        height: min-content !important;
+        padding-bottom: 20px;
+    
+        .mat-form-field-infix {
+            height: min-content;
+        }
+
+        .mat-chip-list-wrapper .mat-chip {
+            box-sizing: border-box;
+            color: rgba($color: (#291965), $alpha: 0.8);
+            background-color: rgba($color: (#291965), $alpha: 0.1);
+            font-weight: 700;
+            padding: 5 10px;
+            font-size: 12px;
+            min-height: 0;
+            height: min-content;
+        }
+    }
+
+    .mat-input-element {
+        width: min-content;
+        height: min-content;
+        font-size: 12px;
+    }
+}

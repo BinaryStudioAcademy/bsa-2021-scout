@@ -5,7 +5,6 @@ export enum AppRoute {
   Applicants = 'applicants',
   Projects = 'projects',
   Interviews = 'interviews',
-  Analytics = 'analytics',
   TaskManagement = 'taskManagement',
   UserManagement = 'user-management',
   Templates = 'templates',
@@ -16,4 +15,7 @@ export enum AppRoute {
   SuccessfulRegistration = 'successful-registration',
   ResetPassword = 'reset-password',
   ResendEmail = 'resend-email',
+  ApplicantsCsv = 'applicants/csv',
+  ApplicantsCsvFilesList = 'applicants/csvfiles',
+  Archive = 'archive',
 }

@@ -71,31 +71,40 @@ namespace Application.Vacancies.Commands.Edit
             existedVacancy.Sources = updateVacancy.Sources;
             existedVacancy.IsHot = updateVacancy.IsHot;
             existedVacancy.IsRemote = updateVacancy.IsRemote;
-            existedVacancy.ModificationDate = DateTime.Now;
+            existedVacancy.ModificationDate = DateTime.UtcNow;
 
             await _writeRepository.UpdateAsync(existedVacancy);
 
-            var stages = (ICollection<StageWithCandidatesDto>)(await _mediator.Send(new GetStagesByVacancyQuery(command.Id))).Stages;
+            var vacancyWithStages = await _mediator.Send(new GetStagesByVacancyQuery(command.Id));
+            var stages = vacancyWithStages.Stages.ToList();
             var actions = await _readActionRepository.GetEnumerableAsync();
-            if(updateVacancy.Stages.Count != 0)
+            if (updateVacancy.Stages.Count != 0)
             {
                 foreach (var stage in updateVacancy.Stages)
                 {
-                    if(stage.Id == null)
+                    foreach(var action in stage.Actions)
+                    {
+                        action.StageId = stage.Id;
+                    }
+                    if (stage != null && (stage.Id == null || stage.Id == ""))
                     {
                         await _mediator.Send(new CreateVacancyStageCommand(_mapper.Map<StageCreateDto>(stage), command.Id));
                     }
-                    if(stages.Any(x => x.Id == stage.Id))
+                    if (stage != null && stages.Any(x => x.Id == stage.Id))
                     {
-                        var thisStageActions = actions.Where(x=> x.StageId == stage.Id).ToList();
+                        var thisStageActions = actions.Where(x => x.StageId == stage.Id).ToList();
                         foreach (var action in stage.Actions)
                         {
-                            if(action.Id != null)
+                            if (thisStageActions.Any(x => x.Id == action.Id))
                             {
                                 thisStageActions.Remove(thisStageActions.First(x => x.Id == action.Id));
                             }
+                            else
+                            {
+                                action.Id = null;
+                            }
                         }
-                        if(thisStageActions.Count() > 0)
+                        if (thisStageActions.Count() > 0)
                         {
                             foreach (var action in thisStageActions)
                             {

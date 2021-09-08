@@ -1,0 +1,165 @@
+<app-logo-block></app-logo-block>
+<div class="self-apply-container">
+    <div class="self-apply-form-container">
+        <!-- No Vacancy -->
+        <div class="centered" *ngIf="!vacancyExist">
+            <h1>This link is not valid</h1>
+            <h2>Pleasy make sure you redirected via correct link</h2>
+        </div>
+
+        <!-- After Email Send -->
+        <div class="centered" *ngIf="emailSend">
+            <h1>Thanks for your interest.</h1>
+            <h2>Please, check your email to confirm applying.</h2>
+        </div>
+
+        <!-- After applied -->
+        <div class="centered" *ngIf="applied">
+            <h1>Thanks for applying.</h1>
+            <h2>Wait for a message from our HR specialist.</h2>
+        </div>
+
+        <!-- Wrong Token -->
+        <div class="centered" *ngIf="errorToken && vacancyExist">
+            <h1>Something went wrong.</h1>
+            <h2>Try apply again.</h2>
+        </div>
+
+        <!-- Vacancy Info -->
+        <div *ngIf="vacancyExist && !emailSend && !applied && !errorToken">
+            <div class="vacancy-title">
+                <h1>{{vacancy.title}}</h1>
+            </div>
+            <div class="vacancy-description">
+                <span class="tag" *ngFor="let tag of vacancy.tags.tagDtos">{{tag.tagName}}</span>
+                <h2>A few words about the vacancy:</h2>
+                {{vacancy.description}}
+            </div>
+            <div class="requirements">
+                <h2>Requirements: </h2>
+                {{vacancy.requirements}}
+            </div>
+        </div>
+
+        <!-- Forms Container -->
+        <div class="form-container" *ngIf="!errorToken && !applied && vacancyExist && !emailSend">
+            <h2>We are waiting for you!</h2>
+            <div *ngIf="emailFilled; then form else email"></div>
+
+            <!-- Email Form -->
+            <ng-template #email>
+                <div class="form">
+                    <form class="applicant-form" [formGroup]="validationEmailGroup!" novalidate>
+                        <p class="required-field">Email</p>
+                        <mat-form-field appearance="fill" [ngClass]="validationEmailGroup!.controls['email'].dirty && validationEmailGroup!.controls['email'].errors? 'invalid-input' : ''">
+                            <input formControlName="email" type="email" matInput placeholder="Enter email" [(ngModel)]="applicant.email">
+                        </mat-form-field>
+                        <div class="validation-error" *ngIf="validationEmailGroup!.controls['email'].dirty && validationEmailGroup!.controls['email'].errors?.required; else emailPatternError">
+                            Please enter an email address.
+                        </div>
+                        <ng-template #emailPatternError>
+                            <div class="validation-error" *ngIf="validationEmailGroup!.controls['email'].dirty && validationEmailGroup!.controls['email'].errors?.pattern">
+                                Please enter a valid email address.
+                            </div>
+                        </ng-template>
+
+                        <button color="primary" [disabled]="validationEmailGroup!.invalid || validationEmailGroup.disabled" (click)="sendEmail()" mat-button>
+                            Apply
+                        </button>
+                    </form>
+                </div>
+            </ng-template>
+
+
+            <!-- Full Form -->
+            <ng-template #form>
+                <div class="form" *ngIf="!errorToken && !applied">
+                    <form class="applicant-form" [formGroup]="validationGroup" novalidate>
+                        <p class="required-field">First name</p>
+                        <mat-form-field appearance="fill" [ngClass]="validationGroup.controls['firstName'].dirty && validationGroup.controls['firstName'].errors? 'invalid-input' : ''">
+                            <input formControlName="firstName" type="text" matInput placeholder="Enter first name" [(ngModel)]="applicant.firstName">
+                        </mat-form-field>
+                        <div class="validation-error" *ngIf="validationGroup.controls['firstName'].dirty && validationGroup.controls['firstName'].errors?.required; else firstNamePatternError">
+                            Please enter a first name
+                        </div>
+                        <ng-template #firstNamePatternError>
+                            <div class="validation-error" *ngIf="validationGroup.controls['firstName'].dirty && validationGroup.controls['firstName'].errors?.pattern">
+                                A first name can only contain latin letters and start with an upper case letter
+                            </div>
+                        </ng-template>
+
+                        <p class="required-field">Last name</p>
+                        <mat-form-field appearance="fill" [ngClass]="validationGroup.controls['lastName'].dirty && validationGroup.controls['lastName'].errors? 'invalid-input' : ''">
+                            <input formControlName="lastName" type="text" matInput placeholder="Enter last name" [(ngModel)]="applicant.lastName">
+                        </mat-form-field>
+                        <div class="validation-error" *ngIf="validationGroup.controls['lastName'].dirty && validationGroup.controls['lastName'].errors?.required; else lastNamePatternError">
+                            Please enter a last name
+                        </div>
+                        <ng-template #lastNamePatternError>
+                            <div class="validation-error" *ngIf="validationGroup.controls['lastName'].dirty && validationGroup.controls['lastName'].errors?.pattern">
+                                A last name can only contain latin letters and start with an upper case letter
+                            </div>
+                        </ng-template>
+
+                        <p class="required-field">Email</p>
+                        <mat-form-field appearance="fill" [ngClass]="validationGroup.controls['email'].dirty && validationGroup.controls['email'].errors? 'invalid-input' : ''">
+                            <input formControlName="email" type="email" matInput placeholder="Enter email" [(ngModel)]="applicant.email">
+                        </mat-form-field>
+                        <div class="validation-error" *ngIf="validationGroup.controls['email'].dirty && validationGroup.controls['email'].errors?.required; else emailPatternError">
+                            Please enter an email address.
+                        </div>
+                        <ng-template #emailPatternError>
+                            <div class="validation-error" *ngIf="validationGroup.controls['email'].dirty && validationGroup.controls['email'].errors?.pattern">
+                                Please enter a valid email address.
+                            </div>
+                        </ng-template>
+
+                        <p>Experience years</p>
+                        <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors ? 'invalid-input' : ''">
+                            <input formControlName="experience" type="number" matInput step=".1" min="0" max="60" [(ngModel)]="applicant.experience">
+                        </mat-form-field>
+                        <div class="validation-error" *ngIf="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors">
+                            Please enter a valid experience number in range from 0 to 60
+                        </div>
+
+                        <p>Experience description</p>
+                        <mat-form-field class="wide" appearance="fill">
+                            <textarea formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description" [(ngModel)]="applicant.experienceDescription"></textarea>
+                        </mat-form-field>
+
+                        <p class="required-field">Phone</p>
+                        <mat-form-field appearance="fill" [ngClass]="validationGroup.controls['phone'].dirty && validationGroup.controls['phone'].errors? 'invalid-input' : ''">
+                            <input formControlName="phone" type="tel" matInput placeholder="Enter phone number" [(ngModel)]="applicant.phone">
+                        </mat-form-field>
+                        <div class="validation-error" *ngIf="validationGroup.controls['phone'].dirty && validationGroup.controls['phone'].errors?.required; else phonePatternError">
+                            Please enter a phone number
+                        </div>
+                        <ng-template #phonePatternError>
+                            <div class="validation-error" *ngIf="validationGroup.controls['phone'].dirty && validationGroup.controls['phone'].errors?.pattern">
+                                A phone number can only contain integers and has a length from 8 to 16. In has to match the pattern +&lt;code&gt;&lt;number&gt; or &lt;number&gt;
+                            </div>
+                        </ng-template>
+
+                        <p>LinkedIn url</p>
+                        <mat-form-field appearance="fill" [ngClass]="validationGroup.controls['linkedInUrl'].dirty && validationGroup.controls['linkedInUrl'].errors? 'invalid-input' : ''">
+                            <input formControlName="linkedInUrl" type="text" matInput placeholder="Enter LinkedIn url" [(ngModel)]="applicant.linkedInUrl">
+                        </mat-form-field>
+                        <div class="validation-error" *ngIf="validationGroup.controls['linkedInUrl'].dirty && validationGroup.controls['linkedInUrl'].errors?.pattern">
+                            LinkedIn url must match the pattern https://www.linkedin.com/&lt;username&gt;
+                        </div>
+
+                        <p>CV</p>
+                        <app-file-input (upload)="uploadApplicantCv($event)" [accept]="allowedCvFileType"></app-file-input>
+
+                        <mat-dialog-actions class="publish-action">
+                            <button color="primary" [disabled]="validationGroup.invalid || validationGroup.disabled" (click)="createApplicant()" mat-button>
+                                Apply
+                            </button>
+                        </mat-dialog-actions>
+
+                    </form>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

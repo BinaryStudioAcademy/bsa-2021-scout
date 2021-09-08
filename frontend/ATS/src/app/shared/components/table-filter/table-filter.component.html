@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="name">
+    <div class="menu" *ngIf="menuOpen">
+      <mat-checkbox [checked]="all" (change)="toggleAllFilters()" class="padding">
+        All
+      </mat-checkbox>
+      <div class="padding" *ngFor="let filter of description">
+        <mat-checkbox [checked]="filtersSelected[filter.id]" (change)="toggleFilter(filter.id)">
+          {{ filter.name }}
+        </mat-checkbox>
+      </div>
+      <button mat-button color="primary" (click)="toggleMenu()">OK</button>
+    </div>
+    <div class="texts" (click)="toggleMenu()">
+      <mat-icon [color]="someActive() ? 'accent' : 'default'">filter_alt</mat-icon>
+      <b>Filter:</b>
+    </div>
+  </div>
+  <div [ngClass]="{'item': entry.value}" *ngFor="let entry of filtersSelected | keyvalue">
+    <ng-container *ngIf="entry.value">
+      <ng-container *ngIf="descriptionMap[entry.key] as filter">
+        <span>{{ filter.name }}: </span>
+        <input [value]="filterValues[filter.id] ?? ''" (keyup)="setText(filter, $event)" *ngIf="isText(filter.type)" />
+        <ng-container *ngIf="isDate(filter.type)">
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="Start" (focus)="picker.open()" #start />
+            <input matEndDate placeholder="End" (focus)="picker.open()" #end
+              (dateChange)="setDate(filter, start, end)" />
+          </mat-date-range-input>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </ng-container>
+        <input type="number" [min]="filter.numberSettings?.min" [max]="filter.numberSettings?.max"
+          [value]="filterValues[filter.id]" (keyup)="setNumber(filter, $event)" *ngIf="isNumber(filter.type)" />
+        <mat-checkbox [checked]="!!filterValues[filter.id]" (change)="setBoolean(filter, $event)"
+          *ngIf="isBoolean(filter.type)"></mat-checkbox>
+        <app-multiselect [noTopics]="true" [unstyled]="true" [data]="filter.multipleSettings!.options"
+          [selected]="castOptions(filterValues[filter.id])" (selectedChange)="setMultiple(filter, $event)"
+          *ngIf="isMultiple(filter.type)"></app-multiselect>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

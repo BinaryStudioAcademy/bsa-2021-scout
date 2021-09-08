@@ -34,8 +34,8 @@ namespace WebAPI.Extensions
             await ApplyElasticSeeding(host);
             await ApplyRoleSeeding(host);
             await ApplyProjectSeeding(host);
-            await ApplyPoolSeeding(host);
             await ApplyUserSeeding(host);
+            await ApplyPoolSeeding(host);
             await ApplyUserToRoleSeeding(host);
             await ApplyVacancySeeding(host);
             await ApplyApplicantSeeding(host);
@@ -43,6 +43,12 @@ namespace WebAPI.Extensions
             await ApplyStageSeeding(host);
             await ApplyVacancyCandidateSeeding(host);
             await ApplyCandidateToStagesSeeding(host);
+            await ApplyReviewSeeding(host);
+            await ApplyToDoTaskSeeding(host);
+            await ApplyUserToTaskSeeding(host);
+            await ApplyInterviewSeeding(host);
+            await ApplyUsersToInterviews(host);
+
 
             return host;
         }
@@ -76,16 +82,24 @@ namespace WebAPI.Extensions
             var readRepository = scope.ServiceProvider.GetService<IReadRepository<MailTemplate>>();
             var writeRepository = scope.ServiceProvider.GetService<IWriteRepository<MailTemplate>>();
 
-            try
+            var mailTemplates = await readRepository.GetEnumerableAsync();
+            var defaultMailTemplates = mailTemplates.Where(x => x.Id == "6130f7b9fd538a80c19ed51e" || x.Slug == "default");
+            if (mailTemplates != null && defaultMailTemplates.Count() != 0)
             {
-                await readRepository.GetByPropertyAsync("Slug", "default");
-                await writeRepository.UpdateAsync(MailTemplatesSeeds.GetSeed());
+                foreach (var mailTemplate in defaultMailTemplates)
+                {
+                    await writeRepository.DeleteAsync(mailTemplate.Id);
+                }
             }
-            catch
-            {
-                await writeRepository.CreateAsync(MailTemplatesSeeds.GetSeed());
-            }
+            await writeRepository.CreateAsync(MailTemplatesSeeds.GetDefaultSeed());
 
+            foreach (var mailTemplate in MailTemplatesSeeds.GetSeeds())
+            {
+                if (!mailTemplates.Any(x => x.Id == mailTemplate.Id))
+                {
+                    await writeRepository.CreateAsync(mailTemplate);
+                }
+            }
             return host;
         }
 
@@ -188,6 +202,10 @@ namespace WebAPI.Extensions
         {
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+            context.ArchivedEntities.RemoveRange(context.ArchivedEntities);
+            await context.SaveChangesAsync();
+
             foreach (var project in ProjectSeeds.GetProjects())
             {
                 if (await context.Projects.AnyAsync(c => c.Id == project.Id))
@@ -252,6 +270,7 @@ namespace WebAPI.Extensions
         {
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            context.UserToRoles.RemoveRange(context.UserToRoles);
             var usersToRoles = new List<UserToRole>
             {
                 new UserToRole { UserId = "1", RoleId = "1"},
@@ -290,6 +309,104 @@ namespace WebAPI.Extensions
                     await context.Roles.AddAsync(role);
                 await context.SaveChangesAsync();
             }
+
+            return host;
+        }
+
+        public async static Task<IHost> ApplyReviewSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+            foreach (var review in ReviewSeeds.GetReviews())
+            {
+                if (await context.Reviews.AnyAsync(r => r.Id == review.Id))
+                {
+                    context.Reviews.Update(review);
+                }
+                else
+                {
+                    await context.Reviews.AddAsync(review);
+                }
+
+                await context.SaveChangesAsync();
+            }
+
+            return host;
+        }
+
+        public async static Task<IHost> ApplyToDoTaskSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            foreach (var task in ToDoTasksSeeds.Tasks)
+            {
+                if (await context.ToDoTask.AnyAsync(c => c.Id == task.Id))
+                    context.ToDoTask.Update(task);
+                else
+                    await context.ToDoTask.AddAsync(task);
+                await context.SaveChangesAsync();
+            }
+
+            return host;
+        }
+
+        public async static Task<IHost> ApplyUserToTaskSeeding(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            foreach (var userToTask in UserToTaskSeeds.UserToTasks)
+            {
+                if (await context.UserToTask.AnyAsync(c => c.UserId == userToTask.UserId && c.ToDoTaskId == userToTask.ToDoTaskId))
+                    context.UserToTask.Update(userToTask);
+                else
+                    await context.UserToTask.AddAsync(userToTask);
+                await context.SaveChangesAsync();
+            }
+            return host;
+
+        }
+
+
+
+
+        public static async Task<IHost> ApplyInterviewSeeding(this IHost host){
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            
+            foreach(var interview in InterviewSeeds.GetInterviews())
+            {
+                if(await context.Interviews.AnyAsync(i => i.Id == interview.Id))
+                {
+                    context.Interviews.Update(interview);
+                }
+                else
+                {
+                    await context.Interviews.AddAsync(interview);
+                }
+                await context.SaveChangesAsync();
+            }
+            
+            return host;
+        }
+        public static async Task<IHost> ApplyUsersToInterviews(this IHost host){
+            using var scope = host.Services.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            context.UsersToInterviews.RemoveRange(context.UsersToInterviews);
+            
+            foreach(var userToInterview in UsersToInterviewSeeds.GetUsersTosInterviews())
+            {
+                if(await context.UsersToInterviews.AnyAsync(i => i.Id == userToInterview.Id))
+                {
+                    context.UsersToInterviews.Update(userToInterview);
+                }
+                else
+                {
+                    await context.UsersToInterviews.AddAsync(userToInterview);
+                }
+                await context.SaveChangesAsync();
+            }
+            
 
             return host;
         }

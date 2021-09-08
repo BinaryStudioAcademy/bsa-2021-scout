@@ -7,10 +7,10 @@ using Application.Common.Queries;
 using Application.Stages.Commands;
 using Application.Stages.Dtos;
 using Application.Vacancies.Commands.Create;
-using Application.Vacancies.Commands.Delete;
 using Application.Vacancies.Commands.Edit;
 using Application.Vacancies.Dtos;
 using Application.Vacancies.Queries;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,11 +21,6 @@ namespace WebAPI.Controllers
     [ApiController]
     public class VacanciesController : ApiController
     {
-
-        public VacanciesController()
-        {
-
-        }
         [HttpGet]
         public async Task<IActionResult> GetAllVacancies()
         {
@@ -38,6 +33,20 @@ namespace WebAPI.Controllers
         {
             var query = new GetVacancyByIdQuery(Id);
             return StatusCode(201, await Mediator.Send(query));
+        }
+        [AllowAnonymous]
+        [HttpGet("noauth/{Id}")]
+        public async Task<IActionResult> GetVacancyNoAuth(
+            [FromRoute] string Id)
+        {
+            var query = new GetVacancyByIdNoAuth(Id);
+            return StatusCode(200, await Mediator.Send(query));
+        }
+        [HttpGet("short")]
+        public async Task<IActionResult> GetAllShort()
+        {
+            var command = new GetShortVacanciesWithDepartmentQuery();
+            return Ok(await Mediator.Send(command));
         }
         [HttpGet("applicant/{applicantId}")]
         public async Task<IActionResult> GetAllNotAppliedVacanciesByApplicant(string applicantId)
@@ -75,11 +84,5 @@ namespace WebAPI.Controllers
         //    var command = new DeleteVacancyStageCommand(stage, vacancyId, stageId);
         //    return StatusCode(201, await Mediator.Send(command));
         //}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVacancy(string id)
-        {
-            var command = new DeleteVacancyCommand(id);
-            return StatusCode(204, await Mediator.Send(command));
-        }
     }
 }

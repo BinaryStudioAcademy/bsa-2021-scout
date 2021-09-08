@@ -1,5 +1,4 @@
-$primary-font: Nunito;
-$primary-color: #291965;
+@import "/src/common.scss";
 
 .login-side-block,
 .registration-side-block,
@@ -31,7 +30,7 @@ $primary-color: #291965;
     font-weight: 600;
     line-height: 33px;
     letter-spacing: 0em;
-    color: $primary-color;
+    color: $primary-color-blue;
 }
 
 .login-container a,
@@ -47,7 +46,7 @@ $primary-color: #291965;
     font-weight: normal;
     font-size: 14px;
     line-height: 19px;
-    color: $primary-color;
+    color: $primary-color-blue;
 }
 
 .login-input-email,
@@ -73,7 +72,7 @@ $primary-color: #291965;
 .reset-password-input-password-title-block:first-child a {
     text-decoration: none;
     margin-right: 5px;
-    color: $primary-color;
+    color: $primary-color-blue;
 }
 
 input:-webkit-autofill {
@@ -123,7 +122,7 @@ input:-webkit-autofill {
         align-self: center;
     }
 
-    .mat-button {
+    .mat-button.mat-button {
         width: 327px;
         height: 45px;
     }
@@ -133,7 +132,7 @@ input:-webkit-autofill {
     }
 
     .mat-form-field-wrapper.mat-form-field-wrapper {
-        width: 287px;
+        width: 327px;
         height: 45px;
     }
 

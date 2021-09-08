@@ -7,6 +7,17 @@
   padding: 20px 15px;
   border-radius: 5px;
   box-sizing: border-box;
+  position: relative;
+
+  .self-applied {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+
+    .mat-icon {
+      color: #501cb1d0;
+    }
+  }
 
   & > * {
     width: 100%;
@@ -16,21 +27,18 @@
     cursor: all-scroll;
   }
 
-  &.clickable {
-    cursor: pointer;
+  &.not-viewed {
+    padding: 17px 12px;
+    border: 3px solid #501cb19a;
 
-    &:hover {
-      padding: 17px 12px;
-      border: 3px solid $accent-color;
+    .self-applied {
+      top: 15px;
+      right: 15px;
     }
   }
 
   .data {
     margin-top: 10px;
-
-    &.mark {
-      margin-top: 26px;
-    }
   }
 
   .user-data {

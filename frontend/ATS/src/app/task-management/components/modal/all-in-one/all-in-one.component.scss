@@ -1,0 +1,129 @@
+@import '/src/common.scss';
+@import '/src/app/shared/styles/common-modal-form.scss';
+
+.name-status {
+    display: flex;
+    justify-content: space-between;
+    
+    .is-done {
+        width: 47%;
+    }
+
+    .create.name {
+        width: 100%;
+    }
+    
+}
+
+.mat-button.mat-button { 
+    width: 170px;
+}
+
+.users {
+    padding-right: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 60px; 
+
+    .mat-icon {
+        vertical-align: middle;
+        border-radius: 50%;
+        border: 1px solid $primary-color;
+        color: white;
+        background-color: lightgray;
+        font-size: 30px;
+        height: 30px;
+        width: 30px;
+        margin: 0 -5px;               
+    }
+
+    .user-wrapper:hover{
+        //transition: 0.3s;
+        position: relative;
+        //transform: scale(100%);
+        width: 50px;
+        height: 50px;         
+    }
+
+    .user-wrapper:hover .mat-icon{
+        transition: 0.5s;              
+        width: 50px;
+        height: 50px;
+        font-size: 50px;
+        margin-right: 10px;     
+        
+    }
+    
+    .mat-icon.close {        
+        display: none;
+    }
+
+    .user-wrapper:hover .close{        
+        display: block;
+        position: relative;
+        left:35px;
+        top:-75px;
+        background-color: transparent;
+        color: $primary-color;
+        border: none;
+        font-size: 30px;        
+    } 
+    
+    .mat-icon.add {
+        background-color: $primary-color;
+        border:none;
+        margin-left:10px;
+    }
+}
+
+.add-user-select {    
+   
+    ::ng-deep {
+        .mat-select-arrow::after{
+            font-family: 'Material Icons';
+            background-color: $primary-color;
+            content: "\e145";
+            font-size: 30px;                    
+            color: #fff;
+            border-radius: 50%;
+            vertical-align: middle;  
+        }
+    
+        .mat-select-arrow-wrapper {
+            display: block;
+        }
+    
+        .mat-select-arrow {
+            border: none;
+            margin: 0;
+            height: 100%;
+            color: transparent;
+            margin: 0 20px 0 0px;                   
+        }
+    
+        .mat-select {
+            width: unset;
+            padding-right: 20px;
+        }
+    }
+
+}
+
+.add-user-select .mat-select {
+    width: unset;
+}
+
+
+
+.form-control {
+    ::ng-deep {        
+        .mat-form-field-appearance-legacy .mat-datepicker-toggle-default-icon {
+                width: unset;
+        }
+
+        add-user-select .mat-form-field-wrapper.mat-form-field-wrapper {
+            display: none;
+        }
+    }
+}

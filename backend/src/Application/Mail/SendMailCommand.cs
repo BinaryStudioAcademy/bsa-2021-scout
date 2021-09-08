@@ -42,11 +42,7 @@ namespace Application.Mail
 
         public async Task<Unit> Handle(SendMailCommand command, CancellationToken _)
         {
-            string address = Environment.GetEnvironmentVariable("MAIL_ADDRESS");
-            string password = Environment.GetEnvironmentVariable("MAIL_PASSWORD");
-            string displayName = Environment.GetEnvironmentVariable("MAIL_DISPLAY_NAME");
-
-            using (ISmtp connection = _smtp.Connect(address, password, displayName))
+            using (ISmtp connection = await _smtp.Connect())
             {
                 await connection.SendAsync(command.To, command.Subject, command.Body, command.TemplateSlug);
             }

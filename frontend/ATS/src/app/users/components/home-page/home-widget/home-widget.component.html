@@ -1,0 +1,20 @@
+<div class="widget-wrapper mat-typography">
+    <div class="main-widget">
+        <div class="background-icon">
+            <mat-icon>{{widgetData?.iconName}}</mat-icon>
+        </div>
+        <div class="text-info">
+            <div class="count-info">{{widgetData?.count}}</div>
+            <div class="description-text">{{widgetData?.description}}</div>
+        </div>
+    </div>
+    <div class="vertical-line" *ngIf="widgetData?.list?.length"></div>
+    <div class="extended-info-wrapper" *ngIf="widgetData !== undefined && widgetData.list?.length">
+        <div class="extended-info">
+            <div *ngFor="let _item of widgetData.list" class="extended-item">
+                <span [routerLink]="['/candidates', _item.id]">{{_item.title}}</span>
+                <mat-icon *ngIf="_item.isHot">local_fire_department</mat-icon>
+            </div>
+        </div>
+    </div>
+</div>

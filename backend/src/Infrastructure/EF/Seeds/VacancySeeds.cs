@@ -19,7 +19,6 @@ namespace Infrastructure.EF.Seeds
             DateTime creationDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), new DateTime(2021, 7, 30));
             DateTime dateOfOpening = creationDate.AddDays(20);
             DateTime modificationDate = dateOfOpening.AddDays(2);
-            DateTime? completionDate = _random.Next() % 2 == 0 ? creationDate.AddMonths(_random.Next(2, 4)) : null;
             DateTime plannedCompletionDate = creationDate.AddMonths(3);
             int randomIndex = _random.Next(titles.Count());
             return new Vacancy
@@ -36,7 +35,7 @@ namespace Infrastructure.EF.Seeds
                 IsHot = _random.Next() % 2 == 0,
                 SalaryFrom = _random.Next(1200, 1300),
                 SalaryTo = _random.Next(1300, 56000),
-                CompletionDate = completionDate,
+                CompletionDate = null,
                 PlannedCompletionDate = Common.GetRandomDateTime(new DateTime(2020, 12, 30), null, 21),
                 TierFrom = tierFrom,
                 TierTo = tierTo,
@@ -122,7 +121,7 @@ namespace Infrastructure.EF.Seeds
             "snew3b4-cdf6-4f67-99de-795780c70b8f",
         };
 
-        private static List<string> responsibleHrIds = new List<string> {
+        public static List<string> responsibleHrIds = new List<string> {
             "057c23ff-58b1-4531-8012-0b5c1f949ee1",
             "fb055f22-c5d1-4611-8e49-32a46edf58b2",
             "ac78dabf-929c-4fa5-9197-7d14e18b40ab",

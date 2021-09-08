@@ -19,7 +19,6 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
   templateUrl: './edit-app-pool-modal.component.html',
   styleUrls: [
     './edit-app-pool-modal.component.scss',
-    '../create-talentpool-modal/create-talentpool-modal.component.scss',
   ],
 })
 export class EditAppPoolModalComponent implements OnInit {
@@ -114,7 +113,6 @@ export class EditAppPoolModalComponent implements OnInit {
   }
 
   private _filter(value: string): ApplicantIsSelected[] {    
-    console.log(value);
     const filterValue = value ? value.toLowerCase() : '';    
 
     return this.allapplicants.filter(
@@ -163,8 +161,10 @@ export class EditAppPoolModalComponent implements OnInit {
           });
           
         },
-        (error) => {          
-          this.notificationService.showErrorMessage(error);
+        (error) => {                    
+          this.notificationService.showErrorMessage(error.description);
+          if(error.type === 'InvalidToken') this.closeDialog();
+
         },
         () => { this.loading = false; },
       );

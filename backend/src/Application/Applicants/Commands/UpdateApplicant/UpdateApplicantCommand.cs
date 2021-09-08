@@ -56,19 +56,19 @@ namespace Application.Applicants.Commands
             updatedApplicant.Vacancies = _mapper.Map<IEnumerable<ApplicantVacancyInfoDto>>
                 (await _repository.GetApplicantVacancyInfoListAsync(updatedApplicant.Id));
 
-            await UploadCvFileIfExists(command);
+            await UploadCvFileIfExists(command, updatableApplicant);
 
             return updatedApplicant;
         }
 
-        private async Task UploadCvFileIfExists(UpdateApplicantCommand command)
+        private async Task UploadCvFileIfExists(UpdateApplicantCommand command, Applicant applicant)
         {
             if (command.CvFileDto == null)
             {
                 return;
             }
 
-            await _mediator.Send(new UpdateApplicantCvCommand(command.Entity.Id, command.CvFileDto!));
+            await _mediator.Send(new UpdateApplicantCvCommand(command.Entity.Id, command.CvFileDto!, applicant));
         }
     }
 }

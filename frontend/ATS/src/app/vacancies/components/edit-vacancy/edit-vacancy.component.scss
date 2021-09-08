@@ -10,6 +10,22 @@
 
 .workflow-container{
     margin: 30px 0px;
+    
+}
+
+.workflow-container-created{
+    display: grid;
+    grid-template-columns: 50% minmax(100px, 50%);
+}
+
+.stage-created{
+    margin-right: 10px;
+}
+
+.workflow-container h2{
+    grid-column: 1 / 3;
+    grid-row: 1; 
+    margin: 0;
 }
 
 .form-container{
@@ -61,12 +77,6 @@
     justify-self: center;
 }
 
-.stage-list{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap:20px;
-}
-
 .mat-label{
     margin-top: 15px;
 }
@@ -80,20 +90,13 @@
     border: 2.5px solid #909090;
     font-size:16px;
     font-weight:700;
-    height:100px;
     border-radius:10px;
 }
-
-.example-list {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap:20px;
-  }
 
   .example-box {
     box-sizing: border-box;
     cursor: move;
+    margin: 10px 0 10px 0;
   }
 
   .cdk-drag-preview {
@@ -175,8 +178,8 @@ $primary-color: #291965;
     }
 
     .mat-button {
-        width : 327px;
-        height: 45px;
+        width : 170px;
+        height: 40px;
     }
 
     .mat-icon-button {
@@ -197,6 +200,7 @@ $primary-color: #291965;
 :host ::ng-deep {
 
 .mat-form-field-wrapper.mat-form-field-wrapper {
+    color: #000;
     min-width: unset;
     max-width: none;
     width: 100%;
@@ -232,7 +236,6 @@ $primary-color: #291965;
         font-size: 90%;
         padding: 0;
     }
-
     .mat-form-field-appearance-fill .mat-select-arrow-wrapper{
         padding-top:15px
     }
@@ -255,12 +258,20 @@ $primary-color: #291965;
         align-items: center;
     }
 
-    .mat-standard-chip.mat-chip-with-trailing-icon{
+    .coloured-chip .mat-standard-chip.mat-chip-with-trailing-icon{
     background: #ee2a64;
         color:white;
     }
 
-    .mat-standard-chip .mat-chip-remove.mat-icon{
+    .coloured-chip .mat-standard-chip .mat-chip-remove.mat-icon{
         color:white
+    }
+
+    .mat-select-trigger{
+        display: block;
+    }
+
+    .mat-select-value-text{
+        display: flow-root;
     }
 }

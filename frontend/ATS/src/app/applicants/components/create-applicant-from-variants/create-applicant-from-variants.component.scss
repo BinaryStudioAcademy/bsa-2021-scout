@@ -1,0 +1,33 @@
+@import "../../../../common.scss";
+
+.publish-action {
+  margin-top: 20px;
+}
+
+.variants-input {
+  display: flex;
+  gap: 20px;
+
+  .variants {
+    padding-top: 35px;
+
+    .variant {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 5px;
+
+      &:not(&.inactive) {
+        cursor: pointer;
+      }
+    }
+
+    .more-button {
+      width: 100%;
+      text-align: center;
+      color: $accent-color;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+}

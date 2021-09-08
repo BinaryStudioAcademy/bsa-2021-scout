@@ -55,9 +55,7 @@ namespace Application.Users.Commands
                 throw new InvalidTokenException("register");
             }
 
-            Console.WriteLine(command.RegisterDto.UserRegisterDto.FirstName);
             var newUser = _mapper.Map<User>(command.RegisterDto.UserRegisterDto);
-            Console.WriteLine(newUser.FirstName);
 
             newUser.CompanyId = registerPermission.CompanyId;
             newUser.IsEmailConfirmed = false;
@@ -74,8 +72,8 @@ namespace Application.Users.Commands
             var sendConfirmEmailMailCommand = new SendConfirmEmailMailCommand(
                 registeredUser,
                 command.RegisterDto.ClientUrl,
-                MailSubjectFactory.confirmEmailMailSubject,
-                MailBodyFactory.confirmEmailMailBody);
+                MailSubjectFactory.CONFIRM_EMAIL,
+                MailBodyFactory.CONFIRM_EMAIL);
             await _mediator.Send(sendConfirmEmailMailCommand);
 
             await _registerPermissionWriteRepository.DeleteAsync(registerPermission.Id);

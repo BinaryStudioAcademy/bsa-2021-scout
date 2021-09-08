@@ -7,6 +7,7 @@ using Application.Common.Exceptions;
 using Application.Interfaces;
 using Dapper;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces.Read;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Repositories.Abstractions;
@@ -54,16 +55,22 @@ namespace Infrastructure.Repositories.Read
 
             string sql = @$"(SELECT Vacancies.* FROM Vacancies
 							JOIN Projects ON Projects.Id=Vacancies.ProjectId
-							WHERE Projects.IsDeleted='0')
+							WHERE NOT EXISTS (SELECT * FROM ArchivedEntities AP AE WHERE AP.EntityType = @entityProjectType AND AP.EntityId = Projects.Id)
+                              AND NOT EXISTS (SELECT * FROM ArchivedEntities AV AE WHERE AV.EntityType = @entityVacancyType AND AV.EntityId = Vacancies.Id))
                             EXCEPT
                             (SELECT V.* FROM Vacancies AS V
                             LEFT OUTER JOIN Stages AS S ON S.VacancyId=V.Id
-                            LEFT OUTER JOIN CandidateToStages AS CS ON CS.StageId = S.Id AND S.[Index]=0 
+                            LEFT OUTER JOIN CandidateToStages AS CS ON CS.StageId = S.Id AND (S.[Index]=1 OR S.[Index]=0)
                             LEFT OUTER JOIN VacancyCandidates AS VC ON CS.CandidateId = VC.Id
-                            WHERE VC.ApplicantId='{applicantId}'
-                            AND V.CompanyId='{companyId}')";
+                            WHERE VC.ApplicantId = @applicantId
+                            AND V.CompanyId = @companyId)";
 
-            var vacancies = await connection.QueryAsync<Vacancy>(sql);
+            var vacancies = await connection.QueryAsync<Vacancy>(sql, new {
+                applicantId = @applicantId,
+                companyId = @companyId,
+                entityProjectType = EntityType.Project,
+                entityVacancyType = EntityType.Vacancy
+            });
 
             await connection.CloseAsync();
 

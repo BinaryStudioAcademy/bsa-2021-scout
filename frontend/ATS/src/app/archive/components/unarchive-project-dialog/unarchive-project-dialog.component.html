@@ -1,0 +1,26 @@
+<app-spinner [loading]="loading"></app-spinner>
+<div class="unarchive-project-dialog-container">
+    <form class="form">
+        <div mat-dialog-actions>
+            <mat-icon class="close-dialog" (click)="onFormClose()">close</mat-icon>
+        </div>
+
+        <h2 style="margin-bottom: 0;"> Unarchivation of project </h2>
+        <h3> {{archivedProject.name}} </h3>
+
+        <div *ngIf="archivedProject.vacancies !== undefined && archivedProject.vacancies.length > 0">
+            <h5>Pick vacancies to unarchive too</h5>
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-select [formControl]="vacanciesForm" [disableOptionCentering]="true" multiple
+                    placeholder="Pick vacancies">
+                    <mat-option *ngFor="let vacancy of archivedProject.vacancies" [value]="vacancy">{{vacancy.title}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </form>
+
+    <div class="centered">
+        <button mat-button (click)="unarhiveProject()">Unarchive</button>
+    </div>
+</div>

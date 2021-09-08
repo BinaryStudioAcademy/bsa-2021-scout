@@ -1,0 +1,99 @@
+version: "3.8"
+services:
+  ats_api:
+    container_name: "ats_api"
+    image: ats_api:latest
+    restart: on-failure
+    depends_on:
+      - ats_elastic_server
+      - ats_database
+      - ats_mongodb
+    ports:
+      - "80:80"
+    networks:
+      - backend
+    env_file:
+      - ../.env/ats_api.env
+
+  ats_elastic_server:
+    image: "docker.elastic.co/elasticsearch/elasticsearch:7.13.4"
+    restart: on-failure
+    container_name: "ats_elastic_server"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 0.5g
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data:rw
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+    networks:
+      - backend
+
+  ats_database:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: "ats_database"
+    ports:
+      - 1433:1433
+    networks:
+      - backend
+    env_file:
+      - ../.env/ats_database.env
+    volumes:
+      - ats_database-data:/var/opt/mssql
+
+  ats_vault:
+    image: vault:latest
+    container_name: "ats_vault"
+    restart: on-failure
+    command: [ 'vault', 'server', '-dev', '-dev-listen-address=ats_vault:8200' ]
+    depends_on:
+      - ats_database
+    ports: 
+      - 8200:8200
+    env_file:
+      - ../.env/ats_vault_server.env
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - ats_vault
+
+  ats_vault_config:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    entrypoint: ../vault-config/config.sh
+    #build: ../vault-config
+    container_name: ats_vault_config
+    cap_add:
+      - IPC_LOCK
+    restart: on-failure
+    depends_on: 
+      - ats_vault
+    networks:
+      - ats_vault
+    env_file: 
+      - ../.env/ats_vault_client.env
+
+  ats_mongodb:
+    image: mongo
+    container_name: ats_mongodb
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+    env_file:
+      - ../.env/ats_mongodb.env
+    volumes:
+      - ats_mongodb-data:/data/db
+
+volumes:
+  ats_database-data: {}
+  ats_mongodb-data: {}
+  esdata1:
+    driver: local
+
+networks:
+  backend:
+    driver: bridge

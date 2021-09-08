@@ -30,7 +30,7 @@
 
         <h5 [ngStyle]="selectedApplicant.id ? {'display':'none'} : null ">Pick candidates</h5>
         <mat-form-field class="full-width" appearance="fill">
-            <mat-select [formControl]="applicantsForm"  multiple placeholder="Pick candidates">
+            <mat-select [formControl]="applicantsForm" [ngClass]="{'no-arrow': applicantsForm.disabled}" [disableOptionCentering]="true" multiple placeholder="Pick candidates">
                 <mat-option *ngFor="let applicant of filteredApplicants" [disabled]="applicant.isApplied" [value]="applicant">{{applicant.firstName}} {{applicant.lastName}}</mat-option>
             </mat-select>
         </mat-form-field>

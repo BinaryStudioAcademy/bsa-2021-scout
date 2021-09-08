@@ -7,6 +7,7 @@ $primary-color-extradarkgrey: #818388;
 $primary-color-blue: #291965;
 $accent-color: #4f1cb1;
 $primary-font: Nunito;
+
 .mat-toolbar {
   background-color: #291965;
   height: 120px;
@@ -22,6 +23,7 @@ $primary-font: Nunito;
   text-align: center;
   line-height: 40px;
   width: 140px;
+  padding: 0 25px;
   background-color: $primary-color;
   color: $primary-color-white;
 }
@@ -35,7 +37,6 @@ $primary-font: Nunito;
 .mat-button.mat-accent {
   line-height: 31px;
   width: auto;
-  padding: auto 30px;
   background-color: $primary-color-white;
   border: 2px solid $primary-color;
   color: $primary-color;
@@ -52,6 +53,23 @@ $primary-font: Nunito;
   color: #000;
 }
 
+.mat-form-field-wrapper.mat-form-field-wrapper {
+  display: flex;
+  align-items: center;
+  font-family: $primary-font;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  background-color: rgba(226, 226, 226, 0.5);
+  width: 100%;
+  border-radius: 10px;
+  padding: 0 20px 0 20px;
+  min-height: 40px;
+  color: black;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
 input:-webkit-autofill {
   box-shadow: 0 0 0px 1000px $primary-color-white inset;
 }
@@ -61,35 +79,20 @@ input:-webkit-autofill {
   color: gray;
 }
 
-.mat-form-field-wrapper.mat-form-field-wrapper {
-  display: flex;
-  align-items: center;
-  font-family: $primary-font;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  background-color: rgba(226, 226, 226, 0.5);
-  min-width: 250px;
-  max-width: 500px;
-  width: 100%;
-  border-radius: 10px;
-  padding: 0px 20px 0px 20px;
-  height: 40px;
-  color: black;
-  z-index: 10;
-}
-
 .mat-form-field-underline {
   display: none;
 }
 
 .mat-form-field-infix {
   border: none;
+  height: 100%;
 }
 
 a {
   color: $accent-color;
   text-decoration: none;
+  cursor: pointer;
+
   &:hover {
     text-decoration: underline;
   }
@@ -144,4 +147,20 @@ a {
   margin-top: 5px;
   color: #ef5350;
   max-width: fit-content;
+}
+
+.required-field::after {
+  color: #f00;
+  content: " *";
+}
+
+.pool-dialog-container .mat-dialog-container {
+  padding-top: 0;
+  border-top: 24px solid #fff;
+}
+
+
+.mat-menu-content:not(:empty){
+    padding: 0px !important;
+    max-width: 200px;
 }

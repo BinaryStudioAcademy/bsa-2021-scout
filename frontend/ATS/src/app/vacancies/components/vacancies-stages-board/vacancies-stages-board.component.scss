@@ -9,6 +9,10 @@
   box-sizing: border-box;
   position: relative;
 
+  h2 {
+    font-weight: 700;
+  }
+
   & > * {
     width: 100%;
     box-sizing: border-box;
@@ -21,17 +25,9 @@
     margin-bottom: 20px;
 
     .avatars {
-      position: relative;
-      $avatars-count: 7;
-      $avatars-space: 25px;
+      $avatars-space: 15px;
       $dim: 40px;
       height: $dim;
-
-      @for $i from 1 through $avatars-count {
-        .avatar-wrp:nth-child(#{$i}) {
-          left: calc((#{$i} - 1) * #{$avatars-space});
-        }
-      }
 
       .avatar-wrp {
         border-radius: 50%;
@@ -39,10 +35,11 @@
         height: $dim;
         max-width: $dim;
         max-height: $dim;
-        position: absolute;
-        top: 0;
         box-sizing: border-box;
         border: 1px solid white;
+        margin-right: calc(#{$avatars-space} * -1);
+        display: inline-block;
+        position: relative;
 
         .avatar {
           border-radius: 50%;
@@ -69,17 +66,16 @@
       }
 
       .plus-avatar {
-        $dim: 40px;
         border-radius: 50%;
         width: $dim;
         height: $dim;
         background-color: white;
-        display: flex;
+        display: inline-flex;
         justify-content: center;
         align-items: center;
-        position: absolute;
-        top: 0;
-        left: calc((#{$avatars-count} + 1) * #{$avatars-space});
+        position: relative;
+        bottom: $avatars-space;
+        margin-left: calc(#{$avatars-space} * 2);
       }
     }
 
@@ -99,7 +95,14 @@
           font-size: 16px;
           width: 16px;
           height: 16px;
-        }
+        }      
+      }
+
+      mat-icon.complete-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        margin-right: 5px;
       }
     }
   }
@@ -113,13 +116,12 @@
     max-height: calc(100% - 120px);
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden;
 
     .column-wrp {
       min-width: 300px;
       flex-grow: 1;
       height: 100%;
-      display: flex;
-      flex-direction: column;
     }
   }
 }

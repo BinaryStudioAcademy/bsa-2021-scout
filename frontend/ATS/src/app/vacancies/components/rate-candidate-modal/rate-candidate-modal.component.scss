@@ -31,7 +31,6 @@
 
 .padding {
   padding-bottom: 15px;
-  box-sizing: border-box;
 }
 
 .criterias {
@@ -40,7 +39,7 @@
   gap: 10px;
 
   .criteria {
-    width: 250px;
+    width: 230px;
   }
 }
 
@@ -58,7 +57,19 @@
   background-color: $primary-color;
 }
 
-.textarea {
-  min-height: 100px;
-  max-height: 200px;
+::ng-deep {
+  .textarea-form-field {
+    width: 100%;
+
+    .mat-form-field-wrapper {
+      box-sizing: border-box;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .textarea {
+      min-height: 80px;
+      max-height: 140px;
+    }
+  }
 }

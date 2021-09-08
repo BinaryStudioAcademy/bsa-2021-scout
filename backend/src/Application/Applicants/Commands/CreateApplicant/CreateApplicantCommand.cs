@@ -61,14 +61,15 @@ namespace Application.Applicants.Commands
             {
                 FirstName = command.ApplicantDto.FirstName,
                 LastName = command.ApplicantDto.LastName,
-                MiddleName = command.ApplicantDto.MiddleName,
                 BirthDate = command.ApplicantDto.BirthDate,
                 Email = command.ApplicantDto.Email,
                 Phone = command.ApplicantDto.Phone,
-                Skype = command.ApplicantDto.Skype,
                 Experience = command.ApplicantDto.Experience,
                 LinkedInUrl = command.ApplicantDto.LinkedInUrl,
+                ExperienceDescription = command.ApplicantDto.ExperienceDescription,
+                Skills = command.ApplicantDto.Skills,
                 CompanyId = creatorUser.CompanyId,
+                CreationDate = DateTime.UtcNow,
             };
 
             await UploadCvFileIfExists(applicant, command);

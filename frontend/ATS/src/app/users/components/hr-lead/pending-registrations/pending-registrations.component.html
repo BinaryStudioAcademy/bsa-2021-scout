@@ -1,0 +1,48 @@
+<div class="dialog-header-bar">
+    <h1 mat-dialog-title>Pending registrations</h1>
+    <mat-dialog-actions>
+        <mat-icon mat-dialog-close>close</mat-icon>
+    </mat-dialog-actions>
+</div>
+<mat-form-field appearance="fill" class="search-bar">
+    <mat-icon>search</mat-icon>
+    <input #input [(ngModel)]="searchValue" matInput type="text" class="search-input" placeholder="Search..." (keyup)="applySearchValue()">
+</mat-form-field>
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" matSortDirection="asc">
+    <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef> # </th>
+        <td mat-cell *matCellDef="let i = index">{{ (i+1) + (paginator.pageIndex * paginator.pageSize) }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
+        <td mat-cell *matCellDef="let registrationInfo"> {{ registrationInfo.email  }} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="expires_in">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="expires_in"> Expires in </th>
+        <td mat-cell *matCellDef="let registrationInfo"> {{ registrationInfo.date | timezone }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="status"> Status </th>
+        <td mat-cell *matCellDef="let registrationInfo"> {{ getLinkStatus(registrationInfo.isActive) }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let registrationInfo">
+            <div class="action-buttons">
+                <button mat-button color="accent" (click)="resendInvitationLink(registrationInfo)">Resend link</button>
+                <button mat-button (click)="revokeInvitationLink(registrationInfo.id)">Revoke</button>
+            </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator class="mat-paginator-sticky" 
+    #paginator appStylePaginator [showTotalPages]="5" [pageSize]="15"
+    [pageSizeOptions]="[5, 10, 25]">
+</mat-paginator>

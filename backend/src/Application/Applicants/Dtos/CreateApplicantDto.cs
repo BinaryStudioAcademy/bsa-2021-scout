@@ -7,9 +7,10 @@ namespace Application.Applicants.Dtos
     public class CreateApplicantDto : HumanDto
     {
         public string Phone { get; set; }
-        public string Skype { get; set; }
         public string LinkedInUrl { get; set; }
         public double Experience { get; set; }
+        public string ExperienceDescription { get; set; }
+        public string Skills { get; set; }
         public ElasticEnitityDto Tags { get; set; }
     }
 

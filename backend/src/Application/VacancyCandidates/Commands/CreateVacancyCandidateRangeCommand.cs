@@ -1,7 +1,9 @@
 ﻿using Application.Interfaces;
 using Application.VacancyCandidates.Dtos;
 using AutoMapper;
+using Domain.Common;
 using Domain.Entities;
+using Domain.Events;
 using Domain.Interfaces.Abstractions;
 using Domain.Interfaces.Read;
 using Domain.Interfaces.Write;
@@ -12,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using StageChangeEventType = Domain.Enums.StageChangeEventType;
 
 namespace Application.VacancyCandidates.Commands
 {
@@ -19,11 +22,13 @@ namespace Application.VacancyCandidates.Commands
     {
         public string[] ApplicantIds { get; set; }
         public string VacancyId { get; set; }
+        public string UserId { get; set; }
 
-        public CreateVacancyCandidateRangeCommand(string[] applicantIds, string vacancyId)
+        public CreateVacancyCandidateRangeCommand(string[] applicantIds, string vacancyId, string userId)
         {
             ApplicantIds = applicantIds;
             VacancyId = vacancyId;
+            UserId = userId;
         }
     }
 
@@ -40,7 +45,7 @@ namespace Application.VacancyCandidates.Commands
             IStageReadRepository stageReadRepository,
             IVacancyCandidateWriteRepository writeRepository,
             ICurrentUserContext currentUserContext,
-        IMapper mapper
+            IMapper mapper
         )
         {
             _candidateToStageWriteRepository = candidateToStageWriteRepository;
@@ -56,19 +61,25 @@ namespace Application.VacancyCandidates.Commands
 
             List<VacancyCandidate> candidates = new List<VacancyCandidate>();
 
+            var stageId = (await _stageReadRepository.GetByVacancyIdWithFirstIndex(command.VacancyId)).Id;
+
             foreach (var id in command.ApplicantIds)
             {
-                candidates.Add(new VacancyCandidate
+                var vacancyCandidate = new VacancyCandidate
                 {
                     ApplicantId = id,
-                    DateAdded = DateTime.Now,
-                    HrWhoAddedId = user.Id
-                });
+                    DateAdded = DateTime.UtcNow,
+                    HrWhoAddedId = user.Id,
+                    DomainEvents = new List<DomainEvent>()
+                };
+
+                vacancyCandidate.DomainEvents.Add(new CandidateStageChangedEvent(id, command.VacancyId, stageId, StageChangeEventType.Join));
+
+                candidates.Add(vacancyCandidate);
             }
 
 
             var result = _mapper.Map<IEnumerable<VacancyCandidateDto>>(await _writeRepository.CreateRangeAsync(candidates.ToArray()));
-            var stageId = (await _stageReadRepository.GetByVacancyIdWithFirstIndex(command.VacancyId)).Id;
 
             foreach (var candidate in result)
             {
@@ -76,7 +87,8 @@ namespace Application.VacancyCandidates.Commands
                 {
                     CandidateId = candidate.Id,
                     StageId = stageId,
-                    DateAdded = DateTime.Now
+                    MoverId = command.UserId,
+                    DateAdded = DateTime.UtcNow
                 });
             }
 

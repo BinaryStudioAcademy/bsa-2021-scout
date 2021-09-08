@@ -30,10 +30,17 @@
         "ELASTIC_CONNECTION_STRING": "http://localhost:9200",
         "MONGODB_CONNECTION_URI": "mongodb://mongo:MyBadPass123!@localhost:27017",
         "MONGODB_DATABASE_NAME": "ats_database",
-        "MAIL_ADDRESS": "notifications.scout@gmail.com",
-        "MAIL_PASSWORD": "yourpassword",
-        "MAIL_DISPLAY_NAME": "Scout Notifications",
+        "VAULT_ADDR": "http://localhost:8200",
+        "VAULT_TOKEN":"ASf98u45ojg98rdgrnwerSDgkdgdsL",
         "SECRET_JWT_KEY": "DD70E219DCF6408A7506EA0186D183AE",
+        "AWS_ACCESS_KEY_ID": "yourkey",
+        "AWS_SECRET_ACCESS_KEY": "yourkey",
+        "AWS_REGION": "eu-west-2",
+        "AWS_COMPREHEND_SKILLS_RECOGNIZER": "arn:aws:comprehend:eu-west-2:<user id>:entity-recognizer/<name>",
+        "AWS_COMPREHEND_S3_ROLE": "arn:aws:iam::<user id>:role/service-role/<name>",
+        "AWS_DEFAULT_BUCKET": "yourbucket",
+        "AWS_TEXTRACT_SNS_ROLE": "arn:aws:iam::<user id>:role/<name>",
+        "AWS_TEXTRACT_SNS_TOPIC": "arn:aws:sns:eu-west-2:<user id>:<name>",
         "FRONTEND_URL": "http://localhost:4200"
       }
     }
