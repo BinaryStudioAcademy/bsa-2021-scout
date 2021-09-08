@@ -26,7 +26,7 @@ export class SelectTemplateComponent implements OnInit {
     isFollowed: false,
   }
   saveButtonDisable: boolean = true;
-  myFormControl = new FormControl();
+  templateControl = new FormControl();
 
   filteredOptions!: Observable<MailTemplateTable[]>;
 
@@ -36,7 +36,7 @@ export class SelectTemplateComponent implements OnInit {
   ngOnInit(): void {
     this.getMailTemplates();
 
-    this.myFormControl.valueChanges.subscribe((template) => {
+    this.templateControl.valueChanges.subscribe((template) => {
       if (typeof template !== 'string') {
         this.selectedTemplate = template;
         this.saveButtonDisable = false;
@@ -59,7 +59,7 @@ export class SelectTemplateComponent implements OnInit {
             d.html = d.html?.replace(/<\/?[^>]+(>|$)/g, ' ');
           });
 
-          this.filteredOptions = this.myFormControl.valueChanges.pipe(
+          this.filteredOptions = this.templateControl.valueChanges.pipe(
             startWith(''),
             map(value => typeof value === 'string' ? value : value.title),
             map(title => title ? this._filter(title) : this.mailTemplates.slice()),

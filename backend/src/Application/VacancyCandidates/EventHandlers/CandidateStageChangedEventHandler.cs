@@ -107,13 +107,13 @@ namespace Application.VacancyCandidates.EventHandlers
         {
             var templatesIds = JsonConvert.DeserializeObject<TemplatesIdsDto>(stage.DataJson);
             var templateQuery = new GetMailTemplateWithReplacedPlaceholdersQuery(
-                notification.Event.EventType == Domain.Enums.StageChangeEventType.Join ? 
-                templatesIds.JoinTemplateId : templatesIds.LeaveTemplateId, 
+                notification.Event.EventType == Domain.Enums.StageChangeEventType.Join ?
+                templatesIds.JoinTemplateId : templatesIds.LeaveTemplateId,
                 vacancy, applicant);
             var template = await _mediator.Send(templateQuery);
 
             var body = template.Html;
-            var sendMailCommand = new SendMailCommand(applicant.Id, template.Subject, body, attachments: template.Attachments);
+            var sendMailCommand = new SendMailCommand(applicant.Email, template.Subject, body, attachments: template.Attachments);
             await _mediator.Send(sendMailCommand);
         }
     }

@@ -13,13 +13,18 @@
     .html-show {
         margin: 10px;
         margin-bottom: 0;
-        padding: 10px;
         width: 100%;
-        background: red;
-        border-radius: 10px;
-        background: $primary-color-white;
-    }
 
+        span{
+        padding-left: 10px;
+        }
+
+        .bg {
+            padding: 10px;
+            border-radius: 10px;
+            background: $primary-color-white;
+        }
+    }
     ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex{
         background-color: transparent;
     }

@@ -77,11 +77,12 @@ namespace Application.VacancyCandidates.Commands
             }
 
 
-            var result = _mapper.Map<IEnumerable<VacancyCandidateDto>>(await _writeRepository.CreateRangeAsync(candidates.ToArray()));
+            var result = await _writeRepository.CreateRangeAsync(candidates.ToArray());
 
             foreach (var candidate in result)
             {
                 candidate.DomainEvents.Add(new CandidateStageChangedEvent(candidate.Id, command.VacancyId, stageId, StageChangeEventType.Join));
+                await _writeRepository.UpdateAsync(candidate);
 
                 await _candidateToStageWriteRepository.CreateAsync(new CandidateToStage
                 {
@@ -92,7 +93,7 @@ namespace Application.VacancyCandidates.Commands
                 });
             }
 
-            return result;
+            return _mapper.Map<IEnumerable<VacancyCandidateDto>>(result);
         }
     }
 }

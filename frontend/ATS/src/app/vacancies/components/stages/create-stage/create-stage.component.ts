@@ -87,20 +87,6 @@ export class CreateStageComponent implements OnChanges, OnInit, OnDestroy {
       stageId: this.stageId,
       stageChangeEventType: 0,
     },
-    {
-      id: '2',
-      name: 'Add task',
-      actionType: ActionType.AddTask,
-      stageId: this.stageId,
-      stageChangeEventType: 0,
-    },
-    {
-      id: '3',
-      name: 'Schedule interview action',
-      actionType: ActionType.ScheduleInterviewAction,
-      stageId: this.stageId,
-      stageChangeEventType: 0,
-    },
   ];
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();

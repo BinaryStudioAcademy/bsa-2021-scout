@@ -50,7 +50,6 @@ export class MainPageComponent implements OnInit{
 
 
   ngOnInit() : void {
-    console.log('tasks loaded');
     this.loadData();     
   }
 

@@ -11,6 +11,7 @@ namespace Application.VacancyCandidates
         public VacancyCandidateProfile()
         {
             CreateMap<VacancyCandidate, VacancyCandidateDto>();
+            CreateMap<VacancyCandidateDto, VacancyCandidate>();
 
             CreateMap<VacancyCandidate, ShortVacancyCandidateWithApplicantDto>()
                 .ForMember(

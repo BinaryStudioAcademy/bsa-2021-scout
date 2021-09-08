@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter,Inject } from '@angular/core';
+import { Component, Output, EventEmitter,Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { ApplicantShort } from 'src/app/shared/models/task-management/applicant-short';
@@ -14,7 +14,7 @@ import { isString } from 'lodash';
   templateUrl: './all-in-one.component.html',
   styleUrls: ['./all-in-one.component.scss'],
 })
-export class AllInOneComponent {
+export class AllInOneComponent implements OnInit {
   @Output() submitClicked = new EventEmitter<any>();
   public task: Task = {} as Task;
   public selectedUsers: UserInfo[] = [];
