@@ -41,50 +41,50 @@ $primary-font: Nunito;
 }
 
 ::ng-deep .mat-dialog-container .interview-add-container {
-    .mat-form-field-appearance-fill .mat-form-field-flex{
-        background: $primary-color-white;
-    }
-    .mat-form-field {
-        margin-bottom: 5px;
-    }
-    .mat-form-field-wrapper.mat-form-field-wrapper {
-        background: $primary-color-white;
-        border-radius: 10px;
-        margin: 0;
-        width: 450px;
-        max-width: 100%;
-        padding-left: 15px;
-        padding-bottom: 0px;
-    }
-    /* Text Area */
-    .wide .mat-form-field-wrapper.mat-form-field-wrapper {
-        height: 185px;
-    }
-    .wide .mat-form-field-flex {
-        height: 90%;
-        margin-top: 20px;
-        padding: 0;
-        background-color: transparent;
-    }
-    textarea.mat-input-element {
-        resize: none;
-        height: 90%;
-    }
-    .mat-form-field-flex .mat-form-field-infix {
-        background: $primary-color-white;
-        height: 90%;
-    }
-    /* Close Button */
-    .close-dialog {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-    }
-    .close-dialog:hover {
-        cursor: pointer;
-        color: $primary-color;
-    }
-    .mat-dialog-actions {
-        min-height: 0;
-    }
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    background: $primary-color-white;
+  }
+  .mat-form-field {
+    margin-bottom: 5px;
+  }
+  .mat-form-field-wrapper.mat-form-field-wrapper {
+    background: $primary-color-white;
+    border-radius: 10px;
+    margin: 0;
+    width: 450px;
+    max-width: 100%;
+    padding-left: 15px;
+    padding-bottom: 0px;
+  }
+  /* Text Area */
+  .wide .mat-form-field-wrapper.mat-form-field-wrapper {
+    height: 185px;
+  }
+  .wide .mat-form-field-flex {
+    height: 90%;
+    margin-top: 20px;
+    padding: 0;
+    background-color: transparent;
+  }
+  textarea.mat-input-element {
+    resize: none;
+    height: 90%;
+  }
+  .mat-form-field-flex .mat-form-field-infix {
+    background: $primary-color-white;
+    height: 90%;
+  }
+  /* Close Button */
+  .close-dialog {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  .close-dialog:hover {
+    cursor: pointer;
+    color: $primary-color;
+  }
+  .mat-dialog-actions {
+    min-height: 0;
+  }
 }

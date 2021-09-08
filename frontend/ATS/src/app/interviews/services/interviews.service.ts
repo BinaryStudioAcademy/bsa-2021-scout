@@ -27,7 +27,7 @@ export class InterviewsService {
     return this.httpService.deleteFullRequest<Interview>(`${this.routePrefix}/${interview.id}`);
   }
 
-  public updateInterview(interview: Interview) {
-    return this.httpService.putFullRequest<Interview>(`${this.routePrefix}`, interview);
+  public updateInterview(interview: CreateInterviewDto) {
+    return this.httpService.putFullRequest<CreateInterviewDto>(`${this.routePrefix}`, interview);
   }
 }

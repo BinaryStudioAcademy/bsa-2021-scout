@@ -77,7 +77,8 @@
             <h5 class="required-field">Date</h5>
             <mat-form-field floatLabel="never"
                 [ngClass]="this.interviewCreateForm.controls['date'].dirty && this.interviewCreateForm.controls['date'].errors? 'invalid-input': ''">
-                <input matInput [matDatepicker]="picker" formControlName="date" placeholder="dd/mm/yyyy" [ngModel]="inteviewDate" >
+                <input matInput [matDatepicker]="picker" formControlName="date" placeholder="dd/mm/yyyy"
+                    [ngModel]="inteviewDate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -86,7 +87,8 @@
                 Please enter valid date.
                 Validate format is DD/MM/YEAR.
             </div>
-            <div class="validation-error" *ngIf="this.interviewCreateForm.controls['date'].dirty && this.interviewCreateForm.controls['date'].errors?.datevalidate">
+            <div class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['date'].dirty && this.interviewCreateForm.controls['date'].errors?.datevalidate">
                 Вate must be set between today and a year.
             </div>
 

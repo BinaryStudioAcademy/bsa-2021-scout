@@ -1,11 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { 
-  AbstractControl, 
-  FormControl, 
-  FormGroup, 
-  ValidationErrors, 
-  ValidatorFn, 
-  Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -109,7 +110,7 @@ export class CreateInterviewComponent implements OnDestroy {
   vacancies: VacancyData[] = [];
   usersOptions: IOption[] = [];
   urlRegEx: string = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-  interviewCreateForm: FormGroup = {} as FormGroup; 
+  interviewCreateForm: FormGroup = {} as FormGroup;
   public loading: boolean = false;
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -121,14 +122,14 @@ export class CreateInterviewComponent implements OnDestroy {
     private usersService: UserDataService,
     private applicantsService: ApplicantsService,
     private vacancyService: VacancyDataService,
-  ) { 
+  ) {
     this.interview = {} as CreateInterviewDto;
-    if(data?.interview){
+    if (data?.interview) {
       this.interview = data.interview;
     }
     this.inteviewDate = new Date(this.interview.scheduled);
-    this.inteviewTime = ('0' + (this.inteviewDate.getHours())).slice(-2)+
-    ':'+('0' + (this.inteviewDate.getMinutes())).slice(-2)+':00';
+    this.inteviewTime = ('0' + (this.inteviewDate.getHours())).slice(-2) +
+      ':' + ('0' + (this.inteviewDate.getMinutes())).slice(-2) + ':00';
     this.interviewCreateForm = new FormGroup({
       'title': new FormControl(this.interview.title,
         [Validators.required,
@@ -227,33 +228,53 @@ export class CreateInterviewComponent implements OnDestroy {
     this.interview = this.interviewCreateForm.value;
     this.loading = true;
     this.inteviewDate = new Date(this.interviewCreateForm.controls['date'].value);
-
     this.inteviewTime = this.interviewCreateForm.controls['time'].value;
     var interviewers = (this.interviewCreateForm.controls['interviewers'].value as UserTableData[]);
     this.interview.userParticipants = [];
     interviewers.forEach((element: UserTableData) => {
       this.interview.userParticipants.push(element.id as string);
     });
-    var newDate = new Date (this.inteviewDate.getFullYear()+
-      '-'+('0' + (this.inteviewDate.getMonth() + 1)).slice(-2)+
-      '-'+('0' + (this.inteviewDate.getDate())).slice(-2)
-      +'T'+this.inteviewTime+':00+0000');
+    var newDate = new Date(this.inteviewDate.getFullYear() +
+      '-' + ('0' + (this.inteviewDate.getMonth() + 1)).slice(-2) +
+      '-' + ('0' + (this.inteviewDate.getDate())).slice(-2)
+      + 'T' + this.inteviewTime + '+0000');
     this.interview.scheduled = newDate.toISOString();
-    this.interviewsService
-      .createInterview(this.interview)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        () => {
-          this.loading = false;
-          this.notificationService.showSuccessMessage(
-            `Interview ${this.interview.title} created!`,
-          );
-        },
-        (error) => {
-          this.loading = false;
-          this.notificationService.showErrorMessage(error.message);
-        },
-      );
+    if(this.data){
+      this.interview.id = this.data.interview.id;
+      this.interviewsService
+        .updateInterview(this.interview)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          () => {
+            this.loading = false;
+            this.notificationService.showSuccessMessage(
+              `Interview ${this.interview.title} updated!`,
+            );
+          },
+          (error) => {
+            this.loading = false;
+            this.notificationService.showErrorMessage(error.message);
+          },
+        );
+    }
+    else{
+      this.interviewsService
+        .createInterview(this.interview)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          () => {
+            this.loading = false;
+            this.notificationService.showSuccessMessage(
+              `Interview ${this.interview.title} created!`,
+            );
+          },
+          (error) => {
+            this.loading = false;
+            this.notificationService.showErrorMessage(error.message);
+          },
+        );
+    }
+    
 
     this.dialogRef.close();
   }
