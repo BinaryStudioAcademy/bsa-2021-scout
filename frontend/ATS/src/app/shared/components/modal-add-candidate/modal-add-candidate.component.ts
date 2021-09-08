@@ -117,7 +117,8 @@ export class AddCandidateModalComponent implements OnDestroy {
 
     } else {
       this.disableVacanciesForm = false;
-
+      this.applicantsForm.enable();
+      
       this.vacancyService
         .getVacancies()
         .pipe(takeUntil(this.unsubscribe$))
@@ -140,11 +141,19 @@ export class AddCandidateModalComponent implements OnDestroy {
           this.selectedVacancy = vacancy;
           this.vacancyId = this.selectedVacancy.id;
 
+          if(this.filteredApplicants.length == 0) 
+          {
+            this.disableAddButton = true;
+          }
+          else
+          {
+            this.disableAddButton = false;
+          }
+
           this.GetApplicants();
         }
         else {
           this.disableAddButton = true;
-          this.applicantsForm.disable();
         }
       },
       (error) => (this.OnError(error)));
@@ -171,13 +180,16 @@ export class AddCandidateModalComponent implements OnDestroy {
 
           this.applicantsIds?.forEach((applicantId) => {
             this.filteredApplicants.forEach((applicant) => {
-              if (applicantId == applicant.id && !applicant.isApplied) {
+              if (applicantId == applicant.id) {
                 newApplicants.push(applicant);
               }
             });
           });
 
-          this.applicantsForm.patchValue(newApplicants);
+          if(this.applicantsIds) {
+            this.filteredApplicants = newApplicants;
+          }
+          this.applicantsForm.patchValue(newApplicants.filter(applicant => !applicant.isApplied));
 
           if(newApplicants.length == 0)
           {

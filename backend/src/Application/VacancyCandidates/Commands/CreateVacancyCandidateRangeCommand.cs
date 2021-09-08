@@ -73,8 +73,6 @@ namespace Application.VacancyCandidates.Commands
                     DomainEvents = new List<DomainEvent>()
                 };
 
-                vacancyCandidate.DomainEvents.Add(new CandidateStageChangedEvent(id, command.VacancyId, stageId, StageChangeEventType.Join));
-
                 candidates.Add(vacancyCandidate);
             }
 
@@ -83,6 +81,8 @@ namespace Application.VacancyCandidates.Commands
 
             foreach (var candidate in result)
             {
+                candidate.DomainEvents.Add(new CandidateStageChangedEvent(candidate.Id, command.VacancyId, stageId, StageChangeEventType.Join));
+
                 await _candidateToStageWriteRepository.CreateAsync(new CandidateToStage
                 {
                     CandidateId = candidate.Id,
