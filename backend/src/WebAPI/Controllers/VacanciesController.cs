@@ -7,7 +7,6 @@ using Application.Common.Queries;
 using Application.Stages.Commands;
 using Application.Stages.Dtos;
 using Application.Vacancies.Commands.Create;
-using Application.Vacancies.Commands.Delete;
 using Application.Vacancies.Commands.Edit;
 using Application.Vacancies.Dtos;
 using Application.Vacancies.Queries;
@@ -85,12 +84,5 @@ namespace WebAPI.Controllers
         //    var command = new DeleteVacancyStageCommand(stage, vacancyId, stageId);
         //    return StatusCode(201, await Mediator.Send(command));
         //}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVacancy(string id)
-        {
-            var command = new DeleteVacancyCommand(id);
-            await Mediator.Send(command);
-            return StatusCode(204);
-        }
     }
 }

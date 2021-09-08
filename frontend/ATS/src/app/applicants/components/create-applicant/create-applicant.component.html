@@ -40,12 +40,16 @@
         </div>
     </ng-template>
 
-    <p>Email</p>
+    <p class="required-field">Email</p>
     <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors? 'invalid-input' : ''">
         <input required formControlName="email" type="email" matInput placeholder="Enter email"
             [(ngModel)]="createdApplicant.email">
     </mat-form-field>
+    <div class="validation-error"
+        *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.required; else emailPatternError">
+        It&apos;s required field
+    </div>
     <ng-template #emailPatternError>
         <div class="validation-error"
             *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.pattern">

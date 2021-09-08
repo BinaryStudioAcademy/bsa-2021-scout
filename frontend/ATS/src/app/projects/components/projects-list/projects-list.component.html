@@ -109,8 +109,8 @@
                                 (click)="onBookmark(row)">bookmark</mat-icon>
                             <mat-icon (click)="OnEdit(row)">edit</mat-icon>
                             <mat-select panelClass="project-options">
-                                <mat-option class="delete" (click)="showDeleteConfirmDialog(row)">
-                                    <mat-icon>delete</mat-icon>Delete
+                                <mat-option (click)="showArchiveConfirmDialog(row)">
+                                    <mat-icon>archive</mat-icon>Archive
                                 </mat-option>
                             </mat-select>
                         </div>
@@ -133,3 +133,4 @@
                 [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
         </div>
     </div>
+</div>

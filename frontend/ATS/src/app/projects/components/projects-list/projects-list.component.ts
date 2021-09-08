@@ -10,9 +10,8 @@ import { ProjectService } from 'src/app/projects/services/projects.service';
 import { ProjectsEditComponent } from '../projects-edit/projects-edit.component';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { Tag } from 'src/app/shared/models/tags/tag';
-// eslint-disable-next-line
-import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm/delete-confirm.component';
-import { Subject, Subscription } from 'rxjs';
+
+import { EMPTY, Subject, Subscription } from 'rxjs';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
@@ -23,7 +22,12 @@ import {
   TableFilterComponent,
 } from 'src/app/shared/components/table-filter/table-filter.component';
 import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
+
+import { ArchivationService } from 'src/app/archive/services/archivation.service';
+import { ConfirmationDialogComponent } 
+  from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-projects-list',
@@ -71,6 +75,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     private dialog: MatDialog,
     private notificationService: NotificationService,
     private followService: FollowedService,
+    private archivationService: ArchivationService,
     private readonly route: ActivatedRoute,
   ) {
     this.followService
@@ -279,28 +284,41 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     this.dialog.afterAllClosed.subscribe((_) => this.getProjects());
   }
 
-  public showDeleteConfirmDialog(projectToDelete: ProjectInfo): void {
-    const dialogRef = this.dialog.open(DeleteConfirmComponent, {
+  public showArchiveConfirmDialog(projectToArchive: ProjectInfo): void {
+    this.dialog.open(ConfirmationDialogComponent, {
       width: '400px',
       height: 'min-content',
       autoFocus: false,
       data: {
-        entityName: 'Project',
+        action: 'Archive',
+        entityName: 'project',
+        additionalMessage: 'All vacancies in this project will also be automatically archived.',
       },
-    });
-
-    dialogRef.afterClosed().subscribe((response: boolean) => {
-      if (response) {
-        this.projectService
-          .deleteProject(projectToDelete)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe((_) => {
-            this.notificationService.showSuccessMessage(
-              `Project ${projectToDelete.name} deleted!`,
-            );
-            this.getProjects();
-          });
-      }
-    });
+    })
+      .afterClosed()
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        mergeMap(response => {
+          if (response) {
+            return this.archivationService.archiveProject(projectToArchive.id);
+          }
+          return EMPTY;
+        }),
+      )
+      .subscribe(
+        (_) => {
+          const position = this.projects.findIndex(project => project.id === projectToArchive.id);
+          this.projects.splice(position, 1);
+          this.dataSource.data = this.projects;
+          this.notificationService.showSuccessMessage(
+            `Project ${projectToArchive.name} arhived!`,
+          );
+        },
+        () => {
+          this.notificationService.showErrorMessage(
+            'Project arhivation is failed!',
+          );
+        },
+      );
   }
 }

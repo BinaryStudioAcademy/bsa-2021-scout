@@ -21,6 +21,7 @@ import { HrLeadGuard } from '../users/guards/hr-lead.guard';
 
 import { ProjectsModule } from '../projects/projects.module';
 import { PoolsModule } from '../pools/pools.module';
+import { ArchiveModule } from '../archive/archive.module';
 import { MailTemplatesModule } from '../mail-templates/mail-templates.module';
 import { TaskManagementModule } from '../task-management/task-management.module';
 
@@ -42,6 +43,7 @@ import { TaskManagementModule } from '../task-management/task-management.module'
     UsersModule,
     ProjectsModule,
     PoolsModule,
+    ArchiveModule,
     MailTemplatesModule,
     TaskManagementModule,
   ],

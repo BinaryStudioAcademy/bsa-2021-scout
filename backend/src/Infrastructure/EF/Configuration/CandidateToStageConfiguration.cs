@@ -12,13 +12,13 @@ namespace Infrastructure.EF.Configuration
                 .WithMany(c => c.CandidateToStages)
                 .HasForeignKey(cts => cts.CandidateId)
                 .HasConstraintName("candidate_to_stage_candidate_FK")
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(cts => cts.Stage)
                 .WithMany(s => s.CandidateToStages)
                 .HasForeignKey(cts => cts.StageId)
                 .HasConstraintName("candidate_to_stage_stage_FK")
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(cts => cts.Mover)
                 .WithMany(u => u.MovedCandidateToStages)

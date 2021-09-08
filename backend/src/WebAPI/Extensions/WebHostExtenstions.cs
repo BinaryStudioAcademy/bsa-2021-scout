@@ -202,6 +202,10 @@ namespace WebAPI.Extensions
         {
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+            context.ArchivedEntities.RemoveRange(context.ArchivedEntities);
+            await context.SaveChangesAsync();
+
             foreach (var project in ProjectSeeds.GetProjects())
             {
                 if (await context.Projects.AnyAsync(c => c.Id == project.Id))
