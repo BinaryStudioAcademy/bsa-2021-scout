@@ -31,7 +31,7 @@
 
     .header {        
 
-        height:43px;        
+        height:50px;        
         margin: 17px 17px 0;
         padding-bottom: 17px;
         
@@ -45,10 +45,50 @@
         .top {
             display: flex;
             justify-content: space-between;
+
+            .delete {
+                color: $primary-color;
+            }
+
+                ::ng-deep {
+                    .mat-select-arrow::after{
+                        font-family: 'Material Icons';
+                        content: "\e5d4";
+                        font-size: 24px;                    
+                        color: gray;                 
+                    }
+                
+                    // .mat-select-arrow:hover::after{
+                    //     color: $primary-color;
+                    // }
+                
+                    .mat-select-arrow-wrapper {
+                        display: block;
+                    }
+                
+                    .mat-select-arrow {
+                        border: none;
+                        margin: 0;
+                        height: 100%;
+                        color: transparent;
+                        margin: 0 20px 0 0px;                   
+                    }
+                
+                    .mat-select {
+                        width: unset;
+                        padding-right: 20px;
+                    }
+
+                    .mat-option-text{
+                        color: $primary-color;
+                    }
+                }
+        
+            
         }
 
         .creator {
-            padding: 10px 10px 0 25px;
+            padding: 4px 10px 0 25px;
         }
         
         ::ng-deep {
@@ -66,6 +106,7 @@
         .name {
             padding: 0 10px;
             margin-right: auto;
+            height: 40px;
         }
     }
 
@@ -127,3 +168,9 @@
 
 
 }
+
+::ng-deep {   
+        .delete span {
+           color: $primary-color;
+        }  
+    }

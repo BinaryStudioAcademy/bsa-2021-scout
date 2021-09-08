@@ -39,6 +39,7 @@
                 .mat-icon {
                     vertical-align: middle;
                     color: lightgray;
+                    font-size: 26px;
                 }
             }
 
@@ -64,12 +65,12 @@
             }            
         }
     }
-    .more {
+    .more a{
         padding-top: 5px;
         color:$primary-color;
         text-align: center;
         font-weight: 600;
         font-size: 14px;
-        cursor: pointer;
+        cursor: pointer;        
     }
 }

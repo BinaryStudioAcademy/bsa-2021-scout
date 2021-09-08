@@ -34,7 +34,7 @@ namespace Application.Common.Queries
         }
 
         public async Task<List<PoolDto>> Handle(GetPoolsWithApplicantsQuery query, CancellationToken _)
-        {
+        { 
             var result = await _repository.GetPoolsWithApplicantsAsync();
 
             return _mapper.Map<List<PoolDto>>(result);

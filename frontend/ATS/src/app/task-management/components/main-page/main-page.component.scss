@@ -127,7 +127,8 @@
     margin: 35px 0;
     border-radius: 10px;
     padding: 35px;
-    min-height: calc(100vh - 350px);
+    height: calc(100vh - 340px);
+    overflow-y: auto;
     
         .grid {            
             display: grid;

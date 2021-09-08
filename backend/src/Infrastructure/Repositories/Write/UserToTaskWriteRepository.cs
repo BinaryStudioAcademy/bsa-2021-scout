@@ -55,5 +55,25 @@ namespace Infrastructure.Repositories.Write
 
             return updatedTask;
         }
+
+        public async Task DeleteUsersToTask(string id)
+        {
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
+
+            string sql = $@"SELECT ToDoTaskId,UserId
+                            FROM UserToTask
+                            WHERE ToDoTaskId = @id";
+
+            var teamMembersfromDB = await connection.QueryAsync<UserToTask>(sql, new { @id = id });
+                        
+
+            foreach (var user in teamMembersfromDB)
+            {
+                _context.Remove(user);
+            }                       
+
+            await _context.SaveChangesAsync();
+                        
+        }
     }
 }

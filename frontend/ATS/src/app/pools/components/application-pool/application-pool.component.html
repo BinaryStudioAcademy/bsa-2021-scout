@@ -64,6 +64,7 @@
                             <mat-option (click)="onAddApplicantsFromPoolToVacancy(row.applicants)">
                                 <mat-icon>done_all</mat-icon>Apply Pool To Vacancy
                             </mat-option>
+                            <mat-option class="delete" (click)="$event.stopPropagation();showDeleteConfirmDialog(row)"><mat-icon>delete</mat-icon>Delete</mat-option>
                         </mat-select>
                     </td>
                 </ng-container>

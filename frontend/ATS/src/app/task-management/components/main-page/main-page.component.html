@@ -21,7 +21,7 @@
     </div>
     <div class='content'>
         <div class='grid'>            
-            <app-task-card [task]= task  *ngFor="let task of tasks" (click)="editTask(task)"></app-task-card>            
+            <app-task-card [task]= task [currentUserId]= currentUserId *ngFor="let task of tasks" (click)="$event.stopPropagation();editTask(task)" (deletedTask)="RemoveTask($event)"></app-task-card>            
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Task } from 'src/app/shared/models/task-management/task';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,7 +11,8 @@ import { UserDataService } from 'src/app/users/services/user-data.service';
 import { ApplicantShort } from 'src/app/shared/models/task-management/applicant-short';
 import { UserInfo } from 'src/app/shared/models/task-management/user-short';
 import { CreateTask } from 'src/app/shared/models/task-management/create-task'; 
-import { UpdateTask } from 'src/app/shared/models/task-management/update-task'; 
+import { UpdateTask } from 'src/app/shared/models/task-management/update-task';
+import {TaskCardComponent} from '../task-card/task-card.component';
 
 interface filterObject {
   userFilter:boolean;
@@ -24,7 +25,8 @@ interface filterObject {
   styleUrls: ['./main-page.component.scss'],
 })
 
-export class MainPageComponent implements OnInit{
+export class MainPageComponent implements OnInit,AfterViewInit{
+  
   public doneFilter: boolean = false;
   public isDone : boolean = false;
   public tasks : Task[] = [];
@@ -39,6 +41,9 @@ export class MainPageComponent implements OnInit{
 
   public allTasks : Task[] =  [];
 
+  @ViewChild(TaskCardComponent)
+  private taskCard!: TaskCardComponent;
+
   constructor (
     private readonly dialogService: MatDialog,     
     private notificationService: NotificationService,
@@ -49,8 +54,12 @@ export class MainPageComponent implements OnInit{
 
 
   ngOnInit() : void {
-    console.log('tasks loaded');
+    this.decodeJwt();
     this.loadData();     
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => 0);
   }
 
   loadData() {
@@ -189,7 +198,8 @@ export class MainPageComponent implements OnInit{
       .subscribe(
         (resp) => {
           this.loading = false;
-          this.allTasks.push(resp);      
+          this.allTasks.push(resp);
+          this.taskCard.updateTask(resp); 
           this.filterData(); 
           this.notificationService.showSuccessMessage(`Task ${task.name} created`);
         },
@@ -223,13 +233,10 @@ export class MainPageComponent implements OnInit{
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (resp) => {
-          this.loading = false;
-          let resultTask = this.allTasks.find(x=>x.id == resp.body?.id);                   
-          if(resultTask) {
-            resultTask = resp.body!;
-            resultTask.doneDate = resp.body!.doneDate;
-          }           
-
+          this.loading = false;          
+          let resultTaskIndx = this.allTasks.findIndex(x=>x.id == resp.body?.id);                   
+          this.allTasks.splice(resultTaskIndx,1);
+          this.allTasks.push(resp.body!);
           this.filterData(); 
           this.notificationService.showSuccessMessage(`Task ${task.name} modified`);
         },
@@ -238,5 +245,11 @@ export class MainPageComponent implements OnInit{
           this.notificationService.showErrorMessage(error);
         },
       );
+  }
+
+  RemoveTask(task:Task) {
+    const indx= this.allTasks.indexOf(task);
+    this.allTasks.splice(indx,1);
+    this.filterData();
   }
 }
