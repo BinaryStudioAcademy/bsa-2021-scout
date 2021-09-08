@@ -22,7 +22,7 @@ import { HttpClientModule} from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { DxHtmlEditorModule, DxPopupModule } from 'devextreme-angular';
 import { SelectTemplateEntitiesComponent } 
-  from './select-template-entities/select-template-entities.component';
+  from './components/select-template-entities/select-template-entities.component';
 
 @NgModule({
   declarations: [

@@ -22,7 +22,7 @@ import { MailTemplateAddComponent } from '../mail-template-add/mail-template-add
 import { MailTemplateEditComponent } from '../mail-template-edit/mail-template-edit.component';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { SelectTemplateEntitiesComponent } 
-  from '../../select-template-entities/select-template-entities.component';
+  from '../select-template-entities/select-template-entities.component';
 
 @Component({
   selector: 'app-mail-templates-list',
