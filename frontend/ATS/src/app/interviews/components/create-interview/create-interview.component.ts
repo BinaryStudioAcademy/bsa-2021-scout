@@ -102,6 +102,7 @@ export class CreateInterviewComponent implements OnDestroy {
       source: MeetingSource.Zoom,
     },
   ];
+  editing : boolean = false;
   inteviewTime: string = '';
   inteviewDate: Date = new Date;
   interview: CreateInterviewDto = {} as CreateInterviewDto;
@@ -125,11 +126,15 @@ export class CreateInterviewComponent implements OnDestroy {
   ) {
     this.interview = {} as CreateInterviewDto;
     if (data?.interview) {
+      this.editing = true;
       this.interview = data.interview;
     }
     this.inteviewDate = new Date(this.interview.scheduled);
-    this.inteviewTime = ('0' + (this.inteviewDate.getHours())).slice(-2) +
-      ':' + ('0' + (this.inteviewDate.getMinutes())).slice(-2) + ':00';
+    if(this.interview.scheduled != undefined){
+      this.inteviewTime = ('0' + (this.inteviewDate.getHours())).slice(-2) +
+      ':' + ('0' + (this.inteviewDate.getMinutes())).slice(-2);
+    }
+    
     this.interviewCreateForm = new FormGroup({
       'title': new FormControl(this.interview.title,
         [Validators.required,
@@ -215,20 +220,18 @@ export class CreateInterviewComponent implements OnDestroy {
   }
 
   public onFormClose() {
-    if (this.interviewCreateForm.dirty) {
-      if (confirm('Make sure you are saved everything. Continue?')) {
-        this.dialogRef.close();
-      }
-    } else {
-      this.dialogRef.close();
-    }
+    this.dialogRef.close();
+  }
+
+  selectTime(time : string){
+    this.inteviewTime  = time;
   }
 
   public onSubmited() {
     this.interview = this.interviewCreateForm.value;
     this.loading = true;
     this.inteviewDate = new Date(this.interviewCreateForm.controls['date'].value);
-    this.inteviewTime = this.interviewCreateForm.controls['time'].value;
+
     var interviewers = (this.interviewCreateForm.controls['interviewers'].value as UserTableData[]);
     this.interview.userParticipants = [];
     interviewers.forEach((element: UserTableData) => {
