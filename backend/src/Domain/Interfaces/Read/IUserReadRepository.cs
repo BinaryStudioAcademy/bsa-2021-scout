@@ -7,8 +7,10 @@ namespace Domain.Interfaces.Read
 {
     public interface IUserReadRepository : IReadRepository<User>
     {
+        Task<User> GetByIdAsync(string id);
         Task<User> GetByEmailAsync(string email);
         Task<IEnumerable<User>> GetUsersByCompanyIdAsync(string companyId);
         Task LoadRolesAsync(User user);
+        Task<FileInfo> GetAvatarInfoAsync(string applicantId);
     }
 }

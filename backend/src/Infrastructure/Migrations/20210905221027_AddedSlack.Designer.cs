@@ -4,19 +4,21 @@ using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210905221027_AddedSlack")]
+    partial class AddedSlack
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.8")
+                .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Domain.Entities.Action", b =>
@@ -30,9 +32,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StageChangeEventType")
-                        .HasColumnType("int");
 
                     b.Property<string>("StageId")
                         .HasColumnType("nvarchar(450)");
@@ -99,63 +98,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CvFileInfoId");
 
                     b.ToTable("Applicants");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ApplyToken", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VacancyId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VacancyId");
-
-                    b.ToTable("ApplyTokens");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ArchivedEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("EntityId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("EntityType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ExpirationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("EntityType", "EntityId");
-
-                    b.ToTable("ArchivedEntities");
                 });
 
             modelBuilder.Entity("Domain.Entities.CandidateComment", b =>
@@ -273,9 +215,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("AWSJobId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FilePath")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TriggerId")
                         .HasColumnType("nvarchar(450)");
 
@@ -325,58 +264,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FileInfos");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Interview", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CandidateId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CompanyId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("Duration")
-                        .HasColumnType("float");
-
-                    b.Property<int>("InterviewType")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsReviewed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MeetingLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MeetingSource")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Note")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<DateTime>("Scheduled")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VacancyId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CandidateId");
-
-                    b.HasIndex("VacancyId");
-
-                    b.ToTable("Interviews");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pool", b =>
@@ -447,6 +334,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Logo")
                         .HasColumnType("nvarchar(max)");
@@ -569,9 +459,6 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("OriginalFilePath")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("OutputPath")
                         .HasColumnType("nvarchar(max)");
 
@@ -593,9 +480,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("DataJson")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Index")
                         .HasColumnType("int");
@@ -619,57 +503,13 @@ namespace Infrastructure.Migrations
                     b.ToTable("Stages");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ToDoTask", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ApplicantId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CompanyId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DoneDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDone")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsReviewed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicantId");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("CreatedById");
-
-                    b.ToTable("ToDoTask");
-                });
-
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AvatarId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("BirthDate")
@@ -710,7 +550,12 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Skype")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Slack")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AvatarId");
 
                     b.HasIndex("CompanyId");
 
@@ -758,42 +603,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserToRoles");
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserToTask", b =>
-                {
-                    b.Property<string>("ToDoTaskId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ToDoTaskId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserToTask");
-                });
-
-            modelBuilder.Entity("Domain.Entities.UsersToInterview", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("InterviewId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InterviewId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UsersToInterviews");
                 });
 
             modelBuilder.Entity("Domain.Entities.Vacancy", b =>
@@ -929,7 +738,7 @@ namespace Infrastructure.Migrations
                         .WithMany("Actions")
                         .HasForeignKey("StageId")
                         .HasConstraintName("action_stage_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Stage");
                 });
@@ -951,39 +760,19 @@ namespace Infrastructure.Migrations
                     b.Navigation("CvFileInfo");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ApplyToken", b =>
-                {
-                    b.HasOne("Domain.Entities.Vacancy", "Vacancy")
-                        .WithMany("ApplyTokens")
-                        .HasForeignKey("VacancyId")
-                        .HasConstraintName("apply_token__vacancy_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Vacancy");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ArchivedEntity", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Domain.Entities.CandidateComment", b =>
                 {
                     b.HasOne("Domain.Entities.VacancyCandidate", "Candidate")
                         .WithMany("CandidateComments")
                         .HasForeignKey("CandidateId")
                         .HasConstraintName("candidate_comment_candidate_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Entities.Stage", "Stage")
                         .WithMany("CandidateComments")
                         .HasForeignKey("StageId")
                         .HasConstraintName("candidate_comment_stage_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Candidate");
 
@@ -996,19 +785,19 @@ namespace Infrastructure.Migrations
                         .WithMany("Reviews")
                         .HasForeignKey("CandidateId")
                         .HasConstraintName("candidate_review_candidate_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Entities.Review", "Review")
                         .WithMany("CandidateReviews")
                         .HasForeignKey("ReviewId")
                         .HasConstraintName("candidate_review_review_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Entities.Stage", "Stage")
                         .WithMany("Reviews")
                         .HasForeignKey("StageId")
                         .HasConstraintName("candidate_review_stage_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Candidate");
 
@@ -1023,7 +812,7 @@ namespace Infrastructure.Migrations
                         .WithMany("CandidateToStages")
                         .HasForeignKey("CandidateId")
                         .HasConstraintName("candidate_to_stage_candidate_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Entities.User", "Mover")
                         .WithMany("MovedCandidateToStages")
@@ -1035,7 +824,7 @@ namespace Infrastructure.Migrations
                         .WithMany("CandidateToStages")
                         .HasForeignKey("StageId")
                         .HasConstraintName("candidate_to_stage_stage_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Candidate");
 
@@ -1064,23 +853,6 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Interview", b =>
-                {
-                    b.HasOne("Domain.Entities.Applicant", "Candidate")
-                        .WithMany()
-                        .HasForeignKey("CandidateId");
-
-                    b.HasOne("Domain.Entities.Vacancy", "Vacancy")
-                        .WithMany()
-                        .HasForeignKey("VacancyId")
-                        .HasConstraintName("interview__vacancy_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Candidate");
-
-                    b.Navigation("Vacancy");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pool", b =>
@@ -1158,13 +930,13 @@ namespace Infrastructure.Migrations
                         .WithMany("ReviewToStages")
                         .HasForeignKey("ReviewId")
                         .HasConstraintName("review_to_stage_review_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Entities.Stage", "Stage")
                         .WithMany("ReviewToStages")
                         .HasForeignKey("StageId")
                         .HasConstraintName("review_to_stage_stage_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Review");
 
@@ -1193,11 +965,17 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
+                    b.HasOne("Domain.Entities.FileInfo", "Avatar")
+                        .WithMany()
+                        .HasForeignKey("AvatarId");
+
                     b.HasOne("Domain.Entities.Company", "Company")
                         .WithMany("Recruiters")
                         .HasForeignKey("CompanyId")
                         .HasConstraintName("user_company_FK")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Avatar");
 
                     b.Navigation("Company");
                 });
@@ -1226,46 +1004,6 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserToTask", b =>
-                {
-                    b.HasOne("Domain.Entities.ToDoTask", "Task")
-                        .WithMany("TeamMembers")
-                        .HasForeignKey("ToDoTaskId")
-                        .HasConstraintName("todotask_user__task_FK")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("UserTask")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("todotask_user__user_FK")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Task");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.UsersToInterview", b =>
-                {
-                    b.HasOne("Domain.Entities.Interview", "Interview")
-                        .WithMany("UserParticipants")
-                        .HasForeignKey("InterviewId")
-                        .HasConstraintName("user_interview__interview_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("UsersToInterviews")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("user_interview__user_FK")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Interview");
 
                     b.Navigation("User");
                 });
@@ -1336,11 +1074,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Vacancies");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Interview", b =>
-                {
-                    b.Navigation("UserParticipants");
-                });
-
             modelBuilder.Entity("Domain.Entities.Pool", b =>
                 {
                     b.Navigation("PoolApplicants");
@@ -1392,15 +1125,11 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("UserRoles");
 
-                    b.Navigation("UsersToInterviews");
-
                     b.Navigation("Vacancies");
                 });
 
             modelBuilder.Entity("Domain.Entities.Vacancy", b =>
                 {
-                    b.Navigation("ApplyTokens");
-
                     b.Navigation("Stages");
                 });
 

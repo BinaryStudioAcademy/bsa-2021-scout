@@ -19,6 +19,8 @@ namespace Application.Users.Dtos
         public string CompanyId { get; set; }
         public string Phone { get; set; }
         public string Skype { get; set; }
+        public string Slack { get; set; }
+        public string AvatarUrl { get; set; }
 
         public ICollection<RoleDto> Roles { get; set; }
 
