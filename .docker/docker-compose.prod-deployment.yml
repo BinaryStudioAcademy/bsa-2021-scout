@@ -20,7 +20,7 @@ services:
       - backend
 
   ats_database:
-    build: ../database
+    image: mcr.microsoft.com/mssql/server:2017-latest
     container_name: ats_database
     ports:
       - 1433:1433
@@ -49,12 +49,16 @@ services:
       - ats_vault
 
   ats_vault_config:
-    build: ../vault
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    entrypoint: ../vault-config/config.sh
+    #build: ../vault-config
     container_name: ats_vault_config
+    cap_add:
+      - IPC_LOCK
     restart: on-failure
     depends_on: 
       - ats_vault
-    networks: 
+    networks:
       - ats_vault
     env_file: 
       - ../.env/ats_vault_client.env
