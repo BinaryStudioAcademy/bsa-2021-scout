@@ -58,12 +58,11 @@ services:
     cap_add:
       - IPC_LOCK
     networks:
-      - ats_vault
+      - backend
 
   ats_vault_config:
     image: mcr.microsoft.com/mssql/server:2017-latest
-    entrypoint: ../vault-config/config.sh
-    #build: ../vault-config
+    entrypoint: ["sh", "app/vault-config/config.sh"]
     container_name: ats_vault_config
     cap_add:
       - IPC_LOCK
@@ -71,9 +70,12 @@ services:
     depends_on: 
       - ats_vault
     networks:
-      - ats_vault
+      - backend
     env_file: 
       - ../.env/ats_vault_client.env
+      - ../.env/ats_database.env
+    volumes:
+      - ..:/app/
 
 volumes:
   ats_database-data: {}
