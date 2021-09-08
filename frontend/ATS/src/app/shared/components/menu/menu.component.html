@@ -2,7 +2,8 @@
     <app-spinner [loading]="loading"></app-spinner>
     <div fxLayout="column" fxLayoutGap="10px" style="height: 100%;">
         <div class="logo-container">
-            <img class="logo" src="../../../../assets/images/logo_scout_purple.png">
+            <img *ngIf="sideNavState" class="logo" src="../../../../assets/images/logo_scout_purple.png">
+            <img *ngIf="!sideNavState" class="mini-logo" src="../../../../assets/images/logo_scout_minimized_purple.png">
         </div>
         <mat-nav-list>
             <button mat-icon-button color="primary" (click)="onSinenavToggle()">
