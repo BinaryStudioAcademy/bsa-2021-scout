@@ -72,13 +72,13 @@ namespace Infrastructure.Repositories.Read
         {
             var connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
-            StringBuilder sql = new StringBuilder();
-            sql.Append("SELECT *");
-            sql.Append(" FROM Users");
-            sql.Append($" WHERE Users.CompanyId = @companyId");
+            string sql = @"SELECT *
+                           FROM Users
+                           WHERE Users.CompanyId = @companyId
+                           ORDER BY Users.CreationDate DESC;";
 
             IEnumerable<User> users = await connection
-                .QueryAsync<User>(sql.ToString(), new { companyId = @companyId });
+                .QueryAsync<User>(sql, new { companyId = @companyId });
 
             await connection.CloseAsync();
             return users;
