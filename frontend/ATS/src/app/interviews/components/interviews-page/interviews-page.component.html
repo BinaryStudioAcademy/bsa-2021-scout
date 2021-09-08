@@ -35,9 +35,9 @@
               <div class="horizontaly">
                 <div *ngIf="c.interviews.length === 0"></div>
                 <div *ngIf="c.interviews.length > 0">
-                  <app-interview-card [interview]="c.interviews[0]"></app-interview-card>
+                  <app-interview-card (click)="OnEdit(c.interviews[0])" [interview]="c.interviews[0]"></app-interview-card>
                   <div *ngIf="!c.isCollapsed">
-                    <app-interview-card *ngFor="let interview of c.interviews.slice(1)" [interview]="interview" ></app-interview-card>
+                    <app-interview-card (click)="OnEdit(interview)" *ngFor="let interview of c.interviews.slice(1)" [interview]="interview" ></app-interview-card>
                   </div>
                 </div>
                 <div class="vertical"> 
