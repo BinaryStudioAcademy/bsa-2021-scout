@@ -26,7 +26,6 @@ services:
       - 1433:1433
     networks:
       - backend
-      - ats_vault
     env_file:
       - ../.env/ats_database.env
     volumes:
@@ -46,7 +45,7 @@ services:
     cap_add:
       - IPC_LOCK
     networks:
-      - ats_vault
+      - backend
 
   ats_vault_config:
     image: mcr.microsoft.com/mssql/server:2017-latest
@@ -58,7 +57,7 @@ services:
     depends_on: 
       - ats_vault
     networks:
-      - ats_vault
+      - backend
     env_file: 
       - ../.env/ats_vault_client.env
     volumes:
@@ -112,6 +111,4 @@ networks:
   backend:
     driver: bridge
   frontend:
-    driver: bridge
-  ats_vault:
     driver: bridge
