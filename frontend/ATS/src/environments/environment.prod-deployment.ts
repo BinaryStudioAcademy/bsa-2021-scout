@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://prod.bsa21-scout.com:5050/api',
-  clientUrl: 'http://prod.bsa21-scout.com:80',
+  apiUrl: 'https://prod.bsa21-scout.com/api',
+  clientUrl: 'https://prod.bsa21-scout.com',
 };
