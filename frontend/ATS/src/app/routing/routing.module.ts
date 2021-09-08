@@ -38,6 +38,10 @@ import { UserProfileComponent } from '../shared/components/user-profile/user-pro
 import { InterviewsPageComponent } from '../interviews/components/interviews-page/interviews-page.component';
 /* eslint-disable max-len */
 import { ApplicantCsvFilesListComponent } from '../applicants/components/CsvComponents/applicant-csv-files-list/applicant-csv-files-list.component';
+
+import { ProjectArchiveComponent } from '../archive/components/project-archive/project-archive.component';
+import { VacancyArchiveComponent } from '../archive/components/vacancy-archive/vacancy-archive.component';
+
 import { TaskManagementModule } from '../task-management/task-management.module';
 import { MainPageComponent } from '../task-management/components/main-page/main-page.component';
 
@@ -77,6 +81,21 @@ const routes: Routes = [
       {
         path: AppRoute.Interviews,
         component: InterviewsPageComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: AppRoute.Archive,
+        redirectTo: `${AppRoute.Archive}/${AppRoute.Projects}`,
+        pathMatch: 'full',
+      },
+      {
+        path: `${AppRoute.Archive}/${AppRoute.Vacancies}`,
+        component: VacancyArchiveComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: `${AppRoute.Archive}/${AppRoute.Projects}`,
+        component: ProjectArchiveComponent,
         pathMatch: 'full',
       },
       {

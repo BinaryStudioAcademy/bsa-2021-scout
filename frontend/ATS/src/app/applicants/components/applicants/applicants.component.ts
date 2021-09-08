@@ -258,6 +258,7 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
         type: FilterType.Multiple,
         multipleSettings: {
           options: vacancies,
+          sort: true,
           valueSelector: (applicant) =>
             applicant.vacancies.map((vac: ApplicantVacancyInfo) => vac.title),
         },

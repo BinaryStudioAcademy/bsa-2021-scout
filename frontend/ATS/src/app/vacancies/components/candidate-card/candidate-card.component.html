@@ -1,5 +1,5 @@
-<div class="card" [ngClass]="{'draggable': isDraggable, 'clickable': isClickable, 'not-viewed': !candidate.isViewed}"
-  [id]="candidate.id" cdkDrag [cdkDragDisabled]="!isDraggable" (click)="emitClick()">
+<div class="card" [ngClass]="{'draggable': isDraggable, 'not-viewed': !candidate.isViewed}" [id]="candidate.id" cdkDrag
+  [cdkDragDisabled]="!isDraggable">
   <div class="user-data">
     <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />
     <div class="texts">
@@ -7,6 +7,7 @@
       <div class="self-applied" *ngIf="candidate.isSelfApplied">
         <mat-icon>hail</mat-icon>
       </div>
+      <a *ngIf="isClickable" (click)="emitClick()">{{ clickableText }}</a>
     </div>
   </div>
   <div class="meta data" *ngIf="!candidate.averageMark && candidate.averageMark !== 0">

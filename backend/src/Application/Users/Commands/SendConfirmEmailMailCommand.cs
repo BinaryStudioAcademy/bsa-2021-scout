@@ -48,7 +48,7 @@ namespace Application.Mail
 
                 var callbackUrl = QueryHelpers.AddQueryString(command.ClientUrl, queryParam);
 
-                using (ISmtp connection = _smtp.Connect())
+                using (ISmtp connection = await _smtp.Connect())
                 {
                     await connection.SendAsync(command.To, command.Subject, command.Body.Replace("{{LINK}}", callbackUrl), command.TemplateSlug);
                 }

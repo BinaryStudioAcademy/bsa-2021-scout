@@ -152,6 +152,7 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" FROM Users");
             sql.Append(" LEFT JOIN FileInfos ON FileInfos.Id = Users.AvatarId");
             sql.Append($" WHERE Users.CompanyId = @companyId");
+            sql.Append($" ORDER BY Users.CreationDate DESC");
 
 
             User cachedUser = null;

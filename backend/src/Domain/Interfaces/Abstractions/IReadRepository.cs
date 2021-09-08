@@ -9,6 +9,7 @@ namespace Domain.Interfaces.Abstractions
         Task<T> GetAsync(string id);
         Task<IEnumerable<T>> GetEnumerableAsync();
         Task<T> GetByPropertyAsync(string property, string propertyValue);
+        Task<IEnumerable<T>> GetEnumerableByPropertyAsync(string property, string propertyValue);
 
     }
 }
