@@ -55,8 +55,8 @@ namespace Infrastructure.Repositories.Read
 
             string sql = @$"(SELECT Vacancies.* FROM Vacancies
 							JOIN Projects ON Projects.Id=Vacancies.ProjectId
-							WHERE NOT EXISTS (SELECT * FROM ArchivedEntities AP AE WHERE AP.EntityType = @entityProjectType AND AP.EntityId = Projects.Id)
-                              AND NOT EXISTS (SELECT * FROM ArchivedEntities AV AE WHERE AV.EntityType = @entityVacancyType AND AV.EntityId = Vacancies.Id))
+							WHERE NOT EXISTS (SELECT * FROM ArchivedEntities AS AP WHERE AP.EntityType = @entityProjectType AND AP.EntityId = Projects.Id)
+                              AND NOT EXISTS (SELECT * FROM ArchivedEntities AS AV WHERE AV.EntityType = @entityVacancyType AND AV.EntityId = Vacancies.Id))
                             EXCEPT
                             (SELECT V.* FROM Vacancies AS V
                             LEFT OUTER JOIN Stages AS S ON S.VacancyId=V.Id
