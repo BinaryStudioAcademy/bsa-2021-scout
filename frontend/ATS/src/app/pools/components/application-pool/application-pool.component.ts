@@ -171,6 +171,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
         type: FilterType.Multiple,
         multipleSettings: {
           options: users,
+          sort: true,
           valueSelector: (pool) => pool.createdBy,
         },
       },

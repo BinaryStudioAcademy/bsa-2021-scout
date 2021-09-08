@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using WebAPI.Extensions;
 using WebAPI.Middleware;
+using Infrastructure.Vault.Extensions;
+using System.Threading.Tasks;
 
 namespace WebAPI
 {
@@ -28,9 +30,10 @@ namespace WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureVault(Configuration);
+
             services.AddApplication();
             services.AddInfrastructure();
-
 
             services.ConfigureJwt(Configuration);
             services.AddScoped<ICurrentUserContext, CurrentUserContext>();
@@ -62,7 +65,7 @@ namespace WebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
 
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
