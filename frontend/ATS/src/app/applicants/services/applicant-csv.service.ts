@@ -41,7 +41,7 @@ export class ApplicantCsvService {
   public addCsvApplicant(createApplicant: CreateApplicant): Observable<CsvApplicant> {
     const formData = new FormData();
     formData.append('body', JSON.stringify(createApplicant));
-    if (createApplicant.cv) {
+    if (createApplicant.cv && typeof createApplicant.cv !== 'string') {
       formData.append('cvFile', createApplicant.cv, createApplicant.cv.name);
     }
     return this.httpClient.postRequest<CsvApplicant>('/applicantCsv/csvApplicant', formData);

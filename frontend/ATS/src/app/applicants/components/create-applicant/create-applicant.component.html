@@ -58,9 +58,8 @@
     </ng-template>
 
     <p>Experience years</p>
-    <mat-form-field appearance="fill"
-        [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors ? 'invalid-input' : ''">
-        <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60"
+    <mat-form-field appearance="fill">
+        <input formControlName="experience" type="number" matInput step=".1" min="0" max="60"
             [(ngModel)]="createdApplicant.experience">
     </mat-form-field>
     <div class="validation-error"
@@ -75,9 +74,8 @@
     </mat-form-field>
 
     <p>Phone</p>
-    <mat-form-field appearance="fill"
-        [ngClass]="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors? 'invalid-input' : ''">
-        <input required formControlName="phone" type="tel" matInput placeholder="Enter phone number"
+    <mat-form-field appearance="fill">
+        <input formControlName="phone" type="tel" matInput placeholder="Enter phone number"
             [(ngModel)]="createdApplicant.phone">
     </mat-form-field>
     <ng-template #phonePatternError>
@@ -98,8 +96,7 @@
     </mat-form-field>
 
     <p>LinkedIn url</p>
-    <mat-form-field appearance="fill"
-        [ngClass]="validationGroup!.controls['linkedInUrl'].dirty && validationGroup!.controls['linkedInUrl'].errors? 'invalid-input' : ''">
+    <mat-form-field appearance="fill">
         <input formControlName="linkedInUrl" type="text" matInput placeholder="Enter LinkedIn url"
             [(ngModel)]="createdApplicant.linkedInUrl">
     </mat-form-field>

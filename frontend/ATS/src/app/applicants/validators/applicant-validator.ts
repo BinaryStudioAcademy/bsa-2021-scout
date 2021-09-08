@@ -14,13 +14,13 @@ export const applicantGroup = new FormGroup({
     Validators.pattern('^\\S{1,}@\\S{3,}\\.[a-z]+'),
     Validators.required,
   ]),
-  experienceDescription: new FormControl(''),
-  experience: new FormControl(''),
+  experienceDescription: new FormControl('', []),
+  experience: new FormControl('', []),
   phone: new FormControl('', [
     Validators.pattern('^\\+?[0-9]{8,16}'),
   ]),
-  skills: new FormControl(''),
+  skills: new FormControl('', []),
   linkedInUrl: new FormControl('', [
-    Validators.pattern(/^https:\/\/(www\.)?linkedin\.com\/in\/[a-z0-9\-]+\/?$/g),
+    Validators.pattern('^https:\/\/(www\.)?linkedin\.com\/in\/[a-z0-9\-]+\/?$'),
   ]),
 });

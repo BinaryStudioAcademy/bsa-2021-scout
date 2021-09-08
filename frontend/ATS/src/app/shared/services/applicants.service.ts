@@ -29,8 +29,9 @@ export class ApplicantsService {
 
   public addApplicant(createApplicant: CreateApplicant): Observable<Applicant> {
     const formData = new FormData();
-    formData.append('body', JSON.stringify(createApplicant));
-    if (createApplicant.cv) {
+    const body: any = { ...createApplicant, cvLink: createApplicant.cv };
+    formData.append('body', JSON.stringify(body));
+    if (createApplicant.cv && typeof createApplicant.cv !== 'string') {
       formData.append('cvFile', createApplicant.cv, createApplicant.cv.name);
     }
     return this.httpClient.postRequest<Applicant>('/applicants', formData);
@@ -38,7 +39,8 @@ export class ApplicantsService {
 
   public updateApplicant(updateApplicant: UpdateApplicant): Observable<Applicant> {
     const formData = new FormData();
-    formData.append('body', JSON.stringify(updateApplicant));
+    const body: any = { ...updateApplicant, cvLink: updateApplicant.cv };
+    formData.append('body', JSON.stringify(body));
     if (updateApplicant.cv) {
       formData.append('cvFile', updateApplicant.cv, updateApplicant.cv.name);
     }

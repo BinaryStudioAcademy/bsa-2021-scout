@@ -22,7 +22,7 @@ namespace Infrastructure.Repositories.Abstractions
             await _client.IndexManyAsync<T>(bulk);
         }
 
-        public async Task<Entity> CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity)
         {
             var indexResponse = await _client.IndexDocumentAsync<T>(entity);
             if (!indexResponse.IsValid)
@@ -30,7 +30,7 @@ namespace Infrastructure.Repositories.Abstractions
             return entity;
         }
 
-        public async Task<Entity> UpdateAsync(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             var indexResponse = await _client.UpdateAsync<T>(
                 DocumentPath<T>.Id(entity.Id),

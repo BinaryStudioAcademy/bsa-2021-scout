@@ -50,10 +50,16 @@ export class CreateApplicantFromVariantsComponent implements OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: ApplicantCreationVariants,
   ) {
     this.validationGroup = applicantGroup;
+    console.log(data.cv);
+
+    if (data.cv) {
+      this.createdApplicant.cv = data.cv;
+    }
   }
 
   public createApplicant(): void {
     this.loading = true;
+    console.log(this.createdApplicant);
 
     this.applicantsService
       .addApplicant(this.createdApplicant)
@@ -116,6 +122,7 @@ export class CreateApplicantFromVariantsComponent implements OnDestroy {
 
   public uploadApplicantCv(files: File[]): void {
     this.createdApplicant.cv = files[0];
+    console.log(this.createdApplicant.cv);
   }
 
   public ngOnDestroy(): void {

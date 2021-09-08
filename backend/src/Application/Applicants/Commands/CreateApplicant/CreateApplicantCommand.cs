@@ -34,6 +34,7 @@ namespace Application.Applicants.Commands
     {
         private readonly IWriteRepository<Applicant> _applicantWriteRepository;
         private readonly IApplicantCvFileWriteRepository _applicantCvFileWriteRepository;
+        private readonly IWriteRepository<FileInfo> _fileInfoWriteRepository;
         protected readonly ICurrentUserContext _currentUserContext;
         private readonly IMapper _mapper;
         private readonly ISender _mediator;
@@ -41,6 +42,7 @@ namespace Application.Applicants.Commands
         public CreateApplicantCommandHandler(
             IWriteRepository<Applicant> applicantWriteRepository,
             IApplicantCvFileWriteRepository applicantCvFileWriteRepository,
+            IWriteRepository<FileInfo> fileInfoWriteRepository,
             ICurrentUserContext currentUserContext,
             IMapper mapper,
             ISender mediator
@@ -48,6 +50,7 @@ namespace Application.Applicants.Commands
         {
             _applicantWriteRepository = applicantWriteRepository;
             _applicantCvFileWriteRepository = applicantCvFileWriteRepository;
+            _fileInfoWriteRepository = fileInfoWriteRepository;
             _currentUserContext = currentUserContext;
             _mapper = mapper;
             _mediator = mediator;
@@ -92,7 +95,27 @@ namespace Application.Applicants.Commands
                 return;
             }
 
-            var uploadedCvFileInfo = await _applicantCvFileWriteRepository.UploadAsync(applicant.Id, command.CvFileDto!.Content);
+            FileInfo uploadedCvFileInfo;
+            Console.WriteLine(command.CvFileDto.Link);
+            Console.WriteLine(command.CvFileDto.FileName);
+
+            if (command.CvFileDto.Link == null)
+            {
+                uploadedCvFileInfo = await _applicantCvFileWriteRepository
+                    .UploadAsync(applicant.Id, command.CvFileDto!.Content);
+            }
+            else
+            {
+                string[] linkFragments = command.CvFileDto.Link.Substring(0, 8).Split("/");
+
+                uploadedCvFileInfo = await _fileInfoWriteRepository.CreateAsync(new FileInfo
+                {
+                    Name = command.CvFileDto.FileName,
+                    Path = string.Join("/", linkFragments.Skip(3).Take(linkFragments.Length - 4)),
+                    PublicUrl = command.CvFileDto.Link,
+                });
+            }
+
             applicant.CvFileInfo = uploadedCvFileInfo;
         }
 

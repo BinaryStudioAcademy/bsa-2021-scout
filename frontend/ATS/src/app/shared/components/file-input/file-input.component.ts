@@ -95,6 +95,7 @@ export class FileInputComponent implements OnInit {
     }
 
     this.limitFiles();
+    this.realInput.nativeElement.value = ''; // Reset value
     this.upload.emit(this.chosen);
   }
 
@@ -133,7 +134,7 @@ export class FileInputComponent implements OnInit {
 
   private limitFiles(): void {
     if (this.single) {
-      this.chosen.slice(0, 1);
+      this.chosen = this.chosen.slice(0, 1);
     } else {
       const distinct: File[] = [];
       const detectedNames: string[] = [];
@@ -153,7 +154,7 @@ export class FileInputComponent implements OnInit {
 
   private limitDefault(): void {
     if (this.single) {
-      this.arrayDefault.slice(0, 1);
+      this.arrayDefault = this.arrayDefault.slice(0, 1);
     }
   }
 }

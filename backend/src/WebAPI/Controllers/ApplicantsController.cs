@@ -64,8 +64,16 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> PostApplicantAsync([FromForm] string body, [FromForm] IFormFile cvFile = null)
         {
             var createApplicantDto = JsonConvert.DeserializeObject<CreateApplicantDto>(body);
+            FileDto cvFileDto;
 
-            var cvFileDto = cvFile != null ? new FileDto(cvFile.OpenReadStream(), cvFile.FileName) : null;
+            if (string.IsNullOrEmpty(createApplicantDto.CvLink))
+            {
+                cvFileDto = cvFile != null ? new FileDto(cvFile.OpenReadStream(), cvFile.FileName) : null;
+            }
+            else
+            {
+                cvFileDto = new FileDto(createApplicantDto.CvLink);
+            }
 
             var query = new CreateApplicantCommand(createApplicantDto!, cvFileDto);
 
@@ -76,8 +84,16 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> PutApplicantAsync([FromForm] string body, [FromForm] IFormFile cvFile = null)
         {
             var updateApplicantDto = JsonConvert.DeserializeObject<UpdateApplicantDto>(body);
+            FileDto cvFileDto;
 
-            var cvFileDto = cvFile != null ? new FileDto(cvFile.OpenReadStream(), cvFile.FileName) : null;
+            if (string.IsNullOrEmpty(updateApplicantDto.CvLink))
+            {
+                cvFileDto = cvFile != null ? new FileDto(cvFile.OpenReadStream(), cvFile.FileName) : null;
+            }
+            else
+            {
+                cvFileDto = new FileDto(updateApplicantDto.CvLink);
+            }
 
             var query = new UpdateApplicantCommand(updateApplicantDto!, cvFileDto);
 
