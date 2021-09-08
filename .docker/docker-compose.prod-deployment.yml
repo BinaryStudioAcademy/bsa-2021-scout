@@ -102,15 +102,9 @@ services:
     networks:
       - backend
       - frontend
-    volumes:
-      - ../data/certbot/conf:/etc/letsencrypt
-      - ../data/certbot/www:/var/www/certbot
-
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ../data/certbot/conf:/etc/letsencrypt
-      - ../data/certbot/www:/var/www/certbot
+    # volumes:
+    #   - ../data/certbot/conf:/etc/letsencrypt
+    #   - ../data/certbot/www:/var/www/certbot
 
 volumes:
   ats_database-data: {}
