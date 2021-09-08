@@ -36,6 +36,7 @@ namespace Application.Applicants.Commands.CreateApplicant
     {
         private readonly IWriteRepository<Applicant> _applicantWriteRepository;
         private readonly IApplicantCvFileWriteRepository _applicantCvFileWriteRepository;
+        private readonly IApplicantPhotoFileWriteRepository _applicantPhotoFileWriteRepository;
         private readonly IWriteRepository<FileInfo> _fileInfoWriteRepository;
         protected readonly ICurrentUserContext _currentUserContext;
         private readonly IMapper _mapper;
@@ -44,6 +45,7 @@ namespace Application.Applicants.Commands.CreateApplicant
         public CreateApplicantCommandHandler(
             IWriteRepository<Applicant> applicantWriteRepository,
             IApplicantCvFileWriteRepository applicantCvFileWriteRepository,
+            IApplicantPhotoFileWriteRepository applicantPhotoFileWriteRepository,
             IWriteRepository<FileInfo> fileInfoWriteRepository,
             ICurrentUserContext currentUserContext,
             IMapper mapper,
@@ -52,6 +54,7 @@ namespace Application.Applicants.Commands.CreateApplicant
         {
             _applicantWriteRepository = applicantWriteRepository;
             _applicantCvFileWriteRepository = applicantCvFileWriteRepository;
+            _applicantPhotoFileWriteRepository = applicantPhotoFileWriteRepository;
             _fileInfoWriteRepository = fileInfoWriteRepository;
             _currentUserContext = currentUserContext;
             _mapper = mapper;
@@ -125,7 +128,7 @@ namespace Application.Applicants.Commands.CreateApplicant
 
             if (command.PhotoFileDto.Link == null)
             {
-                uploadedPhotoFileInfo = await _applicantCvFileWriteRepository
+                uploadedPhotoFileInfo = await _applicantPhotoFileWriteRepository
                     .UploadAsync(applicant.Id, command.PhotoFileDto!.Content);
             }
             else

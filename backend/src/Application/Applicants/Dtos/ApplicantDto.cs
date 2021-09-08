@@ -13,6 +13,7 @@ namespace Application.Applicants.Dtos
         public string ExperienceDescription { get; set; }
         public string Skills { get; set; }
         public bool HasCv { get; set; }
+        public bool HasPhoto { get; set; }
         public bool IsSelfApplied { get; set; }
         public DateTime CreationDate { get; set; }
 

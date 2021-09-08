@@ -132,15 +132,17 @@ namespace Infrastructure.Repositories.Read
         {
             SqlConnection connection = _connectionFactory.GetSqlConnection();
 
-            string sql = @$"SELECT a.*, fi.* FROM {_tableName} a
+            string sql = @$"SELECT a.*, fi.*, pfi.* FROM {_tableName} a
                             LEFT JOIN FileInfos fi ON a.CvFileInfoId = fi.Id
+                            LEFT JOIN FileInfos pfi ON a.PhotoFileInfoId = pfi.Id
                             WHERE a.Id = @applicantId";
 
             await connection.OpenAsync();
-            var entities = await connection.QueryAsync<Applicant, FileInfo, Applicant>(sql,
-            (a, fi) =>
+            var entities = await connection.QueryAsync<Applicant, FileInfo, FileInfo, Applicant>(sql,
+            (a, fi, pfi) =>
             {
                 a.CvFileInfo = fi;
+                a.PhotoFileInfo = pfi;
                 return a;
             },
             splitOn: "Id,Id",

@@ -166,6 +166,9 @@
   <p>CV</p>
   <app-file-input [default]="[data.cv]" [accept]="allowedCvFileType" (upload)="uploadApplicantCv($event)">
   </app-file-input>
+  <p>Photo</p>
+  <app-file-input [image]="true" (upload)="uploadApplicantPhoto($event)">
+  </app-file-input>
   <mat-dialog-actions class="publish-action">
     <button [disabled]="validationGroup!.invalid" (click)="createApplicant()" mat-button>
       Save

@@ -16,6 +16,7 @@ export interface Applicant {
   companyId?: string;
   isSelected?: boolean;
   hasCv: boolean;
+  hasPhoto: boolean;
   creationDate: Date;
 
   tags: ElasticEntity;

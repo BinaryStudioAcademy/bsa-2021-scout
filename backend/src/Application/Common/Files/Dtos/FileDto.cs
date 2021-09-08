@@ -29,7 +29,7 @@ namespace Application.Common.Files.Dtos
             return new entities::FileInfo
             {
                 Name = FileName,
-                Path = string.Join("/", linkFragments.Skip(3).Take(linkFragments.Length - 4)),
+                Path = string.Join("/", linkFragments.Skip(3).Take(linkFragments.Length - 5)),
                 PublicUrl = Link,
             };
         }

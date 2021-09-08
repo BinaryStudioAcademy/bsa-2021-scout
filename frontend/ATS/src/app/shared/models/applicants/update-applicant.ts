@@ -12,7 +12,9 @@ export interface UpdateApplicant {
   creationDate: Date;
   skills?: string;
   hasCv: boolean;
-  cv: File | null;
+  hasPhoto: boolean;
+  cv: string | File | null;
+  photo: string | File | null;
 
   tags: ElasticEntity;
 }
