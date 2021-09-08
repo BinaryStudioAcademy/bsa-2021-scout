@@ -46,8 +46,4 @@ export class VacancyDataService {
       this.routePrefix + `/noauth/${vacancyId}`,
     );
   }
-
-  public deleteVacancy(vacancyId: string) {
-    return this.http.deleteFullRequest<void>(`${this.routePrefix}/${vacancyId}`);
-  }
 }

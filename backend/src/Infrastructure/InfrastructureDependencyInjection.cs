@@ -19,7 +19,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Nest;
-using Domain.Interfaces;
 using Infrastructure.Files.Abstraction;
 using Infrastructure.Files.Read;
 using Action = Domain.Entities.Action;
@@ -27,6 +26,7 @@ using Infrastructure.AWS.S3;
 using Infrastructure.AWS.S3.Abstraction;
 using Infrastructure.AWS.S3.Services;
 using Infrastructure.AWS.Connection;
+using Infrastructure.Files.Write;
 using System.Threading.Tasks;
 
 namespace Infrastructure
@@ -154,6 +154,9 @@ namespace Infrastructure
             services.AddScoped<IApplicantCvFileReadRepository, ApplicantCvFileReadRepository>();
             services.AddScoped<IApplicantCvFileWriteRepository, ApplicantCvFileWriteRepository>();
 
+            services.AddScoped<IImageReadRepository, ImageReadRepository>();
+            services.AddScoped<IImageWriteRepository, ImageWriteRepository>();
+
             services.AddScoped<IMailAttachmentFileWriteRepository, MailAttachmentFileWriteRepository>();
 
             return services;
@@ -207,6 +210,7 @@ namespace Infrastructure
             services.AddScoped<IWriteRepository<MailAttachment>, MongoWriteRepository<MailAttachment>>();
 
             services.AddScoped<IWriteRepository<UserFollowedEntity>, WriteRepository<UserFollowedEntity>>();
+            services.AddScoped<IWriteRepository<ArchivedEntity>, WriteRepository<ArchivedEntity>>();
 
             services.AddScoped<IWriteRepository<ToDoTask>, WriteRepository<ToDoTask>>();
             services.AddScoped<IUserToTaskWriteRepository, UserToTaskWriteRepository>();
@@ -233,6 +237,7 @@ namespace Infrastructure
             services.AddScoped<IRTokenReadRepository, RTokenReadRepository>();
 
             services.AddScoped<IHomeDataReadRepository, HomeDataReadRepository>();
+            services.AddScoped<IArchivedEntityReadRepository, ArchivedEntityReadRepository>();
 
             services.AddScoped<IReadRepository<RegisterPermission>, RegisterPermissionReadRepository>();
             services.AddScoped<IVaultReadRepository, VaultReadRepository>();
@@ -270,6 +275,8 @@ namespace Infrastructure
             services.AddScoped<IMailTemplateReadRepository, MailTemplateReadRepository>();
 
             services.AddScoped<IReadRepository<ReviewToStage>, ReviewToStageReadRepository>();
+            services.AddScoped<IReadRepository<CandidateComment>, CandidateCommentReadRepository>();
+            
 
             services.AddScoped<IReadRepository<ToDoTask>, TaskReadRepository>();
             services.AddScoped<ITaskReadRepository, TaskReadRepository>();

@@ -55,6 +55,8 @@ import { PlaceholdersEditComponent } from '../users/components/placeholders/plac
 import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
 import { TableFilterComponent } from './components/table-filter/table-filter.component';
 import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
+import { ConfirmationDialogComponent } 
+  from './components/confirmation-dialog/confirmation-dialog.component';
 import { TimezoneDateAdapter } from './date-adapters/timezone.date-adapter';
 
 @NgModule({
@@ -101,6 +103,7 @@ import { TimezoneDateAdapter } from './date-adapters/timezone.date-adapter';
     MatTooltipModule,
     TagsEditComponent,
     DeleteConfirmComponent,
+    ConfirmationDialogComponent,
     LogoBlockComponent,
     ClipboardModule,
     UserProfileComponent,
@@ -110,6 +113,7 @@ import { TimezoneDateAdapter } from './date-adapters/timezone.date-adapter';
     AvatarModalComponent,
     TableFilterComponent,
     MarkBarComponent,
+    RouterModule,
   ],
   imports: [
     MatButtonModule,
@@ -166,6 +170,7 @@ import { TimezoneDateAdapter } from './date-adapters/timezone.date-adapter';
     AddCandidateModalComponent,
     TagsEditComponent,
     DeleteConfirmComponent,
+    ConfirmationDialogComponent,
     LogoBlockComponent,
     UserProfileComponent,
     UserRoleDirective,

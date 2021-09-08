@@ -17,7 +17,7 @@ namespace Infrastructure.EF.Configuration
                 .WithMany(u => u.ApplyTokens)
                 .HasForeignKey(t => t.VacancyId)
                 .HasConstraintName("apply_token__vacancy_FK")
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
