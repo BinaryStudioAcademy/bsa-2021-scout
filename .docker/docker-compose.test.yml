@@ -45,6 +45,37 @@ services:
     volumes:
       - ats_database-data:/var/opt/mssql
 
+  ats_vault:
+    image: vault:latest
+    container_name: "ats_vault"
+    restart: on-failure
+    command: [ 'vault', 'server', '-dev', '-dev-listen-address=ats_vault:8200' ]
+    depends_on:
+      - ats_database
+    ports: 
+      - 8200:8200
+    env_file:
+      - ../.env/ats_vault_server.env
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - ats_vault
+
+  ats_vault_config:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    entrypoint: ../vault-config/config.sh
+    #build: ../vault-config
+    container_name: ats_vault_config
+    cap_add:
+      - IPC_LOCK
+    restart: on-failure
+    depends_on: 
+      - ats_vault
+    networks:
+      - ats_vault
+    env_file: 
+      - ../.env/ats_vault_client.env
+
   ats_mongodb:
     image: mongo
     container_name: ats_mongodb
