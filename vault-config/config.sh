@@ -1,4 +1,7 @@
-/opt/mssql-tools/bin/sqlcmd -S ats_database -U sa -P MyBadPw123! -d master -i setup.sql
+# Waiting till ats_database container is ready
+/sleep 30
+
+/opt/mssql-tools/bin/sqlcmd -S ats_database -U sa -P ${SA_PASSWORD} -d master -i ./app/vault-config/setup.sql
 
 apt-get update && apt-get install -y software-properties-common curl gnupg2 && \
 	curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && \
@@ -14,7 +17,7 @@ vault write ats-api/database/config/ats-vault-db \
 	 	connection_url='sqlserver://{{username}}:{{password}}@ats_database:1433' \
 	 	allowed_roles="ats-api-role" \
 	 	username="sa" \
-	 	password="MyBadPw123!"
+	 	password=${SA_PASSWORD}
 
 vault write ats-api/database/roles/ats-api-role \
     db_name=ats-vault-db \
