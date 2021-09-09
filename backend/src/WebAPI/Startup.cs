@@ -41,29 +41,28 @@ namespace WebAPI
 
             services.AddSpecificCors();
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "Use bearer token to authorize",
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT"
-                });
-                c.OperationFilter<AddAuthHeaderOperationFilter>();
-            });
-
+            // services.AddSwaggerGen(c =>
+            // {
+            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
+            //     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            //     {
+            //         Description = "Use bearer token to authorize",
+            //         Type = SecuritySchemeType.Http,
+            //         Scheme = "Bearer",
+            //         BearerFormat = "JWT"
+            //     });
+            //     c.OperationFilter<AddAuthHeaderOperationFilter>();
+            // });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseDeveloperExceptionPage();
+            //     app.UseSwagger();
+            //     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
+            // }
 
             // app.UseHttpsRedirection();
 
