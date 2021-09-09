@@ -258,6 +258,7 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
         (resp) => {
           this.mainData.push(resp);
           this.renewFilterDescription();
+          this.dataSource.data = this.mainData;
           this.table.renderRows();
           this.updatePaginator();
           this.notificationService.showSuccessMessage(
@@ -394,8 +395,9 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
           .subscribe((_) => {
             const mainDataIndex = this.mainData.indexOf(pool);
             this.mainData.splice(mainDataIndex, 1);
-            this.renewFilterDescription();
+            this.dataSource.data = this.mainData;
             this.table.renderRows();
+            this.renewFilterDescription();            
             this.updatePaginator();
             this.notificationService.showSuccessMessage(
               `Pool ${pool.name} deleted!`,
