@@ -28,7 +28,6 @@ namespace Application.Interviews.Dtos
         public InterviewDtoValidator()
         {
             RuleFor(_ => _.Title).NotNull().NotEmpty();
-            RuleFor(_ => _.MeetingLink).NotNull().NotEmpty();
             RuleFor(_ => _.Scheduled).NotNull().NotEmpty();
             RuleFor(_ => _.Duration).NotNull().NotEmpty();
         }
