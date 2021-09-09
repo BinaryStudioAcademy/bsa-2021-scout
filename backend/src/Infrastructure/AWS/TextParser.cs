@@ -70,7 +70,7 @@ namespace Infrastructure.AWS
 
             StartDocumentTextDetectionResponse response = await _textract.StartDocumentTextDetectionAsync(request);
 
-            Console.WriteLine($"StartParsingAsync StartDocumentTextDetectionResponse {response.ResponseMetadata.ToString()}");
+            Console.WriteLine($"StartParsingAsync StartDocumentTextDetectionResponse {response.HttpStatusCode.ToString()}");
             return (response.JobId, filePath);
         }
 
