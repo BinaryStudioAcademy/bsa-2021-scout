@@ -37,7 +37,10 @@ grid-column: 1;
   grid-column: 1/2;
   height: 100%;
 }
-
+.notifications{
+  margin-top: 20px;
+  width: 200px;
+}
 .user-role{
   height: 100%;
   font-size: 14px;
@@ -59,6 +62,11 @@ grid-column: 1;
   top: 2px !important;
   width: 8px;
   height: 8px;
+  &.jobs-list-cell {
+    overflow: visible;
+    width: fit-content;
+    max-width: none;
+  }
 }
 
 .mat-toolbar > * {
