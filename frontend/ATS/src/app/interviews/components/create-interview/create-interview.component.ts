@@ -139,7 +139,7 @@ export class CreateInterviewComponent implements OnDestroy {
       'title': new FormControl(this.interview.title,
         [Validators.required,
           Validators.minLength(3),
-          Validators.maxLength(30)]),
+          Validators.maxLength(100)]),
       'interviewers': new FormControl(this.interview.userParticipantDatas,
         [Validators.required]),
       'candidateId': new FormControl(this.interview.candidateId,
