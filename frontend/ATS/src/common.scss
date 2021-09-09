@@ -23,6 +23,7 @@ $primary-font: Nunito;
   text-align: center;
   line-height: 40px;
   width: 140px;
+  padding: 0 25px;
   background-color: $primary-color;
   color: $primary-color-white;
 }
@@ -36,7 +37,6 @@ $primary-font: Nunito;
 .mat-button.mat-accent {
   line-height: 31px;
   width: auto;
-  padding: auto 30px;
   background-color: $primary-color-white;
   border: 2px solid $primary-color;
   color: $primary-color;

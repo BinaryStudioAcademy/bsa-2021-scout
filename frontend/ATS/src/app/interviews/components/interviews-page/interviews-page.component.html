@@ -1,9 +1,19 @@
-<app-header></app-header>
-<div class="tub">Calendar</div>
+<app-header [removeInterviewButton]="true"></app-header>
+
 <div class="controls">
   <div class="today">
     <mat-icon>today</mat-icon>
     <div>{{currentDate | date: "EEEE, MMM, d, y"}}</div>
+  </div>
+  <div class="need-review" (click)="onToogleNeedReview()">
+    <div class="toogle" *ngIf="toogleNeedReview" matTooltip="Hide interview that need review">
+      <mat-icon>visibility</mat-icon>
+      Hide
+    </div>
+    <div class="toogle" *ngIf="!toogleNeedReview" matTooltip="Show interview that need review">
+      <mat-icon>visibility_off</mat-icon>
+      Show
+    </div>
   </div>
   <div class="dates">
     <span class="clickable" mat-button (click)="decreaseMonth()" value="-">&lt;</span>
@@ -12,33 +22,51 @@
     </span>
     <span class="clickable" mat-button  (click)="increaseMonth()" value="+">&gt;</span>
   </div>
+  <button class="create-button" mat-button (click)="OnCreate()">+ New Interview</button>
 </div>
-<div class="scroll">
-  <table class='calendar-table' *ngIf="calendar">
-    <thead>
-      <tr>
-        <th>Sunday</th>
-        <th>Monday</th>
-        <th>Tuesday</th>
-        <th>Wednesday</th>
-        <th>Thursday</th>
-        <th>Friday</th>
-        <th>Saturday</th>
-      </tr>
-    </thead>
-    <tbody *ngIf="dateArrived | async">
-      <tr *ngFor="let row of calendar | chunk: 7; let i = index">
-        <td  class="calendar-day" [ngClass]="{'blue': isWeekend(c.date)}" *ngFor="let c of row; let j = index">
-          <div  class="calendar-day-header" [ngClass]="{'blue-date': c.isToday}">
-            <div class="horizontaly">
-              <div *ngIf="c.interviews.length === 0"></div>
-              <app-interview-card (click)="debug(c.interviews[0].scheduled , c.interviews[0].duration)" [interview]="c.interviews[0]" *ngIf="c.interviews.length > 0"></app-interview-card>
-              <div [ngClass]="{'grey':!isSameMonth(c.date)}">{{c.date.getDate()}}</div>
+<div class="space-out">
+  <div class="scroll">
+    <table class='calendar-table' *ngIf="calendar">
+      <thead>
+        <tr>
+          <th>Sunday</th>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="dateArrived | async">
+        <tr *ngFor="let row of calendar | chunk: 7; let i = index">
+          <td class="calendar-day" [ngClass]="{'blue': isWeekend(c.date), 'blue-date': c.isToday}" *ngFor="let c of row; let j = index">
+            <div  class="calendar-day-header">
+              <div class="horizontaly">
+                <div *ngIf="c.interviews.length === 0"></div>
+                <div *ngIf="c.interviews.length > 0">
+                  <app-interview-card (click)="OnEdit(c.interviews[0])" [interview]="c.interviews[0]"></app-interview-card>
+                  <div *ngIf="!c.isCollapsed">
+                    <app-interview-card (click)="OnEdit(interview)" *ngFor="let interview of c.interviews.slice(1)" [interview]="interview" ></app-interview-card>
+                  </div>
+                </div>
+                <div class="vertical"> 
+                  <div [ngClass]="{'grey':!isSameMonth(c.date)}">{{c.date.getDate()}}</div>
+                  <div class="btn" mat-icon-button *ngIf="!c.isCollapsed">
+                    <mat-icon inline=true (click)="collapse(c)" class="icon">
+                      keyboard_arrow_up
+                    </mat-icon>
+                  </div>
+                  <div *ngIf="c.isCollapsed"></div> <!--This is an empty div for grid to space out numbers -->
+                </div>
+               
+              </div>
+              <div (click)="collapse(c)" class="extra" [ngClass]="{'needReviewColors': !c.interviews[0].isReviewed,  'purpleColors':c.interviews[0].interviewType !== 2 && c.interviews[0].interviewType !== 3, 'blueColors':c.interviews[0].interviewType === 2 || c.interviews[0].interviewType === 3}" *ngIf="c.interviews.length>=2 && c.isCollapsed">{{c.interviews.length}} Events</div>
+
             </div>
-            <div class="extra" *ngIf="c.interviews.length>=2">{{c.interviews.length}} Events</div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -40,8 +40,9 @@ $tag-font-color: rgba(
 }
 
 .projects-page {
-  /* Header */
+  position: relative;
 
+  /* Header */
   .icons .mat-select {
     font-size: 20px;
     height: 24px;
@@ -146,7 +147,8 @@ $tag-font-color: rgba(
 
   th:last-child,
   td:last-child {
-    padding-right: 15px;
+    width: 5%;
+    padding-right: 20px;
   }
 
   tr {
@@ -263,7 +265,7 @@ $tag-font-color: rgba(
       background: white;
     }
     .mat-button.mat-button {
-      width: 170px;
+      width: 190px;
     }
     /* Table */
     .applyPrimaryColor {

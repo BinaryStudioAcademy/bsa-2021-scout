@@ -10,10 +10,9 @@ import { ProjectService } from 'src/app/projects/services/projects.service';
 import { ProjectsEditComponent } from '../projects-edit/projects-edit.component';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { Tag } from 'src/app/shared/models/tags/tag';
-// eslint-disable-next-line
-import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm/delete-confirm.component';
-import { Subject, Subscription } from 'rxjs';
-import { mergeMap, takeUntil } from 'rxjs/operators';
+
+import { EMPTY, Subject, Subscription } from 'rxjs';
+import { finalize, mergeMap, takeUntil } from 'rxjs/operators';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 import {
@@ -23,7 +22,12 @@ import {
   TableFilterComponent,
 } from 'src/app/shared/components/table-filter/table-filter.component';
 import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
+
+import { ArchivationService } from 'src/app/archive/services/archivation.service';
+import { ConfirmationDialogComponent } 
+  from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-projects-list',
@@ -53,7 +57,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild('filter') public filter!: TableFilterComponent;
 
-  public loading: boolean = false;
+  public loading: boolean = true;
   public filterDescription: FilterDescription = [];
 
   public pageDescription: PageDescription = [
@@ -71,6 +75,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     private dialog: MatDialog,
     private notificationService: NotificationService,
     private followService: FollowedService,
+    private archivationService: ArchivationService,
     private readonly route: ActivatedRoute,
   ) {
     this.followService
@@ -81,6 +86,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
           data.forEach((item) => this.followedSet.add(item.entityId));
           return this.projectService.getProjects();
         }),
+        finalize(() => (this.loading = false)),
       )
       .subscribe((resp) => {
         this.projects = resp.body!;
@@ -104,9 +110,13 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   }
 
   public getProjects() {
+    this.loading = true;
     this.projectService
       .getProjects()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        finalize(() => (this.loading = false)),
+      )
       .subscribe((resp) => {
         this.projects = resp.body!;
         this.projects.forEach((d) => d.isFollowed = this.followedSet.has(d.id));
@@ -257,7 +267,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   }
 
   public OnCreate(): void {
-    this.dialog.open(ProjectsAddComponent);
+    this.dialog.open(ProjectsAddComponent, {width: '600px'});
 
     this.dialog.afterAllClosed.subscribe((_) => this.getProjects());
   }
@@ -270,6 +280,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     }
 
     this.dialog.open(ProjectsEditComponent, {
+      width: '600px',
       data: {
         project: projectToEdit,
       },
@@ -278,28 +289,48 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
     this.dialog.afterAllClosed.subscribe((_) => this.getProjects());
   }
 
-  public showDeleteConfirmDialog(projectToDelete: ProjectInfo): void {
-    const dialogRef = this.dialog.open(DeleteConfirmComponent, {
+  public showArchiveConfirmDialog(projectToArchive: ProjectInfo): void {
+    this.dialog.open(ConfirmationDialogComponent, {
       width: '400px',
       height: 'min-content',
       autoFocus: false,
       data: {
-        entityName: 'Project',
+        action: 'Archive',
+        entityName: 'project',
+        additionalMessage: 'All vacancies in this project will also be automatically archived.',
       },
-    });
+    })
+      .afterClosed()
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        mergeMap(response => {
+          if (response) {
+            return this.archivationService.archiveProject(projectToArchive.id);
+          }
+          return EMPTY;
+        }),
+      )
+      .subscribe(
+        (_) => {
+          let position = this.projects.findIndex(project => project.id === projectToArchive.id);
+          this.projects.splice(position, 1);
+          
+          position = this.filteredData.findIndex(vacancy => vacancy.id === projectToArchive.id);
+          this.filteredData.splice(position, 1);
 
-    dialogRef.afterClosed().subscribe((response: boolean) => {
-      if (response) {
-        this.projectService
-          .deleteProject(projectToDelete)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe((_) => {
-            this.notificationService.showSuccessMessage(
-              `Project ${projectToDelete.name} deleted!`,
-            );
-            this.getProjects();
-          });
-      }
-    });
+          this.dataSource.data = this.filteredData;
+          this.renewFilterDescription();
+          this.directive.applyFilter$.emit();
+
+          this.notificationService.showSuccessMessage(
+            `Project ${projectToArchive.name} arhived!`,
+          );
+        },
+        () => {
+          this.notificationService.showErrorMessage(
+            'Project arhivation is failed!',
+          );
+        },
+      );
   }
 }

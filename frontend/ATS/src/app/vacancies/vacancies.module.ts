@@ -33,6 +33,7 @@ import { RateCandidateModalComponent } from './components/rate-candidate-modal/r
 import { EditVacancyComponent } from './components/edit-vacancy/edit-vacancy.component';
 import { CreateStageComponent } from './components/stages/create-stage/create-stage.component';
 import { StageComponent } from './components/stages/stage/stage.component';
+import { SelectTemplateComponent } from './components/select-template/select-template.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { StageComponent } from './components/stages/stage/stage.component';
     EditVacancyComponent,
     CreateStageComponent,
     StageComponent,
+    SelectTemplateComponent,
   ],
   imports: [
     MatDialogModule,

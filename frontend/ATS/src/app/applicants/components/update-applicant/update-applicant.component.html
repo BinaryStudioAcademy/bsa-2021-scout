@@ -40,12 +40,16 @@
         </div>
     </ng-template>
 
-    <p>Email</p>
+    <p class="required-field">Email</p>
     <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors? 'invalid-input' : ''">
         <input required formControlName="email" type="email" matInput placeholder="Enter email"
             [(ngModel)]="updatedApplicant.email">
     </mat-form-field>
+    <div class="validation-error"
+        *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.required; else emailPatternError">
+        It&apos;s required field
+    </div>
     <ng-template #emailPatternError>
         <div class="validation-error"
             *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.pattern">
@@ -56,7 +60,7 @@
     <p>Experience years</p>
     <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors ? 'invalid-input' : ''">
-        <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60"
+        <input formControlName="experience" type="number" matInput step=".1" min="0" max="60"
             [(ngModel)]="updatedApplicant.experience">
     </mat-form-field>
     <div class="validation-error"
@@ -107,7 +111,7 @@
 
     <mat-dialog-actions class="edit-action">
         <button [disabled]="validationGroup!.invalid" (click)="updateApplicant()" mat-button>
-            Publish
+            Save changes
         </button>
     </mat-dialog-actions>
 

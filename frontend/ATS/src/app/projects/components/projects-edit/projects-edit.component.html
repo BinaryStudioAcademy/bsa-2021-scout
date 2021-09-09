@@ -21,13 +21,10 @@
                 Name must be not greater than 15 characters long.
             </div>
 
-            <h5 class="required-field">Logo</h5>
+            <h5>Logo</h5>
             <mat-form-field floatLabel="never" [ngClass]="this.projectCreateForm.controls['logo'].dirty && this.projectCreateForm.controls['logo'].errors? 'invalid-input': ''">
                 <input matInput type="text" formControlName="logo" placeholder="Enter logo link">
             </mat-form-field>
-            <div class="validation-error" *ngIf="this.projectCreateForm.controls['logo'].dirty && this.projectCreateForm.controls['logo'].errors?.required">
-                Is required.
-            </div>
 
             <h5 class="required-field">Description project</h5>
             <mat-form-field class="wide example-full-width" appearance="fill" [ngClass]="this.projectCreateForm.controls['description'].dirty && this.projectCreateForm.controls['description'].errors? 'invalid-input': ''">
@@ -65,7 +62,7 @@
         <p>Tags</p>
         <app-tags-edit [tags]="project.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
 
-            <button mat-button mat-dialog-close type="submit" [disabled]="!projectCreateForm.valid || !this.projectCreateForm.dirty">Submit</button>
+            <button mat-button mat-dialog-close type="submit" [disabled]="!projectCreateForm.valid || !this.projectCreateForm.dirty">Save changes</button>
         </form>
     </div>
 </div>

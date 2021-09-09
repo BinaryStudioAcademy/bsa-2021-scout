@@ -13,6 +13,47 @@
   font-size: 27px;
 }
 
+.small-image{
+  object-fit: cover;
+width: 45px;
+height: 45px;
+border-radius: 50%;
+grid-column: 1;
+  grid-row: 1/3;
+}
+
+.grid-user-info{
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 50% 50%;
+  align-items: center;
+  height: 65px;
+}
+
+.user-name{
+  font-size: 17px;
+  font-weight: 600;
+  grid-row: 1/2;
+  grid-column: 1/2;
+  height: 100%;
+}
+
+.user-role{
+  height: 100%;
+  font-size: 14px;
+}
+
+.user-role > *{
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.todo-action{
+  font-size: 19px;
+  margin:0px !important;
+}
+
 :host ::ng-deep .mat-badge-content {
   right: 2px !important;
   top: 2px !important;
@@ -48,4 +89,5 @@ img {
   width: 45px;
   height: 45px;
   border-radius: 50%;
+  cursor: pointer;
 }

@@ -12,6 +12,7 @@ using Infrastructure.Repositories.Abstractions;
 using System;
 using Application.Common.Exceptions.Applicants;
 using Application.Interfaces;
+using Domain.Enums;
 
 namespace Infrastructure.Repositories.Read
 {
@@ -53,7 +54,7 @@ namespace Infrastructure.Repositories.Read
             string sql = @$"SELECT a.*, fi.* FROM {_tableName} a
                            LEFT JOIN FileInfos fi ON a.CvFileInfoId = fi.Id
                            WHERE a.CompanyId = @companyId
-                           order by a.firstName, a.lastName";
+                           ORDER BY a.CreationDate DESC;";
 
             await connection.OpenAsync();
             var entities = await connection.QueryAsync<Applicant, FileInfo, Applicant>(sql,
@@ -80,7 +81,8 @@ namespace Infrastructure.Repositories.Read
                          "JOIN Projects ON Vacancies.ProjectId = Projects.Id " +
                          "JOIN CandidateToStages ON CandidateToStages.StageId = Stages.Id " +
                          "JOIN VacancyCandidates ON CandidateToStages.CandidateId = VacancyCandidates.Id " +
-                         $"WHERE VacancyCandidates.ApplicantId = @applicantId";
+                         "WHERE VacancyCandidates.ApplicantId = @applicantId " +
+                         "AND NOT EXISTS (SELECT * FROM ArchivedEntities AS AV WHERE AV.EntityType = @entityVacancyType AND AV.EntityId = Vacancies.Id);";
 
             await connection.OpenAsync();
 
@@ -95,7 +97,7 @@ namespace Infrastructure.Repositories.Read
                             Project = p.Name,
                         };
                     },
-                    new { applicantId = @applicantId },
+                    new { applicantId = @applicantId, entityVacancyType = EntityType.Vacancy },
                     splitOn: "Id,Id,StageId,Id"
                 );
 

@@ -12,13 +12,13 @@ namespace Infrastructure.EF.Configuration
                 .WithMany(s => s.ReviewToStages)
                 .HasForeignKey(rts => rts.StageId)
                 .HasConstraintName("review_to_stage_stage_FK")
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(rts => rts.Review)
                 .WithMany(r => r.ReviewToStages)
                 .HasForeignKey(rts => rts.ReviewId)
                 .HasConstraintName("review_to_stage_review_FK")
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

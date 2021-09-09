@@ -16,5 +16,6 @@ export enum AppRoute {
   ResetPassword = 'reset-password',
   ResendEmail = 'resend-email',
   ApplicantsCsv = 'applicants/csv',
-  ApplicantsCsvFilesList = 'applicants/csvfiles'
+  ApplicantsCsvFilesList = 'applicants/csvfiles',
+  Archive = 'archive',
 }

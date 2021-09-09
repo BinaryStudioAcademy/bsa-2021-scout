@@ -31,12 +31,12 @@ namespace WebAPI.Controllers
             return StatusCode(201, await Mediator.Send(command));
         }
 
-        // [HttpPut]
-        // public async Task<IActionResult> UpdateInterview(InterviewDto interview)
-        // {
-        //     var command = new UpdateInterviewCommand(interview);
-        //     return StatusCode(201, await Mediator.Send(command));
-        // }
+        [HttpPut]
+        public async Task<IActionResult> UpdateInterview(UpdateInterviewDto interview)
+        {
+            var command = new UpdateInterviewCommand(interview);
+            return StatusCode(201, await Mediator.Send(command));
+        }
 
         // [HttpDelete("{id}")]
         // public async Task<IActionResult> DeleteInterview(string id)

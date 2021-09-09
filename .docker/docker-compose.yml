@@ -1,21 +1,5 @@
 version: "3.8"
 services:
-  ats_api:
-    build:
-      context: ../backend/src/
-      dockerfile: Dockerfile
-    container_name: "ats_api"
-    restart: on-failure
-    depends_on:
-      - ats_elastic_server
-      - ats_database
-      - ats_mongodb
-    ports:
-      - "5050:80"
-    networks:
-      - backend
-    env_file:
-      - ../.env/ats_api.env
 
   ats_elastic_server:
     image: "docker.elastic.co/elasticsearch/elasticsearch:7.13.4"
@@ -34,18 +18,6 @@ services:
       - 9200:9200
     networks:
       - backend
-
-  ats_database:
-    image: mcr.microsoft.com/mssql/server:2017-latest
-    container_name: "ats_database"
-    ports:
-      - 1433:1433
-    networks:
-      - backend
-    env_file:
-      - ../.env/ats_database.env
-    volumes:
-      - ats_database-data:/var/opt/mssql
 
   ats_mongodb:
     image: mongo
@@ -72,6 +44,66 @@ services:
       - backend
       - frontend
 
+  ats_database:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: ats_database
+    ports:
+      - 1433:1433
+    networks:
+      - backend
+      - ats_vault
+    env_file:
+      - ../.env/ats_database.env
+    volumes:
+      - ats_database-data:/var/opt/mssql
+      
+  ats_vault:
+    image: vault:latest
+    container_name: "ats_vault"
+    restart: on-failure
+    command: [ 'vault', 'server', '-dev', '-dev-listen-address=ats_vault:8200' ]
+    depends_on:
+      - ats_database
+    ports: 
+      - 8200:8200
+    env_file: 
+      - ../.env/ats_vault_server.env
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - backend
+
+  ats_vault_config:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    entrypoint: ["sh", "app/vault-config/config.sh"]
+    container_name: ats_vault_config
+    cap_add:
+      - IPC_LOCK
+    restart: on-failure
+    depends_on: 
+      - ats_vault
+    networks:
+      - backend
+    env_file: 
+      - ../.env/ats_vault_client.env
+      - ../.env/ats_database.env
+    volumes:
+      - ..:/app/
+
+  ats_api:
+    container_name: 'ats_api'
+    build: ../backend/src
+    restart: on-failure
+    ports:
+      - "5050:80"
+    networks:
+      - backend
+      - ats_vault
+    env_file:
+      - ../.env/ats_api.env
+      - ../.env/ats_vault_client.env
+
+
 volumes:
   ats_database-data: {}
   ats_mongodb-data: {}
@@ -82,4 +114,6 @@ networks:
   backend:
     driver: bridge
   frontend:
+    driver: bridge
+  ats_vault:
     driver: bridge

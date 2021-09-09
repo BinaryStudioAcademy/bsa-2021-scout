@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories.Abstractions
 
         public async Task<Entity> CreateAsync(T entity)
         {
-            if (entity.Id == null && entity.Id == "")
+            if (entity.Id == null || entity.Id == "")
             {
                 entity.Id = ObjectId.GenerateNewId().ToString();
             }

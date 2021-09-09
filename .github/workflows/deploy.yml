@@ -92,6 +92,16 @@ jobs:
         source: ".docker/docker-compose.${{ matrix.stages.stage }}.yml"
         target: "app"
 
+    - name: Copy vault-config/* to deployment server
+      if: ${{ matrix.stages.shouldRelease }}
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets[matrix.stages.DEPLOYMENT_HOST] }}
+        username: ${{ secrets[matrix.stages.DEPLOYMENT_USERNAME] }}
+        password: ${{ secrets[matrix.stages.DEPLOYMENT_PASSWORD] }}
+        source: "vault-config"
+        target: "app"
+
     - name: Run docker-compose.prod.yml to deployment server
       if: ${{ matrix.stages.shouldRelease }}
       uses: appleboy/ssh-action@master

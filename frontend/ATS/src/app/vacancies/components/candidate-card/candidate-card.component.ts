@@ -10,6 +10,7 @@ import { ShortVacancyCandidateWithApplicant } from 'src/app/shared/models/vacanc
 export class CandidateCardComponent {
   @Input() public isDraggable: boolean = false;
   @Input() public isClickable: boolean = false;
+  @Input() public clickableText: string = 'View profile';
   @Input() public candidate!: ShortVacancyCandidateWithApplicant;
   @Output() public clickAction: EventEmitter<void> = new EventEmitter<void>();
 

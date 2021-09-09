@@ -38,7 +38,8 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostTaskAsync([FromBody] CreateTaskDto createDto)
         {
-                        
+            createDto.IsReviewed = true;
+
             var query = new CreateTaskCommand(createDto);
 
             return Ok(await Mediator.Send(query));
@@ -47,6 +48,8 @@ namespace WebAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> PutTasktAsync([FromBody] UpdateTaskDto updateDto)
         {
+            updateDto.IsReviewed = true;
+
             var query = new UpdateTaskCommand(updateDto);
                         
             return Ok(await Mediator.Send(query));

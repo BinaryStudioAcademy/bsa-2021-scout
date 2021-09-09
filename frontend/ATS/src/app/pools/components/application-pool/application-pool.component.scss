@@ -27,8 +27,8 @@
     -webkit-box-orient: vertical;
 }
 
-.create-button{
-    width: 170px;
+.pool-page .create-button{
+    width: 190px;
 }
 
 button.tub {
@@ -147,7 +147,6 @@ button.tub:focus {
 
 
 :host ::ng-deep {
-//  .mat-input-element,
     .pool-page .mat-form-field-wrapper.mat-form-field-wrapper,
     .mat-form-field.mat-focused .mat-form-field-label
     {
@@ -167,7 +166,7 @@ button.tub:focus {
         align-items: center;
     }
 
-     .pool-page .mat-form-field-label-wrapper {
+    .pool-page .mat-form-field-label-wrapper {
         position: absolute;
         left: 0;
         box-sizing: content-box;
@@ -175,9 +174,18 @@ button.tub:focus {
         height: 100%;
         overflow: hidden;
         pointer-events: none;
-     }
+    }
 
-     .pool-page .mat-form-field-label:focus {
+    .pool-page .mat-cell {
+        width: 10%;
+    }
+
+    .pool-page .mat-cell:last-of-type {
+        padding-left: 100px;
+        padding-right: 15px;
+    }
+
+    .pool-page .mat-form-field-label:focus {
         left: 0px;
     }
 
@@ -209,8 +217,6 @@ button.tub:focus {
         }
     }
 
-    
-    
     .mat-select-panel-wrap .pool-options .mat-option {
         height: 40px;
         .mat-icon{
@@ -219,15 +225,10 @@ button.tub:focus {
         }
     }
 
-    
-    
     .pool-options .mat-option-text{
         font-size: 15px;
         line-height: 20px;        
     }
-
-    
-
 
     .icons > .mat-icon,
     .header .mat-icon {
@@ -239,8 +240,6 @@ button.tub:focus {
         line-height: 25px;
         font-size: 16px;
     }
-
-   
 
     .actions {
 

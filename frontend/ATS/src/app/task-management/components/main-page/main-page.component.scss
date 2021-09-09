@@ -16,7 +16,9 @@
    
 
 .header {
-    
+    padding-left: 10px;
+    padding-top: 5px;
+
     h2 {
         margin-bottom: 0px;
     }
@@ -28,10 +30,8 @@
 
         
         .mat-button {
-            color: $primary-color;
-            background-color: $primary-color-white;
-            border: 2px solid $primary-color;
-            width: 177px;
+            height: 40px;
+            width: 150px;
         }
         
         .actions {
@@ -86,15 +86,19 @@
                 font-size: 14px;
                 text-align: center;      
         
+                &:last-of-type {
+                    width: 120px;
+                }
+
                 ::ng-deep .mat-list-text {
                     padding-right: 0;
                 }
             }
-        
+            
             .mat-selection-list {
                 display: flex;
                 flex-direction: row;
-                width: 200px;
+                width: 400px;
             }
         
             ::ng-deep .mat-option {
@@ -124,12 +128,12 @@
 
 .content {
     background-color: #fff;
-    margin: 35px 0;
+    margin: 15px 0;
     border-radius: 10px;
     padding: 35px;
-    height: calc(100vh - 340px);
-    overflow-y: auto;
-    
+    height: calc(100vh - 320px);
+    overflow: scroll;
+
         .grid {            
             display: grid;
             grid-template-columns: repeat(auto-fill, 473px);

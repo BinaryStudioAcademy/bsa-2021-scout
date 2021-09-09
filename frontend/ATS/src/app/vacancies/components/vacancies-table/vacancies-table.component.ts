@@ -20,8 +20,8 @@ import { VacancyCreate } from 'src/app/shared/models/vacancy/vacancy-create';
 import { EditVacancyComponent } from '../edit-vacancy/edit-vacancy.component';
 // eslint-disable-next-line
 import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm/delete-confirm.component';
-import { Subject } from 'rxjs';
-import { mergeMap, takeUntil } from 'rxjs/operators';
+import { EMPTY, Subject } from 'rxjs';
+import { finalize, mergeMap, takeUntil } from 'rxjs/operators';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
@@ -35,6 +35,9 @@ import {
 
 import { IOption } from 'src/app/shared/components/multiselect/multiselect.component';
 import { environment } from '../../../../environments/environment';
+import { ArchivationService } from 'src/app/archive/services/archivation.service';
+import { ConfirmationDialogComponent }
+  from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 const STATUES: VacancyStatus[] = [
   VacancyStatus.Active,
@@ -99,6 +102,7 @@ implements AfterViewInit, OnInit, OnDestroy
     private service: VacancyDataService,
     private notificationService: NotificationService,
     private followService: FollowedService,
+    private archivationService: ArchivationService,
   ) {}
 
   public ngOnInit(): void {
@@ -110,6 +114,7 @@ implements AfterViewInit, OnInit, OnDestroy
           data.forEach((item) => this.followedSet.add(item.entityId));
           return this.service.getList();
         }),
+        finalize(() => (this.loading = false)),
       )
       .subscribe(
         (data) => {
@@ -154,9 +159,13 @@ implements AfterViewInit, OnInit, OnDestroy
   }
 
   public getVacancies(): void {
+    this.loading = true;
     this.service
       .getList()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        finalize(() => (this.loading = false)),
+      )
       .subscribe(
         (data) => {
           data.map((d, i) => ({
@@ -222,7 +231,8 @@ implements AfterViewInit, OnInit, OnDestroy
         name: 'Project',
         type: FilterType.Multiple,
         multipleSettings: {
-          options: projects.sort((a, b) => a.label < b.label ? -1 : 1),
+          options: projects,
+          sort: true,
           valueSelector: (vac: VacancyData) => vac.project.id,
         },
       },
@@ -237,6 +247,7 @@ implements AfterViewInit, OnInit, OnDestroy
         type: FilterType.Multiple,
         multipleSettings: {
           options: hrs,
+          sort: true,
           valueSelector: (vac: VacancyData) => vac.responsibleHr.id!,
         },
       },
@@ -266,7 +277,7 @@ implements AfterViewInit, OnInit, OnDestroy
 
   public openDialog(): void {
     const dialogRef = this.dialog.open(EditVacancyComponent, {
-      width: '914px',
+      width: '800px',
       height: 'auto',
       data: {},
     });
@@ -302,6 +313,7 @@ implements AfterViewInit, OnInit, OnDestroy
 
   public onEdit(vacancyEdit: VacancyCreate): void {
     this.dialog.open(EditVacancyComponent, {
+      width: '800px',
       data: {
         vacancyToEdit: vacancyEdit,
       },
@@ -330,44 +342,58 @@ implements AfterViewInit, OnInit, OnDestroy
     }
   }
 
-  public showDeleteConfirmDialog(vacancyToDelete: VacancyData): void {
-    const dialogRef = this.dialog.open(DeleteConfirmComponent, {
-      width: '400px',
-      height: 'min-content',
-      autoFocus: false,
-      data: {
-        entityName: 'Vacancy',
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((response: boolean) => {
-      if (response) {
-        this.loading = true;
-        this.service
-          .deleteVacancy(vacancyToDelete.id)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe(
-            (_) => {
-              this.loading = false;
-              this.notificationService.showSuccessMessage(
-                `Vacancy ${vacancyToDelete.title} deleted!`,
-              );
-              this.getVacancies();
-            },
-            () => {
-              this.loading = false;
-            },
-          );
-      }
-    });
-  }
-
   generateLink(id: string){
     return environment.clientUrl + `/vacancy/apply/${id}`;
   }
 
   successMessage(message: string){
     this.notificationService.showSuccessMessage(message);
+  }
+
+  public showArchiveConfirmDialog(vacancyToArchive: VacancyData): void {
+    this.dialog.open(ConfirmationDialogComponent, {
+      width: '400px',
+      height: 'min-content',
+      autoFocus: false,
+      data: {
+        action: 'Archive',
+        entityName: 'vacancy',
+      },
+    })
+      .afterClosed()
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        mergeMap(response => {
+          if (response) {
+            this.loading = true;
+            return this.archivationService.archiveVacancy(vacancyToArchive.id);
+          }
+          return EMPTY;
+        }),
+        finalize(() => this.loading = false),
+      )
+      .subscribe(
+        (_) => {
+          let position = this.mainData.findIndex(vacancy => vacancy.id === vacancyToArchive.id);
+          this.mainData.splice(position, 1);
+
+          position = this.filteredData.findIndex(vacancy => vacancy.id === vacancyToArchive.id);
+          this.filteredData.splice(position, 1);
+
+          this.dataSource.data = this.filteredData;    
+          this.renewFilterDescription();
+          this.directive.applyFilter$.emit();
+
+          this.notificationService.showSuccessMessage(
+            `Vacancy ${vacancyToArchive.title} arhived!`,
+          );
+        },
+        () => {
+          this.notificationService.showErrorMessage(
+            'Vacancy arhivation is failed!',
+          );
+        },
+      );
   }
 
   applyFilter(event: Event) {

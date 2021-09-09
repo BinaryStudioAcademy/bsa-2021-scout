@@ -202,6 +202,10 @@ namespace WebAPI.Extensions
         {
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+            context.ArchivedEntities.RemoveRange(context.ArchivedEntities);
+            await context.SaveChangesAsync();
+
             foreach (var project in ProjectSeeds.GetProjects())
             {
                 if (await context.Projects.AnyAsync(c => c.Id == project.Id))
@@ -269,6 +273,7 @@ namespace WebAPI.Extensions
             context.UserToRoles.RemoveRange(context.UserToRoles);
             var usersToRoles = new List<UserToRole>
             {
+                new UserToRole { UserId = "ba5073cc-4322-483d-b69a-f43b388091e9", RoleId = "1"},
                 new UserToRole { UserId = "1", RoleId = "1"},
                 new UserToRole { UserId = "1", RoleId = "2"},
             };

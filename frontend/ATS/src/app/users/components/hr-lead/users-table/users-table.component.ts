@@ -27,6 +27,7 @@ import {
   PageDescription,
   TableFilterComponent,
 } from 'src/app/shared/components/table-filter/table-filter.component';
+import { EditHrFormComponent } from '../../edit-hr-form/edit-hr-form.component';
 import { PendingRegistrationsComponent }
   from '../pending-registrations/pending-registrations.component';
 
@@ -116,15 +117,19 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
           resp.forEach((user) => user.isFollowed = this.followedSet.has(user.id ?? ''));
           this.users = resp;
           this.dataSource.data = this.users;
+          this.dataSource.data.forEach(x=>x.avatarUrl = x.avatarUrl ?
+            x.avatarUrl+'?'+performance.now():'');
           this.directive.applyFilter$.emit();
         },
         () => {
           this.notificationService.showErrorMessage('Something went wrong');
         },
       );
+      
   }
 
   public getUsers() {
+    this.loading = true;
     this.userDataService
       .getUsersForHrLead()
       .pipe(
@@ -136,6 +141,9 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
           resp.forEach((user) => user.isFollowed = this.followedSet.has(user.id ?? ''));
           this.users = resp;
           this.dataSource.data = this.users;
+          this.dataSource.data.forEach(x=>x.avatarUrl = x.avatarUrl ?
+            x.avatarUrl+'?'+performance.now():'');
+          
           this.directive.applyFilter$.emit();
         },
         () => {
@@ -172,6 +180,7 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
       }
     };
   }
+
 
   public ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -226,6 +235,15 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
       this.dataSource.data = this.dataSource.data.filter(user => user.isFollowed);
     }
     this.directive.applyFilter$.emit();
+  }
+
+  openEditDialog(data:UserTableData){
+    const dialogRef = this.dialog.open(EditHrFormComponent, {
+      width: '70%',
+      height: 'auto',
+      data: {userToEdit:data, isUserLeadProfile:true},
+    }).afterClosed()
+      .subscribe(() => this.getUsers());
   }
 }
 

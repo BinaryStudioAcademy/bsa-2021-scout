@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter,Inject } from '@angular/core';
+import { Component, Output, EventEmitter,Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { ApplicantShort } from 'src/app/shared/models/task-management/applicant-short';
@@ -15,7 +15,7 @@ import moment from 'moment';
   templateUrl: './all-in-one.component.html',
   styleUrls: ['./all-in-one.component.scss'],
 })
-export class AllInOneComponent {
+export class AllInOneComponent implements OnInit {
   @Output() submitClicked = new EventEmitter<any>();
   public task: Task = {} as Task;
   public selectedUsers: UserInfo[] = [];
@@ -104,7 +104,7 @@ export class AllInOneComponent {
     data.teamMembers = this.task.teamMembers;
     data.id = this.task.id ? this.task.id:'';
     this.submitClicked.emit(data);
-    this.dialogRef.close();
+    this.dialogRef.close(data);
   }
 
   closeDialog() {

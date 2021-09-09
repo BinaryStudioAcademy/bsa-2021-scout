@@ -1,0 +1,230 @@
+$primary-color-icons: #4f00b5;
+$primary-color: #ee2a64;
+$primary-color-white: #f6f7f9;
+$primary-color-blue: #291965;
+$primary-font: Nunito;
+
+.vacancies-page {
+  position: relative;
+
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  button.tub {
+    background: transparent;
+    border: none;
+    margin: 15px;
+    font-family: $primary-font;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    text-underline-offset: 5px;
+  }
+
+  button.tub:hover {
+    cursor: pointer;
+  }
+
+  button.tub:focus {
+    color: $primary-color-blue;
+    text-decoration: underline;
+  }
+
+  .mat-button {
+    min-width: fit-content;
+  }
+
+  .vacancies-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 10px 20px 10px 20px;
+    background: $primary-color-white;
+
+    input:-webkit-autofill {
+      box-shadow: 0 0 0px 1000px white inset;
+    }
+  }
+
+  /* Table */
+
+  .vacancy-list {
+    overflow: scroll;
+    height: calc(100vh - 244px);
+  }
+
+  table {
+    width: 100%;
+  }
+
+  th.mat-header-cell,
+  td.mat-cell {
+    width: fit-content;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  th:first-child,
+  td:first-child {
+    width: 5%;
+    padding-left: 30px;
+  }
+
+  tr {
+    height: 55px;
+  }
+
+  tr:nth-child(2n) {
+    background-color: $primary-color-white;
+  }
+
+  .icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    column-gap: 10px;
+    margin-right: 25px;
+  }
+
+  .icons .mat-icon:hover {
+    cursor: pointer;
+    color: $primary-color;
+  }
+
+  .mat-paginator-sticky {
+    bottom: 0px;
+    position: sticky;
+    z-index: 10;
+  }
+
+  .project-name {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+
+    .mat-icon {
+      margin-right: 10px;
+      color: gray;
+    }
+  }
+
+  /* Project Logo */
+
+  .name-logo span {
+    vertical-align: 10px !important;
+  }
+
+  .name-logo {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    img {
+      margin-right: 10px;
+    }
+  }
+
+  img {
+    object-fit: cover;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    border-radius: 50%;
+    border: 1px solid $primary-color;
+    overflow: hidden;
+  }
+
+  /* Angular Materials */
+
+  ::ng-deep {
+    /* Scroll Bar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      display: none;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgb(41, 25, 101, 0.5);
+      border-radius: 20px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: $primary-color-blue;
+    }
+    app-search-form {
+      display: none;
+    }
+    .applyPrimaryColor {
+      color: $primary-color !important;
+    }
+    /* Mat Form Field */
+    .mat-form-field-wrapper.mat-form-field-wrapper {
+      width: 350px;
+      padding: 0px 5px 0px 5px;
+      border-radius: 50px;
+      margin-left: 30px;
+      max-width: 200px;
+      color: #000;
+      background: white;
+    }
+    .mat-form-field-appearance-fill .mat-form-field-infix {
+      display: flex;
+      align-items: center;
+      padding: 0;
+    }
+    .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+      padding: 0;
+    }
+    .mat-paginator-container .mat-paginator-page-size {
+      margin-right: auto;
+      .mat-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-form-field-flex {
+        width: 40px;
+      }
+    }
+    .mat-form-field-flex .mat-form-field-infix {
+      background: white;
+    }
+    .mat-button.mat-button {
+      width: 170px;
+    }
+    /* Table */
+    thead tr.mat-header-row {
+      height: 30px;
+    }
+    tbody tr.mat-row {
+      height: 55px;
+    }
+    td.mat-cell {
+      padding: 0;
+    }
+    td.mat-cell:last-of-type {
+      padding-left: 70px;
+    }
+
+    .vacancies-header .mat-icon {
+      margin-left: 8px;
+      margin-right: 8px;
+      color: gray;
+    }
+
+    .icons > .mat-icon {
+      color: gray;
+    }
+
+    .search.mat-icon {
+      line-height: 25px;
+      font-size: 16px;
+    }
+  }
+}
