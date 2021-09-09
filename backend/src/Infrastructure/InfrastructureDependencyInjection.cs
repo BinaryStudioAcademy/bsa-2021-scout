@@ -280,6 +280,7 @@ namespace Infrastructure
 
             services.AddScoped<IReadRepository<ToDoTask>, TaskReadRepository>();
             services.AddScoped<ITaskReadRepository, TaskReadRepository>();
+            services.AddScoped<IReadRepository<UsersToInterview>, UserToInterviewRepository>();
 
 
             return services;

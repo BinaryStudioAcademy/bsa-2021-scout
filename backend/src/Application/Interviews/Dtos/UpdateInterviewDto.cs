@@ -9,7 +9,7 @@ using FluentValidation;
 
 namespace Application.Interviews.Dtos
 {
-    public class CreateInterviewDto
+    public class UpdateInterviewDto : Dto
     {
         public string Title { get; set; }
         public string MeetingLink { get; set; }
@@ -22,15 +22,5 @@ namespace Application.Interviews.Dtos
         public string CandidateId { get; set; }
         public string Note { get; set; }
         public DateTime CreatedDate { get; set; }
-    }
-      public class InterviewDtoValidator : AbstractValidator<CreateInterviewDto>
-    {
-        public InterviewDtoValidator()
-        {
-            RuleFor(_ => _.Title).NotNull().NotEmpty();
-            RuleFor(_ => _.MeetingLink).NotNull().NotEmpty();
-            RuleFor(_ => _.Scheduled).NotNull().NotEmpty();
-            RuleFor(_ => _.Duration).NotNull().NotEmpty();
-        }
     }
 }
