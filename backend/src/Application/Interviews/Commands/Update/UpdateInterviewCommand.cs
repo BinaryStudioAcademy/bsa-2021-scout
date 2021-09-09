@@ -61,6 +61,7 @@ namespace Application.Interviews.Commands.Create
             Interview entity = _mapper.Map<Interview>(command.Interview);
             entity.CreatedDate = existedInterview.CreatedDate;
             entity.CompanyId = existedInterview.CompanyId;
+            entity.IsReviewed = true;
 
             var users = (await _usersToInterviewReadrepository.GetEnumerableAsync()).Where(x => x.InterviewId == command.Interview.Id);
             if (users.Any())

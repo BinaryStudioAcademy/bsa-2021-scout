@@ -17,6 +17,7 @@ namespace Application.Interviews.Dtos
         public VacancyDto Vacancy { get; set; }
         public DateTime Scheduled { get; set; }
         public double Duration { get; set; }
+        public bool IsReviewed { get; set; }
         public InterviewType InterviewType { get; set; }
         public ICollection<UserDto> UserParticipants { get; set; }
         public string CandidateId { get; set; }

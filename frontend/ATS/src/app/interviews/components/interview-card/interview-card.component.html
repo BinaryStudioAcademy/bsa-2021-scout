@@ -1,7 +1,14 @@
-<div class="card" [ngClass]="{'meetingColors': interview.interviewType%2 === 0}">
+<div class="card" *ngIf="interview.isReviewed" [ngClass]="{'meetingColors': interview.interviewType%2 === 0}">
     <div class="type">{{getStatus(interview.interviewType)}}</div>
     <div>{{interview.candidate.firstName + " " + 
         interview.candidate.lastName}}</div>
         
     <div>{{getDate(interview.scheduled) | date: "HH:mm"}} - {{getDateAfter(interview.scheduled, interview.duration) | date: "HH:mm"}}</div>
+</div>
+<div class="card needReviewColors" *ngIf="!interview.isReviewed">
+    <div class="type">{{getStatus(interview.interviewType)}}</div>
+    <div>{{interview.candidate.firstName + " " + 
+        interview.candidate.lastName}}</div>
+        
+    <div>Need Review</div>
 </div>
