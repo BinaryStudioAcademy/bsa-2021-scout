@@ -8,7 +8,7 @@ namespace Domain.Interfaces.Read
     public interface IPoolReadRepository : IReadRepository<Pool>
     {
         Task<Pool> GetPoolWithApplicantsByIdAsync(string id);
-        Task<List<Pool>> GetPoolsWithApplicantsAsync();
+        Task<List<Pool>> GetPoolsWithApplicantsAsync(string companyId);
         
     }
 }

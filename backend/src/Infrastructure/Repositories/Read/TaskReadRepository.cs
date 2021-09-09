@@ -25,7 +25,13 @@ namespace Infrastructure.Repositories.Read
                             Users hr on hr.Id = t.CreatedById inner join
                             Companies c on c.Id = t.CompanyId";
 
+        private readonly string filterByTaskIdSql = @" where t.id = @id";
+        private readonly string filterByUserIdSql = @" where hr.id = @userId or u.id = @userId";
+        private readonly string orderSql = @" order by t.dueDate";
         
+
+
+
         private static ToDoTask queryMapper(ToDoTask task, Applicant applicant, UserToTask utt, User user, User hr, Company company, Dictionary<string, ToDoTask> TaskDictionary, Dictionary<string, UserToTask> UserToTaskDictionary)
         {
             if (!TaskDictionary.TryGetValue(task.Id, out ToDoTask TaskEntry))
@@ -60,7 +66,8 @@ namespace Infrastructure.Repositories.Read
             var connection = _connectionFactory.GetSqlConnection();            
             
             await connection.OpenAsync();
-            string sql = mainSql;
+            string sql = $@"{mainSql}
+                            {orderSql}";
                             
 
             var TaskDictionary = new Dictionary<string, ToDoTask>();
@@ -86,9 +93,9 @@ namespace Infrastructure.Repositories.Read
             var connection = _connectionFactory.GetSqlConnection();            
 
             await connection.OpenAsync();
-            string sql = $@"
-                            {mainSql}
-                            where hr.id = @userId or u.id = @userId";
+            string sql = $@"{mainSql}
+                            {filterByUserIdSql}
+                            {orderSql}";
 
 
             var TaskDictionary = new Dictionary<string, ToDoTask>();
@@ -115,8 +122,7 @@ namespace Infrastructure.Repositories.Read
             var connection = _connectionFactory.GetSqlConnection();
 
             await connection.OpenAsync();
-            string sql = $@"{mainSql}                            
-                            where t.id = @id";
+            string sql = $@"{mainSql}{filterByTaskIdSql}";
 
             var TaskDictionary = new Dictionary<string, ToDoTask>();
             var UserToTaskDictionary = new Dictionary<string, UserToTask>();

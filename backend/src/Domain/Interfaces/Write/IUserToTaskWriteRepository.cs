@@ -8,5 +8,6 @@ namespace Domain.Interfaces.Write
     public interface IUserToTaskWriteRepository
     {
         Task<ToDoTask> UpdateUsersToTask(ToDoTask updatedTask, List<string> newIds);
+        Task DeleteUsersToTask(string id);
     }
 }

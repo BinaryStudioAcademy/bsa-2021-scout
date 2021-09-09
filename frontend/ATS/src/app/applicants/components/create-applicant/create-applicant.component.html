@@ -46,16 +46,12 @@
         <input required formControlName="email" type="email" matInput placeholder="Enter email"
             [(ngModel)]="createdApplicant.email">
     </mat-form-field>
-    <div class="validation-error"
-        *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.required; else emailPatternError">
-        It&apos;s required field
-    </div>
-    <ng-template #emailPatternError>
+    <!-- <ng-template #emailPatternError> -->
         <div class="validation-error"
             *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.pattern">
             Please enter a valid email address.
         </div>
-    </ng-template>
+    <!-- </ng-template> -->
 
     <p>Experience years</p>
     <mat-form-field appearance="fill"
@@ -80,14 +76,11 @@
         <input formControlName="phone" type="tel" matInput placeholder="Enter phone number"
             [(ngModel)]="createdApplicant.phone">
     </mat-form-field>
-    <ng-template #phonePatternError>
         <div class="validation-error"
             *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.pattern">
             A phone number can only contain integers and has a length from 8 to 16. In has to match the pattern
             +&lt;code&gt;&lt;number&gt; or &lt;number&gt;
         </div>
-    </ng-template>
-
     <p>Tags</p>
     <app-tags-edit [tags]="createdApplicant.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
 

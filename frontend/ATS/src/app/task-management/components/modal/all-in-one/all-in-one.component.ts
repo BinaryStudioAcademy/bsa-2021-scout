@@ -8,6 +8,7 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith,map } from 'rxjs/operators';
 import { isString } from 'lodash';
+import moment from 'moment';
 
 @Component({
   selector: 'app-all-in-one',
@@ -34,7 +35,8 @@ export class AllInOneComponent implements OnInit {
     'applicant': new FormControl('', [
       Validators.required,
       this.RequireMatch]),
-    'dueDate': new FormControl(''),      
+    'dueDate': new FormControl('',[
+      Validators.required]),      
     'note': new FormControl(''),
   });
   
@@ -97,6 +99,8 @@ export class AllInOneComponent implements OnInit {
   
   save() {
     const data = this.taskForm.value;
+    data.dueDate = moment(data.dueDate).add(moment(data.dueDate).utcOffset(), 'minutes');
+    console.log(moment(data.dueDate).utcOffset());
     data.teamMembers = this.task.teamMembers;
     data.id = this.task.id ? this.task.id:'';
     this.submitClicked.emit(data);
