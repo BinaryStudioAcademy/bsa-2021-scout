@@ -1,18 +1,11 @@
 <app-spinner [loading]="loading"></app-spinner>
 <mat-toolbar>
-  <app-button *ngIf="!removeInterviewButton" (click)="openInterviewDialog()">
-    + New interview
-  </app-button>
-  <app-button *ngIf="!removeProjectButton" (click)="openProjectDialog()">
-    + New project
-  </app-button>
-  <app-button *ngIf="!removeApplicantButton" (click)="openApplicantDialog()">
-    + New applicant
-  </app-button>
   <app-button *ngIf="!removeVacancyButton" (click)="openVacancyDialog()">
-    + New vacancy
+    + Vacancy
   </app-button>
-
+  <button mat-icon-button [matMenuTriggerFor]="notification" #matNotificationTrigger>
+    <mat-icon  matBadgeColor="primary" matBadgeSize="small">notifications</mat-icon>
+  </button>
   <div [matMenuTriggerFor]="menu" #menuTrigger>
     <div class="avatar-info">
       <img
@@ -39,4 +32,9 @@
                 Log out
               </button>
     </mat-menu>
+    <mat-menu #notification="matMenu" class="notifications">
+      <div mat-menu-item>
+          No new notifications.
+      </div>
+  </mat-menu>
 </mat-toolbar>
