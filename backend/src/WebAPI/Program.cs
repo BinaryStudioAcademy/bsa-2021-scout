@@ -22,6 +22,7 @@ namespace WebAPI
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls("http://*:5050");
+                    webBuilder.UseSetting("https_port", "5050");
                 });
         }
     }
