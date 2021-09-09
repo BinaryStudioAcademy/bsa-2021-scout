@@ -23,8 +23,8 @@
                 <div class="user-name">
                     {{user.firstName}} {{user.lastName}} <mat-icon class="todo-action" mat-icon-button>edit</mat-icon>
                 </div>
-                <div class="user-role" *ngFor="let role of user.roles">
-                {{role.name}}
+                <div class="user-role">
+                <div>{{this.mainRoles}}</div>
                 </div>
             </div>
             <mat-divider></mat-divider>

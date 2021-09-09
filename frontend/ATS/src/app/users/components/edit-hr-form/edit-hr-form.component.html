@@ -32,6 +32,14 @@
                 *ngIf="(profileFormControl.firstName.touched || submitted) && profileFormControl.firstName.errors?.required">
                 This field shouldn't be empty
             </mat-error>
+            <mat-error
+                    *ngIf="(profileFormControl.firstName.touched || submitted) && profileFormControl.firstName.errors?.firstandlastnameupper && !profileFormControl.firstName.errors?.required">
+                    Should start with upper latin letter
+            </mat-error>
+            <mat-error
+                    *ngIf="(profileFormControl.firstName.touched || submitted) && profileFormControl.firstName.errors?.firstandlastname && !profileFormControl.firstName.errors?.required && !profileFormControl.firstName.errors?.firstandlastnameupper">
+                    Only latin letters, spaces, hyphens
+            </mat-error>
         </div>
         <div>
             <mat-label class="required-field">Last name</mat-label>
@@ -42,6 +50,19 @@
             <mat-error
                 *ngIf="(profileFormControl.lastName.touched || submitted) && profileFormControl.lastName.errors?.required">
                 This field shouldn't be empty
+            </mat-error>
+            <mat-error
+                    *ngIf="(profileFormControl.lastName.touched || submitted) 
+                    && profileFormControl.lastName.errors?.firstandlastnameupper 
+                    && !profileFormControl.lastName.errors?.required">
+                    Should start with upper latin letter
+            </mat-error>
+            <mat-error
+                    *ngIf="(profileFormControl.lastName.touched || submitted) 
+                    && profileFormControl.lastName.errors?.firstandlastname 
+                    && !profileFormControl.lastName.errors?.required 
+                    && !profileFormControl.lastName.errors?.firstandlastnameupper">
+                    Only latin letters, spaces, hyphens
             </mat-error>
             </div>
             <div class="alone-field">
@@ -63,18 +84,22 @@
             <h2><b>Contacts</b></h2>
             <div class="input-flex-rows">
             <div>
-            <mat-label class="required-field">Phone</mat-label>
+            <mat-label>Phone</mat-label>
             <mat-form-field appearance="fill"
                 [ngClass]="(profileFormControl.phone.touched || submitted) && profileFormControl.phone.invalid ? 'invalid-input' : ''">
                 <input matInput type="text" autocomplete="off" formControlName="phone" placeholder="Enter phone">
             </mat-form-field>
             <mat-error
-                *ngIf="(profileFormControl.phone.touched || submitted) && profileFormControl.phone.errors?.pattern">
+                *ngIf="(profileFormControl.phone.touched || submitted) && profileFormControl.phone.errors?.required">
                 This field shouldn't be empty
+            </mat-error>
+            <mat-error
+                *ngIf="(profileFormControl.phone.touched || submitted) && profileFormControl.phone.errors?.pattern ">
+                Wrong number
             </mat-error>
             </div>
             <div>
-            <mat-label class="required-field">Skype</mat-label>
+            <mat-label>Skype</mat-label>
             <mat-form-field appearance="fill"
                 [ngClass]="(profileFormControl.skype.touched || submitted) && profileFormControl.skype.invalid ? 'invalid-input' : ''">
                 <input matInput type="text" autocomplete="off" formControlName="skype" placeholder="Enter skype">
@@ -85,7 +110,7 @@
             </mat-error>
             </div>
             <div>
-                <mat-label class="required-field">Slack</mat-label>
+                <mat-label>Slack</mat-label>
                 <mat-form-field appearance="fill"
                     [ngClass]="(profileFormControl.slack.touched || submitted) && profileFormControl.slack.invalid ? 'invalid-input' : ''">
                     <input matInput type="text" autocomplete="off" formControlName="slack" placeholder="Enter slack">

@@ -26,11 +26,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       response => {
         this.user = response;
         if(this.user.avatarUrl) this.user.avatarUrl = this.user.avatarUrl + '?'+performance.now();
+        this.getMainRoles();
       });
   }
 
   public loading: boolean = false;
-
+  public mainRoles: string|undefined;
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
   public constructor(
@@ -84,12 +85,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe(() => this.refreshUser());
   }
 
+  getMainRoles(){
+    let cachedusers = this.user.roles;
+    if(this.user.roles?.filter(x=>x.name=='HrLead').length != 0){
+      cachedusers = cachedusers?.filter(x=>x.name!='HrUser');
+    }
+    let roles = cachedusers?.map(x=>x.name).join(', ');
+    this.mainRoles = roles;
+  }
+
   refreshUser(){
     this.userService.getByToken().subscribe(
       response => {
         this.user = response;
         if(this.user.avatarUrl) this.user.avatarUrl = this.user.avatarUrl + '?'+performance.now();
-
+        this.getMainRoles();
       });
   }
 
