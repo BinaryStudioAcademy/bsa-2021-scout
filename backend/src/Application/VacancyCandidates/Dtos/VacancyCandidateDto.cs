@@ -13,5 +13,6 @@ namespace Application.VacancyCandidates.Dtos
         public string Comments { get; set; }
         public double Experience { get; set; }
         public string ApplicantId { get; set; }
+        public string PhotoLink { get; set; }
     }
 }

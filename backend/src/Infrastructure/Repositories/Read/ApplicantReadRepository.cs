@@ -35,13 +35,12 @@ namespace Infrastructure.Repositories.Read
                           WHERE a.Id = @applicantId;";
 
             var fileInfo = await connection.QueryFirstOrDefaultAsync<FileInfo>(query, new { applicantId = applicantId });
+            await connection.CloseAsync();
 
             if (fileInfo == null)
             {
                 throw new ApplicantCvNotFoundException(applicantId);
             }
-
-            await connection.CloseAsync();
 
             return fileInfo;
         }
@@ -53,16 +52,15 @@ namespace Infrastructure.Repositories.Read
 
             var query = @"SELECT fi.* FROM Applicants a
                           INNER JOIN FileInfos fi ON a.PhotoFileInfoId = fi.Id
-                          WHERE a.Id = @applicantId;";
+                          WHERE a.Id = @applicantId";
 
             var fileInfo = await connection.QueryFirstOrDefaultAsync<FileInfo>(query, new { applicantId = applicantId });
+            await connection.CloseAsync();
 
             if (fileInfo == null)
             {
                 throw new ApplicantPhotoNotFoundException(applicantId);
             }
-
-            await connection.CloseAsync();
 
             return fileInfo;
         }

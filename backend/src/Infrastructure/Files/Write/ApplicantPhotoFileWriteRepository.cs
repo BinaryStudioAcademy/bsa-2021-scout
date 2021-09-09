@@ -19,15 +19,15 @@ namespace Infrastructure.Files.Read
             _applicantReadRepository = applicantReadRepository;
         }
 
-        public Task<FileInfo> UploadAsync(string applicantId, Stream photoFileContent)
+        public Task<FileInfo> UploadAsync(string applicantId, string extension, Stream photoFileContent)
         {
-            return _fileWriteRepository.UploadPrivateFileAsync(
+            return _fileWriteRepository.UploadPublicFileAsync(
                 GetFilePath(),
-                GetFileName(applicantId),
+                GetFileName(applicantId, extension),
                 photoFileContent);
         }
 
-        public async Task UpdateAsync(string applicantId, Stream photoFileContent)
+        public async Task UpdateAsync(string applicantId, string extension, Stream photoFileContent)
         {
             var photoFileInfo = await _applicantReadRepository.GetPhotoFileInfoAsync(applicantId);
             await _fileWriteRepository.UpdateFileAsync(photoFileInfo, photoFileContent);
@@ -43,9 +43,9 @@ namespace Infrastructure.Files.Read
             return "applicant-photos";
         }
 
-        private static string GetFileName(string applicantId)
+        private static string GetFileName(string applicantId, string extension)
         {
-            return $"{applicantId}-photo.pdf";
+            return $"{applicantId}-photo{extension}";
         }
     }
 }

@@ -1,10 +1,10 @@
 <div class="dialog-title" mat-dialog-title>
     <h1>Edit pool</h1>
     <button mat-icon-button mat-dialog-close="none">
-      <mat-icon>close</mat-icon>
+        <mat-icon>close</mat-icon>
     </button>
 </div>
-<div class= modal-content>
+<div class=modal-content>
     <div class='pool-create-info-wrapper'>
         <div class='creator'>
             <div>created by</div>
@@ -25,51 +25,55 @@
         <h3>Applicants</h3>
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>
-            
+
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
                     <td mat-cell *matCellDef="let row">{{ row.firstName }} {{ row.lastName}} </td>
                 </ng-container>
-        
-                <ng-container matColumnDef="position">            
+
+                <ng-container matColumnDef="position">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
-                    <td mat-cell *matCellDef="let i = index">{{i+1 + (paginator ? (paginator.pageIndex * paginator.pageSize):0)}}</td>
+                    <td mat-cell *matCellDef="let i = index">{{i+1 + (paginator ? (paginator.pageIndex *
+                        paginator.pageSize):0)}}</td>
                 </ng-container>
-        
+
                 <ng-container matColumnDef="tags">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header="tags"> Tags </th>
-                    <td mat-cell *matCellDef="let applicant" class="tags-list-cell" [style.min-width]="isShowAllTags ? '150px' : '50px'">
+                    <td mat-cell *matCellDef="let applicant" class="tags-list-cell"
+                        [style.min-width]="isShowAllTags ? '150px' : '50px'">
                         <mat-list *ngIf="!isShowAllTags" class="tags-list">
                             <mat-list-item *ngFor="let tag of getFirstTags(applicant)">{{tag.tagName}}</mat-list-item>
-                            <mat-list-item class="more-button" *ngIf="applicant.tags.tagDtos.length > 6" (click)="toggleAllTags()">
+                            <mat-list-item class="more-button" *ngIf="applicant.tags.tagDtos.length > 6"
+                                (click)="toggleAllTags()">
                                 +{{applicant.tags.tagDtos.length - 5}} more
                             </mat-list-item>
                         </mat-list>
-                        
+
                         <div class="absolute-tags-list-container" *ngIf="isShowAllTags">
                             <div class="tags-pop-up-actions">
                                 <button mat-icon-button (click)="toggleAllTags()">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                            </div><mat-list class="tags-list">
-                                <mat-list-item *ngFor="let tag of applicant.tags.tagDtos">{{tag.tagName}}</mat-list-item>
+                            </div>
+                            <mat-list class="tags-list">
+                                <mat-list-item *ngFor="let tag of applicant.tags.tagDtos">{{tag.tagName}}
+                                </mat-list-item>
                             </mat-list>
-                            
+
                         </div>
                     </td>
                 </ng-container>
-        
 
-        
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        
+
                 <tr class="mat-row" *matNoDataRow>
                     <td class="mat-cell" colspan="4">No data maching the filter</td>
-                </tr>       
-        
+                </tr>
+
             </table>
-        <mat-paginator #paginator appStylePaginator hidePageSize [showTotalPages]="5" [pageSize]="10"></mat-paginator>
-        </div>    
+            <mat-paginator #paginator appStylePaginator hidePageSize [showTotalPages]="5" [pageSize]="10">
+            </mat-paginator>
+        </div>
     </div>
 </div>

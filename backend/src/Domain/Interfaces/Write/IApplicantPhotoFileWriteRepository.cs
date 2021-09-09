@@ -6,8 +6,8 @@ namespace Domain.Interfaces.Write
 {
     public interface IApplicantPhotoFileWriteRepository
     {
-        Task<FileInfo> UploadAsync(string applicantId, Stream cvFileContent);
-        Task UpdateAsync(string applicantId, Stream cvFileContent);
+        Task<FileInfo> UploadAsync(string applicantId, string exteinson, Stream cvFileContent);
+        Task UpdateAsync(string applicantId, string extension, Stream cvFileContent);
         Task DeleteAsync(FileInfo fileInfo);
     }
 }

@@ -10,6 +10,7 @@ import { ApplicantIsSelected } from 'src/app/shared/models/applicants/applicant-
 import { Tag } from 'src/app/shared/models/tags/tag';
 import { MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
+import { getApplicantAvatar } from 'src/app/shared/helpers/avatar';
 
 const DATA: ApplicantIsSelected[] = [];
 
@@ -87,6 +88,10 @@ export class PoolDetailsModalComponent implements OnInit, AfterViewInit {
         },
         () => this.loading = false,
       );
+  }
+
+  public getAvatar(applicant: ApplicantIsSelected): string {
+    return getApplicantAvatar(applicant);
   }
 
   

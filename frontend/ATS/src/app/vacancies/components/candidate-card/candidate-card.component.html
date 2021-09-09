@@ -1,7 +1,7 @@
 <div class="card" [ngClass]="{'draggable': isDraggable, 'not-viewed': !candidate.isViewed}" [id]="candidate.id" cdkDrag
   [cdkDragDisabled]="!isDraggable">
   <div class="user-data">
-    <img class="avatar" src="../../../../assets/images/defaultAvatar.png" />
+    <img class="avatar" [src]="getAvatar()" />
     <div class="texts">
       <div>{{ candidate.applicant.firstName }} {{ candidate.applicant.lastName }}</div>
       <div class="self-applied" *ngIf="candidate.isSelfApplied">

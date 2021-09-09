@@ -14,6 +14,7 @@ using Application.ElasticEnities.Dtos;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Path = System.IO.Path;
 
 #nullable enable
 namespace Application.Applicants.Commands.CreateApplicant
@@ -129,7 +130,11 @@ namespace Application.Applicants.Commands.CreateApplicant
             if (command.PhotoFileDto.Link == null)
             {
                 uploadedPhotoFileInfo = await _applicantPhotoFileWriteRepository
-                    .UploadAsync(applicant.Id, command.PhotoFileDto!.Content);
+                    .UploadAsync(
+                        applicant.Id,
+                        Path.GetExtension(command.PhotoFileDto.FileName),
+                        command.PhotoFileDto!.Content
+                    );
             }
             else
             {

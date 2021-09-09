@@ -17,6 +17,8 @@ export interface Applicant {
   isSelected?: boolean;
   hasCv: boolean;
   hasPhoto: boolean;
+  cvLink?: string;
+  photoLink?: string;
   creationDate: Date;
 
   tags: ElasticEntity;

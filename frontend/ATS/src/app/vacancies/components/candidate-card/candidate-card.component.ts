@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { getApplicantAvatar } from 'src/app/shared/helpers/avatar';
 // eslint-disable-next-line max-len
 import { ShortVacancyCandidateWithApplicant } from 'src/app/shared/models/vacancy-candidates/short-with-applicant';
 
@@ -18,5 +19,9 @@ export class CandidateCardComponent {
     if (this.isClickable) {
       this.clickAction.emit();
     }
+  }
+
+  public getAvatar(): string {
+    return getApplicantAvatar(this.candidate.applicant);
   }
 }

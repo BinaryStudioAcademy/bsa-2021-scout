@@ -9,7 +9,11 @@ namespace Application.Applicants.Commands
         public UpdateApplicantPhotoCommandValidator()
         {
             RuleFor(_ => _.NewPhotoFileDto)
-                .ExtensionMustBeInList(new FileExtension[] { FileExtension.Pdf })
+                .ExtensionMustBeInList(new FileExtension[] {
+                    FileExtension.Png,
+                    FileExtension.Jpg,
+                    FileExtension.Jpeg
+                })
                 .When(_ => _.NewPhotoFileDto != null);
         }
     }

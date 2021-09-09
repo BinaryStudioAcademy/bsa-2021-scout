@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using Path = System.IO.Path;
 using MediatR;
 using Domain.Interfaces.Write;
 using System.Threading;
@@ -52,7 +52,11 @@ namespace Application.Applicants.Commands
             if (applicant.HasPhoto)
             {
                 await _applicantPhotoFileWriteRepository
-                    .UpdateAsync(command.ApplicantId, command.NewPhotoFileDto.Content);
+                    .UpdateAsync(
+                        command.ApplicantId,
+                        Path.GetExtension(command.NewPhotoFileDto.FileName),
+                        command.NewPhotoFileDto.Content
+                    );
             }
             else
             {
@@ -61,7 +65,11 @@ namespace Application.Applicants.Commands
                 if (command.NewPhotoFileDto.Link == null)
                 {
                     uploadedPhotoFileInfo = await _applicantPhotoFileWriteRepository
-                        .UploadAsync(applicant.Id, command.NewPhotoFileDto!.Content);
+                        .UploadAsync(
+                            applicant.Id,
+                            Path.GetExtension(command.NewPhotoFileDto.FileName),
+                            command.NewPhotoFileDto!.Content
+                        );
                 }
                 else
                 {
@@ -69,7 +77,7 @@ namespace Application.Applicants.Commands
                         .CreateAsync(command.NewPhotoFileDto.ToFileInfo());
                 }
 
-                applicant.CvFileInfo = uploadedPhotoFileInfo;
+                applicant.PhotoFileInfo = uploadedPhotoFileInfo;
 
                 await _applicantWriteRepository.UpdateAsync(applicant);
             }

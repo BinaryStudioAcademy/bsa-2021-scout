@@ -11,7 +11,7 @@ namespace Application.Pools.Dtos
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string PhotoLink { get; set; }
         public ElasticEnitityDto Tags { get; set; }
-
     }
 }

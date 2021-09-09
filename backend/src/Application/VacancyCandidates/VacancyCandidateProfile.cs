@@ -54,7 +54,9 @@ namespace Application.VacancyCandidates
                     opt.MapFrom(vc => vc.Applicant.CvFileInfo == null ? null : vc.Applicant.CvFileInfo.Name))
                 .ForMember(dto => dto.Experience, opt => opt.MapFrom(vc => vc.Applicant.Experience))
                 .ForMember(dto => dto.ExperienceDescription, opt =>
-                    opt.MapFrom(vc => vc.Applicant.ExperienceDescription));
+                    opt.MapFrom(vc => vc.Applicant.ExperienceDescription))
+                .ForMember(dto => dto.PhotoLink, opt =>
+                    opt.MapFrom(vc => vc.Applicant.PhotoFileInfo.PublicUrl));
         }
     }
 }
