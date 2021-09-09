@@ -22,7 +22,7 @@ namespace Infrastructure.AWS.S3
         {
             var fileKey = AwsS3Helpers.GetFileKey(filePath, fileName);
 
-            var publicUrl = $"http://{_awsS3Connection.GetBucketName()}.s3-{_awsS3Connection.GetBucketRegion()}.amazonaws.com/{fileKey}";
+            var publicUrl = $"http://{_awsS3Connection.GetBucketName()}.s3.amazonaws.com/{fileKey}";
 
             return Task.FromResult(publicUrl);
         }
