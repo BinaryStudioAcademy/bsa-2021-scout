@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Linq;
+using MediatR;
 using Domain.Interfaces.Write;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,12 +30,19 @@ namespace Application.Applicants.Commands
         private readonly IApplicantCvFileWriteRepository _applicantCvFileWriteRepository;
         private readonly IApplicantReadRepository _applicantReadRepository;
         private readonly IWriteRepository<Applicant> _applicantWriteRepository;
+        private readonly IWriteRepository<FileInfo> _fileInfoWriteRepository;
 
-        public UpdateApplicantCvCommandHandler(IApplicantCvFileWriteRepository applicantCvFileWriteRepository, IApplicantReadRepository applicantReadRepository, IWriteRepository<Applicant> applicantWriteRepository)
+        public UpdateApplicantCvCommandHandler(
+            IApplicantCvFileWriteRepository applicantCvFileWriteRepository,
+            IApplicantReadRepository applicantReadRepository,
+            IWriteRepository<Applicant> applicantWriteRepository,
+            IWriteRepository<FileInfo> fileInfoWriteRepository
+        )
         {
             _applicantCvFileWriteRepository = applicantCvFileWriteRepository;
             _applicantReadRepository = applicantReadRepository;
             _applicantWriteRepository = applicantWriteRepository;
+            _fileInfoWriteRepository = fileInfoWriteRepository;
         }
 
         public async Task<Unit> Handle(UpdateApplicantCvCommand command, CancellationToken _)
@@ -44,10 +52,23 @@ namespace Application.Applicants.Commands
             if (applicant.HasCv)
             {
                 await _applicantCvFileWriteRepository.UpdateAsync(command.ApplicantId, command.NewCvFileDto.Content);
-            } else
+            }
+            else
             {
-                var cvFileInfo = await _applicantCvFileWriteRepository.UploadAsync(command.ApplicantId, command.NewCvFileDto.Content);
-                applicant.CvFileInfo = cvFileInfo;
+                FileInfo uploadedCvFileInfo;
+
+                if (command.NewCvFileDto.Link == null)
+                {
+                    uploadedCvFileInfo = await _applicantCvFileWriteRepository
+                        .UploadAsync(applicant.Id, command.NewCvFileDto!.Content);
+                }
+                else
+                {
+                    uploadedCvFileInfo = await _fileInfoWriteRepository
+                        .CreateAsync(command.NewCvFileDto.ToFileInfo());
+                }
+
+                applicant.CvFileInfo = uploadedCvFileInfo;
 
                 await _applicantWriteRepository.UpdateAsync(applicant);
             }

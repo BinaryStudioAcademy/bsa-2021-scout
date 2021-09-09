@@ -10,6 +10,7 @@ import { FileUrl } from '../models/file/file';
 import { CsvApplicant } from 'src/app/applicants/models/CsvApplicant';
 import { VacancyWithRecentActivity }
   from '../models/candidate-to-stages/vacancy-with-recent-activity';
+import { getModifyApplicantFormData } from '../helpers/modifyApplicant';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantsService {
@@ -28,21 +29,17 @@ export class ApplicantsService {
   }
 
   public addApplicant(createApplicant: CreateApplicant): Observable<Applicant> {
-    const formData = new FormData();
-    formData.append('body', JSON.stringify(createApplicant));
-    if (createApplicant.cv) {
-      formData.append('cvFile', createApplicant.cv, createApplicant.cv.name);
-    }
-    return this.httpClient.postRequest<Applicant>('/applicants', formData);
+    return this.httpClient.postRequest<Applicant>(
+      '/applicants',
+      getModifyApplicantFormData(createApplicant),
+    );
   }
 
   public updateApplicant(updateApplicant: UpdateApplicant): Observable<Applicant> {
-    const formData = new FormData();
-    formData.append('body', JSON.stringify(updateApplicant));
-    if (updateApplicant.cv) {
-      formData.append('cvFile', updateApplicant.cv, updateApplicant.cv.name);
-    }
-    return this.httpClient.putRequest<Applicant>('/applicants', formData);
+    return this.httpClient.putRequest<Applicant>(
+      '/applicants',
+      getModifyApplicantFormData(updateApplicant),
+    );
   }
 
   public deleteApplicant(applicantId: string): Observable<Applicant> {

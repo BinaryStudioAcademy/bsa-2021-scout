@@ -4,14 +4,16 @@ using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210908195209_AddApplicantPhoto")]
+    partial class AddApplicantPhoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -353,9 +355,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("InterviewType")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsReviewed")
-                        .HasColumnType("bit");
-
                     b.Property<string>("MeetingLink")
                         .HasColumnType("nvarchar(max)");
 
@@ -649,9 +648,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDone")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsReviewed")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -1202,6 +1198,31 @@ namespace Infrastructure.Migrations
                     b.Navigation("Vacancy");
                 });
 
+            modelBuilder.Entity("Domain.Entities.ToDoTask", b =>
+                {
+                    b.HasOne("Domain.Entities.Applicant", "Applicant")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ApplicantId")
+                        .HasConstraintName("todotask_applicant_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Entities.Company", "Company")
+                        .WithMany("Tasks")
+                        .HasForeignKey("CompanyId")
+                        .HasConstraintName("todotask_company_FK")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.Navigation("Applicant");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("CreatedBy");
+                });
+
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.HasOne("Domain.Entities.Company", "Company")
@@ -1332,6 +1353,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("ApplicantPools");
 
                     b.Navigation("Candidates");
+
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("Domain.Entities.Company", b =>
@@ -1343,6 +1366,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("Projects");
 
                     b.Navigation("Recruiters");
+
+                    b.Navigation("Tasks");
 
                     b.Navigation("Vacancies");
                 });
@@ -1387,6 +1412,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("ReviewToStages");
                 });
 
+            modelBuilder.Entity("Domain.Entities.ToDoTask", b =>
+                {
+                    b.Navigation("TeamMembers");
+                });
+
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("AddedCandidates");
@@ -1404,6 +1434,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("UserRoles");
 
                     b.Navigation("UsersToInterviews");
+
+                    b.Navigation("UserTask");
 
                     b.Navigation("Vacancies");
                 });

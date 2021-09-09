@@ -20,6 +20,7 @@ namespace Application.VacancyCandidates.Dtos
         public string Comments { get; set; }
         public string CvLink { get; set; }
         public string CvName { get; set; }
+        public string PhotoLink { get; set; }
         public DateTime DateAdded { get; set; }
         public bool IsSelfApplied { get; set; }
         public IEnumerable<TagDto> Tags { get; set; }

@@ -360,6 +360,11 @@ export class TableFilterComponent implements OnChanges, OnInit {
         return data.filter((el) => {
           const dataVal = new Date(_.get(el, propName));
 
+          dataVal.setMilliseconds(0);
+          dataVal.setSeconds(0);
+          dataVal.setMinutes(0);
+          dataVal.setHours(0);
+
           return (
             dataVal.getTime() >= filterVal[0].getTime() &&
             dataVal.getTime() <= filterVal[1].getTime()

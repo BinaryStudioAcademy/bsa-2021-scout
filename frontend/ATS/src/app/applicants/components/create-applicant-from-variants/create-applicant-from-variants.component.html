@@ -5,7 +5,7 @@
     <mat-icon mat-dialog-close>close</mat-icon>
   </mat-dialog-actions>
 </div>
-<form class="applicant-form" [formGroup]="validationGroup!" novalidate>
+<form class="applicant-form" [formGroup]="validationGroup!">
   <div class="variants-input">
     <div>
       <p class="required-field">First name</p>
@@ -89,8 +89,8 @@
       <p>Experience description</p>
       <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors? 'invalid-input' : ''">
-        <input formControlName="experienceDescription" type="text" matInput
-          placeholder="Enter experience description" [(ngModel)]="createdApplicant.experienceDescription">
+        <input formControlName="experienceDescription" type="text" matInput placeholder="Enter experience description"
+          [(ngModel)]="createdApplicant.experienceDescription">
       </mat-form-field>
     </div>
     <div class="variants">
@@ -101,9 +101,8 @@
     </div>
   </div>
   <p>Experience years</p>
-  <mat-form-field appearance="fill"
-    [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors? 'invalid-input' : ''">
-    <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60"
+  <mat-form-field appearance="fill">
+    <input formControlName="experience" type="number" matInput step=".1" min="0" max="60"
       [(ngModel)]="createdApplicant.experience">
   </mat-form-field>
   <div class="validation-error"
@@ -145,7 +144,7 @@
           <span>{{ available }}</span>
         </div>
       </ng-container>
-      <div class="more-button" (click)="showAllTags = !showAllTags">
+      <div class="more-button" *ngIf="data.skills.length > 5" (click)="showAllTags = !showAllTags">
         Show {{ showAllTags ? "less" : "more" }}
       </div>
     </div>
@@ -166,7 +165,10 @@
     LinkedIn url must match the pattern https://www.linkedin.com/in/&lt;username&gt;/
   </div>
   <p>CV</p>
-  <app-file-input [accept]="allowedCvFileType" (upload)="uploadApplicantCv($event)">
+  <app-file-input [default]="[data.cv]" [accept]="allowedCvFileType" (upload)="uploadApplicantCv($event)">
+  </app-file-input>
+  <p>Photo</p>
+  <app-file-input [image]="true" (upload)="uploadApplicantPhoto($event)">
   </app-file-input>
   <mat-dialog-actions class="publish-action">
     <button [disabled]="validationGroup!.invalid" (click)="createApplicant()" mat-button>

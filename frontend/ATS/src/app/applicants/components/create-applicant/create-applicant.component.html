@@ -91,8 +91,7 @@
     </mat-form-field>
 
     <p>LinkedIn url</p>
-    <mat-form-field appearance="fill"
-        [ngClass]="validationGroup!.controls['linkedInUrl'].dirty && validationGroup!.controls['linkedInUrl'].errors? 'invalid-input' : ''">
+    <mat-form-field appearance="fill">
         <input formControlName="linkedInUrl" type="text" matInput placeholder="Enter LinkedIn url"
             [(ngModel)]="createdApplicant.linkedInUrl">
     </mat-form-field>
@@ -103,6 +102,9 @@
 
     <p>CV</p>
     <app-file-input (upload)="uploadApplicantCv($event)" [accept]="allowedCvFileType"></app-file-input>
+
+    <p>Photo</p>
+    <app-file-input (upload)="uploadApplicantPhoto($event)" [image]="true"></app-file-input>
 
     <mat-dialog-actions class="publish-action">
         <button [disabled]="validationGroup!.invalid" (click)="createApplicant()" mat-button>

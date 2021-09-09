@@ -35,6 +35,7 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
       tagDtos: [],
     },
     cv: null,
+    photo: null,
   };
 
   public allowedCvFileType = FileType.Pdf;
@@ -87,6 +88,10 @@ export class CreateApplicantComponent implements OnInit, OnDestroy {
 
   public uploadApplicantCv(files: File[]): void {
     this.createdApplicant.cv = files[0];
+  }
+
+  public uploadApplicantPhoto(files: File[]): void {
+    this.createdApplicant.photo = files[0];
   }
 
   public ngOnDestroy(): void {

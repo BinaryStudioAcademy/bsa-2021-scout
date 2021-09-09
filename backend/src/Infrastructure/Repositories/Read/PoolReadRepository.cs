@@ -21,10 +21,11 @@ namespace Infrastructure.Repositories.Read
 
             await connection.OpenAsync();
             string sql = $@"
-                            SELECT p.*, pa.*, a.*,u.*,c.*
+                            SELECT p.*, pa.*, a.*, fi.*, u.*, c.*
                             FROM Pools p left outer join 
                             PoolToApplicants pa ON pa.PoolId = p.Id left outer join
-                            Applicants a on a.Id = pa.ApplicantId inner join
+                            Applicants a on a.Id = pa.ApplicantId left join
+                            FileInfos fi on a.PhotoFileInfoId = fi.Id inner join
                             Companies c on c.Id = p.CompanyId inner join
                             Users u on u.Id = p.CreatedById
                             where p.id = @id
@@ -34,9 +35,9 @@ namespace Infrastructure.Repositories.Read
             var poolToApplicantDictionary = new Dictionary<string, PoolToApplicant>();
             Pool cachedPool = null;
 
-            var pool = (await connection.QueryAsync<Pool, PoolToApplicant, Applicant, User, Company, Pool>(
+            var pool = (await connection.QueryAsync<Pool, PoolToApplicant, Applicant, FileInfo, User, Company, Pool>(
                 sql,
-                (pool, poolToApplicant, applicant, User, Company) =>
+                (pool, poolToApplicant, applicant, photo, User, Company) =>
                 {
                     if (cachedPool == null)
                     {
@@ -53,7 +54,7 @@ namespace Infrastructure.Repositories.Read
                         poolDictionary.Add(poolEntry.Id, poolEntry);
                     }
 
-                    if (poolToApplicant!=null && !poolToApplicantDictionary.TryGetValue(poolToApplicant.Id, out PoolToApplicant poolToApplicantEntry))
+                    if (poolToApplicant != null && !poolToApplicantDictionary.TryGetValue(poolToApplicant.Id, out PoolToApplicant poolToApplicantEntry))
                     {
                         poolToApplicantEntry = poolToApplicant;
                         cachedPool.PoolApplicants.Add(poolToApplicantEntry);
@@ -63,6 +64,7 @@ namespace Infrastructure.Repositories.Read
                     if (applicant != null)
                     {
                         poolToApplicant.Applicant = applicant;
+                        poolToApplicant.Applicant.PhotoFileInfo = photo;
                     }
 
 
@@ -71,7 +73,7 @@ namespace Infrastructure.Repositories.Read
                 new { id = @id }
                 ))
             .Distinct()
-            .SingleOrDefault();            
+            .SingleOrDefault();
 
             await connection.CloseAsync();
 

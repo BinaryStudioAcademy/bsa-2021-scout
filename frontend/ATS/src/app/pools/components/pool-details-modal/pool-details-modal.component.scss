@@ -99,18 +99,21 @@
 
   .mat-column-username {
     width: 25% !important;
-    white-space: nowrap;
 
-    .mat-icon{
-        vertical-align: middle;    
-        border-radius: 50%;
-        border: 1px solid $primary-color;
-        color: white;
-        background-color: lightgray;
-        font-size: 30px;
-        height: 30px;
-        width: 30px;
-        margin: 0 3px;
+    .internal {
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+
+      .avatar {
+          border-radius: 50%;
+          height: 30px;
+          width: 30px;
+          max-height: 30px;
+          max-width: 30px;
+          margin: 0 3px;
+          display: inline;
+      }
     }
 } 
 

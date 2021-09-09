@@ -19,11 +19,13 @@ namespace Application.Applicants.Commands
     {
         public UpdateApplicantDto Entity { get; set; }
         public FileDto? CvFileDto { get; set; }
+        public FileDto? PhotoFileDto { get; set; }
 
-        public UpdateApplicantCommand(UpdateApplicantDto entity, FileDto? cvFileDto)
+        public UpdateApplicantCommand(UpdateApplicantDto entity, FileDto? cvFileDto, FileDto? photoFileDto)
         {
             Entity = entity;
             CvFileDto = cvFileDto;
+            PhotoFileDto = photoFileDto;
         }
     }
 
@@ -57,6 +59,7 @@ namespace Application.Applicants.Commands
                 (await _repository.GetApplicantVacancyInfoListAsync(updatedApplicant.Id));
 
             await UploadCvFileIfExists(command, updatableApplicant);
+            await UploadPhotoFileIfExists(command, updatableApplicant);
 
             return updatedApplicant;
         }
@@ -69,6 +72,16 @@ namespace Application.Applicants.Commands
             }
 
             await _mediator.Send(new UpdateApplicantCvCommand(command.Entity.Id, command.CvFileDto!, applicant));
+        }
+
+        private async Task UploadPhotoFileIfExists(UpdateApplicantCommand command, Applicant applicant)
+        {
+            if (command.PhotoFileDto == null)
+            {
+                return;
+            }
+
+            await _mediator.Send(new UpdateApplicantPhotoCommand(command.Entity.Id, command.PhotoFileDto!, applicant));
         }
     }
 }

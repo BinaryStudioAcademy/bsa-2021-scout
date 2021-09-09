@@ -9,10 +9,13 @@ namespace Application.Applicants.Profiles
         public ApplicantProfile()
         {
             CreateMap<ApplicantDto, Applicant>();
-            CreateMap<Applicant, ApplicantDto>();
+
+            CreateMap<Applicant, ApplicantDto>()
+                .ForMember(dto => dto.PhotoLink, opt => opt.MapFrom(a => a.PhotoFileInfo.PublicUrl));
+
             CreateMap<Applicant, GetShortApplicantDto>();
             CreateMap<Applicant, ApplicantCsvGetDto>();
-            
+
             CreateMap<Applicant, MarkedApplicantDto>()
                 .ForMember(dto => dto.IsApplied, opt => opt.Ignore());
 
