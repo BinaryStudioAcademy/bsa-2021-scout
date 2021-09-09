@@ -5,6 +5,16 @@
     <mat-icon>today</mat-icon>
     <div>{{currentDate | date: "EEEE, MMM, d, y"}}</div>
   </div>
+  <div class="need-review" (click)="onToogleNeedReview()">
+    <div class="toogle" *ngIf="toogleNeedReview" matTooltip="Hide interview that need review">
+      <mat-icon>visibility</mat-icon>
+      Hide
+    </div>
+    <div class="toogle" *ngIf="!toogleNeedReview" matTooltip="Show interview that need review">
+      <mat-icon>visibility_off</mat-icon>
+      Show
+    </div>
+  </div>
   <div class="dates">
     <span class="clickable" mat-button (click)="decreaseMonth()" value="-">&lt;</span>
     <span class="tub">
@@ -51,7 +61,7 @@
                 </div>
                
               </div>
-              <div (click)="collapse(c)" class="extra" [ngClass]="{'interviewColors':c.interviews[0].interviewType%2!==0, 'meetingColors':c.interviews[0].interviewType%2 === 0}" *ngIf="c.interviews.length>=2 && c.isCollapsed">{{c.interviews.length}} Events</div>
+              <div (click)="collapse(c)" class="extra" [ngClass]="{'needReviewColors': !c.interviews[0].isReviewed, 'interviewColors':c.interviews[0].interviewType%2!==0, 'meetingColors':c.interviews[0].interviewType%2 === 0}" *ngIf="c.interviews.length>=2 && c.isCollapsed">{{c.interviews.length}} Events</div>
 
             </div>
           </td>

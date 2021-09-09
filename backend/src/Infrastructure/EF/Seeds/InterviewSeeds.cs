@@ -54,6 +54,7 @@ namespace Infrastructure.EF.Seeds
                 Duration = _random.Next(45, 90),
                 VacancyId = VacancySeeds.vacancyIds[_random.Next(VacancySeeds.vacancyIds.Count())],
                 CompanyId = "0b129ab3-7375-4c96-95a5-8efa95a455b4",
+                IsReviewed = true
             };
         }
         public static IEnumerable<Interview> GetInterviews()

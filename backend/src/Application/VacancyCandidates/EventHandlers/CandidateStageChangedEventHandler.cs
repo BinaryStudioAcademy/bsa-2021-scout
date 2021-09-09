@@ -18,6 +18,8 @@ using Newtonsoft.Json;
 using Application.MailTemplates.Queries;
 using Application.Mail;
 using Application.VacancyCandidates.Dtos;
+using Application.Interviews.Commands.Create;
+using Application.Interviews.Dtos;
 
 namespace Application.VacancyCandidates.EventHandlers
 {
@@ -72,21 +74,21 @@ namespace Application.VacancyCandidates.EventHandlers
                     switch (action.ActionType)
                     {
                         case ActionType.AddTask:
-                            await CreateTask(notification, stage, vacancy, applicant, user);
+                            await CreateTask(stage, vacancy, applicant);
                             break;
                         case ActionType.ScheduleInterviewAction:
-                            _logger.LogInformation("Schedule Interview Action");
+                            await CreateInterviewTask(notification, stage, vacancy, applicant, user);
                             break;
                         case ActionType.SendMail:
-                            await SendMailTask(notification, stage, vacancy, applicant, user);
+                            await SendMailTask(notification, stage, vacancy, applicant);
                             break;
                     }
                 }
             }
         }
 
-        private async Task CreateTask(DomainEventNotification<CandidateStageChangedEvent> notification,
-            Stage stage, Vacancy vacancy, Applicant applicant, User user)
+        private async Task CreateTask(
+            Stage stage, Vacancy vacancy, Applicant applicant)
         {
             var createTaskCommand = new CreateTaskCommand(
                 new CreateTaskDto
@@ -102,8 +104,27 @@ namespace Application.VacancyCandidates.EventHandlers
             await _mediator.Send(createTaskCommand);
         }
 
-        private async Task SendMailTask(DomainEventNotification<CandidateStageChangedEvent> notification,
+        private async Task CreateInterviewTask(DomainEventNotification<CandidateStageChangedEvent> notification,
             Stage stage, Vacancy vacancy, Applicant applicant, User user)
+        {
+            var createInterviewTaskCommand = new CreateInterviewCommand(
+            new CreateInterviewDto
+            {
+                Title = $"Interview with {applicant.FirstName} {applicant.LastName} on stage {stage.Name} on vacancy {vacancy.Title}",
+                VacancyId = vacancy.Id,
+                Scheduled = DateTime.Now,
+                Duration = 30,
+                InterviewType = Domain.Enums.InterviewType.Interview,
+                CandidateId = applicant.Id,
+                UserParticipants = new List<string> { user.Id },
+                CreatedDate = DateTime.Now,
+                IsReviewed = false
+            });
+
+            await _mediator.Send(createInterviewTaskCommand);
+        }
+        private async Task SendMailTask(DomainEventNotification<CandidateStageChangedEvent> notification,
+            Stage stage, Vacancy vacancy, Applicant applicant)
         {
             var templatesIds = JsonConvert.DeserializeObject<TemplatesIdsDto>(stage.DataJson);
             var templateQuery = new GetMailTemplateWithReplacedPlaceholdersQuery(

@@ -229,6 +229,7 @@ export class CreateInterviewComponent implements OnDestroy {
 
   public onSubmited() {
     this.interview = this.interviewCreateForm.value;
+    this.interview.isReviewed = true;
     this.loading = true;
     this.inteviewDate = new Date(this.interviewCreateForm.controls['date'].value);
 
