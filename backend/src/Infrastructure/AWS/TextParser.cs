@@ -22,6 +22,9 @@ namespace Infrastructure.AWS
             _role = Environment.GetEnvironmentVariable("AWS_TEXTRACT_SNS_ROLE");
             _topic = Environment.GetEnvironmentVariable("AWS_TEXTRACT_SNS_TOPIC");
 
+            Console.WriteLine($"AWS_TEXTRACT_SNS_ROLE = {_role}");
+            Console.WriteLine($"AWS_TEXTRACT_SNS_TOPIC = {_topic}");
+
             _awsS3ConnectionFactory = awsS3ConnectionFactory;
             _textract = new AmazonTextractClient();
             _uploader = uploader;
@@ -49,6 +52,7 @@ namespace Infrastructure.AWS
 
         public async Task<(string, string)> StartParsingAsync(byte[] fileContent)
         {
+            Console.WriteLine($"StartParsingAsync start");
             string fileName = $"cv-{Guid.NewGuid().ToString()}.pdf";
             string filePath = $"cvs/{fileName}";
             await _uploader.UploadAsync(filePath, fileContent);
@@ -62,7 +66,11 @@ namespace Infrastructure.AWS
             request.NotificationChannel.RoleArn = _role;
             request.NotificationChannel.SNSTopicArn = _topic;
 
+            Console.WriteLine($"StartParsingAsync end {filePath}");
+
             StartDocumentTextDetectionResponse response = await _textract.StartDocumentTextDetectionAsync(request);
+
+            Console.WriteLine($"StartParsingAsync StartDocumentTextDetectionResponse {response.ResponseMetadata.ToString()}");
             return (response.JobId, filePath);
         }
 
