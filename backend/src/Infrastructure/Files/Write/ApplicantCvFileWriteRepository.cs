@@ -21,7 +21,7 @@ namespace Infrastructure.Files.Read
 
         public Task<FileInfo> UploadAsync(string applicantId, Stream cvFileContent)
         {
-            return _fileWriteRepository.UploadPrivateFileAsync(
+            return _fileWriteRepository.UploadPublicFileAsync(
                 GetFilePath(),
                 GetFileName(applicantId),
                 cvFileContent);

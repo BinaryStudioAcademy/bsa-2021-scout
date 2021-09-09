@@ -11,6 +11,6 @@ namespace Domain.Interfaces.Write
 {
     public interface IApplicantsWriteRepository : IWriteRepository<Applicant>
     {
-        Task<Entity> CreateFullAsync(Applicant entity);
+        Task<Applicant> CreateFullAsync(Applicant entity);
     }
 }

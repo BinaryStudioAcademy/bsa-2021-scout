@@ -12,27 +12,27 @@ using Domain.Interfaces.Write;
 
 namespace Infrastructure.Repositories.Write
 {
-    public class ApplicantsWriteRepository : WriteRepository<Applicant> , IApplicantsWriteRepository
+    public class ApplicantsWriteRepository : WriteRepository<Applicant>, IApplicantsWriteRepository
     {
         private readonly ICurrentUserContext _currentUserContext;
-        public ApplicantsWriteRepository(ApplicationDbContext context,  ICurrentUserContext currentUserContext)
+        public ApplicantsWriteRepository(ApplicationDbContext context, ICurrentUserContext currentUserContext)
             : base(context)
         {
             _currentUserContext = currentUserContext;
         }
 
-        public override async Task<Entity> CreateAsync(Applicant entity)
+        public override async Task<Applicant> CreateAsync(Applicant entity)
         {
             entity.CompanyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
             return await base.CreateAsync(entity);
         }
 
-        public async Task<Entity> CreateFullAsync(Applicant entity)
+        public async Task<Applicant> CreateFullAsync(Applicant entity)
         {
             return await base.CreateAsync(entity);
         }
 
-        public override async Task<Entity> UpdateAsync(Applicant entity)
+        public override async Task<Applicant> UpdateAsync(Applicant entity)
         {
             entity.CompanyId = (await _currentUserContext.GetCurrentUser()).CompanyId;
             return await base.UpdateAsync(entity);
@@ -63,8 +63,8 @@ namespace Infrastructure.Repositories.Write
             await _context.SaveChangesAsync();
 
             var candidates = _context.Set<VacancyCandidate>().Where(_ => _.ApplicantId == id).ToArray();
-            
-            foreach(var candidate in candidates)
+
+            foreach (var candidate in candidates)
             {
                 var candidateToStages = _context.Set<CandidateToStage>().Where(_ => _.CandidateId == candidate.Id);
                 _context.RemoveRange(candidateToStages);

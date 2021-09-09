@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { getModifyApplicantFormData } from 'src/app/shared/helpers/modifyApplicant';
 import { CreateApplicant } from 'src/app/shared/models/applicants/create-applicant';
 import { HttpClientService } from 'src/app/shared/services/http-client.service';
 import { CsvApplicant } from '../models/CsvApplicant';
@@ -39,12 +40,9 @@ export class ApplicantCsvService {
   }
 
   public addCsvApplicant(createApplicant: CreateApplicant): Observable<CsvApplicant> {
-    const formData = new FormData();
-    formData.append('body', JSON.stringify(createApplicant));
-    if (createApplicant.cv) {
-      formData.append('cvFile', createApplicant.cv, createApplicant.cv.name);
-    }
-    return this.httpClient.postRequest<CsvApplicant>('/applicantCsv/csvApplicant', formData);
+    return this.httpClient.postRequest<CsvApplicant>(
+      '/applicantCsv/csvApplicant',
+      getModifyApplicantFormData(createApplicant),
+    );
   }
-
 }

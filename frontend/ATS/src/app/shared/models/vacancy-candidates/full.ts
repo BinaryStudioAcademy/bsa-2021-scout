@@ -12,6 +12,7 @@ export interface FullVacancyCandidate extends Model {
   phone: string;
   cvLink?: string;
   cvName?: string;
+  photoLink?: string;
   experience: number;
   experienceDescription: string;
   comments: string;

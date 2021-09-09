@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { getModifyApplicantFormData } from 'src/app/shared/helpers/modifyApplicant';
 import { Applicant } from 'src/app/shared/models/applicants/applicant';
 import { CreateApplicant } from 'src/app/shared/models/applicants/create-applicant';
 import { HttpClientService } from 'src/app/shared/services/http-client.service';
@@ -26,13 +27,13 @@ export class SelfApplyService {
       .getRequest<string[]>(`/SelfApply/email-confirm-apply/${vacancyId}/${email}`);
   }
 
-  public addSelfAppliedApplicant(createApplicant: CreateApplicant, 
-    vacancyId: string): Observable<Applicant> {
-    const formData = new FormData();
-    formData.append('body', JSON.stringify(createApplicant));
-    if (createApplicant.cv) {
-      formData.append('cvFile', createApplicant.cv, createApplicant.cv.name);
-    }
-    return this.httpService.postRequest<Applicant>(`/SelfApply/${vacancyId}`, formData);
+  public addSelfAppliedApplicant(
+    createApplicant: CreateApplicant,
+    vacancyId: string,
+  ): Observable<Applicant> {
+    return this.httpService.postRequest<Applicant>(
+      `/SelfApply/${vacancyId}`,
+      getModifyApplicantFormData(createApplicant),
+    );
   }
 }

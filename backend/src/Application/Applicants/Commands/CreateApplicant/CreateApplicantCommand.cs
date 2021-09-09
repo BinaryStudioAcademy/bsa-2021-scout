@@ -14,19 +14,22 @@ using Application.ElasticEnities.Dtos;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Path = System.IO.Path;
 
 #nullable enable
-namespace Application.Applicants.Commands
+namespace Application.Applicants.Commands.CreateApplicant
 {
     public class CreateApplicantCommand : IRequest<ApplicantDto>
     {
         public CreateApplicantDto ApplicantDto { get; set; }
         public FileDto? CvFileDto { get; set; }
+        public FileDto? PhotoFileDto { get; set; }
 
-        public CreateApplicantCommand(CreateApplicantDto applicantDto, FileDto? cvFileDto)
+        public CreateApplicantCommand(CreateApplicantDto applicantDto, FileDto? cvFileDto, FileDto? photoFileDto)
         {
             ApplicantDto = applicantDto;
             CvFileDto = cvFileDto;
+            PhotoFileDto = photoFileDto;
         }
     }
 
@@ -34,6 +37,8 @@ namespace Application.Applicants.Commands
     {
         private readonly IWriteRepository<Applicant> _applicantWriteRepository;
         private readonly IApplicantCvFileWriteRepository _applicantCvFileWriteRepository;
+        private readonly IApplicantPhotoFileWriteRepository _applicantPhotoFileWriteRepository;
+        private readonly IWriteRepository<FileInfo> _fileInfoWriteRepository;
         protected readonly ICurrentUserContext _currentUserContext;
         private readonly IMapper _mapper;
         private readonly ISender _mediator;
@@ -41,6 +46,8 @@ namespace Application.Applicants.Commands
         public CreateApplicantCommandHandler(
             IWriteRepository<Applicant> applicantWriteRepository,
             IApplicantCvFileWriteRepository applicantCvFileWriteRepository,
+            IApplicantPhotoFileWriteRepository applicantPhotoFileWriteRepository,
+            IWriteRepository<FileInfo> fileInfoWriteRepository,
             ICurrentUserContext currentUserContext,
             IMapper mapper,
             ISender mediator
@@ -48,6 +55,8 @@ namespace Application.Applicants.Commands
         {
             _applicantWriteRepository = applicantWriteRepository;
             _applicantCvFileWriteRepository = applicantCvFileWriteRepository;
+            _applicantPhotoFileWriteRepository = applicantPhotoFileWriteRepository;
+            _fileInfoWriteRepository = fileInfoWriteRepository;
             _currentUserContext = currentUserContext;
             _mapper = mapper;
             _mediator = mediator;
@@ -73,6 +82,7 @@ namespace Application.Applicants.Commands
             };
 
             await UploadCvFileIfExists(applicant, command);
+            await UploadPhotoFileIfExists(applicant, command);
 
             await _applicantWriteRepository.CreateAsync(applicant);
 
@@ -92,8 +102,47 @@ namespace Application.Applicants.Commands
                 return;
             }
 
-            var uploadedCvFileInfo = await _applicantCvFileWriteRepository.UploadAsync(applicant.Id, command.CvFileDto!.Content);
+            FileInfo uploadedCvFileInfo;
+
+            if (command.CvFileDto.Link == null)
+            {
+                uploadedCvFileInfo = await _applicantCvFileWriteRepository
+                    .UploadAsync(applicant.Id, command.CvFileDto!.Content);
+            }
+            else
+            {
+                uploadedCvFileInfo = await _fileInfoWriteRepository
+                    .CreateAsync(command.CvFileDto.ToFileInfo());
+            }
+
             applicant.CvFileInfo = uploadedCvFileInfo;
+        }
+
+        private async Task UploadPhotoFileIfExists(Applicant applicant, CreateApplicantCommand command)
+        {
+            if (command.PhotoFileDto == null)
+            {
+                return;
+            }
+
+            FileInfo uploadedPhotoFileInfo;
+
+            if (command.PhotoFileDto.Link == null)
+            {
+                uploadedPhotoFileInfo = await _applicantPhotoFileWriteRepository
+                    .UploadAsync(
+                        applicant.Id,
+                        Path.GetExtension(command.PhotoFileDto.FileName),
+                        command.PhotoFileDto!.Content
+                    );
+            }
+            else
+            {
+                uploadedPhotoFileInfo = await _fileInfoWriteRepository
+                    .CreateAsync(command.PhotoFileDto.ToFileInfo());
+            }
+
+            applicant.PhotoFileInfo = uploadedPhotoFileInfo;
         }
 
         private async Task CreateElasticEntityAndAddTagsIfExist(ApplicantDto createdApplicant, CreateApplicantCommand command)

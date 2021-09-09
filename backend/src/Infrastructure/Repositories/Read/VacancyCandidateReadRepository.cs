@@ -27,6 +27,7 @@ namespace Infrastructure.Repositories.Read
         public async Task<VacancyCandidate> GetFullAsync(string id, string vacancyId)
         {
             SqlConnection connection = _connectionFactory.GetSqlConnection();
+            await connection.OpenAsync();
 
             StringBuilder sql = new StringBuilder();
             sql.Append("SELECT *");
@@ -104,6 +105,8 @@ namespace Infrastructure.Repositories.Read
                     splitOn: "Id,Id,Id,Id,Id,Id"
                 );
 
+            await connection.CloseAsync();
+
             VacancyCandidate candidate = resultAsArray.Distinct().FirstOrDefault();
 
             // Oops! Ran out of JOINs in the first query!
@@ -112,6 +115,16 @@ namespace Infrastructure.Repositories.Read
             {
                 FileInfo cvInfo = await _applicantRepository.GetCvFileInfoAsync(candidate.ApplicantId);
                 candidate.Applicant.CvFileInfo = cvInfo;
+            }
+            catch
+            {
+                //
+            }
+
+            try
+            {
+                FileInfo photoInfo = await _applicantRepository.GetPhotoFileInfoAsync(candidate.ApplicantId);
+                candidate.Applicant.PhotoFileInfo = photoInfo;
             }
             catch
             {
