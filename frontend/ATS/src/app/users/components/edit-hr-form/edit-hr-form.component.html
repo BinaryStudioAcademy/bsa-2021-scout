@@ -29,8 +29,8 @@
                 <input matInput type="text" autocomplete="off" formControlName="firstName" placeholder="Enter first name">
             </mat-form-field>
             <mat-error
-                *ngIf="(profileFormControl.firstName.touched || submitted) && profileFormControl.firstName.errors?.required">
-                This field shouldn't be empty
+                *ngIf="(profileFormControl.lastName.touched || submitted)">
+                {{this.getFirstNameErrorMessage()}}
             </mat-error>
         </div>
         <div>
@@ -40,8 +40,8 @@
                 <input matInput type="text" autocomplete="off" formControlName="lastName" placeholder="Enter last name">
             </mat-form-field>
             <mat-error
-                *ngIf="(profileFormControl.lastName.touched || submitted) && profileFormControl.lastName.errors?.required">
-                This field shouldn't be empty
+                *ngIf="(profileFormControl.lastName.touched || submitted)">
+                {{this.getLastNameErrorMessage()}}
             </mat-error>
             </div>
             <div class="alone-field">
@@ -63,18 +63,22 @@
             <h2><b>Contacts</b></h2>
             <div class="input-flex-rows">
             <div>
-            <mat-label class="required-field">Phone</mat-label>
+            <mat-label>Phone</mat-label>
             <mat-form-field appearance="fill"
                 [ngClass]="(profileFormControl.phone.touched || submitted) && profileFormControl.phone.invalid ? 'invalid-input' : ''">
                 <input matInput type="text" autocomplete="off" formControlName="phone" placeholder="Enter phone">
             </mat-form-field>
             <mat-error
-                *ngIf="(profileFormControl.phone.touched || submitted) && profileFormControl.phone.errors?.pattern">
+                *ngIf="(profileFormControl.phone.touched || submitted) && profileFormControl.phone.errors?.required">
                 This field shouldn't be empty
+            </mat-error>
+            <mat-error
+                *ngIf="(profileFormControl.phone.touched || submitted) && profileFormControl.phone.errors?.pattern ">
+                Wrong number
             </mat-error>
             </div>
             <div>
-            <mat-label class="required-field">Skype</mat-label>
+            <mat-label>Skype</mat-label>
             <mat-form-field appearance="fill"
                 [ngClass]="(profileFormControl.skype.touched || submitted) && profileFormControl.skype.invalid ? 'invalid-input' : ''">
                 <input matInput type="text" autocomplete="off" formControlName="skype" placeholder="Enter skype">
@@ -85,7 +89,7 @@
             </mat-error>
             </div>
             <div>
-                <mat-label class="required-field">Slack</mat-label>
+                <mat-label>Slack</mat-label>
                 <mat-form-field appearance="fill"
                     [ngClass]="(profileFormControl.slack.touched || submitted) && profileFormControl.slack.invalid ? 'invalid-input' : ''">
                     <input matInput type="text" autocomplete="off" formControlName="slack" placeholder="Enter slack">
