@@ -114,6 +114,7 @@ implements AfterViewInit, OnInit, OnDestroy
           data.forEach((item) => this.followedSet.add(item.entityId));
           return this.service.getList();
         }),
+        finalize(() => (this.loading = false)),
       )
       .subscribe(
         (data) => {
@@ -158,9 +159,13 @@ implements AfterViewInit, OnInit, OnDestroy
   }
 
   public getVacancies(): void {
+    this.loading = true;
     this.service
       .getList()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        finalize(() => (this.loading = false)),
+      )
       .subscribe(
         (data) => {
           data.map((d, i) => ({
@@ -369,9 +374,16 @@ implements AfterViewInit, OnInit, OnDestroy
       )
       .subscribe(
         (_) => {
-          const position = this.mainData.findIndex(vacancy => vacancy.id === vacancyToArchive.id);
+          let position = this.mainData.findIndex(vacancy => vacancy.id === vacancyToArchive.id);
           this.mainData.splice(position, 1);
-          this.dataSource.data = this.mainData;
+
+          position = this.filteredData.findIndex(vacancy => vacancy.id === vacancyToArchive.id);
+          this.filteredData.splice(position, 1);
+
+          this.dataSource.data = this.filteredData;    
+          this.renewFilterDescription();
+          this.directive.applyFilter$.emit();
+
           this.notificationService.showSuccessMessage(
             `Vacancy ${vacancyToArchive.title} arhived!`,
           );

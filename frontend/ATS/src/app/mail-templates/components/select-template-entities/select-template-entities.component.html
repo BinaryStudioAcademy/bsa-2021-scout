@@ -1,0 +1,59 @@
+<div class="select-template-info">
+    <h2>Send email template</h2>
+    <form class="applicant-form" [formGroup]="validationGroup!" novalidate>
+        <span>Email</span>
+        <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors? 'invalid-input' : ''">
+            <input required formControlName="email" type="email" matInput placeholder="Enter email" [(ngModel)]="email">
+        </mat-form-field>
+        <div class="validation-error" *ngIf="validationGroup!.controls['email'].dirty  && validationGroup!.controls['email'].errors?.required">
+            Email address is required.
+        </div>
+        <div class="validation-error" *ngIf="validationGroup!.controls['email'].dirty  && validationGroup!.controls['email'].errors?.pattern">
+            Please enter a valid email address.
+        </div>
+    </form>
+
+    <div *ngIf="isVacancyRequired">
+        <span>Vacancy</span>
+        <mat-form-field class="full-width" appearance="fill" [ngClass]="vacancyControl!.dirty && vacancyButtonDisable ? 'invalid-input' : ''">
+            <input floatLabel="never" type="text" placeholder="Select vacancy" matInput [matAutocomplete]="autoVacancy" [formControl]="vacancyControl">
+            <mat-autocomplete autoActiveFirstOption #autoVacancy="matAutocomplete" [displayWith]="displayFnVacancy">
+                <mat-option *ngFor="let vacancy of filteredVacancies | async" [value]="vacancy">{{vacancy.title}} \ {{vacancy.project.teamInfo}}</mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <div class="validation-error" *ngIf="vacancyControl!.dirty && vacancyButtonDisable">
+            <span>Please select vacancy.</span>
+        </div>
+    </div>
+    <div *ngIf="isProjectRequired">
+        <span>Project</span>
+        <mat-form-field class="full-width" appearance="fill" [ngClass]="projectControl!.dirty && projectButtonDisable ? 'invalid-input' : ''">
+            <input floatLabel="never" type="text" placeholder="Select project" matInput [matAutocomplete]="autoProject" [formControl]="projectControl">
+            <mat-autocomplete autoActiveFirstOption #autoProject="matAutocomplete" [displayWith]="displayFnProject">
+                <mat-option *ngFor="let project of filteredProjects | async" [value]="project">{{project.name}}</mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <div class="validation-error" *ngIf="projectControl!.dirty && projectButtonDisable">
+            <span>Please select project.</span>
+        </div>
+    </div>
+    <div *ngIf="isApplicantRequired">
+        <span>Applicant</span>
+        <mat-form-field class="full-width" appearance="fill" [ngClass]="applicantControl!.dirty && applicantButtonDisable ? 'invalid-input' : ''">
+            <input floatLabel="never" type="text" placeholder="Select applicant" matInput [matAutocomplete]="autoApplicant" [formControl]="applicantControl">
+            <mat-autocomplete autoActiveFirstOption #autoApplicant="matAutocomplete" [displayWith]="displayFnApplicant">
+                <mat-option *ngFor="let applicant of filteredApplicants | async" [value]="applicant">{{applicant.firstName}} {{applicant.lastName}}</mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <div class="validation-error" *ngIf="applicantControl!.dirty && applicantButtonDisable">
+            <span>Please select applicant.</span>
+        </div>
+    </div>
+
+    <button mat-button (click)="onSend()" [disabled]="vacancyButtonDisable && isVacancyRequired 
+    || projectButtonDisable && isProjectRequired
+    || applicantButtonDisable && isApplicantRequired
+    || validationGroup!.controls['email'].errors ? true : false
+    || buttonDisable
+    ">Send</button>
+</div>

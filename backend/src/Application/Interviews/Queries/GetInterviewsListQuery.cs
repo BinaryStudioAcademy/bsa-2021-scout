@@ -45,6 +45,11 @@ namespace Application.Interviews.Queries
             var interviewsList = await _interviewRepository.GetInterviewsByCompanyIdAsync(currUser.CompanyId);
             foreach(var interview in interviewsList)
             {
+                if (!interview.IsReviewed)
+                {
+                    interview.Scheduled = DateTime.Now;
+                }
+
                 await _interviewRepository.LoadInterviewersAsync(interview);
             }
             

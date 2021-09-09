@@ -46,6 +46,22 @@ namespace Infrastructure.Repositories.Write
             {
                 throw new NotFoundException(Type.GetType("Applicant"), id);
             }
+
+            var interviews = _context.Set<Interview>().Where(_ => _.CandidateId == id).ToArray();
+            _context.RemoveRange(interviews);
+            await _context.SaveChangesAsync();
+
+            var tasks = _context.Set<ToDoTask>().Where(_ => _.ApplicantId == id).ToArray();
+
+            foreach (var task in tasks)
+            {
+                var usetToTasks = _context.Set<UserToTask>().Where(_ => _.ToDoTaskId == task.Id).ToArray();
+                _context.RemoveRange(usetToTasks);
+                await _context.SaveChangesAsync();
+            }
+            _context.RemoveRange(tasks);
+            await _context.SaveChangesAsync();
+
             var candidates = _context.Set<VacancyCandidate>().Where(_ => _.ApplicantId == id).ToArray();
 
             foreach (var candidate in candidates)

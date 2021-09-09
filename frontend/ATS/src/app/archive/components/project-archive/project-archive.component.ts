@@ -53,7 +53,7 @@ export class ProjectArchiveComponent implements OnInit, AfterViewInit, OnDestroy
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild('filter') public filter!: TableFilterComponent;
 
-  public loading: boolean = false;
+  public loading: boolean = true;
   public filterDescription: FilterDescription = [];
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
@@ -198,10 +198,7 @@ export class ProjectArchiveComponent implements OnInit, AfterViewInit, OnDestroy
       .subscribe(
         (isUnarchived) => {
           if (isUnarchived) {
-            const position = this.archivedProjects
-              .findIndex(project => project.id === projectToUnarchive.id);
-            this.archivedProjects.splice(position, 1);
-            this.dataSource.data = this.archivedProjects;
+            this.removeItemFromTableData(projectToUnarchive);
           }
         });
   }
@@ -231,10 +228,7 @@ export class ProjectArchiveComponent implements OnInit, AfterViewInit, OnDestroy
       )
       .subscribe(
         (_) => {
-          const position = this.archivedProjects
-            .findIndex(project => project.id === projectToDelete.id);
-          this.archivedProjects.splice(position, 1);
-          this.dataSource.data = this.archivedProjects;
+          this.removeItemFromTableData(projectToDelete);
           this.notificationService.showSuccessMessage(
             `Project ${projectToDelete.name} is deleted!`,
           );
@@ -245,6 +239,18 @@ export class ProjectArchiveComponent implements OnInit, AfterViewInit, OnDestroy
           );
         },
       );
+  }
+
+  private removeItemFromTableData(item: ArchivedProject) {
+    let position = this.archivedProjects.findIndex(project => project.id === item.id);
+    this.archivedProjects.splice(position, 1);
+    
+    position = this.filteredData.findIndex(project => project.id === item.id);
+    this.filteredData.splice(position, 1);
+
+    this.dataSource.data = this.filteredData;    
+    this.renewFilterDescription();
+    this.directive.applyFilter$.emit();
   }
 
   private checkIsHrLead(user: User | null): void {

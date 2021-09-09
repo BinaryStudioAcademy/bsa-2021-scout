@@ -1,0 +1,185 @@
+$primary-color: #ee2a64;
+$primary-color-white: #f6f7f9;
+$primary-font: Nunito;
+
+.interview-add-container {
+  position: relative;
+  padding: 40px 60px 40px 66px;
+  .form-container {
+    display: flex;
+    justify-self: center;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  ngx-material-timepicker-toggle svg {
+    color: #4f00b5;
+    transform: translateY(-40%);
+  }
+
+  .form-container > form {
+    width: 100%;
+    align-self: center;
+  }
+  .time-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 3vw;
+  }
+  h1 {
+    font-family: $primary-font;
+    font-size: 24px;
+    font-weight: 700;
+    font-style: normal;
+  }
+  h5 {
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-family: $primary-font;
+    font-size: 12px;
+    font-weight: 400;
+    font-style: normal;
+  }
+  button[type="submit"] {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+::ng-deep {
+  .time-container .mat-form-field-infix {
+    width: 100%;
+    height: 12px;
+  }
+  .time-container .mat-form-field-flex {
+    flex-direction: row-reverse;
+    grid-gap: 5px;
+  }
+  .mat-form-field-appearance-fill .mat-form-field-infix {
+    padding: 0;
+  }
+  .cdk-overlay-pane .mat-dialog-container .interview-add-container {
+    height: 70vh;
+  }
+  .mat-dialog-container .interview-add-container {
+    position: relative;
+  }
+  mat-datepicker-toggle svg {
+    height: 17px;
+    width: 17px;
+  }
+  .timepicker {
+    .timepicker__header {
+      background-color: $primary-color !important;
+    }
+
+    .clock-face__clock-hand {
+      background-color: $primary-color !important;
+
+      &::after {
+        background-color: $primary-color !important;
+      }
+
+      &::before {
+        border-color: $primary-color !important;
+      }
+    }
+
+    .clock-face__number {
+      > span.active {
+        background-color: $primary-color !important;
+      }
+    }
+
+    button:not(.timepicker-dial__item) {
+      color: $primary-color !important;
+    }
+  }
+}
+
+::ng-deep .mat-dialog-container .interview-add-container {
+  padding: 40px 60px 40px 66px;
+
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    padding: 0;
+    background: $primary-color-white;
+  }
+  .mat-form-field {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .mat-form-field-wrapper.mat-form-field-wrapper {
+    background: $primary-color-white;
+    border-radius: 10px;
+    margin: 0;
+    max-width: 100%;
+    padding-left: 15px;
+    padding-bottom: 0px;
+  }
+  /* Text Area */
+  .wide .mat-form-field-wrapper.mat-form-field-wrapper {
+    height: 185px;
+  }
+  .mat-form-field-flex {
+    align-items: center;
+  }
+  .mat-form-field-appearance-fill .mat-select-arrow-wrapper {
+    transform: translateY(0);
+  }
+  .wide .mat-form-field-flex {
+    height: 90%;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    padding: 0;
+    background-color: transparent;
+  }
+  textarea.mat-input-element {
+    resize: none;
+    height: 90%;
+  }
+  .mat-form-field-flex .mat-form-field-infix {
+    background: $primary-color-white;
+  }
+  /* Close Button */
+  .close-dialog {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  .close-dialog:hover {
+    cursor: pointer;
+    color: $primary-color;
+  }
+  .mat-dialog-actions {
+    min-height: 0;
+  }
+}
+::ng-deep {
+  #cdk-overlay-0 {
+    width: 800px;
+  }
+
+  .time .mat-form-field-label {
+    left: 25px;
+  }
+  .time .mat-form-field-infix {
+    display: inline-flex;
+    flex-direction: row-reverse;
+  }
+  ngx-material-timepicker-container {
+    z-index: 1000 !important;
+  }
+  .timepicker-overlay {
+    z-index: 1000 !important;
+  }
+}
+
+:host::ng-deep {
+  .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-datepicker-toggle-default-icon {
+    width: 20px;
+    height: 20px;
+    color: #4f00b5;
+  }
+  .time-container .mat-form-field-infix {
+    height: 12px;
+  }
+}

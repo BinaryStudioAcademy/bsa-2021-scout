@@ -26,6 +26,7 @@ using Infrastructure.AWS.S3;
 using Infrastructure.AWS.S3.Abstraction;
 using Infrastructure.AWS.S3.Services;
 using Infrastructure.AWS.Connection;
+using Infrastructure.Files.Write;
 using System.Threading.Tasks;
 
 namespace Infrastructure
@@ -155,6 +156,9 @@ namespace Infrastructure
 
             services.AddScoped<IApplicantPhotoFileWriteRepository, ApplicantPhotoFileWriteRepository>();
 
+            services.AddScoped<IImageReadRepository, ImageReadRepository>();
+            services.AddScoped<IImageWriteRepository, ImageWriteRepository>();
+
             services.AddScoped<IMailAttachmentFileWriteRepository, MailAttachmentFileWriteRepository>();
 
             return services;
@@ -278,6 +282,7 @@ namespace Infrastructure
 
             services.AddScoped<IReadRepository<ToDoTask>, TaskReadRepository>();
             services.AddScoped<ITaskReadRepository, TaskReadRepository>();
+            services.AddScoped<IReadRepository<UsersToInterview>, UserToInterviewRepository>();
 
 
             return services;

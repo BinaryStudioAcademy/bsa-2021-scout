@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header  [removeProjectButton]="true"></app-header>
 
 <div class="projects-page">
 
@@ -122,7 +122,7 @@
 
                 <!-- Row shown when there is no matching data. -->
                 <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell" colspan="4">
+                    <td class="mat-cell" colspan="8">
                         <p *ngIf="input.value!==''">No data matching the filter "{{input.value}}"</p>
                         <p *ngIf="input.value===''">No data to display</p>
                     </td>

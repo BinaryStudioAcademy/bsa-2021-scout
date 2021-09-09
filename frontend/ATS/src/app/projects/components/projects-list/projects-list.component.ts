@@ -12,7 +12,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { Tag } from 'src/app/shared/models/tags/tag';
 
 import { EMPTY, Subject, Subscription } from 'rxjs';
-import { mergeMap, takeUntil } from 'rxjs/operators';
+import { finalize, mergeMap, takeUntil } from 'rxjs/operators';
 import { FollowedService } from 'src/app/shared/services/followedService';
 import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 import {
@@ -57,7 +57,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
   @ViewChild('filter') public filter!: TableFilterComponent;
 
-  public loading: boolean = false;
+  public loading: boolean = true;
   public filterDescription: FilterDescription = [];
 
   public pageDescription: PageDescription = [
@@ -86,6 +86,7 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
           data.forEach((item) => this.followedSet.add(item.entityId));
           return this.projectService.getProjects();
         }),
+        finalize(() => (this.loading = false)),
       )
       .subscribe((resp) => {
         this.projects = resp.body!;
@@ -109,9 +110,13 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
   }
 
   public getProjects() {
+    this.loading = true;
     this.projectService
       .getProjects()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        finalize(() => (this.loading = false)),
+      )
       .subscribe((resp) => {
         this.projects = resp.body!;
         this.projects.forEach((d) => d.isFollowed = this.followedSet.has(d.id));
@@ -307,9 +312,16 @@ export class ProjectsListComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe(
         (_) => {
-          const position = this.projects.findIndex(project => project.id === projectToArchive.id);
+          let position = this.projects.findIndex(project => project.id === projectToArchive.id);
           this.projects.splice(position, 1);
-          this.dataSource.data = this.projects;
+          
+          position = this.filteredData.findIndex(vacancy => vacancy.id === projectToArchive.id);
+          this.filteredData.splice(position, 1);
+
+          this.dataSource.data = this.filteredData;
+          this.renewFilterDescription();
+          this.directive.applyFilter$.emit();
+
           this.notificationService.showSuccessMessage(
             `Project ${projectToArchive.name} arhived!`,
           );

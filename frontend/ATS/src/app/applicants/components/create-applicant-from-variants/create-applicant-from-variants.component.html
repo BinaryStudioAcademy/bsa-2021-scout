@@ -112,7 +112,8 @@
   <div class="variants-input">
     <div>
       <p>Phone</p>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill"
+        [ngClass]="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors? 'invalid-input' : ''">
         <input formControlName="phone" type="tel" matInput placeholder="Enter phone number"
           [(ngModel)]="createdApplicant.phone">
       </mat-form-field>

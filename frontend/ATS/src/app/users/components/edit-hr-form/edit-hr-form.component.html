@@ -1,0 +1,108 @@
+<app-spinner [loading]="loading"></app-spinner>
+<div class="edit-vacancy-container" >
+    <div class="modal-top">
+        <h1 mat-dialog-title *ngIf="this.data.userToEdit"><b>Profile edit form</b></h1>
+        <h1 mat-dialog-title *ngIf="!this.data.userToEdit"><b>User create form</b></h1>
+        <button mat-icon-button aria-label="Close" (click)="this.dialogRef.close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <h2><b>Main info</b></h2>
+    <div mat-dialog-content>
+        
+        <form class="form-container" [formGroup]="profileForm">
+            <div class="profile-flex-row">
+                <div class="avatar-container" >
+                    <input hidden class="file-hide" #file accept="image/*" type="file" (change)="handleFileInput($event.target)" >
+                    <img (click)="file.click()" class="avatar avatar-style" src="{{this.imageUrl}}" alt="Here should be an avatar" onError="this.src='../../../../assets/images/defaultAvatar.png'">
+                    <div (click)="file.click()" class="img-text">
+                    Upload
+                    </div>
+                    <button mat-icon-button aria-label="Delete" (click)="setAvatarToDelete()">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            <div>
+            <mat-label class="required-field">First name</mat-label>
+            <mat-form-field appearance="fill"
+                [ngClass]="(profileFormControl.firstName.touched || submitted) && profileFormControl.firstName.invalid ? 'invalid-input' : ''">
+                <input matInput type="text" autocomplete="off" formControlName="firstName" placeholder="Enter first name">
+            </mat-form-field>
+            <mat-error
+                *ngIf="(profileFormControl.lastName.touched || submitted)">
+                {{this.getFirstNameErrorMessage()}}
+            </mat-error>
+        </div>
+        <div>
+            <mat-label class="required-field">Last name</mat-label>
+            <mat-form-field appearance="fill"
+                [ngClass]="(profileFormControl.lastName.touched || submitted) && profileFormControl.lastName.invalid ? 'invalid-input' : ''">
+                <input matInput type="text" autocomplete="off" formControlName="lastName" placeholder="Enter last name">
+            </mat-form-field>
+            <mat-error
+                *ngIf="(profileFormControl.lastName.touched || submitted)">
+                {{this.getLastNameErrorMessage()}}
+            </mat-error>
+            </div>
+            <div class="alone-field">
+                    <mat-label>Email</mat-label>
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <input matInput formControlName="email">
+                </mat-form-field>
+        </div>
+        <div class="alone-field">
+                <mat-label>Birth date</mat-label>
+            <mat-form-field appearance="fill">
+                <input matInput [matDatepicker]="picker" formControlName="birthDay">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+        </div>
+        </div>
+        <mat-divider style="margin:40px 0"></mat-divider>
+            <h2><b>Contacts</b></h2>
+            <div class="input-flex-rows">
+            <div>
+            <mat-label>Phone</mat-label>
+            <mat-form-field appearance="fill"
+                [ngClass]="(profileFormControl.phone.touched || submitted) && profileFormControl.phone.invalid ? 'invalid-input' : ''">
+                <input matInput type="text" autocomplete="off" formControlName="phone" placeholder="Enter phone">
+            </mat-form-field>
+            <mat-error
+                *ngIf="(profileFormControl.phone.touched || submitted) && profileFormControl.phone.errors?.required">
+                This field shouldn't be empty
+            </mat-error>
+            <mat-error
+                *ngIf="(profileFormControl.phone.touched || submitted) && profileFormControl.phone.errors?.pattern ">
+                Wrong number
+            </mat-error>
+            </div>
+            <div>
+            <mat-label>Skype</mat-label>
+            <mat-form-field appearance="fill"
+                [ngClass]="(profileFormControl.skype.touched || submitted) && profileFormControl.skype.invalid ? 'invalid-input' : ''">
+                <input matInput type="text" autocomplete="off" formControlName="skype" placeholder="Enter skype">
+            </mat-form-field>
+            <mat-error
+                *ngIf="(profileFormControl.skype.touched || submitted) && profileFormControl.skype.errors?.required">
+                This field shouldn't be empty
+            </mat-error>
+            </div>
+            <div>
+                <mat-label>Slack</mat-label>
+                <mat-form-field appearance="fill"
+                    [ngClass]="(profileFormControl.slack.touched || submitted) && profileFormControl.slack.invalid ? 'invalid-input' : ''">
+                    <input matInput type="text" autocomplete="off" formControlName="slack" placeholder="Enter slack">
+                </mat-form-field>
+                <mat-error
+                    *ngIf="(profileFormControl.slack.touched || submitted) && profileFormControl.slack.errors?.required">
+                    This field shouldn't be empty
+                </mat-error>
+                </div>
+            </div>
+            <button mat-button type="submit" *ngIf="!this.data.userToEdit" style="margin:20px 0 50px"
+                [disabled]="profileForm.invalid" (click)="createUser()">Publish</button>
+            <button mat-button type="submit" *ngIf="this.data.userToEdit" style="margin:20px 0 50px"
+                [disabled]="profileForm.invalid" (click)="createUser()">Save changes</button>
+        </form>
+    </div>

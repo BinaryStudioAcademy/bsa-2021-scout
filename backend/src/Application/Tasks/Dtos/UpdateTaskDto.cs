@@ -13,6 +13,7 @@ namespace Application.Tasks.Dtos
         public DateTime DueDate { get; set; }
         public string ApplicantId { get; set; }
         public List<string> UsersIds { get; set; }
+        public bool IsReviewed { get; set; }
     }
 
     public class UpdateTaskDtoValidator : AbstractValidator<UpdateTaskDto>

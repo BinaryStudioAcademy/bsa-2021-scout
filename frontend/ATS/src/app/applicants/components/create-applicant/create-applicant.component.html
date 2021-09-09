@@ -58,7 +58,8 @@
     </ng-template>
 
     <p>Experience years</p>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill"
+        [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors ? 'invalid-input' : ''">
         <input formControlName="experience" type="number" matInput step=".1" min="0" max="60"
             [(ngModel)]="createdApplicant.experience">
     </mat-form-field>
@@ -74,7 +75,8 @@
     </mat-form-field>
 
     <p>Phone</p>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill"
+        [ngClass]="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors? 'invalid-input' : ''">
         <input formControlName="phone" type="tel" matInput placeholder="Enter phone number"
             [(ngModel)]="createdApplicant.phone">
     </mat-form-field>

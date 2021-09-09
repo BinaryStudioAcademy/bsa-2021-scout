@@ -16,6 +16,7 @@ namespace Domain.Entities
         public Vacancy Vacancy { get; set; }
         public DateTime Scheduled { get; set; }
         public double Duration { get; set; }
+        public bool IsReviewed { get; set; }
         public InterviewType InterviewType { get; set; }
         public ICollection<UsersToInterview> UserParticipants { get; set; }
         public string CandidateId { get; set; }
