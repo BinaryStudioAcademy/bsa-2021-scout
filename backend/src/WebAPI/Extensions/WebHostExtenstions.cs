@@ -393,7 +393,7 @@ namespace WebAPI.Extensions
         public static async Task<IHost> ApplyUsersToInterviews(this IHost host){
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            context.UsersToInterviews.RemoveRange(context.UsersToInterviews);
+            context.UsersToInterviews.RemoveRange(context.UsersToInterviews.Where(t => InterviewSeeds.interviewIds.Contains(t.InterviewId)));
             
             foreach(var userToInterview in UsersToInterviewSeeds.GetUsersTosInterviews())
             {
