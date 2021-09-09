@@ -19,12 +19,11 @@ namespace Infrastructure.Repositories.Read
         {
             var connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
-            StringBuilder sql = new StringBuilder();
-            sql.Append("SELECT *");
-            sql.Append(" FROM Users");
-            sql.Append(" LEFT JOIN UserToRoles ON UserToRoles.UserId = Users.Id");
-            sql.Append(" LEFT JOIN Roles ON UserToRoles.RoleId = Roles.Id");
-            sql.Append($" WHERE Users.Email = @email");
+            var sql = @"SELECT *
+                        FROM Users
+                        LEFT JOIN UserToRoles ON UserToRoles.UserId = Users.Id
+                        LEFT JOIN Roles ON UserToRoles.RoleId = Roles.Id
+                        WHERE Users.Email = @email";
 
             Dictionary<string, UserToRole> userToRoleDict = new Dictionary<string, UserToRole>();
             User cachedUser = null;
@@ -72,10 +71,11 @@ namespace Infrastructure.Repositories.Read
         {
             var connection = _connectionFactory.GetSqlConnection();
             await connection.OpenAsync();
-            StringBuilder sql = new StringBuilder();
-            sql.Append("SELECT *");
-            sql.Append(" FROM Users");
-            sql.Append($" WHERE Users.CompanyId = @companyId");
+            var sql = @"
+                        SELECT *
+                        FROM Users
+                        WHERE Users.CompanyId = @companyId
+                        order by Users.firstName, users.lastName";
 
             IEnumerable<User> users = await connection
                 .QueryAsync<User>(sql.ToString(), new { companyId = @companyId });

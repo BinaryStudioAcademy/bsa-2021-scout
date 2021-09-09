@@ -57,7 +57,7 @@
                         <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="!page"
                             (click)="$event.stopPropagation();onBookmark(row)">bookmark</mat-icon>
                         <mat-icon (click)="$event.stopPropagation();editPool(row)">edit</mat-icon>
-                        <mat-select panelClass="pool-options">
+                        <mat-select panelClass="pool-options" (click)="$event.stopPropagation();">
                             <mat-option (click)="onDetails(row.id)">
                                 <mat-icon class="info">info</mat-icon>Details
                             </mat-option>
@@ -70,7 +70,7 @@
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onDetails(row.id)" style="cursor:pointer"></tr>
 
                 <tr class="mat-row" *matNoDataRow>
                     <td class="mat-cell" colspan="4">No data maching the filter</td>

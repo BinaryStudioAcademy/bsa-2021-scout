@@ -1,0 +1,46 @@
+@import '/src/common.scss';
+@import '/src/app/shared/styles/common-modal-form.scss';
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+
+    .mat-form-field {
+        margin: 20px 0;
+    }
+
+    
+}
+
+.tags-container {
+
+    display: flex;
+
+    .tags {
+        margin:0 2px;
+        //border-radius: 20%;
+        //background-color: lightgray;
+        //color: white;
+    }
+}
+
+::ng-deep .mat-option-text {
+        display: flex;
+}
+
+.mat-select-value {
+display: table-cell;
+max-width: 0;
+width: 100%;
+/* overflow: auto; */
+//text-overflow: ellipsis;
+/* white-space: nowrap; */
+}
+
+.login-button {
+    margin: 10px 0;
+}
+
+.mat-form-field {
+    margin-right: 10px;;
+}

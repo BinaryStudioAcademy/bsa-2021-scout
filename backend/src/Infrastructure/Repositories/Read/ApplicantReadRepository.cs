@@ -52,7 +52,8 @@ namespace Infrastructure.Repositories.Read
 
             string sql = @$"SELECT a.*, fi.* FROM {_tableName} a
                            LEFT JOIN FileInfos fi ON a.CvFileInfoId = fi.Id
-                           WHERE a.CompanyId = @companyId";
+                           WHERE a.CompanyId = @companyId
+                           order by a.firstName, a.lastName";
 
             await connection.OpenAsync();
             var entities = await connection.QueryAsync<Applicant, FileInfo, Applicant>(sql,
@@ -146,7 +147,8 @@ namespace Infrastructure.Repositories.Read
                            LEFT OUTER JOIN CandidateToStages ON CandidateToStages.StageId = Stages.Id AND (Stages.[Index]=0 OR Stages.[Index]=1)
                            LEFT OUTER JOIN VacancyCandidates ON CandidateToStages.CandidateId = VacancyCandidates.Id
                            WHERE Stages.VacancyId = @vacancyId) AS Applied ON AllApplicants.Id=Applied.ApplicantId
-                           WHERE AllApplicants.CompanyId = @companyId";
+                           WHERE AllApplicants.CompanyId = @companyId
+                           order by AllApplicants.firstName, AllApplicants.lastName";
 
             var result = await connection.QueryAsync<Applicant, bool, (Applicant, bool)>(sql,
                 (applicant, isApplied) =>

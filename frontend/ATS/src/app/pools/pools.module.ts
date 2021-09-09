@@ -10,6 +10,7 @@ import { CreateTalentpoolModalComponent } from './components/create-talentpool-m
 import { EditAppPoolModalComponent } from './components/edit-app-pool-modal/edit-app-pool-modal.component';
 // eslint-disable-next-line
 import { PoolDetailsModalComponent } from './components/pool-details-modal/pool-details-modal.component';
+import { SelectModalComponent } from './components/modal/select-modal/select-modal.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { PoolDetailsModalComponent } from './components/pool-details-modal/pool-
     EditAppPoolModalComponent,
     ApplicationPoolDetailsComponent,
     PoolDetailsModalComponent,
+    SelectModalComponent,
   ],
   imports: [SharedModule, RouterModule],
   providers: [],

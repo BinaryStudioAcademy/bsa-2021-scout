@@ -27,7 +27,8 @@ namespace Infrastructure.Repositories.Read
                             Applicants a on a.Id = pa.ApplicantId inner join
                             Companies c on c.Id = p.CompanyId inner join
                             Users u on u.Id = p.CreatedById
-                            where p.id = @id";
+                            where p.id = @id
+                            order by a.firstName,a.lastName";
 
             var poolDictionary = new Dictionary<string, Pool>();
             var poolToApplicantDictionary = new Dictionary<string, PoolToApplicant>();
@@ -77,7 +78,7 @@ namespace Infrastructure.Repositories.Read
             return pool;
         }
 
-        public async Task<List<Pool>> GetPoolsWithApplicantsAsync()
+        public async Task<List<Pool>> GetPoolsWithApplicantsAsync(string companyId)
         {
             var connection = _connectionFactory.GetSqlConnection();
 
@@ -88,7 +89,8 @@ namespace Infrastructure.Repositories.Read
                             PoolToApplicants pa ON pa.PoolId = p.Id left outer join
                             Applicants a on a.Id = pa.ApplicantId inner join
                             Companies c on c.Id = p.CompanyId inner join
-                            Users u on u.Id = p.CreatedById";
+                            Users u on u.Id = p.CreatedById
+                            where c.Id = @companyId";
                             
 
             var poolDictionary = new Dictionary<string, Pool>();
@@ -99,7 +101,7 @@ namespace Infrastructure.Repositories.Read
                 sql,
                 (pool, poolToApplicant, applicant, User, Company) =>
                 {
-                    
+
                     if (!poolDictionary.TryGetValue(pool.Id, out Pool poolEntry))
                     {
 
@@ -124,8 +126,9 @@ namespace Infrastructure.Repositories.Read
                     }
 
                     return poolEntry;
-                }
-                ));
+                },
+                new { @companyId = companyId }
+                )); ;
 
             await connection.CloseAsync();
 

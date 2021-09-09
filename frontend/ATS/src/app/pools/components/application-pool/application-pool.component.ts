@@ -30,16 +30,19 @@ import { EntityType } from 'src/app/shared/enums/entity-type.enum';
 import { ApplicantIsSelected } from 'src/app/shared/models/applicants/applicant-select';
 import { AddCandidateModalComponent } 
   from 'src/app/shared/components/modal-add-candidate/modal-add-candidate.component';
+import { ApplicantsService } from 'src/app/shared/services/applicants.service';
+import { ApplicantShort } from 'src/app/shared/models/task-management/applicant-short';
 
 @Component({
   selector: 'app-application-pool',
   templateUrl: './application-pool.component.html',
   styleUrls: ['./application-pool.component.scss'],
 })
-export class ApplicationPoolComponent implements OnInit, AfterViewInit {
+export class ApplicationPoolComponent implements OnInit, AfterViewInit {    
   constructor(
     private readonly dialogService: MatDialog,
     private poolService: PoolService,
+    private readonly applicantService:ApplicantsService,
     private notificationService: NotificationService,
     private followService: FollowedService,
   ) {}
@@ -71,6 +74,8 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
   private unsubscribe$ = new Subject<void>();
   page?: string = localStorage.getItem(this.pageToken) ?? undefined;
   private followedSet: Set<string> = new Set();
+  public applicants : ApplicantShort [] = [];
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(StylePaginatorDirective) directive!: StylePaginatorDirective;
@@ -131,10 +136,29 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
           this.mainData = dataWithTotal;
           this.renewFilterDescription();
           this.updatePaginator();
+
+          this.loadApplicants();
+
         },
         (error) => {
           this.loading = false;
           this.notificationService.showErrorMessage(error);
+        },
+      );
+  }
+
+  loadApplicants() {
+    this.applicantService
+      .getApplicants()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (resp) => {
+          this.applicants = resp.map(value => {
+            return {
+              ...value, image:''};
+          });
+        },        
+        (error) => {
         },
       );
   }
@@ -305,12 +329,21 @@ export class ApplicationPoolComponent implements OnInit, AfterViewInit {
   }
 
   onDetails(id: string) {
-    this.dialogService.open(PoolDetailsModalComponent, {
+    let onDetail = this.dialogService.open(PoolDetailsModalComponent, {
       width: '800px',
-      height: '90vh',
-      data: id,
+      height: '80vh',
+      data: {id:id, applicants: this.applicants},
       panelClass: 'pool-dialog-container',
     });
+
+    onDetail.afterClosed().subscribe((result) => {});
+
+    const dialogSubmitSubscription =
+    onDetail.componentInstance.submitClicked.subscribe((result) => {
+      this.updatePool(result);
+      dialogSubmitSubscription.unsubscribe();
+    });
+
   }
 
   editPool(pool: ApplicantsPool) {
