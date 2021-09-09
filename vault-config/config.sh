@@ -1,5 +1,5 @@
 # Waiting till ats_database container is ready
-/sleep 30
+sleep 30
 
 /opt/mssql-tools/bin/sqlcmd -S ats_database -U sa -P ${SA_PASSWORD} -d master -i ./app/vault-config/setup.sql
 
