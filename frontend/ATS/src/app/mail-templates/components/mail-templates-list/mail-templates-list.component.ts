@@ -21,6 +21,8 @@ import { DeleteConfirmComponent } from
 import { MailTemplateAddComponent } from '../mail-template-add/mail-template-add.component';
 import { MailTemplateEditComponent } from '../mail-template-edit/mail-template-edit.component';
 import { FollowedService } from 'src/app/shared/services/followedService';
+import { SelectTemplateEntitiesComponent } 
+  from '../select-template-entities/select-template-entities.component';
 
 @Component({
   selector: 'app-mail-templates-list',
@@ -182,5 +184,61 @@ export class MailTemplatesListComponent implements AfterViewInit, OnInit, OnDest
             });
         }
       });
+  }
+
+  isVacancyRequired: boolean = false;
+  isProjectRequired: boolean = false;
+  isApplicantRequired: boolean = false;
+
+  sendEmail(mailTemplate: MailTemplateTable){
+    this.parse(mailTemplate.html);
+
+    this.dialog.open(SelectTemplateEntitiesComponent, 
+      { width: '400px',
+        data:{
+          id: mailTemplate.id,
+          isVacancyRequired: this.isVacancyRequired,
+          isProjectRequired: this.isProjectRequired,
+          isApplicantRequired: this.isApplicantRequired,
+        }});
+  }
+
+  parse(html: string){
+    this.isVacancyRequired = false;
+    this.isProjectRequired = false;
+    this.isApplicantRequired = false;
+    var regExp = /{([^}]+)}/g;
+    let words = html.match(regExp);
+    let vacancyAttributesArray = ['title', 'description', 'requirements', 'salaryFrom', 'salaryTo'];
+    let projectAttributesArray = ['title', 'logo', 'description', 'teamInfo', 'websiteLink'];
+    let applicantAttributesArray = ['firstName', 'lastName', 'birthDate', 'phone', 'skype', 
+      'linkedInUrl', 'experience', 'experienceDescription','skills'];
+
+    words?.forEach(word => {
+      if(word.substr(1,7) == 'vacancy')
+      {
+        vacancyAttributesArray.forEach(vacancyAttribute => {
+          if(vacancyAttribute == word.slice(9, -1)){
+            this.isVacancyRequired = true;
+          }
+        });
+      }
+      else if(word.substr(1,7) == 'project')
+      {
+        projectAttributesArray.forEach(projectAttribute => {
+          if(projectAttribute == word.slice(9, -1)){
+            this.isProjectRequired = true;
+          }
+        });
+      }
+      else if(word.substr(1,9) == 'applicant')
+      {
+        applicantAttributesArray.forEach(applicantAttribute => {
+          if(applicantAttribute == word.slice(11, -1)){
+            this.isApplicantRequired = true;
+          }
+        });
+      }
+    });
   }
 }

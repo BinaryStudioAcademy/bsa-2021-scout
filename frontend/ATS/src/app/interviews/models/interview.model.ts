@@ -16,4 +16,7 @@ export interface Interview{
   duration: number,
   candidate: Applicant,
   createdDate: Date,
+  note: string,
+  vacancyId: string,
+  candidateId: string,
 }

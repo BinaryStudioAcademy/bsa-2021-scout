@@ -16,6 +16,7 @@ namespace Application.Stages.Dtos
         public int Index { get; set; }
         public bool IsReviewable { get; set; }
         public string VacancyId { get; set; }
+        public string? DataJson { get; set; }
         public ICollection<ActionDto> Actions { get; set; }
         public ICollection<ShortVacancyCandidateWithApplicantDto> CandidateToStages { get; set; }
         public ICollection<ReviewDto> Reviews { get; set; }

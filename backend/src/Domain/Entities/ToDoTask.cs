@@ -13,6 +13,7 @@ namespace Domain.Entities
         public DateTime DueDate { get; set; }
         public DateTime? DoneDate { get; set; }
         public bool IsDone { get; set; }
+        public bool IsReviewed { get; set; }
         public string CreatedById { get; set; }
         public string Note { get; set; }
         public string CompanyId { get; set; }

@@ -15,7 +15,7 @@ export class InterviewCardComponent implements OnInit {
 
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit(): void {
-  
+
   }
   getDateAfter(date: string, duration:number): Date{
 
