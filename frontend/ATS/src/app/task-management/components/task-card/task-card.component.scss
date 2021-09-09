@@ -66,6 +66,10 @@
         .name {
             padding: 0 10px;
             margin-right: auto;
+            white-space: nowrap;
+            width: 85%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 

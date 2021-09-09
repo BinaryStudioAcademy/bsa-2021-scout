@@ -129,6 +129,7 @@ export class UsersTableComponent implements AfterViewInit, OnDestroy {
   }
 
   public getUsers() {
+    this.loading = true;
     this.userDataService
       .getUsersForHrLead()
       .pipe(

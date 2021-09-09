@@ -5,6 +5,9 @@ import { Interview } from '../../models/interview.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataErrorOccurredEvent } from 'devextreme/ui/tree_list';
+import { CreateInterviewComponent } from '../create-interview/create-interview.component';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateInterviewDto } from '../../models/create-interview-dto.model';
 import { S } from '@angular/cdk/keycodes';
 
 @Pipe({
@@ -44,7 +47,9 @@ export class InterviewsPageComponent{
   private interviewsDateSet: Date[] = [];
   private interviews: Interview[] = [];
   public dateArrived!: Promise<boolean>;
-  constructor(public service: InterviewsService) {
+  public toogleNeedReview: boolean = true;
+  constructor(public service: InterviewsService,
+    private dialog: MatDialog) {
     service.getInterviews()
       .pipe(
         takeUntil(this.unsubscribe$),
@@ -54,6 +59,7 @@ export class InterviewsPageComponent{
         this.interviews = resp.body!;
         this.interviews = this.interviews.sort((a, b) =>new Date(a.scheduled).getTime() 
           - new Date(b.scheduled).getTime());
+        this.interviews = this.interviews.sort((a, b) => a.isReviewed > b.isReviewed? -1 : 1);
         this.dateArrived = Promise.resolve(true);
         this.generateCalendarDays();
       },
@@ -133,5 +139,79 @@ export class InterviewsPageComponent{
     && date.getFullYear() == sched.getFullYear()&&
     date.getDate() == sched.getDate(),
     );
+  }
+
+  public OnEdit(interview : Interview){
+    var interviewToEdit: CreateInterviewDto = new CreateInterviewDto(interview);
+    const dialogRef = this.dialog.open(CreateInterviewComponent, {
+      data: {
+        interview: interviewToEdit,
+      },
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.service.getInterviews()
+        .pipe(
+          takeUntil(this.unsubscribe$),
+        )
+        .subscribe((resp) => 
+        {
+          this.interviews = resp.body!;
+          this.interviewsDateSet = [];
+          this.date = new Date(Date.now());
+          this.interviews.forEach(
+            i => {
+              this.interviewsDateSet.push(new Date(i.scheduled));
+            });
+          this.dateArrived = Promise.resolve(true);
+          this.generateCalendarDays();
+        },
+        );
+    });
+  }
+
+  public OnCreate(): void {
+    const dialogRef = this.dialog.open(CreateInterviewComponent);
+    dialogRef.afterClosed().subscribe(() => {
+      this.service.getInterviews()
+        .pipe(
+          takeUntil(this.unsubscribe$),
+        )
+        .subscribe((resp) => 
+        {
+          this.interviews = resp.body!;
+          this.interviewsDateSet = [];
+          this.date = new Date(Date.now());
+          this.interviews.forEach(
+            i => {
+              this.interviewsDateSet.push(new Date(i.scheduled));
+            });
+          this.dateArrived = Promise.resolve(true);
+          this.generateCalendarDays();
+        },
+        );
+    });
+  }
+
+  cachedNeedReviewInterviews: Interview[] = [];
+  onToogleNeedReview() {
+    this.toogleNeedReview = !this.toogleNeedReview;
+
+    this.calendar.forEach(day=>{
+      if(day.isToday)
+      {
+        if(this.toogleNeedReview)
+        {
+          this.cachedNeedReviewInterviews.forEach(cachedInterview => 
+            day.interviews.push(cachedInterview));
+          day.interviews.sort((a, b) => a.isReviewed > b.isReviewed ? -1 : 1);
+        }
+        else
+        {
+          this.cachedNeedReviewInterviews = day.interviews
+            .filter(interview => !interview.isReviewed);
+          day.interviews = day.interviews.filter(interview => interview.isReviewed);
+        }
+      }
+    });
   }
 }

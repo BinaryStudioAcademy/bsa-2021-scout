@@ -2,6 +2,7 @@
 using Application.MailTemplates.Dtos;
 using Application.Projects.Dtos;
 using Application.Vacancies.Dtos;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Abstractions;
 using MediatR;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Application.MailTemplates.Queries
 {
-    public class GetMailTemplateWithReplacedPlaceholdersQuery : IRequest<MailTemplate>
+    public class GetMailTemplateWithReplacedPlaceholdersQuery : IRequest<MailTemplateSendDto>
     {
         public string MailTempalteId;
         public Vacancy Vacancy;
@@ -30,15 +31,17 @@ namespace Application.MailTemplates.Queries
         }
     }
 
-    public class GetMailTemplateWithReplacedPlaceholdersQueryHandler : IRequestHandler<GetMailTemplateWithReplacedPlaceholdersQuery, MailTemplate>
+    public class GetMailTemplateWithReplacedPlaceholdersQueryHandler : IRequestHandler<GetMailTemplateWithReplacedPlaceholdersQuery, MailTemplateSendDto>
     {
 
         protected readonly IReadRepository<MailTemplate> _readRepository;
-        public GetMailTemplateWithReplacedPlaceholdersQueryHandler(IReadRepository<MailTemplate> readRepository)
+        private readonly ISender _mediator;
+        public GetMailTemplateWithReplacedPlaceholdersQueryHandler(IReadRepository<MailTemplate> readRepository, ISender mediator)
         {
             _readRepository = readRepository;
+            _mediator = mediator;
         }
-        public async Task<MailTemplate> Handle(GetMailTemplateWithReplacedPlaceholdersQuery query, CancellationToken cancellationToken)
+        public async Task<MailTemplateSendDto> Handle(GetMailTemplateWithReplacedPlaceholdersQuery query, CancellationToken cancellationToken)
         {
             var placeholders = new Dictionary<string, string>()
             {
@@ -62,7 +65,8 @@ namespace Application.MailTemplates.Queries
                 {"{applicant.skills}", query.Applicant.Skills},
             };
 
-            var mailTemplate = await _readRepository.GetAsync(query.MailTempalteId);
+            var getMailWithAttachmentFilesTemplateQuery = new GetMailWithAttachmentFilesTemplateQuery(query.MailTempalteId);
+            var mailTemplate = await _mediator.Send(getMailWithAttachmentFilesTemplateQuery);
 
             foreach (var placeholder in placeholders)
             {

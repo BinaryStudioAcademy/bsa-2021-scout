@@ -287,6 +287,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Contacted',
       index: 1,
       type: 1,
+      dataJson: null,
       actions: [
         {
           id: '1',
@@ -305,6 +306,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Hr interview',
       index: 2,
       type: 3,
+      dataJson: null,
       actions: [
         {
           id: '',
@@ -323,6 +325,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Tech interview',
       index: 3,
       type: 3,
+      dataJson: null,
       actions: [
         {
           id: '',
@@ -341,6 +344,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Live coding session',
       index: 4,
       type: 1,
+      dataJson: null,
       actions: [
         {
           id: '',
@@ -359,6 +363,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Pre-offer',
       index: 5,
       type: 4,
+      dataJson: null,
       actions: [
         {
           id: '',
@@ -377,6 +382,7 @@ export class EditVacancyComponent implements OnInit, OnDestroy {
       name: 'Offer',
       index: 6,
       type: 4,
+      dataJson: null,
       actions: [
         {
           id: '',

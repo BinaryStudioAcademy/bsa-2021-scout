@@ -21,12 +21,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { DxHtmlEditorModule, DxPopupModule } from 'devextreme-angular';
+import { SelectTemplateEntitiesComponent } 
+  from './components/select-template-entities/select-template-entities.component';
 
 @NgModule({
   declarations: [
     MailTemplatesListComponent,
     MailTemplateAddComponent,
     MailTemplateEditComponent,
+    SelectTemplateEntitiesComponent,
   ],
   imports: [
     CommonModule,

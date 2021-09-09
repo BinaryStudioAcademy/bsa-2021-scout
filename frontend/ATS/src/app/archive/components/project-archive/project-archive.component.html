@@ -69,7 +69,7 @@
                     <td mat-cell *matCellDef="let row">
                         <div class="name-logo">
                             <app-user-profile [user]=row.archivedProjectData.user>
-                                <img src="{{row.logo}}"
+                                <img src="{{row.archivedProjectData.user.avatarUrl}}"
                                     onError="this.src='../../../../assets/images/defaultAvatar.png'" />
                                 <span>{{row.archivedProjectData.user.firstName + " " +
                                     row.archivedProjectData.user.lastName}}</span>

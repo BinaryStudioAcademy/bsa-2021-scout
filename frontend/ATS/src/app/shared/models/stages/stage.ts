@@ -7,6 +7,7 @@ export interface Stage {
   type: number;
   actions: Action[];
   // stageType Type { get; set; }
+  dataJson: string | null | undefined;
   index: number;
   IsReviewable: boolean;
   vacancyId: string;

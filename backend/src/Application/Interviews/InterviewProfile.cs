@@ -24,6 +24,13 @@ namespace Application.Interviews
                     UserId = ui
                 }))
             );
+            CreateMap<UpdateInterviewDto, Interview>()
+            .ForMember(dest => dest.UserParticipants,
+                opt => opt.MapFrom(src => src.UserParticipants.Select(ui => new UsersToInterview()
+                {
+                    UserId = ui
+                }))
+            );
         }
     }
 }

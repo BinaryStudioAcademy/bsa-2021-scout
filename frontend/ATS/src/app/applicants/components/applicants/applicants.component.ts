@@ -204,6 +204,15 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator!;
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'name':
+          return `${item.firstName}  ${item.lastName}`;
+        default:
+          return (item as IIndexable)[property];
+      }
+    };
   }
 
   public renewFilterDescription(): void {
@@ -405,31 +414,8 @@ export class ApplicantsComponent implements OnInit, OnDestroy, AfterViewInit {
   public toggleTags(applicant: ViewableApplicant): void {
     applicant.isShowAllTags = applicant.isShowAllTags ? false : true;
   }
+}
 
-  public sortData(sort: Sort): void {
-    this.dataSource.data = (this.dataSource.data as ViewableApplicant[]).sort(
-      (a, b) => {
-        const isAsc = sort.direction === 'asc';
-
-        switch (sort.active) {
-          case 'name':
-            return this.compareRows(
-              a.firstName + ' ' + a.lastName,
-              b.firstName + ' ' + b.lastName,
-              isAsc,
-            );
-          default:
-            return 0;
-        }
-      },
-    );
-  }
-
-  private compareRows(
-    a: number | string,
-    b: number | string,
-    isAsc: boolean,
-  ): number {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-  }
+interface IIndexable {
+  [key: string]: any;
 }
