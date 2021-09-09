@@ -168,7 +168,7 @@ export class CreateInterviewComponent implements OnDestroy {
     });
     this.dialogRef.disableClose = true;
     this.dialogRef.backdropClick().subscribe((_) => this.onFormClose());
-    this.usersService.getUsers()
+    this.usersService.getAllUsers()
       .pipe(
         takeUntil(this.unsubscribe$),
       )
