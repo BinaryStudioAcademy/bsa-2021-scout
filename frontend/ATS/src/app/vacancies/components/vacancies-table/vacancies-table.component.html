@@ -94,9 +94,9 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 <tr class="mat-row" *matNoDataRow>
-                    <td *ngIf="input.value !== ''" class="mat-cell" colspan="7">No data matching the filter
+                    <td *ngIf="input.value !== ''" class="mat-cell" colspan="8">No data matching the filter
                         "{{input.value}}"</td>
-                    <td *ngIf="input.value === ''" class="mat-cell" colspan="7">No data for display</td>
+                    <td *ngIf="input.value === ''" class="mat-cell" colspan="8">No data for display</td>
                 </tr>
             </table>
             <mat-paginator class="mat-paginator-sticky" #paginator appStylePaginator
