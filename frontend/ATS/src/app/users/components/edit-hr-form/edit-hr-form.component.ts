@@ -58,8 +58,16 @@ export class EditHrFormComponent implements OnInit, OnDestroy {
     public notificationService: NotificationService,
   ) {
     this.profileForm = new FormGroup({
-      firstName: new FormControl('', [Validators.required, firstAndLastNameUpperValidation, this.loginRegistCommonComponent.firstAndLastNameValidation]),
-      lastName: new FormControl('', [Validators.required, firstAndLastNameUpperValidation, this.loginRegistCommonComponent.firstAndLastNameValidation]),    
+      firstName: new FormControl('', [
+        Validators.required,
+        firstAndLastNameUpperValidation,
+        this.loginRegistCommonComponent.firstAndLastNameValidation,
+      ]),
+      lastName: new FormControl('', [
+        Validators.required,
+        firstAndLastNameUpperValidation,
+        this.loginRegistCommonComponent.firstAndLastNameValidation,
+      ]),    
       birthDay: new FormControl({value:'', disabled:true}),
       phone: new FormControl('',
         Validators.pattern(
@@ -182,6 +190,24 @@ export class EditHrFormComponent implements OnInit, OnDestroy {
   
   get profileFormControl() {
     return this.profileForm.controls;
+  }
+  getFirstNameErrorMessage() {
+    return this.profileFormControl.firstName.errors?.required ?
+      'You must enter a value' :
+      this.profileFormControl.firstName.errors?.firstandlastnameupper ?
+        'Should start with upper latin letter' :
+        this.profileFormControl.firstName.errors?.firstandlastname
+          ? 'Only latin letters, spaces, hyphens' :
+          '';
+  }
+  getLastNameErrorMessage() {
+    return this.profileFormControl.lastName.errors?.required ? 
+      'You must enter a value' :
+      this.profileFormControl.lastName.errors?.firstandlastnameupper ? 
+        'Should start with upper latin letter' :
+        this.profileFormControl.lastName.errors?.firstandlastname ? 
+          'Only latin letters, spaces, hyphens' :
+          '';
   }
 
   

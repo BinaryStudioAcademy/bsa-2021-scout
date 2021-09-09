@@ -29,16 +29,8 @@
                 <input matInput type="text" autocomplete="off" formControlName="firstName" placeholder="Enter first name">
             </mat-form-field>
             <mat-error
-                *ngIf="(profileFormControl.firstName.touched || submitted) && profileFormControl.firstName.errors?.required">
-                This field shouldn't be empty
-            </mat-error>
-            <mat-error
-                    *ngIf="(profileFormControl.firstName.touched || submitted) && profileFormControl.firstName.errors?.firstandlastnameupper && !profileFormControl.firstName.errors?.required">
-                    Should start with upper latin letter
-            </mat-error>
-            <mat-error
-                    *ngIf="(profileFormControl.firstName.touched || submitted) && profileFormControl.firstName.errors?.firstandlastname && !profileFormControl.firstName.errors?.required && !profileFormControl.firstName.errors?.firstandlastnameupper">
-                    Only latin letters, spaces, hyphens
+                *ngIf="(profileFormControl.lastName.touched || submitted)">
+                {{this.getFirstNameErrorMessage()}}
             </mat-error>
         </div>
         <div>
@@ -48,21 +40,8 @@
                 <input matInput type="text" autocomplete="off" formControlName="lastName" placeholder="Enter last name">
             </mat-form-field>
             <mat-error
-                *ngIf="(profileFormControl.lastName.touched || submitted) && profileFormControl.lastName.errors?.required">
-                This field shouldn't be empty
-            </mat-error>
-            <mat-error
-                    *ngIf="(profileFormControl.lastName.touched || submitted) 
-                    && profileFormControl.lastName.errors?.firstandlastnameupper 
-                    && !profileFormControl.lastName.errors?.required">
-                    Should start with upper latin letter
-            </mat-error>
-            <mat-error
-                    *ngIf="(profileFormControl.lastName.touched || submitted) 
-                    && profileFormControl.lastName.errors?.firstandlastname 
-                    && !profileFormControl.lastName.errors?.required 
-                    && !profileFormControl.lastName.errors?.firstandlastnameupper">
-                    Only latin letters, spaces, hyphens
+                *ngIf="(profileFormControl.lastName.touched || submitted)">
+                {{this.getLastNameErrorMessage()}}
             </mat-error>
             </div>
             <div class="alone-field">
