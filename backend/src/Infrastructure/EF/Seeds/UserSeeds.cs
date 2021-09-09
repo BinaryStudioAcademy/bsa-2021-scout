@@ -18,7 +18,7 @@ namespace Infrastructure.EF.Seeds
                     CompanyId = "0b129ab3-7375-4c96-95a5-8efa95a455b4",
                     IsEmailConfirmed = true,
                     Password = "scouttest",
-                    CreationDate = Common.GetRandomDateTime(new DateTime(1990, 1, 11), new DateTime(2003, 7, 12)),
+                    CreationDate =  Common.GetRandomDateTime(new DateTime(2020, 1, 12), new DateTime(2021, 7, 12)),
                     BirthDate = new DateTime(1998, 9, 11)
                 },
                 new User {
@@ -29,7 +29,7 @@ namespace Infrastructure.EF.Seeds
                     CompanyId = "0b129ab3-7375-4c96-95a5-8efa95a455b4",
                     IsEmailConfirmed = true,
                     Password = "hrlead",
-                    CreationDate = Common.GetRandomDateTime(new DateTime(1990, 1, 11), new DateTime(2003, 7, 12)),
+                    CreationDate = Common.GetRandomDateTime(new DateTime(2020, 1, 12), new DateTime(2021, 7, 12)),
                     BirthDate = new DateTime(1990, 1, 11)
                 },
                 new User {
@@ -40,7 +40,7 @@ namespace Infrastructure.EF.Seeds
                     CompanyId = "0b129ab3-7375-4c96-95a5-8efa95a455b4",
                     IsEmailConfirmed = true,
                     Password = "family",
-                    CreationDate = Common.GetRandomDateTime(new DateTime(1990, 1, 11), new DateTime(2003, 7, 12)),
+                    CreationDate = Common.GetRandomDateTime(new DateTime(2020, 1, 12), new DateTime(2021, 7, 12)),
                     BirthDate = new DateTime(1989, 8, 29)
                 },
                 new User {
@@ -51,7 +51,7 @@ namespace Infrastructure.EF.Seeds
                     Email = "lanabanana@qmail.com",
                     IsEmailConfirmed  = true,
                     Password = "ResidentHR",
-                    CreationDate = Common.GetRandomDateTime(new DateTime(1990, 1, 11), new DateTime(2003, 7, 12)),
+                    CreationDate = Common.GetRandomDateTime(new DateTime(2020, 1, 12), new DateTime(2021, 7, 12)),
                     BirthDate = new DateTime(2000, 4, 12)
                 },
                 new User {
@@ -62,7 +62,7 @@ namespace Infrastructure.EF.Seeds
                     Email = "lina23ista@redsail.org",
                     IsEmailConfirmed  = true,
                     Password = "Husky2012",
-                    CreationDate = Common.GetRandomDateTime(new DateTime(1990, 1, 11), new DateTime(2003, 7, 12)),
+                    CreationDate = Common.GetRandomDateTime(new DateTime(2020, 1, 12), new DateTime(2021, 7, 12)),
                     BirthDate = new DateTime(2002, 11, 12)
                 },
                 new User {
@@ -73,7 +73,7 @@ namespace Infrastructure.EF.Seeds
                     Email = "emerty.cult@fast.hr",
                     IsEmailConfirmed  = true,
                     Password = "NewYork2001",
-                    CreationDate = Common.GetRandomDateTime(new DateTime(1990, 1, 11), new DateTime(2003, 7, 12)),
+                    CreationDate = Common.GetRandomDateTime(new DateTime(2020, 1, 12), new DateTime(2021, 7, 12)),
                     BirthDate = new DateTime(1994, 4, 14)
                 },
                 new User {
@@ -84,7 +84,7 @@ namespace Infrastructure.EF.Seeds
                     Email = "miramira@work.done",
                     IsEmailConfirmed  = true,
                     Password = "WorkDone",
-                    CreationDate = Common.GetRandomDateTime(new DateTime(1990, 1, 11), new DateTime(2003, 7, 12)),
+                    CreationDate = Common.GetRandomDateTime(new DateTime(2020, 1, 12), new DateTime(2021, 7, 12)),
                     BirthDate = new DateTime(1993, 2, 23)
                 },
                 new User {
@@ -95,7 +95,7 @@ namespace Infrastructure.EF.Seeds
                     Email = "jonny23@dark.art",
                     IsEmailConfirmed  = true,
                     Password = "DCtheBest",
-                    CreationDate = Common.GetRandomDateTime(new DateTime(1990, 1, 11), new DateTime(2003, 7, 12)),
+                    CreationDate = Common.GetRandomDateTime(new DateTime(2020, 1, 12), new DateTime(2021, 7, 12)),
                     BirthDate = new DateTime(1997, 9, 30)
                 }
             };

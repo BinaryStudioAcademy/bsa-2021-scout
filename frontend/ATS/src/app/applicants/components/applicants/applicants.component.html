@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header [removeApplicantButton]="true"></app-header>
 <app-applicants-head (search)="applySearchValue($event)" (togglePage)="filter.setPage($event)"
     (applicantCreated)="createApplicant($event)" #head>
 </app-applicants-head>

@@ -1,11 +1,18 @@
 <app-spinner [loading]="loading"></app-spinner>
 <mat-toolbar>
-  <app-button *ngIf="!removeButton" (click)="openDialog()">
+  <app-button *ngIf="!removeInterviewButton" (click)="openInterviewDialog()">
+    + New interview
+  </app-button>
+  <app-button *ngIf="!removeProjectButton" (click)="openProjectDialog()">
+    + New project
+  </app-button>
+  <app-button *ngIf="!removeApplicantButton" (click)="openApplicantDialog()">
+    + New applicant
+  </app-button>
+  <app-button *ngIf="!removeVacancyButton" (click)="openVacancyDialog()">
     + New vacancy
   </app-button>
-  <button mat-icon-button>
-    <mat-icon matBadge="&#8288;" matBadgeColor="primary" matBadgeSize="small">notifications</mat-icon>
-  </button>
+
   <div [matMenuTriggerFor]="menu" #menuTrigger>
     <div class="avatar-info">
       <img

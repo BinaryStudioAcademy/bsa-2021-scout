@@ -1,4 +1,4 @@
-<div class="card" *ngIf="interview.isReviewed" [ngClass]="{'meetingColors': interview.interviewType%2 === 0}">
+<div class="card" *ngIf="interview.isReviewed" [ngClass]="{'purpleColors':interview.interviewType !== 2 && interview.interviewType !== 3, 'blueColors':interview.interviewType === 2 || interview.interviewType === 3}">
     <div class="type">{{getStatus(interview.interviewType)}}</div>
     <div>{{interview.candidate.firstName + " " + 
         interview.candidate.lastName}}</div>
