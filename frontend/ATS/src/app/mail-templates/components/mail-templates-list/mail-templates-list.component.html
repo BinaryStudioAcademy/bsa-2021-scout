@@ -18,7 +18,8 @@
     <div class="template-list">
 
         <div class="mat-elevation-z8">
-            <table mat-table [dataSource]="dataSource" matSort>
+            <table mat-table [dataSource]="dataSource" matSortActive="dateCreation"
+            matSortDirection="desc" matSort>
                 <!-- Title Column -->
                 <ng-container matColumnDef="title">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
