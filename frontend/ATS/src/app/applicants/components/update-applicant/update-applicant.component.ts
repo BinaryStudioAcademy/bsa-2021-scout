@@ -49,7 +49,9 @@ export class UpdateApplicantComponent implements OnDestroy {
         elasticType: 1,
       },
       hasCv: applicant.hasCv,
+      hasPhoto: applicant.hasPhoto,
       cv: null,
+      photo: null,
     };
     Object.assign<Tag[], Tag[]>(this.updatedApplicant.tags.tagDtos, applicant.tags.tagDtos);
   }
@@ -82,6 +84,10 @@ export class UpdateApplicantComponent implements OnDestroy {
 
   public uploadApplicantCv(files: File[]): void {
     this.updatedApplicant.cv = files[0];
+  }
+
+  public uploadApplicantPhoto(files: File[]): void {
+    this.updatedApplicant.photo = files[0];
   }
 
   public ngOnDestroy(): void {

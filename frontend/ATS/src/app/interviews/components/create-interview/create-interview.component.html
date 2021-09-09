@@ -1,0 +1,187 @@
+<app-spinner [loading]="loading"></app-spinner>
+<div class="interview-add-container">
+    <h1 mat-title>{{ editing ? "Update" : "Create" }} interview</h1>
+    <div mat-dialog-actions>
+        <mat-icon class="close-dialog" (click)="onFormClose()">close</mat-icon>
+    </div>
+    <div class="form-container">
+
+        <form [formGroup]="interviewCreateForm" (ngSubmit)="onSubmited()">
+            <h5 class="required-field">Title</h5>
+            <mat-form-field floatLabel="never"
+                [ngClass]="this.interviewCreateForm.controls['title'].dirty && this.interviewCreateForm.controls['title'].errors? 'invalid-input': ''">
+                <input matInput type="text" formControlName="title" placeholder="Enter your title">
+            </mat-form-field>
+            <div class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['title'].dirty && this.interviewCreateForm.controls['title'].errors?.required">
+                Is required.
+            </div>
+            <div class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['title'].dirty && this.interviewCreateForm.controls['title'].errors?.minlength">
+                Title must be at least 3 characters long.
+            </div>
+            <div class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['title'].dirty && this.interviewCreateForm.controls['title'].errors?.maxlength">
+                Title must be not greater than 30 characters long.
+            </div>
+
+            <h5 class="required-field">Interviewers</h5>
+            <div class="multiselect-wrp">
+                <app-multiselect [data]="usersOptions" placeholder="Select names"
+                    [selected]="usersToOptions(interviewCreateForm.get('interviewers')!.value)"
+                    (selectedChange)="interviewCreateForm.get('interviewers')!.setValue(usersToActions($event, 1))">
+                </app-multiselect>
+            </div>
+            <mat-error  class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['interviewers'].touched && this.interviewCreateForm.controls['interviewers'].errors?.required">
+                This field shouldn't be empty
+            </mat-error>
+
+            <h5 class="required-field">Candidate</h5>
+            <mat-form-field appearance="fill"
+                [ngClass]="this.interviewCreateForm.controls['candidateId'].touched &&  this.interviewCreateForm.controls['candidateId'].invalid ? 'invalid-input' : ''">
+                <mat-select #fontSize placeholder="Select name" formControlName="candidateId">
+                    <mat-option *ngFor="let applicant of applicants" [value]="applicant.id">{{applicant.firstName}}
+                        {{applicant.lastName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-error  class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['candidateId'].touched &&  this.interviewCreateForm.controls['candidateId'].errors?.required">
+                This field shouldn't be empty
+            </mat-error>
+
+            <h5 class="required-field">Position</h5>
+            <mat-form-field appearance="fill"
+                [ngClass]="this.interviewCreateForm.controls['vacancyId'].touched &&  this.interviewCreateForm.controls['vacancyId'].invalid ? 'invalid-input' : ''">
+                <mat-select #fontSize placeholder="Select position" formControlName="vacancyId">
+                    <mat-option *ngFor="let vacancy of vacancies" [value]="vacancy.id">{{vacancy.title}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-error  class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['vacancyId'].touched &&  this.interviewCreateForm.controls['vacancyId'].errors?.required">
+                This field shouldn't be empty
+            </mat-error>
+
+            <h5 class="required-field">Interview type</h5>
+            <mat-form-field appearance="fill"
+                [ngClass]="this.interviewCreateForm.controls['interviewType'].touched &&  this.interviewCreateForm.controls['interviewType'].invalid ? 'invalid-input' : ''">
+                <mat-select #fontSize placeholder="Select type" formControlName="interviewType">
+                    <mat-option *ngFor="let type of interviewTypes" [value]="type.type">{{type.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-error  class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['interviewType'].touched &&  this.interviewCreateForm.controls['interviewType'].errors?.required">
+                This field shouldn't be empty
+            </mat-error>
+            <div class="time-container">
+                <div>
+                    <h5 class="required-field">Date</h5>
+                    <mat-form-field floatLabel="never"
+                        [ngClass]="this.interviewCreateForm.controls['date'].dirty && this.interviewCreateForm.controls['date'].errors? 'invalid-input': ''">
+                        <input matInput [matDatepicker]="picker" formControlName="date" placeholder="dd/mm/yyyy"
+                            [ngModel]="inteviewDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <div class="validation-error"
+                        *ngIf="this.interviewCreateForm.controls['date'].dirty && this.interviewCreateForm.controls['date'].errors?.required">
+                        Please enter valid date.
+                        Validate format is DD/MM/YEAR.
+                    </div>
+                    <div class="validation-error"
+                        *ngIf="this.interviewCreateForm.controls['date'].dirty && this.interviewCreateForm.controls['date'].errors?.datevalidate">
+                        Вate must be set between today and a year.
+                    </div>
+                </div>
+                <div class="time">
+                    <h5 class="required-field">Time</h5>
+                    <mat-form-field floatLabel="never"
+                        [ngClass]="this.interviewCreateForm.controls['time'].dirty && this.interviewCreateForm.controls['time'].errors? 'invalid-input': ''">
+                        <input matInput [format]="24" placeholder="hours" formControlName="time"
+                            [ngxTimepicker]="timepicker" [value]="inteviewTime" show-icon="true">
+                        <ngx-material-timepicker-toggle [for]="timepicker">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="20px" height="20px" ngxMaterialTimepickerToggleIcon>
+                                <path fill="#4F00B5" d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M16,16H7.995 C7.445,16,7,15.555,7,15.005v-0.011C7,14.445,7.445,14,7.995,14H14V5.995C14,5.445,14.445,5,14.995,5h0.011 C15.555,5,16,5.445,16,5.995V16z"/>
+                            </svg>
+                        </ngx-material-timepicker-toggle>
+                        <ngx-material-timepicker #timepicker (timeChanged)="selectTime($event)">
+                        </ngx-material-timepicker>
+                    </mat-form-field>
+                    <div class="validation-error"
+                        *ngIf="this.interviewCreateForm.controls['time'].dirty && this.interviewCreateForm.controls['time'].errors?.required">
+                        Is required.
+                    </div>
+                    <div class="validation-error"
+                        *ngIf="this.interviewCreateForm.controls['time'].dirty && this.interviewCreateForm.controls['time'].errors?.url">
+                        Wrong url format
+                    </div>
+                </div>
+                <div>
+                    <h5 class="required-field">Duration</h5>
+                    <mat-form-field floatLabel="never"
+                        [ngClass]="this.interviewCreateForm.controls['duration'].dirty && this.interviewCreateForm.controls['duration'].errors? 'invalid-input': ''">
+                        <input matInput type="number" formControlName="duration" placeholder="30 min">
+                    </mat-form-field>
+                    <div class="validation-error"
+                        *ngIf="this.interviewCreateForm.controls['duration'].dirty && this.interviewCreateForm.controls['duration'].errors?.required">
+                        Is required.
+                    </div>
+                    <div class="validation-error"
+                        *ngIf="this.interviewCreateForm.controls['duration'].dirty && this.interviewCreateForm.controls['duration'].errors?.min">
+                        Duration must be at least 10 minutes.
+                    </div>
+                    <div class="validation-error"
+                        *ngIf="this.interviewCreateForm.controls['duration'].dirty && this.interviewCreateForm.controls['duration'].errors?.max">
+                        Duration must be not greater than 200 minutes.
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="required-field">Meeting source</h5>
+            <mat-form-field appearance="fill"
+                [ngClass]="this.interviewCreateForm.controls['meetingSource'].touched &&  this.interviewCreateForm.controls['meetingSource'].invalid ? 'invalid-input' : ''">
+                <mat-select #fontSize placeholder="Select source" formControlName="meetingSource">
+                    <mat-option *ngFor="let source of meetingSources" [value]="source.source">{{source.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-error class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['meetingSource'].touched &&  this.interviewCreateForm.controls['meetingSource'].errors?.required">
+                This field shouldn't be empty
+            </mat-error>
+
+            <h5 class="required-field">Meeting link</h5>
+            <mat-form-field floatLabel="never"
+                [ngClass]="this.interviewCreateForm.controls['meetingLink'].dirty && this.interviewCreateForm.controls['meetingLink'].errors? 'invalid-input': ''">
+                <input matInput type="text" formControlName="meetingLink" placeholder="Enter link">
+            </mat-form-field>
+            <div class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['meetingLink'].dirty && this.interviewCreateForm.controls['meetingLink'].errors?.required">
+                Is required.
+            </div>
+            <div class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['meetingLink'].dirty && this.interviewCreateForm.controls['meetingLink'].errors?.url">
+                Wrong url format
+            </div>
+
+
+            <h5 class="required-field">Description interview</h5>
+            <mat-form-field class="wide example-full-width" appearance="fill"
+                [ngClass]="this.interviewCreateForm.controls['note'].dirty && this.interviewCreateForm.controls['note'].errors? 'invalid-input': ''">
+                <textarea matInput type="text" formControlName="note" placeholder="Enter text"></textarea>
+            </mat-form-field>
+            <div class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['note'].dirty && this.interviewCreateForm.controls['note'].errors?.required">
+                Is required.
+            </div>
+            <div class="validation-error"
+                *ngIf="this.interviewCreateForm.controls['note'].dirty && this.interviewCreateForm.controls['note'].errors?.minlength">
+                Description must be at least 10 characters long.
+            </div>
+
+
+            <button mat-button mat-dialog-close type="submit"
+                [disabled]="!interviewCreateForm.valid || !this.interviewCreateForm.dirty">Save</button>
+        </form>
+    </div>
+</div>

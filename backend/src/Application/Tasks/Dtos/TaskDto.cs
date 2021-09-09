@@ -14,6 +14,7 @@ namespace Application.Tasks.Dtos
         public DateTime DueDate { get; set; }
         public DateTime DoneDate { get; set; }
         public TeamMemberstDto CreatedBy { get; set; }
+        public bool IsReviewed { get; set; }
         public string Note { get; set; }
         public string Company { get; set; }
         public TeamMemberstDto Applicant { get; set; }

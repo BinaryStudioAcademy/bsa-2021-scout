@@ -10,7 +10,8 @@ export interface User {
   isEmailConfirmed: boolean;
   roles?: Role[];
 
-  image?: string,
+  avatarUrl?: string,
   skype?: string,
+  slack?: string,
   phone?:string
 }

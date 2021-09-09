@@ -55,7 +55,7 @@
   padding: 10px 0;
 }
 
-:host::ng-deep{
+:host::ng-deep .white-class{
   .mat-select-arrow-wrapper{
     display: flex;
     align-items: center;

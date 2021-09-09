@@ -11,6 +11,8 @@ namespace Application.Applicants.Dtos
         public double Experience { get; set; }
         public string ExperienceDescription { get; set; }
         public string Skills { get; set; }
+        public string CvLink { get; set; }
+        public string PhotoLink { get; set; }
         public ElasticEnitityDto Tags { get; set; }
     }
 

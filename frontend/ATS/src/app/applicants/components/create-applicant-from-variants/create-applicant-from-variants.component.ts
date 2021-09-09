@@ -37,6 +37,7 @@ export class CreateApplicantFromVariantsComponent implements OnDestroy {
       tagDtos: [],
     },
     cv: null,
+    photo: null,
   };
 
   public allowedCvFileType = FileType.Pdf;
@@ -50,6 +51,10 @@ export class CreateApplicantFromVariantsComponent implements OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: ApplicantCreationVariants,
   ) {
     this.validationGroup = applicantGroup;
+
+    if (data.cv) {
+      this.createdApplicant.cv = data.cv;
+    }
   }
 
   public createApplicant(): void {
@@ -116,6 +121,10 @@ export class CreateApplicantFromVariantsComponent implements OnDestroy {
 
   public uploadApplicantCv(files: File[]): void {
     this.createdApplicant.cv = files[0];
+  }
+
+  public uploadApplicantPhoto(files: File[]): void {
+    this.createdApplicant.photo = files[0];
   }
 
   public ngOnDestroy(): void {

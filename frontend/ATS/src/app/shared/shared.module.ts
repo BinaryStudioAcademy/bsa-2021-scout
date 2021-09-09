@@ -58,6 +58,7 @@ import { MarkBarComponent } from './components/mark-bar/mark-bar.component';
 import { ConfirmationDialogComponent } 
   from './components/confirmation-dialog/confirmation-dialog.component';
 import { TimezoneDateAdapter } from './date-adapters/timezone.date-adapter';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 @NgModule({
   exports: [
@@ -113,6 +114,7 @@ import { TimezoneDateAdapter } from './date-adapters/timezone.date-adapter';
     AvatarModalComponent,
     TableFilterComponent,
     MarkBarComponent,
+    NgxMaterialTimepickerModule,
     RouterModule,
   ],
   imports: [
@@ -151,6 +153,7 @@ import { TimezoneDateAdapter } from './date-adapters/timezone.date-adapter';
     MatMenuModule,
     MatTooltipModule,
     ClipboardModule,
+    NgxMaterialTimepickerModule,
   ],
   providers: [
     HttpClientService,

@@ -9,7 +9,6 @@ using Domain.Entities;
 using Application.Common.Exceptions;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Repositories.Abstractions;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.Repositories.Read
 {
@@ -29,7 +28,8 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" Reviews.*,");
             sql.Append(" VacancyCandidates.*,");
             sql.Append(" CandidateReviews.*,");
-            sql.Append(" Applicants.*");
+            sql.Append(" Applicants.*,");
+            sql.Append(" FileInfos.*");
             sql.Append(" FROM Vacancies");
             sql.Append(" LEFT JOIN Stages ON Stages.VacancyId = Vacancies.Id");
             sql.Append(" LEFT JOIN Reviews ON EXISTS");
@@ -45,6 +45,7 @@ namespace Infrastructure.Repositories.Read
             sql.Append(" AND CandidateToStages.DateRemoved IS NULL)");
             sql.Append(" LEFT JOIN CandidateReviews ON CandidateReviews.CandidateId = VacancyCandidates.Id");
             sql.Append(" LEFT JOIN Applicants ON VacancyCandidates.ApplicantId = Applicants.Id");
+            sql.Append(" LEFT JOIN FileInfos ON FileInfos.Id = Applicants.PhotoFileInfoId");
             sql.Append($" WHERE Vacancies.Id = @vacancyId");
 
             Dictionary<string, Stage> stageDict = new Dictionary<string, Stage>();
@@ -53,9 +54,9 @@ namespace Infrastructure.Repositories.Read
             Vacancy cachedVacancy = null;
 
             IEnumerable<Vacancy> resultAsEnumerable = await connection
-                .QueryAsync<Vacancy, Stage, Review, VacancyCandidate, CandidateReview, Applicant, Vacancy>(
+                .QueryAsync<Vacancy, Stage, Review, VacancyCandidate, CandidateReview, Applicant, FileInfo, Vacancy>(
                     sql.ToString(),
-                    (vacancy, stage, stageReview, candidate, review, applicant) =>
+                    (vacancy, stage, stageReview, candidate, review, applicant, photo) =>
                     {
                         if (cachedVacancy == null)
                         {
@@ -101,6 +102,7 @@ namespace Infrastructure.Repositories.Read
                                 }
 
                                 candidateEntry.Applicant = applicant;
+                                candidateEntry.Applicant.PhotoFileInfo = photo;
 
                                 if (review != null)
                                 {
@@ -111,8 +113,9 @@ namespace Infrastructure.Repositories.Read
 
                         return cachedVacancy;
                     },
-                     new { vacancyId = @vacancyId },
-                     splitOn: "Id,Id,Id,Id");
+                    new { vacancyId = @vacancyId },
+                    splitOn: "Id,Id,Id,Id,Id,Id"
+                );
 
             Vacancy result = resultAsEnumerable.Distinct().FirstOrDefault();
 

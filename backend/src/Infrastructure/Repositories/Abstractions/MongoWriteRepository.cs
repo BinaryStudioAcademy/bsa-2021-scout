@@ -17,9 +17,9 @@ namespace Infrastructure.Repositories.Abstractions
             _connectionFactory = context;
         }
 
-        public async Task<Entity> CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity)
         {
-            if (entity.Id == null && entity.Id == "")
+            if (entity.Id == null || entity.Id == "")
             {
                 entity.Id = ObjectId.GenerateNewId().ToString();
             }
@@ -32,7 +32,7 @@ namespace Infrastructure.Repositories.Abstractions
             return entity;
         }
 
-        public async Task<Entity> UpdateAsync(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             BsonDocument filter = new BsonDocument(new BsonElement("_id", entity.Id));
 

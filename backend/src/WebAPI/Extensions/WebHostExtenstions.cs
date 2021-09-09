@@ -273,12 +273,13 @@ namespace WebAPI.Extensions
             context.UserToRoles.RemoveRange(context.UserToRoles);
             var usersToRoles = new List<UserToRole>
             {
+                new UserToRole { UserId = "ba5073cc-4322-483d-b69a-f43b388091e9", RoleId = "1"},
                 new UserToRole { UserId = "1", RoleId = "1"},
                 new UserToRole { UserId = "1", RoleId = "2"},
             };
 
             Random random = new Random();
-            foreach (var user in UserSeeds.GetUsers().Skip(1))
+            foreach (var user in UserSeeds.GetUsers().Skip(2))
             {
                 usersToRoles.Add(
                 new UserToRole

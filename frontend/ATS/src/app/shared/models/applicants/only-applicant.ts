@@ -11,4 +11,7 @@ export interface OnlyApplicant extends Model {
   skills?: string;
   toBeContacted: Date;
   companyId: string;
+  hasCv: boolean;
+  hasPhoto: boolean;
+  photoLink?: string;
 }

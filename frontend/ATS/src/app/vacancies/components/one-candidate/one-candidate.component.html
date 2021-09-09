@@ -3,7 +3,7 @@
   <ng-container *ngIf="!loading">
     <div class="content-col">
       <div class="top block">
-        <img class="avatar" src="../../../../assets/images/defaultAvatar.png" (click)="enlargeAvatar()" />
+        <img class="avatar" [src]="getAvatar()" (click)="enlargeAvatar()" />
         <div class="text">
           <h2>{{ data.fullName }}</h2>
           <p class="only-color meta">
