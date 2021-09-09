@@ -11,6 +11,17 @@ namespace Infrastructure.EF.Seeds
             return new List<User>
             {
                 new User {
+                    Id = "ba5073cc-4322-483d-b69a-f43b388091e9",
+                    FirstName = "Mark",
+                    LastName = "Twain",
+                    Email = "scouttest@ukr.net",
+                    CompanyId = "0b129ab3-7375-4c96-95a5-8efa95a455b4",
+                    IsEmailConfirmed = true,
+                    Password = "scouttest",
+                    CreationDate = Common.GetRandomDateTime(new DateTime(1990, 1, 11), new DateTime(2003, 7, 12)),
+                    BirthDate = new DateTime(1998, 9, 11)
+                },
+                new User {
                     Id = "1",
                     FirstName = "Hr",
                     LastName = "Lead",
