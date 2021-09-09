@@ -39,7 +39,10 @@
                 .mat-icon {
                     vertical-align: middle;
                     color: lightgray;
-                    font-size: 26px;
+                    font-size: 25px;
+                    
+                    text-align: unset;
+                    line-height: 1.1;
                 }
             }
 
@@ -65,12 +68,23 @@
             }            
         }
     }
+
+    .more {
+        margin-top:15px;
+    }
     .more a{
         padding-top: 5px;
         color:$primary-color;
         text-align: center;
         font-weight: 600;
         font-size: 14px;
-        cursor: pointer;        
+        cursor: pointer;
+        text-decoration: none; 
     }
+
+    .more a:hover {
+        text-decoration: none;
+    }
+
+
 }
