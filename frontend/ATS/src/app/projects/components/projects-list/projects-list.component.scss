@@ -40,8 +40,9 @@ $tag-font-color: rgba(
 }
 
 .projects-page {
-  /* Header */
+  position: relative;
 
+  /* Header */
   .icons .mat-select {
     font-size: 20px;
     height: 24px;

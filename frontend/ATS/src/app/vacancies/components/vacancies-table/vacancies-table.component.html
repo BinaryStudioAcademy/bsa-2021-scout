@@ -1,5 +1,6 @@
 <app-header [removeVacancyButton]="true"></app-header>
 <div class="vacancies-page">
+    <app-spinner [loading]="loading"></app-spinner>
     <div class="vacancies-header">
         <button class="tub" [style.text-decoration]="page ? 'none' : 'underline'" (click)="setPage()">All</button>
         <button class="tub" [style.text-decoration]="page === 'followed' ? 'underline' : 'none'"
@@ -93,9 +94,9 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 <tr class="mat-row" *matNoDataRow>
-                    <td *ngIf="input.value !== ''" class="mat-cell" colspan="4">No data matching the filter
+                    <td *ngIf="input.value !== ''" class="mat-cell" colspan="8">No data matching the filter
                         "{{input.value}}"</td>
-                    <td *ngIf="input.value === ''" class="mat-cell" colspan="4">No data for display</td>
+                    <td *ngIf="input.value === ''" class="mat-cell" colspan="8">No data for display</td>
                 </tr>
             </table>
             <mat-paginator class="mat-paginator-sticky" #paginator appStylePaginator

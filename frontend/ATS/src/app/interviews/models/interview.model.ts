@@ -14,6 +14,7 @@ export interface Interview{
   vacancy: Vacancy,
   scheduled: string,
   duration: number,
+  isReviewed: boolean,
   candidate: Applicant,
   createdDate: Date,
   note: string,

@@ -43,7 +43,7 @@ export class ProjectsAddComponent implements OnDestroy {
         Validators.minLength(3),
         Validators.maxLength(15)]),
     'logo': new FormControl(this.project.logo,
-      [Validators.required]),
+      []),
     'description': new FormControl(this.project.description,
       [Validators.required,
         Validators.minLength(10)]),

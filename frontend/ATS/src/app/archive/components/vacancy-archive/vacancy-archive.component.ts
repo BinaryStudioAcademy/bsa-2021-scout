@@ -293,10 +293,7 @@ implements AfterViewInit, OnInit, OnDestroy
       )
       .subscribe(
         (_) => {
-          const position = this.archivedVacancies
-            .findIndex(vacancy => vacancy.id === vacancyToUnarchive.id);
-          this.archivedVacancies.splice(position, 1);
-          this.dataSource.data = this.archivedVacancies;
+          this.removeItemFromTableData(vacancyToUnarchive);
           this.notificationService.showSuccessMessage(
             `Vacancy ${vacancyToUnarchive.title} is unarhived!`,
           );
@@ -334,10 +331,7 @@ implements AfterViewInit, OnInit, OnDestroy
       )
       .subscribe(
         (_) => {
-          const position = this.archivedVacancies
-            .findIndex(vacancy => vacancy.id === vacancyToDelete.id);
-          this.archivedVacancies.splice(position, 1);
-          this.dataSource.data = this.archivedVacancies;
+          this.removeItemFromTableData(vacancyToDelete);
           this.notificationService.showSuccessMessage(
             `Vacancy ${vacancyToDelete.title} is deleted!`,
           );
@@ -348,6 +342,18 @@ implements AfterViewInit, OnInit, OnDestroy
           );
         },
       );
+  }
+
+  private removeItemFromTableData(item: ArchivedVacancy) {
+    let position = this.archivedVacancies.findIndex(vacancy => vacancy.id === item.id);
+    this.archivedVacancies.splice(position, 1);
+    
+    position = this.filteredData.findIndex(vacancy => vacancy.id === item.id);
+    this.filteredData.splice(position, 1);
+
+    this.dataSource.data = this.filteredData;    
+    this.renewFilterDescription();
+    this.directive.applyFilter$.emit();
   }
 
   private checkIsHrLead(user: User | null): void {

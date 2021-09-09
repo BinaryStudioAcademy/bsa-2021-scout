@@ -20,6 +20,7 @@ namespace Application.Interviews.Dtos
         public InterviewType InterviewType { get; set; }
         public ICollection<string> UserParticipants { get; set; }
         public string CandidateId { get; set; }
+        public bool IsReviewed { get; set; }
         public string Note { get; set; }
         public DateTime CreatedDate { get; set; }
     }
@@ -28,7 +29,6 @@ namespace Application.Interviews.Dtos
         public InterviewDtoValidator()
         {
             RuleFor(_ => _.Title).NotNull().NotEmpty();
-            RuleFor(_ => _.MeetingLink).NotNull().NotEmpty();
             RuleFor(_ => _.Scheduled).NotNull().NotEmpty();
             RuleFor(_ => _.Duration).NotNull().NotEmpty();
         }
