@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header [removeInterviewButton]="true"></app-header>
 
 <div class="controls">
   <div class="today">
@@ -51,7 +51,9 @@
                 </div>
                
               </div>
-              <div (click)="collapse(c)" class="extra" [ngClass]="{'interviewColors':c.interviews[0].interviewType%2!==0, 'meetingColors':c.interviews[0].interviewType%2 === 0}" *ngIf="c.interviews.length>=2 && c.isCollapsed">{{c.interviews.length}} Events</div>
+              <div (click)="collapse(c)" class="extra" 
+                [ngClass]="{'purpleColors':c.interviews[0].interviewType !== 2 && c.interviews[0].interviewType !== 3, 'blueColors':c.interviews[0].interviewType === 2 || c.interviews[0].interviewType === 3}"
+               *ngIf="c.interviews.length>=2 && c.isCollapsed">{{c.interviews.length}} Events</div>
 
             </div>
           </td>

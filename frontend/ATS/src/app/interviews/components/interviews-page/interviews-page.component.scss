@@ -43,13 +43,17 @@ li.dates {
   height: 100%;
   padding-bottom: 20px;
 }
-.interviewColors {
+.purpleColors {
   background-color: #ec4f9326;
   border: 1px solid #da5a92;
 }
-.meetingColors {
+.blueColors {
   border: 1px solid #2658e8;
   background-color: #d9e6fd;
+}
+.orangeColors{
+  border: 1px solid #eb703c;
+  background-color: #F08356;
 }
 .extra {
   text-align: left;
@@ -133,6 +137,7 @@ li.dates {
 .calendar-table thead th {
   position: sticky;
   top: 0;
+  z-index: 10;
   background-color: #fff;
   vertical-align: bottom;
   border-top: none;
@@ -190,11 +195,13 @@ li.dates {
 }
 .blue-date::after {
   content: "";
+  pointer-events: none;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 2;
   border: 1px solid #4808ae !important;
 }
 

@@ -1,3 +1,9 @@
+import { ProjectsAddComponent } 
+  from './../../../projects/components/projects-add/projects-add.component';
+import { CreateApplicantComponent } 
+  from './../../../applicants/components/create-applicant/create-applicant.component';
+import { CreateInterviewComponent } 
+  from './../../../interviews/components/create-interview/create-interview.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import _ from 'lodash';
@@ -19,7 +25,11 @@ import { EditHrFormComponent } from 'src/app/users/components/edit-hr-form/edit-
 export class HeaderComponent implements OnInit, OnDestroy {
   public value: string = '';
   public dropdownOpened: boolean = false;
-  @Input() removeButton = false;
+  @Input() removeVacancyButton = false;
+  @Input() removeApplicantButton = false;
+  @Input() removeTaskButton = false;
+  @Input() removeInterviewButton = false;
+  @Input() removeProjectButton = false;
   user:User = {} as User;
   ngOnInit(){
     this.userService.getByToken().subscribe(
@@ -47,15 +57,34 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
 
-  openDialog(): void {
+  openVacancyDialog(): void {
     const dialogRef = this.dialog.open(EditVacancyComponent, {
       width: '600px',
       height: 'auto',
       data: {},
     });
   };
-  
-
+  openInterviewDialog(): void {
+    const dialogRef = this.dialog.open(CreateInterviewComponent, {
+      width: '600px',
+      height: 'auto',
+      data: {},
+    });
+  };
+  openApplicantDialog(): void {
+    const dialogRef = this.dialog.open(CreateApplicantComponent, {
+      width: '600px',
+      height: 'auto',
+      data: {},
+    });
+  };
+  openProjectDialog(): void {
+    const dialogRef = this.dialog.open(ProjectsAddComponent, {
+      width: '600px',
+      height: 'auto',
+      data: {},
+    });
+  };
   public logout(): void {
     this.loading = true;
 
