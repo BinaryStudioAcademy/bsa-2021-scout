@@ -89,7 +89,7 @@
       <p>Experience description</p>
       <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['experienceDescription'].dirty && validationGroup!.controls['experienceDescription'].errors? 'invalid-input' : ''">
-        <input required formControlName="experienceDescription" type="text" matInput
+        <input formControlName="experienceDescription" type="text" matInput
           placeholder="Enter experience description" [(ngModel)]="createdApplicant.experienceDescription">
       </mat-form-field>
     </div>
@@ -115,7 +115,7 @@
       <p>Phone</p>
       <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors? 'invalid-input' : ''">
-        <input required formControlName="phone" type="tel" matInput placeholder="Enter phone number"
+        <input formControlName="phone" type="tel" matInput placeholder="Enter phone number"
           [(ngModel)]="createdApplicant.phone">
       </mat-form-field>
     </div>
