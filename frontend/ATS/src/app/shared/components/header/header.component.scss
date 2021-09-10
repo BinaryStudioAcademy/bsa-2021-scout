@@ -15,10 +15,10 @@
 
 .small-image{
   object-fit: cover;
-width: 45px;
-height: 45px;
-border-radius: 50%;
-grid-column: 1;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  grid-column: 1;
   grid-row: 1/3;
 }
 
@@ -57,15 +57,28 @@ grid-column: 1;
   margin:0px !important;
 }
 
-:host ::ng-deep .mat-badge-content {
-  right: 2px !important;
-  top: 2px !important;
-  width: 8px;
-  height: 8px;
-  &.jobs-list-cell {
-    overflow: visible;
-    width: fit-content;
-    max-width: none;
+.button-link {
+  color: unset !important;
+  text-decoration: unset !important;
+}
+
+:host ::ng-deep {
+  .mat-badge-content {
+    right: 2px !important;
+    top: 2px !important;
+    width: 8px;
+    height: 8px;
+    &.jobs-list-cell {
+      overflow: visible;
+      width: fit-content;
+      max-width: none;
+    }
+  }
+}
+
+::ng-deep {
+  .mat-menu-content {
+    max-width: 300px !important;
   }
 }
 
