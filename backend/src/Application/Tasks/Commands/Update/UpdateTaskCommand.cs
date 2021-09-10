@@ -60,6 +60,7 @@ namespace Application.Tasks.Commands
                 taskToUpdate.Note = command.UpdateTask.Note;
                 taskToUpdate.ApplicantId = command.UpdateTask.ApplicantId;
                 taskToUpdate.DueDate = command.UpdateTask.DueDate.Date;
+                taskToUpdate.IsReviewed = true;
 
                 if (taskToUpdate.IsDone != command.UpdateTask.IsDone)
                 {

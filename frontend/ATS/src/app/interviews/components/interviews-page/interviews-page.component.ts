@@ -210,6 +210,9 @@ export class InterviewsPageComponent{
           this.cachedNeedReviewInterviews = day.interviews
             .filter(interview => !interview.isReviewed);
           day.interviews = day.interviews.filter(interview => interview.isReviewed);
+          if(day.interviews.length < 2) {
+            day.isCollapsed = true;
+          }
         }
       }
     });
