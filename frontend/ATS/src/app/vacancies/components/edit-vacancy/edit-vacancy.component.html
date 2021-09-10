@@ -191,7 +191,7 @@
                             (click)="displayCreateStage()">+ Add new stage</button>
                     </div>
                 </div>
-                <div class="edit-stage" *ngIf="isOpenCreateStage" [ngClass]="this.stageList.length == 0 ? 'stage0' : '' ">
+                <div class="edit-stage" *ngIf="isOpenCreateStage" [ngClass]="this.stageList.length === 0 ? 'stage0' : '' ">
                     <app-create-stage [stage]="stageToEdit" (stageChange)="saveStage($event)"
                         (stageCreateAndAddChange)="saveStageAndAdd($event)" (isClosedChange)="cancelStageEdit()">
                     </app-create-stage>
