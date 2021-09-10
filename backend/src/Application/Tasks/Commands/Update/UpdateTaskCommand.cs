@@ -59,11 +59,12 @@ namespace Application.Tasks.Commands
                 taskToUpdate.Name = command.UpdateTask.Name;
                 taskToUpdate.Note = command.UpdateTask.Note;
                 taskToUpdate.ApplicantId = command.UpdateTask.ApplicantId;
-                taskToUpdate.DueDate = command.UpdateTask.DueDate;
+                taskToUpdate.DueDate = command.UpdateTask.DueDate.Date;
+                taskToUpdate.IsReviewed = true;
 
                 if (taskToUpdate.IsDone != command.UpdateTask.IsDone)
                 {
-                    taskToUpdate.DoneDate = command.UpdateTask.IsDone ? DateTime.Now : null;
+                    taskToUpdate.DoneDate = command.UpdateTask.IsDone ? DateTime.Now.Date : null;
                     taskToUpdate.IsDone = command.UpdateTask.IsDone;
                 }
 

@@ -1,0 +1,29 @@
+<div class="dialog-title" mat-dialog-title>
+    <h2>Select applicants</h2>
+    <button mat-icon-button mat-dialog-close="none">
+      <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div class='wrapper'>
+    <!-- <div class='users'>
+        <div class="user-wrapper" *ngFor="let user of data.selected" [matTooltip]="user.firstName+' '+user.lastName">
+          <mat-icon>account_circle</mat-icon>
+          <mat-icon class='close' (click)=removeUser(user)>close</mat-icon>
+        </div>
+    </div> -->
+    <mat-form-field floatLabel='never' class="al-subscribe-form-field">
+        <input matInput type="text" placeholder="Find applicant ..." (keyup)="$event.stopPropagation();onKey($event)">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select [(value)]="data.selected" multiple [compareWith]="compareById" (selectionChange)="onUserChange($event)" #select>    
+            <mat-option *ngFor="let user of applicants" [value]="user">{{user.firstName}} {{user.lastName}} (
+                <div class='tags-container'>
+                    <mat-list-item class='tags' tags *ngFor="let item of user.tags.tagDtos">{{item.tagName}}</mat-list-item>
+                </div>)
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div class="login-button form-group">
+    <button mat-button color="primary" (click)="save()">Save</button>
+</div>

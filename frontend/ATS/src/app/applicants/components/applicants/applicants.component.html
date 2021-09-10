@@ -74,7 +74,9 @@
                 <td mat-cell *matCellDef="let applicant" class="control-buttons-cell">
                     <app-applicant-control [applicant]="applicant" (markAsFollowed)="onBookmark($event)"
                         (updateApplicantEvent)="updateApplicant($event)"
-                        (deleteApplicantEvent)="deleteApplicant($event)"></app-applicant-control>
+                        (deleteApplicantEvent)="deleteApplicant($event)"
+                        (reloadApplicantsEvent)="getApplicants()">
+                        </app-applicant-control>
                 </td>
             </ng-container>
 

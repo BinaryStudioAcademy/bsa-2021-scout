@@ -36,6 +36,14 @@ export class UserProfileComponent implements OnInit{
     if(this.user.roles?.filter(x=>x.name=='HrLead').length != 0){
       return this.user.roles?.filter(x=>x.name!='HrUser');
     }
+    if(this.user.roles == null || this.user.roles == undefined || this.user.roles.length == 0){
+      let newSimpleRole:Role = {
+        key: 1,
+        name: 'HrUser',
+      };
+      this.user.roles.push(newSimpleRole);
+    }
+      
     return this.user.roles;
   }
 

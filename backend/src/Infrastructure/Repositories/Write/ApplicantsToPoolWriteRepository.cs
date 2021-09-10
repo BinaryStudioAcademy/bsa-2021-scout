@@ -60,5 +60,26 @@ namespace Infrastructure.Repositories.Write
             await _context.SaveChangesAsync();
 
         }
+
+        public async Task DeletePoolToApplicants(string poolId)
+        {
+            SqlConnection connection = _connectionFactory.GetSqlConnection();
+
+            string sql = $@"SELECT Id,PoolId,ApplicantId
+                            FROM PoolToApplicants
+                            WHERE poolId = @id";
+
+            var poolApplicantsfromDB = await connection.QueryAsync<PoolToApplicant>(sql, new { @id = poolId });
+
+            await connection.CloseAsync();
+            
+            foreach (var applicant in poolApplicantsfromDB)
+            {
+                _context.Remove(applicant);
+            }
+
+            await _context.SaveChangesAsync();
+
+        }
     }
 }

@@ -1,0 +1,17 @@
+<div class='my-tasks'>
+    
+        <h2>Your tasks</h2>
+    
+    <div class='task-list'>
+        <div class='task' *ngFor="let task of tasks">
+            <div class='pic'><img class="account-circle" alt="User profile photo" src="{{this.task.applicant.image}} " onError="this.src='../../../../assets/images/defaultAvatarSquare.png'"></div>
+            <div class='info'>
+                <div class='applicant'>{{task.applicant.firstName}} {{task.applicant.lastName}}</div>
+                <div class='task-description'>{{task. name}} with {{task.createdBy.firstName}} {{task.createdBy.lastName}} due date <span class='time'>{{task.dueDate | timezone : 'DD/MM'}}</span></div>
+            </div>            
+        </div>
+        <div class="more" *ngIf="!isEnd && !loading">
+            <a routerLink="/task-management" class="button">Show more</a>
+        </div>             
+    </div>
+</div>

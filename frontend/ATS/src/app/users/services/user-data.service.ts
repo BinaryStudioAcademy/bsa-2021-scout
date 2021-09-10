@@ -48,4 +48,10 @@ export class UserDataService {
       '/Users/',
     );
   }
+
+  public getAllUsers(): Observable<UserTableData[]>{
+    return this.httpClientService.getRequest<UserTableData[]>(
+      '/Users/all',
+    );
+  }
 }

@@ -57,7 +57,8 @@ namespace Application.Tasks.Commands
                 newTask.CreatedById = currentUser.Id;
             }
 
-            newTask.DateCreated = DateTime.Now;    
+            newTask.DateCreated = DateTime.Now.Date;
+            newTask.DueDate = newTask.DueDate.Date;
             
             var Task = (ToDoTask) await _TaskWriteRepository.CreateAsync(newTask);
 

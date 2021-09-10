@@ -15,6 +15,6 @@ export class CreateTask {
     this.dueDate = task.dueDate;    
     this.isDone = task.isDone;
     this.note = task.note;  
-    this.UsersIds = task.teamMembers.map(x=>{return x.id;});
+    this.UsersIds = task.teamMembers ? task.teamMembers.map(x=>{return x.id;}) : [];
   }
 }

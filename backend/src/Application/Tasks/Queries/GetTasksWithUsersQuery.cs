@@ -36,8 +36,8 @@ namespace Application.Common.Queries
         public async Task<List<TaskDto>> Handle(GetTasksWithTeamMembersQuery query, CancellationToken _)
         {
             var result = await _repository.GetTasksWithTeamMembersAsync();
-
-            return _mapper.Map<List<TaskDto>>(result);
+            var res =_mapper.Map<List<TaskDto>>(result);
+            return res;
         }
     }
 }

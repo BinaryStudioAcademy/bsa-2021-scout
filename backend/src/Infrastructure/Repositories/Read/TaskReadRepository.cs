@@ -17,16 +17,23 @@ namespace Infrastructure.Repositories.Read
         public TaskReadRepository(IConnectionFactory connectionFactory) : base("Tasks", connectionFactory) { }
 
         private string mainSql = @"
-                            select t.*,a.*,ut.*,u.*,hr.*,c.* 
+                            select t.*,a.*,ut.*,u.*,hr.*,c.*, fi.* 
                             from ToDoTask t inner join
                             Applicants a on t.ApplicantId=a.Id left outer join
                             UserToTask ut on ut.ToDoTaskId = t.Id left outer join
-                            Users u on u.Id = ut.UserId inner join
+                            Users u on u.Id = ut.UserId  inner join
                             Users hr on hr.Id = t.CreatedById inner join
-                            Companies c on c.Id = t.CompanyId";
+                            Companies c on c.Id = t.CompanyId left outer join
+                            FileInfos fi on u.AvatarId = fi.Id";
 
+        private readonly string filterByTaskIdSql = @" where t.id = @id";
+        private readonly string filterByUserIdSql = @" where hr.id = @userId or u.id = @userId";
+        private readonly string orderSql = @" order by t.dueDate";
         
-        private static ToDoTask queryMapper(ToDoTask task, Applicant applicant, UserToTask utt, User user, User hr, Company company, Dictionary<string, ToDoTask> TaskDictionary, Dictionary<string, UserToTask> UserToTaskDictionary)
+
+
+
+        private static ToDoTask queryMapper(ToDoTask task, Applicant applicant, UserToTask utt, User user, User hr, Company company, FileInfo file, Dictionary<string, ToDoTask> TaskDictionary, Dictionary<string, UserToTask> UserToTaskDictionary)
         {
             if (!TaskDictionary.TryGetValue(task.Id, out ToDoTask TaskEntry))
             {
@@ -50,6 +57,7 @@ namespace Infrastructure.Repositories.Read
             if (user != null)
             {
                 utt.User = user;
+                utt.User.Avatar = file;
             }
 
             return TaskEntry;
@@ -60,20 +68,21 @@ namespace Infrastructure.Repositories.Read
             var connection = _connectionFactory.GetSqlConnection();            
             
             await connection.OpenAsync();
-            string sql = mainSql;
+            string sql = $@"{mainSql}
+                            {orderSql}";
                             
 
             var TaskDictionary = new Dictionary<string, ToDoTask>();
             var UserToTaskDictionary = new Dictionary<string, UserToTask>();
             List<Task> allTasks = new List<Task>();
 
-            var Task = (await connection.QueryAsync<ToDoTask, Applicant, UserToTask, User, User, Company, ToDoTask>(
+            var Task = (await connection.QueryAsync<ToDoTask, Applicant, UserToTask, User, User, Company, FileInfo, ToDoTask>(
                 sql,
-                (task, applicant, utt, user, hr, company) =>
+                (task, applicant, utt, user, hr, company, file) =>
                 {
-                    return queryMapper(task, applicant, utt, user, hr, company, TaskDictionary, UserToTaskDictionary);
+                    return queryMapper(task, applicant, utt, user, hr, company, file, TaskDictionary, UserToTaskDictionary);
                 },
-                splitOn: "Id,Id,UserId,Id,Id,Id"
+                splitOn: "Id,Id,UserId,Id,Id,Id,Id"
                 ));
 
             await connection.CloseAsync();
@@ -86,23 +95,23 @@ namespace Infrastructure.Repositories.Read
             var connection = _connectionFactory.GetSqlConnection();            
 
             await connection.OpenAsync();
-            string sql = $@"
-                            {mainSql}
-                            where hr.id = @userId or u.id = @userId";
+            string sql = $@"{mainSql}
+                            {filterByUserIdSql}
+                            {orderSql}";
 
 
             var TaskDictionary = new Dictionary<string, ToDoTask>();
             var UserToTaskDictionary = new Dictionary<string, UserToTask>();
             List<Task> allTasks = new List<Task>();
 
-            var Task = (await connection.QueryAsync<ToDoTask, Applicant, UserToTask, User, User, Company, ToDoTask>(
+            var Task = (await connection.QueryAsync<ToDoTask, Applicant, UserToTask, User, User, Company, FileInfo, ToDoTask>(
                 sql,
-                (task, applicant, utt, user, hr, company) =>
+                (task, applicant, utt, user, hr, company, fileinfo) =>
                 {
-                    return queryMapper(task, applicant, utt, user, hr, company, TaskDictionary, UserToTaskDictionary);
+                    return queryMapper(task, applicant, utt, user, hr, company, fileinfo, TaskDictionary, UserToTaskDictionary);
                 },
                 new { userID = @userId },
-                splitOn: "Id,Id,UserId,Id,Id,Id"
+                splitOn: "Id,Id,UserId,Id,Id,Id,Id"
                 ));
 
             await connection.CloseAsync();
@@ -115,20 +124,19 @@ namespace Infrastructure.Repositories.Read
             var connection = _connectionFactory.GetSqlConnection();
 
             await connection.OpenAsync();
-            string sql = $@"{mainSql}                            
-                            where t.id = @id";
+            string sql = $@"{mainSql}{filterByTaskIdSql}";
 
             var TaskDictionary = new Dictionary<string, ToDoTask>();
             var UserToTaskDictionary = new Dictionary<string, UserToTask>();
 
             var Task = (await connection.QueryAsync(
                 sql,
-                (Func<ToDoTask, Applicant, UserToTask, User, User, Company, ToDoTask>)((task, applicant, utt, user, hr, company) =>
+                (Func<ToDoTask, Applicant, UserToTask, User, User, Company, FileInfo, ToDoTask>)((task, applicant, utt, user, hr, company, fileinfo) =>
                 {
-                    return queryMapper(task, applicant, utt, user, hr, company, TaskDictionary, UserToTaskDictionary);
+                    return queryMapper(task, applicant, utt, user, hr, company, fileinfo, TaskDictionary, UserToTaskDictionary);
                 }),
                 new { id = id },
-                splitOn: "Id,Id,UserId,Id,Id,Id"
+                splitOn: "Id,Id,UserId,Id,Id,Id,Id"
                 ))
             .Distinct()
             .SingleOrDefault();

@@ -7,38 +7,51 @@
     </div>
 </div>
 <app-spinner *ngIf="loading"></app-spinner>
-<div class='modal-content'></div>
-<div>
-    <div class="form-control">
-        <form [formGroup]="poolForm">
-            <div class="creator-info">
-                <div>
-                    <h5>Created by</h5>
-                    <mat-form-field floatLabel='never' class="al-subscribe-form-field">
-                        <input matInput type="text" formControlName="createdBy">
-                    </mat-form-field>
+<div class='modal-content'>
+        <div class="form-control">
+            <form [formGroup]="poolForm">
+                <div class="creator-info" *ngIf="pool">                    
+                        Added by <span class='user-info'>{{pool.createdBy}}</span> {{pool.dateCreated | timezone}}                        
                 </div>
-                <div *ngIf="pool">
-                    <h5>Created</h5>
-                    <mat-form-field floatLabel='never' class="al-subscribe-form-field">
-                        <input matInput [matDatepicker]="picker" name="date" formControlName="dateCreated"
-                            placeholder="mm/dd/yyyy" [(ngModel)]="pool.dateCreated">
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
+                <h5 class="required-field">Pool name</h5>
+                <mat-form-field floatLabel='never' class="al-subscribe-form-field" [ngClass]="getClass('name')">
+                  <input matInput type="text" formControlName="name" placeholder="Enter name of pool">
+                </mat-form-field>
+                <div class="custom-error" *ngIf="this.poolForm.controls['name'].dirty && this.poolForm.controls['name'].errors?.required">
+                  Please fill name of pool.
                 </div>
+                <div class="custom-error" *ngIf="this.poolForm.controls['name'].dirty && this.poolForm.controls['name'].errors?.minlength">
+                  Name must be at least 3 characters long.
+                </div>
+                <div class="custom-error" *ngIf="this.poolForm.controls['name'].dirty && this.poolForm.controls['name'].errors?.maxlength">
+                  Name must be not greater than 20 characters long.
+                </div>
+                <h5 class="required-field">Description</h5>
+                <mat-form-field floatLabel='never' class="al-subscribe-form-field" class="textarea" [ngClass]="getClass('description')">
+                    <textarea matInput type="text" autocomplete="off" formControlName="description" placeholder="Enter description"
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="6"
+                    cdkAutosizeMaxRows="6"></textarea>
+                </mat-form-field>
+                <div class="custom-error" *ngIf="this.poolForm.controls['description'].dirty && this.poolForm.controls['description'].errors?.required">
+                  Please fill description of pool.
+                </div>
+                <div class="custom-error" *ngIf="this.poolForm.controls['description'].dirty && this.poolForm.controls['description'].errors?.minlength">
+                  Pool description must be at least 10 characters long.
+                </div>          
+            </form>
+            <div class="applicants-header">
+                <h4>Applicants</h4>
+                <button mat-button class="create-button" (click)="addApplicants()"><mat-icon>how_to_reg</mat-icon> Applicants</button>
+                <div class="add-user-select add">         
+                    <!-- <mat-select [(value)]="dataSource.data" multiple [compareWith]="compareById" (selectionChange)="onUserChange($event)">
+                      <input matInput (keyup)="onKey($event)">
+                      <mat-option *ngFor="let user of data.applicants" [value]="user">{{user.firstName}} {{user.lastName}}</mat-option>
+                    </mat-select> -->
+                  </div>
             </div>
-            <h5>Pool name</h5>
-            <mat-form-field floatLabel='never' class="al-subscribe-form-field">
-                <input matInput type="text" formControlName="name">
-            </mat-form-field>
-            <h5>Description</h5>
-            <mat-form-field floatLabel='never' class="al-subscribe-form-field" class="textarea">
-                <textarea matInput type="text" autocomplete="off" formControlName="description" cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="8"></textarea>
-            </mat-form-field>
-        </form>
-        <h4>Applicants</h4>
-        <div>
+            <div>
             <table mat-table [dataSource]="dataSource" matSort>
 
                 <ng-container matColumnDef="firstName">
@@ -95,7 +108,9 @@
                 </tr>
 
             </table>
-        </div>
+         </div>    
     </div>
-
+    <div class="login-button form-group">
+        <button mat-button color="primary" (click)="save()" [disabled]="!poolForm.valid">Save</button>
+    </div>
 </div>
