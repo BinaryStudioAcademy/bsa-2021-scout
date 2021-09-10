@@ -2,10 +2,11 @@
     <div class='header'>
         <div class='top'>
             <mat-checkbox disabled [checked]= "task.isDone" [ngClass]="getClass()"></mat-checkbox>
-            <div class='name' data-title="{{task.name}}">
-                <mat-icon *ngIf="isHot()" class='hot'>local_fire_department</mat-icon>{{task.name}}
-            </div>
-            <mat-icon>more_vertical</mat-icon>
+            <div class='name'><mat-icon *ngIf="isHot()" class='hot'>local_fire_department</mat-icon>{{task.name}}</div>
+            <!-- <mat-icon>more_vertical</mat-icon> -->
+            <mat-select panelClass="card-options" (click)="$event.stopPropagation();">                
+                <mat-option *ngIf="task.createdBy.id === currentUserId " class="delete" (click)="$event.stopPropagation();showDeleteConfirmDialog(task)"><mat-icon>delete</mat-icon>Delete</mat-option>
+            </mat-select>
         </div>        
         <div class='creator'>with {{task.applicant.firstName}} {{task.applicant.lastName}}</div>        
     </div>
@@ -22,7 +23,7 @@
     <div class='footer'>
         <div class='creator'>by {{task.createdBy.firstName}} {{task.createdBy.lastName}}</div>
         <div class='users'>
-            <mat-icon *ngFor="let user of task.teamMembers" [matTooltip]="user.firstName+' '+user.lastName">account_circle</mat-icon>
+            <img class="account-circle" *ngFor="let user of task.teamMembers" [matTooltip]="user.firstName+' '+user.lastName" src="{{user.image}}" onError="this.src='../../../../assets/images/defaultAvatarSquare.png'">
         </div>
     </div>
 </div>

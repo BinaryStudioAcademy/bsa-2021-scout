@@ -30,19 +30,22 @@ namespace Application.Pools.Commands
     {
         protected readonly ISender _mediator;
         protected readonly IWriteRepository<Pool> _poolWriteRepository;
+        private readonly IPoolToApplicantWriteRepository _poolApplicantWriteRepository;
         protected readonly ISecurityService _securityService;
         protected readonly IMapper _mapper;
 
-        public DeletePoolCommandHandler(ISender mediator, IWriteRepository<Pool> poolWriteRepository, ISecurityService securityService, IMapper mapper)
+        public DeletePoolCommandHandler(ISender mediator, IWriteRepository<Pool> poolWriteRepository, IPoolToApplicantWriteRepository poolToApplicantWriteRepository, ISecurityService securityService, IMapper mapper)
         {
             _mediator = mediator;
-            _poolWriteRepository = poolWriteRepository;            
+            _poolWriteRepository = poolWriteRepository;
+            _poolApplicantWriteRepository = poolToApplicantWriteRepository;
             _securityService = securityService;
             _mapper = mapper;
         }
 
         public async Task<Unit> Handle(DeletePoolCommand command, CancellationToken _)
         {
+            await _poolApplicantWriteRepository.DeletePoolToApplicants(command.Id);
 
             await _poolWriteRepository.DeleteAsync(command.Id);
 

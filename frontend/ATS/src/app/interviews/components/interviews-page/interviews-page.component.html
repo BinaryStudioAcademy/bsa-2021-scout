@@ -1,9 +1,19 @@
-<app-header></app-header>
+<app-header [removeInterviewButton]="true"></app-header>
 
 <div class="controls">
   <div class="today">
     <mat-icon>today</mat-icon>
     <div>{{currentDate | date: "EEEE, MMM, d, y"}}</div>
+  </div>
+  <div class="need-review" (click)="onToogleNeedReview()">
+    <div class="toogle" *ngIf="toogleNeedReview" matTooltip="Hide interview that need review">
+      <mat-icon>visibility</mat-icon>
+      Hide
+    </div>
+    <div class="toogle" *ngIf="!toogleNeedReview" matTooltip="Show interview that need review">
+      <mat-icon>visibility_off</mat-icon>
+      Show
+    </div>
   </div>
   <div class="dates">
     <span class="clickable" mat-button (click)="decreaseMonth()" value="-">&lt;</span>
@@ -51,7 +61,7 @@
                 </div>
                
               </div>
-              <div (click)="collapse(c)" class="extra" [ngClass]="{'interviewColors':c.interviews[0].interviewType%2!==0, 'meetingColors':c.interviews[0].interviewType%2 === 0}" *ngIf="c.interviews.length>=2 && c.isCollapsed">{{c.interviews.length}} Events</div>
+              <div (click)="collapse(c)" class="extra" [ngClass]="{'needReviewColors': !c.interviews[0].isReviewed,  'purpleColors':c.interviews[0].interviewType !== 2 && c.interviews[0].interviewType !== 3, 'blueColors':c.interviews[0].interviewType === 2 || c.interviews[0].interviewType === 3}" *ngIf="c.interviews.length>=2 && c.isCollapsed">{{c.interviews.length}} Events</div>
 
             </div>
           </td>

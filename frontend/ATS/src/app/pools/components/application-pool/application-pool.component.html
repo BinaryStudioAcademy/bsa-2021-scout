@@ -57,19 +57,20 @@
                         <mat-icon [ngClass]="{'applyPrimaryColor': row.isFollowed}" *ngIf="!page"
                             (click)="$event.stopPropagation();onBookmark(row)">bookmark</mat-icon>
                         <mat-icon (click)="$event.stopPropagation();editPool(row)">edit</mat-icon>
-                        <mat-select panelClass="pool-options">
+                        <mat-select panelClass="pool-options" (click)="$event.stopPropagation();">
                             <mat-option (click)="onDetails(row.id)">
                                 <mat-icon class="info">info</mat-icon>Details
                             </mat-option>
                             <mat-option (click)="onAddApplicantsFromPoolToVacancy(row.applicants)">
                                 <mat-icon>done_all</mat-icon>Apply Pool To Vacancy
                             </mat-option>
+                            <mat-option class="delete" (click)="$event.stopPropagation();showDeleteConfirmDialog(row)"><mat-icon>delete</mat-icon>Delete</mat-option>
                         </mat-select>
                     </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onDetails(row.id)" style="cursor:pointer"></tr>
 
                 <tr class="mat-row" *matNoDataRow>
                     <td class="mat-cell" colspan="7">No data maching the filter</td>

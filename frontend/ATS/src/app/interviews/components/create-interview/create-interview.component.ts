@@ -145,7 +145,7 @@ export class CreateInterviewComponent implements OnDestroy {
       'title': new FormControl(this.interview.title,
         [Validators.required,
           Validators.minLength(3),
-          Validators.maxLength(30)]),
+          Validators.maxLength(100)]),
       'interviewers': new FormControl(this.interview.userParticipantDatas,
         [Validators.required]),
       'candidateId': new FormControl(this.interview.candidateId,
@@ -230,6 +230,7 @@ export class CreateInterviewComponent implements OnDestroy {
 
   public onSubmited() {
     this.interview = this.interviewCreateForm.value;
+    this.interview.isReviewed = true;
     this.loading = true;
     this.inteviewDate = new Date(this.interviewCreateForm.controls['date'].value);
 

@@ -33,7 +33,7 @@ export class TaskService {
     );
   }
   
-  public deletePool(id: string) {
+  public deleteTask(id: string) {
     return this.http.deleteFullRequest<Task>(
       `${this.routePrefix}/${id}`);
   }

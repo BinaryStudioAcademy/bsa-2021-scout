@@ -11,7 +11,8 @@ export class CreateApplicant {
   experienceDescription?: string;
   skills?: string;
   tags: ElasticEntity = new ElasticEntity();
-  cv: File | null = null;
+  cv: string | File | null = null;
+  photo: string | File | null = null;
 
   public constructor(csvApplicant: CsvApplicant | null) {
     if (csvApplicant){

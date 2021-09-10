@@ -9,6 +9,7 @@ using Domain.Entities;
 using Domain.Interfaces.Abstractions;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -55,8 +56,8 @@ namespace Application.Users.Commands
                 throw new InvalidTokenException("register");
             }
 
+            command.RegisterDto.UserRegisterDto.Roles.Add(new RoleDto { Id = "2", Name = "HrUser" });
             var newUser = _mapper.Map<User>(command.RegisterDto.UserRegisterDto);
-
             newUser.CompanyId = registerPermission.CompanyId;
             newUser.IsEmailConfirmed = false;
 

@@ -15,6 +15,7 @@ export class CreateInterviewDto{
   userParticipants: string[] = [];
   userParticipantDatas: UserTableData[] = [];
   vacancyId: string = '';
+  isReviewed: boolean = true;
   scheduled: string = '';
   duration: number = 0;
   candidateId: string = '';

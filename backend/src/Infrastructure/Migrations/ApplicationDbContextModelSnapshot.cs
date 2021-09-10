@@ -86,6 +86,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhotoFileInfoId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Skills")
                         .HasColumnType("nvarchar(max)");
 
@@ -97,6 +100,8 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("CvFileInfoId");
+
+                    b.HasIndex("PhotoFileInfoId");
 
                     b.ToTable("Applicants");
                 });
@@ -946,9 +951,15 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("CvFileInfoId");
 
+                    b.HasOne("Domain.Entities.FileInfo", "PhotoFileInfo")
+                        .WithMany()
+                        .HasForeignKey("PhotoFileInfoId");
+
                     b.Navigation("Company");
 
                     b.Navigation("CvFileInfo");
+
+                    b.Navigation("PhotoFileInfo");
                 });
 
             modelBuilder.Entity("Domain.Entities.ApplyToken", b =>

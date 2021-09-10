@@ -5,6 +5,7 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { TaskCardComponent } from './components/task-card/task-card.component';
 import { TaskInfoWidgetComponent } from './components/task-info-widget/task-info-widget.component';
 import { AllInOneComponent } from './components/modal/all-in-one/all-in-one.component';
+import { MyTasksComponent } from './components/my-tasks/my-tasks.component';
 
 
 
@@ -13,7 +14,7 @@ import { AllInOneComponent } from './components/modal/all-in-one/all-in-one.comp
     MainPageComponent,
     TaskCardComponent,
     TaskInfoWidgetComponent,
-    AllInOneComponent,
+    AllInOneComponent,    
   ],
   imports: [
     CommonModule,

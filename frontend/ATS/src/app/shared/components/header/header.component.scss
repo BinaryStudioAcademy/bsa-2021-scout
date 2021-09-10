@@ -33,10 +33,23 @@ grid-column: 1;
 .user-name{
   font-size: 17px;
   font-weight: 600;
+  grid-row: 1/2;
+  grid-column: 1/2;
+  height: 100%;
+}
+.notifications{
+  margin-top: 20px;
+  width: 200px;
+}
+.user-role{
+  height: 100%;
+  font-size: 14px;
 }
 
-.user-role{
-  font-size: 14px;
+.user-role > *{
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .todo-action{
@@ -49,6 +62,11 @@ grid-column: 1;
   top: 2px !important;
   width: 8px;
   height: 8px;
+  &.jobs-list-cell {
+    overflow: visible;
+    width: fit-content;
+    max-width: none;
+  }
 }
 
 .mat-toolbar > * {

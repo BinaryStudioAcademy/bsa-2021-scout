@@ -47,6 +47,7 @@ export class InterviewsPageComponent{
   private interviewsDateSet: Date[] = [];
   private interviews: Interview[] = [];
   public dateArrived!: Promise<boolean>;
+  public toogleNeedReview: boolean = true;
   constructor(public service: InterviewsService,
     private dialog: MatDialog) {
     service.getInterviews()
@@ -58,6 +59,7 @@ export class InterviewsPageComponent{
         this.interviews = resp.body!;
         this.interviews = this.interviews.sort((a, b) =>new Date(a.scheduled).getTime() 
           - new Date(b.scheduled).getTime());
+        this.interviews = this.interviews.sort((a, b) => a.isReviewed > b.isReviewed? -1 : 1);
         this.dateArrived = Promise.resolve(true);
         this.generateCalendarDays();
       },
@@ -187,6 +189,32 @@ export class InterviewsPageComponent{
           this.generateCalendarDays();
         },
         );
+    });
+  }
+
+  cachedNeedReviewInterviews: Interview[] = [];
+  onToogleNeedReview() {
+    this.toogleNeedReview = !this.toogleNeedReview;
+
+    this.calendar.forEach(day=>{
+      if(day.isToday)
+      {
+        if(this.toogleNeedReview)
+        {
+          this.cachedNeedReviewInterviews.forEach(cachedInterview => 
+            day.interviews.push(cachedInterview));
+          day.interviews.sort((a, b) => a.isReviewed > b.isReviewed ? -1 : 1);
+        }
+        else
+        {
+          this.cachedNeedReviewInterviews = day.interviews
+            .filter(interview => !interview.isReviewed);
+          day.interviews = day.interviews.filter(interview => interview.isReviewed);
+          if(day.interviews.length < 2) {
+            day.isCollapsed = true;
+          }
+        }
+      }
     });
   }
 }

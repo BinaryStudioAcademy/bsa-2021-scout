@@ -60,7 +60,7 @@
     <p>Experience years</p>
     <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors ? 'invalid-input' : ''">
-        <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60"
+        <input formControlName="experience" type="number" matInput step=".1" min="0" max="60"
             [(ngModel)]="updatedApplicant.experience">
     </mat-form-field>
     <div class="validation-error"
@@ -77,16 +77,14 @@
     <p>Phone</p>
     <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors? 'invalid-input' : ''">
-        <input required formControlName="phone" type="tel" matInput placeholder="Enter phone number"
+        <input formControlName="phone" type="tel" matInput placeholder="Enter phone number"
             [(ngModel)]="updatedApplicant.phone">
     </mat-form-field>
-    <ng-template #phonePatternError>
         <div class="validation-error"
-            *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.pattern">
+        *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.pattern">
             A phone number can only contain integers and has a length from 8 to 16. In has to match the pattern
             +&lt;code&gt;&lt;number&gt; or &lt;number&gt;
-        </div>
-    </ng-template>
+        </div>   
 
     <p>Tags</p>
     <app-tags-edit [tags]="updatedApplicant.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
@@ -108,8 +106,11 @@
         LinkedIn url must match the pattern https://www.linkedin.com/&lt;username&gt;
     </div>
 
-    <p>{{ updatedApplicant.hasCv ? 'Update Cv' : "Add cv" }}</p>
+    <p>{{ updatedApplicant.hasCv ? 'Update cv' : "Add cv" }}</p>
     <app-file-input (upload)="uploadApplicantCv($event)" [accept]="allowedCvFileType"></app-file-input>
+
+    <p>{{ updatedApplicant.hasPhoto ? 'Update photo' : "Add photo" }}</p>
+    <app-file-input (upload)="uploadApplicantPhoto($event)" [image]="true"></app-file-input>
 
     <mat-dialog-actions class="edit-action">
         <button [disabled]="validationGroup!.invalid" (click)="updateApplicant()" mat-button>

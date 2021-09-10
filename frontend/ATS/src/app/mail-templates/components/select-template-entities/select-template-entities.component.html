@@ -1,7 +1,7 @@
 <div class="select-template-info">
     <h2>Send email template</h2>
     <form class="applicant-form" [formGroup]="validationGroup!" novalidate>
-        <span>Email</span>
+        <span class="required-field">Email</span>
         <mat-form-field appearance="fill" [ngClass]="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors? 'invalid-input' : ''">
             <input required formControlName="email" type="email" matInput placeholder="Enter email" [(ngModel)]="email">
         </mat-form-field>
@@ -14,7 +14,7 @@
     </form>
 
     <div *ngIf="isVacancyRequired">
-        <span>Vacancy</span>
+        <span class="required-field">Vacancy</span>
         <mat-form-field class="full-width" appearance="fill" [ngClass]="vacancyControl!.dirty && vacancyButtonDisable ? 'invalid-input' : ''">
             <input floatLabel="never" type="text" placeholder="Select vacancy" matInput [matAutocomplete]="autoVacancy" [formControl]="vacancyControl">
             <mat-autocomplete autoActiveFirstOption #autoVacancy="matAutocomplete" [displayWith]="displayFnVacancy">
@@ -26,7 +26,7 @@
         </div>
     </div>
     <div *ngIf="isProjectRequired">
-        <span>Project</span>
+        <span class="required-field">Project</span>
         <mat-form-field class="full-width" appearance="fill" [ngClass]="projectControl!.dirty && projectButtonDisable ? 'invalid-input' : ''">
             <input floatLabel="never" type="text" placeholder="Select project" matInput [matAutocomplete]="autoProject" [formControl]="projectControl">
             <mat-autocomplete autoActiveFirstOption #autoProject="matAutocomplete" [displayWith]="displayFnProject">
@@ -38,7 +38,7 @@
         </div>
     </div>
     <div *ngIf="isApplicantRequired">
-        <span>Applicant</span>
+        <span class="required-field">Applicant</span>
         <mat-form-field class="full-width" appearance="fill" [ngClass]="applicantControl!.dirty && applicantButtonDisable ? 'invalid-input' : ''">
             <input floatLabel="never" type="text" placeholder="Select applicant" matInput [matAutocomplete]="autoApplicant" [formControl]="applicantControl">
             <mat-autocomplete autoActiveFirstOption #autoApplicant="matAutocomplete" [displayWith]="displayFnApplicant">

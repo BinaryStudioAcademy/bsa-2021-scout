@@ -1,10 +1,10 @@
 <app-spinner [loading]="loading"></app-spinner>
 <mat-toolbar>
-  <app-button *ngIf="!removeButton" (click)="openDialog()">
-    + New vacancy
+  <app-button *ngIf="!removeVacancyButton" (click)="openVacancyDialog()">
+    + Vacancy
   </app-button>
-  <button mat-icon-button>
-    <mat-icon matBadge="&#8288;" matBadgeColor="primary" matBadgeSize="small">notifications</mat-icon>
+  <button mat-icon-button [matMenuTriggerFor]="notification" #matNotificationTrigger>
+    <mat-icon  matBadgeColor="primary" matBadgeSize="small">notifications</mat-icon>
   </button>
   <div [matMenuTriggerFor]="menu" #menuTrigger>
     <div class="avatar-info">
@@ -23,8 +23,8 @@
                 <div class="user-name">
                     {{user.firstName}} {{user.lastName}} <mat-icon class="todo-action" mat-icon-button>edit</mat-icon>
                 </div>
-                <div class="user-role" *ngFor="let role of user.roles">
-                {{role.name}}
+                <div class="user-role">
+                <div>{{this.mainRoles}}</div>
                 </div>
             </div>
             <mat-divider></mat-divider>
@@ -32,4 +32,9 @@
                 Log out
               </button>
     </mat-menu>
+    <mat-menu #notification="matMenu" class="notifications">
+      <div mat-menu-item>
+          No new notifications.
+      </div>
+  </mat-menu>
 </mat-toolbar>

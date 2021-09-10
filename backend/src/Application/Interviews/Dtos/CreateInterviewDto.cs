@@ -20,6 +20,7 @@ namespace Application.Interviews.Dtos
         public InterviewType InterviewType { get; set; }
         public ICollection<string> UserParticipants { get; set; }
         public string CandidateId { get; set; }
+        public bool IsReviewed { get; set; }
         public string Note { get; set; }
         public DateTime CreatedDate { get; set; }
     }

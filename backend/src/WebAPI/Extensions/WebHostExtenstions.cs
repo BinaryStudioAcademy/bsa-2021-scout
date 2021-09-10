@@ -279,7 +279,7 @@ namespace WebAPI.Extensions
             };
 
             Random random = new Random();
-            foreach (var user in UserSeeds.GetUsers().Skip(1))
+            foreach (var user in UserSeeds.GetUsers().Skip(2))
             {
                 usersToRoles.Add(
                 new UserToRole

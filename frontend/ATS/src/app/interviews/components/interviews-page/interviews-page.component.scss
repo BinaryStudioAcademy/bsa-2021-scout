@@ -43,13 +43,35 @@ li.dates {
   height: 100%;
   padding-bottom: 20px;
 }
-.interviewColors {
+.purpleColors {
   background-color: #ec4f9326;
   border: 1px solid #da5a92;
 }
-.meetingColors {
+.blueColors {
   border: 1px solid #2658e8;
   background-color: #d9e6fd;
+}
+.orangeColors{
+  border: 1px solid #eb703c;
+  background-color: #F08356;
+}
+.needReviewColors{
+  border: 2px solid #e8e526;
+  background-color: #f7fca0;
+  color: black;
+}
+.need-review{
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  color: #4f00b5;
+  cursor: pointer;
+  z-index: 100;
+
+  ::ng-deep .mat-icon {
+    margin-right: 10px;
+  }
 }
 .extra {
   text-align: left;
@@ -90,15 +112,20 @@ li.dates {
   padding-right: 20px;
   text-align: center;
   display: grid;
-  grid-template-columns: 230px 1fr 230px;
+  grid-template-columns: 230px 200px 1fr;
 }
 .dates {
-  margin-top: auto;
+  position: absolute;
   margin-left: auto;
   margin-right: auto;
   left: 0;
   right: 4px;
   bottom: 10px;
+}
+.toogle{
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
 }
 .today {
   display: grid;
@@ -133,11 +160,13 @@ li.dates {
 .calendar-table thead th {
   position: sticky;
   top: 0;
+  z-index: 10;
   background-color: #fff;
   vertical-align: bottom;
   border-top: none;
   border-left: none;
   border-right: none;
+  z-index:10;
   border-bottom: 1px solid #dee2e6;
   width: 14.2%;
 }
@@ -190,15 +219,19 @@ li.dates {
 }
 .blue-date::after {
   content: "";
+  pointer-events: none;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 2;
   border: 1px solid #4808ae !important;
 }
 
 .mat-button.mat-button.create-button{
-  width: 165px;
+  width: 175px;
+  height: 40px;
+  z-index:2;
   justify-self: end;
 }

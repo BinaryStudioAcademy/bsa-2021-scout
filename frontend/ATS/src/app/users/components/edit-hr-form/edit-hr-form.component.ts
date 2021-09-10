@@ -32,6 +32,7 @@ import { User } from '../../models/user';
 import { UserTableData } from '../../models/user-table-data';
 import { UserDataService } from '../../services/user-data.service';
 import { UserCreate } from '../../models/user-create';
+import { LoginRegistCommonComponent } from '../login-regist-common/login-regist-common.component';
 
 
 @Component({
@@ -49,6 +50,7 @@ export class EditHrFormComponent implements OnInit, OnDestroy {
   public isAvatarToDelete: boolean = false;
   
   constructor(
+    public loginRegistCommonComponent: LoginRegistCommonComponent,
     public dialogRef: MatDialogRef<EditHrFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { userToEdit: UserTableData, isUserLeadProfile:Boolean},
     private fb: FormBuilder,
@@ -56,16 +58,24 @@ export class EditHrFormComponent implements OnInit, OnDestroy {
     public notificationService: NotificationService,
   ) {
     this.profileForm = new FormGroup({
-      'firstName': new FormControl({value:''}, Validators.required),
-      'lastName': new FormControl({value:''}, Validators.required),    
-      'birthDay': new FormControl({value:'', disabled:true}),
-      'phone': new FormControl({value:''},
+      firstName: new FormControl('', [
+        Validators.required,
+        firstAndLastNameUpperValidation,
+        this.loginRegistCommonComponent.firstAndLastNameValidation,
+      ]),
+      lastName: new FormControl('', [
+        Validators.required,
+        firstAndLastNameUpperValidation,
+        this.loginRegistCommonComponent.firstAndLastNameValidation,
+      ]),    
+      birthDay: new FormControl({value:'', disabled:true}),
+      phone: new FormControl('',
         Validators.pattern(
           '(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?'+
         '[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})')),
-      'skype': new FormControl({value:''}),
-      'slack': new FormControl({value:''}),
-      'email': new FormControl({value:'', disabled:true}),
+      skype: new FormControl(''),
+      slack: new FormControl(''),
+      email: new FormControl({value:'', disabled:true}),
     });
     this.loading = false;
   }
@@ -181,7 +191,34 @@ export class EditHrFormComponent implements OnInit, OnDestroy {
   get profileFormControl() {
     return this.profileForm.controls;
   }
+  getFirstNameErrorMessage() {
+    return this.profileFormControl.firstName.errors?.required ?
+      'You must enter a value' :
+      this.profileFormControl.firstName.errors?.firstandlastnameupper ?
+        'Should start with upper latin letter' :
+        this.profileFormControl.firstName.errors?.firstandlastname
+          ? 'Only latin letters, spaces, hyphens' :
+          '';
+  }
+  getLastNameErrorMessage() {
+    return this.profileFormControl.lastName.errors?.required ? 
+      'You must enter a value' :
+      this.profileFormControl.lastName.errors?.firstandlastnameupper ? 
+        'Should start with upper latin letter' :
+        this.profileFormControl.lastName.errors?.firstandlastname ? 
+          'Only latin letters, spaces, hyphens' :
+          '';
+  }
+
   
+}
+
+function firstAndLastNameUpperValidation(control: FormControl) {
+  return ((control.value as string) || '').match(
+    /^[A-Z]/,
+  ) != null
+    ? null
+    : { firstandlastnameupper: true };
 }
 
   

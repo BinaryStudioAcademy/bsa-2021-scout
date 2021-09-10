@@ -46,21 +46,17 @@
         <input required formControlName="email" type="email" matInput placeholder="Enter email"
             [(ngModel)]="createdApplicant.email">
     </mat-form-field>
-    <div class="validation-error"
-        *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.required; else emailPatternError">
-        It&apos;s required field
-    </div>
-    <ng-template #emailPatternError>
+    <!-- <ng-template #emailPatternError> -->
         <div class="validation-error"
             *ngIf="validationGroup!.controls['email'].dirty && validationGroup!.controls['email'].errors?.pattern">
             Please enter a valid email address.
         </div>
-    </ng-template>
+    <!-- </ng-template> -->
 
     <p>Experience years</p>
     <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['experience'].dirty && validationGroup!.controls['experience'].errors ? 'invalid-input' : ''">
-        <input required formControlName="experience" type="number" matInput step=".1" min="0" max="60"
+        <input formControlName="experience" type="number" matInput step=".1" min="0" max="60"
             [(ngModel)]="createdApplicant.experience">
     </mat-form-field>
     <div class="validation-error"
@@ -77,17 +73,14 @@
     <p>Phone</p>
     <mat-form-field appearance="fill"
         [ngClass]="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors? 'invalid-input' : ''">
-        <input required formControlName="phone" type="tel" matInput placeholder="Enter phone number"
+        <input formControlName="phone" type="tel" matInput placeholder="Enter phone number"
             [(ngModel)]="createdApplicant.phone">
     </mat-form-field>
-    <ng-template #phonePatternError>
         <div class="validation-error"
             *ngIf="validationGroup!.controls['phone'].dirty && validationGroup!.controls['phone'].errors?.pattern">
             A phone number can only contain integers and has a length from 8 to 16. In has to match the pattern
             +&lt;code&gt;&lt;number&gt; or &lt;number&gt;
         </div>
-    </ng-template>
-
     <p>Tags</p>
     <app-tags-edit [tags]="createdApplicant.tags.tagDtos" (updateTags)="updateTags($event)"></app-tags-edit>
 
@@ -98,8 +91,7 @@
     </mat-form-field>
 
     <p>LinkedIn url</p>
-    <mat-form-field appearance="fill"
-        [ngClass]="validationGroup!.controls['linkedInUrl'].dirty && validationGroup!.controls['linkedInUrl'].errors? 'invalid-input' : ''">
+    <mat-form-field appearance="fill">
         <input formControlName="linkedInUrl" type="text" matInput placeholder="Enter LinkedIn url"
             [(ngModel)]="createdApplicant.linkedInUrl">
     </mat-form-field>
@@ -110,6 +102,9 @@
 
     <p>CV</p>
     <app-file-input (upload)="uploadApplicantCv($event)" [accept]="allowedCvFileType"></app-file-input>
+
+    <p>Photo</p>
+    <app-file-input (upload)="uploadApplicantPhoto($event)" [image]="true"></app-file-input>
 
     <mat-dialog-actions class="publish-action">
         <button [disabled]="validationGroup!.invalid" (click)="createApplicant()" mat-button>
