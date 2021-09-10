@@ -31,6 +31,7 @@ import { SelectTemplateEntitiesComponent }
 })
 export class MailTemplatesListComponent implements AfterViewInit, OnInit, OnDestroy {
   displayedColumns: string[] = [
+    'position',
     'title',
     'subject',
     'text',

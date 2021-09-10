@@ -82,6 +82,10 @@ export class CreateInterviewComponent implements OnDestroy {
   ];
   meetingSources: { name: string; source: MeetingSource }[] = [
     {
+      name: 'None',
+      source: MeetingSource.GoogleMeet,
+    },
+    {
       name: 'GoogleMeet',
       source: MeetingSource.GoogleMeet,
     },
@@ -125,6 +129,7 @@ export class CreateInterviewComponent implements OnDestroy {
     private vacancyService: VacancyDataService,
   ) {
     this.interview = {} as CreateInterviewDto;
+    this.interview.meetingSource = MeetingSource.None;
     if (data?.interview) {
       this.editing = true;
       this.interview = data.interview;
@@ -136,6 +141,7 @@ export class CreateInterviewComponent implements OnDestroy {
     }
     
     this.interviewCreateForm = new FormGroup({
+      'meetingSource': new FormControl(this.interview.meetingSource),
       'title': new FormControl(this.interview.title,
         [Validators.required,
           Validators.minLength(3),
@@ -157,18 +163,13 @@ export class CreateInterviewComponent implements OnDestroy {
         [Validators.required,
           Validators.min(10),
           Validators.max(200)]),
-      'meetingSource': new FormControl(this.interview.meetingSource,
-        [Validators.required]),
       'meetingLink': new FormControl(this.interview.meetingLink,
-        [Validators.required,
-          URLValidator()]),
-      'note': new FormControl(this.interview.note,
-        [Validators.required,
-          Validators.minLength(10)]),
+        [URLValidator()]),
+      'note': new FormControl(this.interview.note),
     });
     this.dialogRef.disableClose = true;
     this.dialogRef.backdropClick().subscribe((_) => this.onFormClose());
-    this.usersService.getUsers()
+    this.usersService.getAllUsers()
       .pipe(
         takeUntil(this.unsubscribe$),
       )
@@ -301,8 +302,9 @@ function URLValidator(): ValidatorFn {
     '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?',
   );
   return (control: AbstractControl): ValidationErrors | null => {
+    const isLenghtNotZero = control.value?.length > 0;
     const valid = emailRe.test(control.value);
-    return valid ? null : { url: { value: control.value } };
+    return valid || !isLenghtNotZero ? null : { url: { value: control.value } };
   };
 }
 

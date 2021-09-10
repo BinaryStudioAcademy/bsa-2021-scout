@@ -137,47 +137,31 @@
                 </div>
             </div>
 
-            <h5 class="required-field">Meeting source</h5>
+            <h5>Meeting source</h5>
             <mat-form-field appearance="fill"
                 [ngClass]="this.interviewCreateForm.controls['meetingSource'].touched &&  this.interviewCreateForm.controls['meetingSource'].invalid ? 'invalid-input' : ''">
-                <mat-select #fontSize placeholder="Select source" formControlName="meetingSource">
+                <mat-select #fontSize placeholder="Select source" formControlName="meetingSource" (value)="interview.meetingSource">
                     <mat-option *ngFor="let source of meetingSources" [value]="source.source">{{source.name}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-error class="validation-error"
-                *ngIf="this.interviewCreateForm.controls['meetingSource'].touched &&  this.interviewCreateForm.controls['meetingSource'].errors?.required">
-                This field shouldn't be empty
-            </mat-error>
 
-            <h5 class="required-field">Meeting link</h5>
+            <h5>Meeting link</h5>
             <mat-form-field floatLabel="never"
                 [ngClass]="this.interviewCreateForm.controls['meetingLink'].dirty && this.interviewCreateForm.controls['meetingLink'].errors? 'invalid-input': ''">
                 <input matInput type="text" formControlName="meetingLink" placeholder="Enter link">
             </mat-form-field>
-            <div class="validation-error"
-                *ngIf="this.interviewCreateForm.controls['meetingLink'].dirty && this.interviewCreateForm.controls['meetingLink'].errors?.required">
-                Is required.
-            </div>
             <div class="validation-error"
                 *ngIf="this.interviewCreateForm.controls['meetingLink'].dirty && this.interviewCreateForm.controls['meetingLink'].errors?.url">
                 Wrong url format
             </div>
 
 
-            <h5 class="required-field">Description interview</h5>
+            <h5>Description interview</h5>
             <mat-form-field class="wide example-full-width" appearance="fill"
                 [ngClass]="this.interviewCreateForm.controls['note'].dirty && this.interviewCreateForm.controls['note'].errors? 'invalid-input': ''">
                 <textarea matInput type="text" formControlName="note" placeholder="Enter text"></textarea>
             </mat-form-field>
-            <div class="validation-error"
-                *ngIf="this.interviewCreateForm.controls['note'].dirty && this.interviewCreateForm.controls['note'].errors?.required">
-                Is required.
-            </div>
-            <div class="validation-error"
-                *ngIf="this.interviewCreateForm.controls['note'].dirty && this.interviewCreateForm.controls['note'].errors?.minlength">
-                Description must be at least 10 characters long.
-            </div>
 
 
             <button mat-button mat-dialog-close type="submit"
