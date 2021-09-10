@@ -33,6 +33,7 @@ export class ApplicantControlComponent implements OnDestroy {
   @Input() public applicant: ViewableApplicant | undefined = undefined;
   @Output() public deleteApplicantEvent = new EventEmitter<string>();
   @Output() public updateApplicantEvent = new EventEmitter<ViewableApplicant>();
+  @Output() public reloadApplicantsEvent = new EventEmitter();
   @Output() public markAsFollowed = new EventEmitter<string>();
 
   public loading: boolean = false;
@@ -144,7 +145,9 @@ export class ApplicantControlComponent implements OnDestroy {
       data: {
         applicantId: this.applicant!.id,
       },
-    });
+    })
+      .afterClosed()
+      .subscribe(_ => this.reloadApplicantsEvent.emit());
   }
 
   public openCv(): void {
