@@ -1,5 +1,6 @@
 @import '/src/common.scss';
 
+
 .my-tasks {
     height: 100%; 
     width: 100%;
@@ -40,6 +41,16 @@
                     border-radius: 50%;
         
                 }
+
+                .account-circle{
+                    vertical-align: middle;
+                    object-fit: cover;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    border: 1px solid $primary-color;
+                    border-radius: 50%;
+                }
             }
 
             .info {
@@ -56,9 +67,6 @@
                     color: $primary-color;
                 }
 
-                .task-description {
-
-                }
 
 
             }            
