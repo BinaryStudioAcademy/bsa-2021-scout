@@ -23,7 +23,7 @@
     <div class='footer'>
         <div class='creator'>by {{task.createdBy.firstName}} {{task.createdBy.lastName}}</div>
         <div class='users'>
-            <mat-icon *ngFor="let user of task.teamMembers" [matTooltip]="user.firstName+' '+user.lastName">account_circle</mat-icon>
+            <img class="account-circle" *ngFor="let user of task.teamMembers" [matTooltip]="user.firstName+' '+user.lastName" src="{{user.image}}" onError="this.src='../../../../assets/images/defaultAvatarSquare.png'">
         </div>
     </div>
 </div>

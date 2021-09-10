@@ -38,6 +38,7 @@ export class TaskCardComponent implements OnInit{
 
   ngOnInit() {
     this.updateTask(this.task);
+    console.log(this.task);
   }
 
   getClass()

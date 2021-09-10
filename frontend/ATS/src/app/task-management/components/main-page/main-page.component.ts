@@ -119,7 +119,7 @@ export class MainPageComponent implements OnInit,AfterViewInit{
               id: value.id, 
               firstName: value.firstName, 
               lastName: value.lastName, 
-              image:''};
+              image:value.avatarUrl};
           }) as UserInfo[];          
         },        
         (error) => {

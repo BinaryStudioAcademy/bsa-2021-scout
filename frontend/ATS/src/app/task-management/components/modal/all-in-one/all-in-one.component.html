@@ -55,7 +55,7 @@
       <h5 class="required-field">Team members</h5>
     <div class='users'>
         <div class="user-wrapper" *ngFor="let user of task.teamMembers" [matTooltip]="user.firstName+' '+user.lastName">
-          <mat-icon>account_circle</mat-icon>
+          <img class="account-circle" alt="User profile photo" src="{{this.user.image}} " onError="this.src='../../../../assets/images/defaultAvatarSquare.png'">
           <mat-icon class='close' (click)=removeUser(user)>close</mat-icon>
         </div>
         <div class="add-user-select add">         
