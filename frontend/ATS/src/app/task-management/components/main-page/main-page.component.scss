@@ -1,4 +1,4 @@
-@import '/src/common.scss';
+@import "/src/common.scss";
 
 .task-page {
     padding: 20px;
@@ -10,10 +10,7 @@
     .mat-icon:hover {
         cursor: pointer;
     }
-    
 }
-
-   
 
 .header {
     padding-left: 10px;
@@ -28,64 +25,61 @@
         align-items: center;
         justify-content: space-between;
 
-        
         .mat-button {
             height: 40px;
             width: 150px;
         }
-        
+
         .actions {
             margin-left: 20px;
-            
+
             .mat-icon {
                 margin: 0 8px;
             }
 
             ::ng-deep {
-                .mat-select-arrow::after{
-                    font-family: 'Material Icons';
+                .mat-select-arrow::after {
+                    font-family: "Material Icons";
                     content: "\ef4f";
-                    font-size: 24px;                    
-                    color: $primary-color-icons;                    
+                    font-size: 24px;
+                    color: $primary-color-icons;
                 }
-            
-                .mat-select-arrow:hover::after{
+
+                .mat-select-arrow:hover::after {
                     color: $primary-color;
                 }
-            
+
                 .mat-select-arrow-wrapper {
                     display: block;
                 }
-            
+
                 .mat-select-arrow {
                     border: none;
                     margin: 0;
                     height: 100%;
                     color: transparent;
-                    margin: 0 20px 0 0px;                   
+                    margin: 0 20px 0 0px;
                 }
-            
+
                 .mat-select {
                     width: unset;
                     padding-right: 20px;
                 }
             }
-    
-        }       
-    
+        }
 
         .done-switch {
             margin-right: auto;
             font-weight: 600;
-        
+
             .item {
                 border-radius: 3px;
                 padding: 0 5px;
                 width: 86px;
                 height: 29px;
                 font-size: 14px;
-                text-align: center;      
-        
+                text-align: center;
+
                 &:last-of-type {
                     width: 120px;
                 }
@@ -94,36 +88,37 @@
                     padding-right: 0;
                 }
             }
-            
+
             .mat-selection-list {
                 display: flex;
                 flex-direction: row;
                 width: 400px;
             }
-        
+
             ::ng-deep .mat-option {
                 border-radius: 3px;
                 padding: 0 5px;
                 width: 86px;
                 height: 29px;
             }
-            
-            .mat-list-item, .mat-list-item:hover, .mat-list-item:focus
-            {
+
+            .mat-list-item,
+            .mat-list-item:hover,
+            .mat-list-item:focus {
                 background-color: #fff;
                 border: 1px solid $primary-color-extradarkgrey;
-                border-radius: 4px;                
+                border-radius: 4px;
                 color: $primary-color-extradarkgrey;
             }
 
-            .mat-list-single-selected-option, .mat-list-single-selected-option:hover, .mat-list-single-selected-option:focus
-            {
-                background-color:$primary-color-icons;
+            .mat-list-single-selected-option,
+            .mat-list-single-selected-option:hover,
+            .mat-list-single-selected-option:focus {
+                background-color: $primary-color-icons;
                 color: #fff;
             }
         }
     }
-        
 }
 
 .content {
@@ -134,15 +129,17 @@
     height: calc(100vh - 320px);
     overflow: scroll;
 
-        .grid {            
-            display: grid;
-            grid-template-columns: repeat(auto-fill, 473px);
-            gap: 35px;
-        }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 473px);
+        gap: 35px;
+    }
 }
 
-
-
-
-
-
+:host ::ng-deep {
+    .mat-select {
+        .mat-select-value {
+            max-width: 0;
+        }
+    }
+}
