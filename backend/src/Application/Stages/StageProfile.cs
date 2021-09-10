@@ -63,7 +63,7 @@ namespace Application.Stages
                 .ForMember(
                     dto => dto.Candidates,
                     opt => opt.MapFrom(s =>
-                        s.CandidateToStages.Select(cts => cts.Candidate))
+                        s.CandidateToStages.Select(cts => cts.Candidate).OrderByDescending(c => c.DateAdded))
                 )
                 .ForMember(
                     dto => dto.Reviews,
