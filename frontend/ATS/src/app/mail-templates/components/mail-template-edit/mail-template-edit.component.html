@@ -96,7 +96,7 @@
                 <mat-checkbox formControlName="visibilitySetting"  (click)="this.isFileInputChanged=true">Visible only for the creator</mat-checkbox>
             </div>
 
-            <button mat-button mat-dialog-close type="submit" [disabled]="!this.mailTemplateCreateForm.valid && !this.isFileInputChanged">Save changes</button>
+            <button mat-button type="submit" [disabled]="!this.mailTemplateCreateForm.valid && !this.isFileInputChanged">Save changes</button>
         </form>
     </div>
 </div>

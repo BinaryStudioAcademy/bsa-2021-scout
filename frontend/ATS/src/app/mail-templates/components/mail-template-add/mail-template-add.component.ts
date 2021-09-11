@@ -131,6 +131,7 @@ export class MailTemplateAddComponent implements OnDestroy {
     this.loading = true;
     this.mailTemplateService
       .createMailTempalte(this.mailTemplate, this.files)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         () => {
           this.loading = false;
