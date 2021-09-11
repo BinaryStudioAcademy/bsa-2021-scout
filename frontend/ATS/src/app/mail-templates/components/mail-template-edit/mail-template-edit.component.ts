@@ -165,7 +165,6 @@ export class MailTemplateEditComponent implements OnDestroy {
     this.loading = true;
     this.mailTemplateService
       .updateMailTempalte(this.mailTemplateUpdate, this.files)
-      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         () => {
           this.loading = false;
