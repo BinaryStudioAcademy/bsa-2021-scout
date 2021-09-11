@@ -34,6 +34,7 @@ import { ArchivationService } from 'src/app/archive/services/archivation.service
 import { AppRoute } from 'src/app/routing/AppRoute';
 import { ConfirmationDialogComponent } 
   from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { getApplicantAvatar } from 'src/app/shared/helpers/avatar';
 
 interface CandidatePos {
   index: number;
@@ -404,12 +405,16 @@ export class VacanciesStagesBoardComponent implements OnInit, OnDestroy {
     this.data.forEach((stage) =>
       stage.candidates.forEach(
         (_candidate) =>
-          allAvatars.push('../../../../assets/images/defaultAvatar.png'), //
+          allAvatars.push(this.getAvatar(_candidate)),
       ),
     );
 
     this.avatars = allAvatars.slice(0, this.showingAvatarsCount);
     this.extraAvatarsCount = totalCandidates - this.avatars.length;
+  }
+
+  private getAvatar(candidate: ShortVacancyCandidateWithApplicant): string {
+    return getApplicantAvatar(candidate);
   }
 
   private prepareAdditionalCriterias(): void {
