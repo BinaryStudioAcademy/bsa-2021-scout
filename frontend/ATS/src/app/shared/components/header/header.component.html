@@ -4,37 +4,38 @@
     + Vacancy
   </app-button>
   <button mat-icon-button [matMenuTriggerFor]="notification" #matNotificationTrigger>
-    <mat-icon  matBadgeColor="primary" matBadgeSize="small">notifications</mat-icon>
+    <mat-icon matBadgeColor="primary" matBadgeSize="small">notifications</mat-icon>
   </button>
   <div [matMenuTriggerFor]="menu" #menuTrigger>
     <div class="avatar-info">
-      <img
-        src="{{this.user.avatarUrl}}" onError="this.src='../../../../assets/images/defaultAvatar.png'"
-        alt="Avatar"
-      />
+      <img [src]="this.user.avatarUrl" onError="this.src='../../../../assets/images/defaultAvatar.png'" alt="Avatar" />
       <button mat-icon-button>
-      
         <mat-icon>arrow_drop_down</mat-icon>
       </button>
     </div>
-    </div>
-    <mat-menu #menu="matMenu" class="menu">
-            <div mat-menu-item class="grid-user-info" (click)="onOpenProfile()">
-                <div class="user-name">
-                    {{user.firstName}} {{user.lastName}} <mat-icon class="todo-action" mat-icon-button>edit</mat-icon>
-                </div>
-                <div class="user-role">
-                <div>{{this.mainRoles}}</div>
-                </div>
-            </div>
-            <mat-divider></mat-divider>
-            <button mat-menu-item (click)="logout()">
-                Log out
-              </button>
-    </mat-menu>
-    <mat-menu #notification="matMenu" class="notifications">
-      <div mat-menu-item>
-          No new notifications.
+  </div>
+  <mat-menu #menu="matMenu" class="menu">
+    <div mat-menu-item class="grid-user-info" (click)="onOpenProfile()">
+      <div class="user-name">
+        {{user.firstName}} {{user.lastName}} <mat-icon class="todo-action" mat-icon-button>edit</mat-icon>
       </div>
+      <div class="user-role">
+        <div>{{this.mainRoles}}</div>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="logout()">
+      Log out
+    </button>
+    <a class="button-link" href="../../../../assets/chrome-extension.zip" download="chrome-extenison.zip">
+      <button mat-menu-item>
+        Download chrome extension
+      </button>
+    </a>
+  </mat-menu>
+  <mat-menu #notification="matMenu" class="notifications">
+    <div mat-menu-item>
+      No new notifications.
+    </div>
   </mat-menu>
 </mat-toolbar>

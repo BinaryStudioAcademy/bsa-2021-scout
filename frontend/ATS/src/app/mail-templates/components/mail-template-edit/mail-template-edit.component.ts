@@ -165,7 +165,6 @@ export class MailTemplateEditComponent implements OnDestroy {
     this.loading = true;
     this.mailTemplateService
       .updateMailTempalte(this.mailTemplateUpdate, this.files)
-      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         () => {
           this.loading = false;
@@ -173,14 +172,15 @@ export class MailTemplateEditComponent implements OnDestroy {
           this.notificationService.showSuccessMessage(
             `Template ${this.mailTemplate.slug} updated!`,
           );
+
+          this.dialogRef.close();
         },
         (error) => {
           this.loading = false;
           this.notificationService.showErrorMessage(error.message);
+          this.dialogRef.close();
         },
       );
-
-    this.dialogRef.close();
   }
 
   public uploadAttachments(files: File[]): void {
