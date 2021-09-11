@@ -173,14 +173,15 @@ export class MailTemplateEditComponent implements OnDestroy {
           this.notificationService.showSuccessMessage(
             `Template ${this.mailTemplate.slug} updated!`,
           );
+
+          this.dialogRef.close();
         },
         (error) => {
           this.loading = false;
           this.notificationService.showErrorMessage(error.message);
+          this.dialogRef.close();
         },
       );
-
-    this.dialogRef.close();
   }
 
   public uploadAttachments(files: File[]): void {

@@ -139,14 +139,14 @@ export class MailTemplateAddComponent implements OnDestroy {
           this.notificationService.showSuccessMessage(
             `Template ${this.mailTemplate.slug} created!`,
           );
+          this.dialogRef.close();
         },
         (error) => {
           this.loading = false;
           this.notificationService.showErrorMessage(error.message);
+          this.dialogRef.close();
         },
       );
-
-    this.dialogRef.close();
   }
 
   public uploadAttachments(files: File[]): void {
